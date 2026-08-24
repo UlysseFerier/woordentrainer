@@ -28,11 +28,11 @@ body.nuit {
 html { background: var(--page); }
 body {
   font-family: var(--sans); background: var(--page); color: var(--ink);
-  min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
+  height: 100dvh; overflow: hidden; display: flex; flex-direction: column; align-items: center;
   padding: max(12px, env(safe-area-inset-top)) 0 0;
   transition: background .25s, color .25s; overscroll-behavior-y: contain;
 }
-.app { width: 100%; max-width: 480px; flex: 1; display: flex; flex-direction: column; }
+.app { width: 100%; max-width: 480px; flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .pad { padding: 0 18px; }
 .bas { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
 
@@ -114,11 +114,6 @@ body {
 .astuce { font-size: .66rem; color: var(--faint); margin-top: 14px; }
 .retour { text-align: center; font-size: .78rem; color: var(--mute); min-height: 20px; margin-top: 12px; line-height: 1.4; }
 
-.mur { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; margin: 18px 0; }
-.carreau { aspect-ratio: 1; border-radius: 5px; background: var(--empty); position: relative; overflow: hidden; animation: pose .4s ease backwards; }
-.carreau > i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--warm); }
-.carreau.fini > i { background: var(--acc); }
-@keyframes pose { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
 .recap { text-align: center; }
 .recap-n { font-family: var(--serif); font-size: 3rem; font-weight: 500; margin: 10px 0 4px; }
@@ -137,7 +132,7 @@ select, textarea { background: var(--card); color: var(--ink); border: 1px solid
 textarea { width: 100%; min-height: 70px; font-size: .68rem; margin-top: 8px; }
 .titre-section { font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
 .cache { display: none !important; }
-.sticky { position: sticky; bottom: 0; background: var(--page); padding-top: 10px; }
+.sticky { position: sticky; bottom: 0; background: transparent; padding-top: 10px; }
 
 /* ═══════════ Série enflammée ═══════════
    Aucun flou sur les flammes : formes pleines pour rester nettes.
@@ -168,8 +163,6 @@ body.nuit[data-heat="5"] { background: #1E1211; }
 @keyframes secousse { 0%,100%{transform:translate(0,0)} 25%{transform:translate(-2px,1px)} 50%{transform:translate(2px,-1px)} 75%{transform:translate(-1px,0)} }
 @keyframes secousse2 { 0%,100%{transform:translate(0,0)} 15%{transform:translate(-4px,2px)} 30%{transform:translate(4px,-2px)} 45%{transform:translate(-3px,1px)} 60%{transform:translate(3px,-1px)} 80%{transform:translate(-1px,0)} }
 @keyframes secousse3 { 0%,100%{transform:translate(0,0) rotate(0)} 12%{transform:translate(-6px,3px) rotate(-.4deg)} 26%{transform:translate(6px,-3px) rotate(.4deg)} 40%{transform:translate(-4px,2px)} 55%{transform:translate(4px,-2px) rotate(-.2deg)} 72%{transform:translate(-2px,1px)} 88%{transform:translate(1px,0)} }
-.app.sursature { animation: sursaturer .55s ease-out; }
-@keyframes sursaturer { 0% { filter: saturate(1.5) brightness(1.04); } 100% { filter: saturate(1) brightness(1); } }
 
 #wt-lueur {
   position: fixed; left: 0; right: 0; bottom: 0; height: 24dvh; z-index: 0;
@@ -188,56 +181,26 @@ body[data-heat="5"] #wt-lueur { background: linear-gradient(to top, rgba(255,194
 body:not([data-heat="0"]) #wt-sol { opacity: .9; }
 @keyframes wtSolFlick { from{opacity:.75} to{opacity:1} }
 #wt-feu {
-  position: fixed; left: -3%; right: -3%; bottom: -8px; height: 26dvh; z-index: 1;
+  position: fixed; left: 0; right: 0; bottom: -4px; height: 160px; z-index: 1;
   pointer-events: none; transform: translateZ(0); transform-origin: 50% 100%;
   transition: transform .5s cubic-bezier(.3,1.3,.5,1);
 }
 #wt-feu.etouffe { transform: translateY(105%); transition: transform .4s ease-in; }
 #wt-feu.boum { animation: wtFeuBoum .5s cubic-bezier(.3,1.5,.5,1); }
 @keyframes wtFeuBoum { 0%{transform:scaleY(1)} 35%{transform:scaleY(1.18)} 100%{transform:scaleY(1)} }
-.wt-langue {
-  position: absolute; bottom: 0; width: var(--w); height: var(--h);
-  transform-origin: 50% 100%;
-  border-radius: 46% 54% 30% 70% / 72% 66% 34% 28%;
-  animation: wtLecher calc(var(--dur) * var(--tempo)) ease-in-out var(--del) infinite;
-  transition: height .7s cubic-bezier(.3,1.2,.5,1);
-  will-change: transform;
+.wtf { position: absolute; bottom: 0; width: var(--w); height: calc(var(--w) * 1.35); }
+.wtf svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.wtf .taille {
+  transform-box: fill-box; transform-origin: 50% 100%;
+  transform: scale(var(--sx, 1), var(--sy, 0));
+  transition: transform .7s cubic-bezier(.3,1.2,.5,1);
 }
-/* trois rangs superposés : silhouette brique à l'arrière, corps orange,
-   cœurs clairs à l'avant — le relief vient des couches, pas du nombre */
-.wt-langue.r1 { background: radial-gradient(58% 66% at 50% 86%, var(--f-orange) 0%, var(--f-brique) 58%, transparent 86%); opacity: .85; }
-.wt-langue.r2 { background: radial-gradient(56% 62% at 50% 84%, var(--f-ambre) 0%, var(--f-orange) 48%, var(--f-brique) 78%, transparent 88%); opacity: .95; }
-.wt-langue.r3 { background: radial-gradient(54% 60% at 50% 84%, #FBE9B8 0%, var(--f-jaune) 28%, var(--f-ambre) 56%, var(--f-orange) 84%, transparent 90%); }
-body[data-heat="5"] .wt-langue.r3 { background: radial-gradient(54% 60% at 50% 84%, #FFFFFF 0%, #FFF3D6 30%, var(--f-ambre) 60%, var(--f-orange) 86%, transparent 90%); }
-/* à froid, rien ne tourne : les couches de feu sont retirées du rendu */
+.wtf .vac {
+  transform-box: fill-box; transform-origin: 50% 100%;
+  animation: wtVac calc(var(--dur) * var(--tempo)) ease-in-out var(--del) infinite;
+}
+@keyframes wtVac { 0%,100% { transform: scaleY(.94) skewX(0); } 30% { transform: scaleY(1.06) skewX(2deg); } 65% { transform: scaleY(.97) skewX(-2deg); } }
 body[data-heat="0"] #wt-feu:not(.etouffe), body[data-heat="0"] #wt-lueur, body[data-heat="0"] #wt-sol { display: none; }
-@keyframes wtLecher {
-  0%,100% { transform: translateY(9%) scaleY(.9) scaleX(1.02); }
-  28% { transform: translateY(0) scaleY(1.1) scaleX(.94) skewX(2.5deg); }
-  55% { transform: translateY(5%) scaleY(.96) scaleX(1.04) skewX(-2deg); }
-  78% { transform: translateY(1%) scaleY(1.05) scaleX(.98) skewX(1.5deg); }
-}
-.wt-frange { position: fixed; top: 10dvh; bottom: 0; width: 26px; z-index: 1; pointer-events: none; display: none; opacity: .85; }
-.wt-frange.g { left: -8px; } .wt-frange.d { right: -8px; }
-body[data-heat="5"] .wt-frange { display: block; }
-.wt-frange i {
-  position: absolute; width: 22px; height: var(--h); transform-origin: 50% 100%;
-  background: radial-gradient(56% 64% at 50% 84%, var(--f-jaune) 0%, var(--f-ambre) 42%, var(--f-orange) 72%, transparent 78%);
-  border-radius: 46% 54% 32% 68% / 74% 70% 30% 26%;
-  animation: wtLecher calc(var(--dur) * var(--tempo)) ease-in-out var(--del) infinite;
-}
-.wt-chaleur {
-  position: fixed; bottom: 0; width: 34px; height: 30dvh; z-index: 0; pointer-events: none;
-  background: linear-gradient(to top, rgba(240,114,38,.12), transparent 80%);
-  border-radius: 50%; display: none;
-  animation: wtMonterVague calc(2.6s * var(--tempo)) ease-in var(--del) infinite;
-}
-body[data-heat="4"] .wt-chaleur, body[data-heat="5"] .wt-chaleur { display: block; }
-@keyframes wtMonterVague {
-  0% { transform: translateY(20%) scaleY(.6); opacity: 0; }
-  25% { opacity: .8; }
-  100% { transform: translateY(-90%) scaleY(1.4) translateX(10px); opacity: 0; }
-}
 
 /* compteur de série — n'existe qu'en entraînement, apparaît à 3 justes d'affilée */
 .wt-serie {
@@ -339,9 +302,6 @@ body:not([data-heat="0"]) .opt.juste { border-color: var(--f-ambre); }
 @keyframes wtPunch2 { 30% { transform: scale(1.05); } 60% { transform: scale(.99); } }
 @keyframes wtPunch3 { 25% { transform: scale(1.08) rotate(.4deg); } 55% { transform: scale(.985) rotate(-.3deg); } 80% { transform: scale(1.01); } }
 @keyframes wtPunch4 { 20% { transform: scale(1.12) rotate(-.6deg); } 45% { transform: scale(.97) rotate(.5deg); } 68% { transform: scale(1.04) rotate(-.2deg); } 100% { transform: scale(1); } }
-.wt-flashb { position: absolute; inset: 0; background: #fff; opacity: .8; pointer-events: none; animation: wtFlashImpact calc(.22s * var(--tempo)) ease-out forwards; }
-body.nuit .wt-flashb { opacity: .45; }
-@keyframes wtFlashImpact { to { opacity: 0; } }
 .opt .peau::before { content: ''; position: absolute; inset: -1px; border: 1px solid #E5C09A; border-radius: inherit; opacity: 0; }
 body.nuit .opt .peau::before { border-color: #6B4A2A; }
 body[data-heat="4"] .opt:not(.juste):not(.faux):not(.pale) .peau::before, body[data-heat="5"] .opt:not(.juste):not(.faux):not(.pale) .peau::before { animation: wtPresIgnition 1.6s ease-in-out infinite alternate; }
@@ -356,64 +316,11 @@ body.nuit .opt.roussi { border-color: #5A4028; }
 }
 .onde.chaude { background: radial-gradient(circle, var(--f-jaune) 0%, var(--f-ambre) 38%, var(--f-orange) 68%, var(--f-brique) 100%); }
 
-.wt-meche {
-  position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
-  padding: 2px;
-  background: conic-gradient(from var(--a) at 50% 50%,
-    transparent 0deg 300deg, rgba(217,83,30,.9) 330deg, var(--f-jaune) 350deg, transparent 360deg);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
-  animation: wtMecheTour calc(.45s * var(--tempo)) linear forwards;
-}
-@keyframes wtMecheTour { from { --a: 0deg; } to { --a: 360deg; } }
-@property --a { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
 
-.wt-flanc {
-  position: absolute; transform-origin: 50% 100%; pointer-events: none; z-index: 3;
-  width: var(--w); height: var(--h);
-  background: radial-gradient(56% 64% at 50% 84%, var(--f-jaune) 0%, var(--f-ambre) 40%, var(--f-orange) 68%, var(--f-brique) 88%, transparent 91%);
-  border-radius: 46% 54% 32% 68% / 74% 70% 30% 26%;
-  animation: wtJaillir calc(var(--dur) * var(--tempo)) ease-out var(--del) both;
-}
-.wt-flanc::after {
-  content: ''; position: absolute; left: 26%; right: 26%; top: 36%; bottom: 6%;
-  background: radial-gradient(50% 60% at 50% 88%, #FBE9B8 0%, var(--f-jaune) 50%, transparent 78%);
-  border-radius: inherit;
-}
-body[data-heat="5"] .wt-flanc::after { background: radial-gradient(50% 60% at 50% 88%, #FFFFFF 0%, #FFF3D6 50%, transparent 78%); }
-.wt-flanc.g { left: calc(-1 * var(--w) / 2); --pente: -16deg; }
-.wt-flanc.d { right: calc(-1 * var(--w) / 2); --pente: 16deg; }
-@keyframes wtJaillir {
-  0% { transform: rotate(var(--pente)) scaleY(0); opacity: 0; }
-  18% { transform: rotate(var(--pente)) scaleY(1.25) skewX(-3deg); opacity: 1; }
-  38% { transform: rotate(calc(var(--pente) * 1.3)) scaleY(.9) skewX(3deg); }
-  58% { transform: rotate(var(--pente)) scaleY(1.08) skewX(-2deg); opacity: 1; }
-  100% { transform: rotate(calc(var(--pente) * .7)) scaleY(0); opacity: 0; }
-}
 .carte3d { position: relative; }
 
-.wt-choc {
-  position: fixed; border: 3px solid var(--f-ambre); border-radius: 50%; z-index: 6; pointer-events: none;
-  width: 20px; height: 20px;
-  animation: wtChoquer .6s cubic-bezier(.2,.7,.3,1) forwards;
-}
-@keyframes wtChoquer { from { transform: scale(.3); opacity: 1; } to { transform: scale(14); opacity: 0; border-width: 1px; } }
-#wt-flash { position: fixed; inset: 0; z-index: 5; pointer-events: none; opacity: 0;
-  background: radial-gradient(120% 90% at 50% 100%, rgba(232,137,28,.32) 0%, transparent 60%); }
-#wt-flash.va { animation: wtFlasher .5s ease-out; }
-@keyframes wtFlasher { 0% { opacity: 1; } 100% { opacity: 0; } }
 
 #wt-braises { position: fixed; inset: 0; pointer-events: none; z-index: 5; overflow: hidden; }
-.wt-etincelle {
-  position: absolute; width: var(--t); height: var(--t); border-radius: 50%;
-  background: var(--f-orange); box-shadow: 0 0 4px rgba(217,83,30,.6);
-  animation: wtMonterEt var(--dur) ease-out forwards;
-}
-@keyframes wtMonterEt {
-  0% { transform: translate(0,0) scale(1); opacity: 1; }
-  70% { opacity: .85; }
-  100% { transform: translate(var(--dx), calc(-1 * var(--dy))) scale(.2); opacity: 0; }
-}
 .wt-flocon {
   position: absolute; top: -20px;
   width: var(--t); height: calc(var(--t) * 1.3); border-radius: 40% 60% 50% 50%;
@@ -451,19 +358,33 @@ body[data-heat="5"] .wt-flanc::after { background: radial-gradient(50% 60% at 50
   animation: wtFumer 1.4s ease-out forwards;
 }
 @keyframes wtFumer { 0% { transform: translate(0,0) scale(.6); opacity: .9; } 100% { transform: translate(var(--dx), -110px) scale(2); opacity: 0; } }
+
+/* ═ plein écran, jamais de défilement de page ═ */
+#v-accueil, #v-recap, #v-listes { flex: 1; flex-direction: column; min-height: 0; }
+#v-reglages { flex: 1; flex-direction: column; min-height: 0; overflow-y: auto; }
+#l-items { flex: 1; min-height: 0; overflow-y: auto; }
+.duo { flex: none; }
+.modes { margin-top: auto; padding-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.modes .b { margin: 0; min-height: 62px; }
+#v-recap > div:last-child { margin-top: auto; }
+#v-train .b.fin { position: relative; z-index: 3; background: rgba(255,255,255,.78); border-radius: 10px; }
+body.nuit #v-train .b.fin { background: rgba(19,30,46,.78); }
+
+/* ═ flancs SVG du bouton juste + balayage doré ═ */
+.wt-fx { position: absolute; pointer-events: none; z-index: 3; overflow: visible; }
+.wt-jail { transform-box: fill-box; transform-origin: 50% 100%; animation: wtJaillir calc(.72s * var(--tempo)) ease-out var(--del, 0s) both; }
+@keyframes wtJaillir { 0% { transform: scaleY(0); opacity: 0; } 22% { transform: scaleY(1.2) skewX(-3deg); opacity: 1; } 55% { transform: scaleY(.92) skewX(3deg); } 100% { transform: scaleY(0); opacity: 0; } }
+.wt-shine { position: absolute; top: 0; bottom: 0; left: -60%; width: 45%; pointer-events: none;
+  background: linear-gradient(105deg, transparent, rgba(245,193,63,.55), transparent);
+  animation: wtBriller calc(.5s * var(--tempo)) ease-out forwards; }
+@keyframes wtBriller { to { transform: translateX(360%); } }
 </style>
 </head>
 <body>
 <div id="wt-lueur"></div>
 <div id="wt-feu"></div>
 <div id="wt-sol"></div>
-<div class="wt-frange g" id="wt-frange-g"></div>
-<div class="wt-frange d" id="wt-frange-d"></div>
-<div class="wt-chaleur" style="left:18%; --del:0s"></div>
-<div class="wt-chaleur" style="left:52%; --del:-1.1s"></div>
-<div class="wt-chaleur" style="left:80%; --del:-2s"></div>
 <div id="wt-braises"></div>
-<div id="wt-flash"></div>
 <div class="app">
 
 <div id="v-qui" class="pad cache" style="flex:1;flex-direction:column;justify-content:center">
@@ -490,15 +411,13 @@ body[data-heat="5"] .wt-flanc::after { background: radial-gradient(50% 60% at 50
   <div class="crans" id="a-crans"></div>
   <div class="sous-crans"><span id="a-compte"></span><span class="d" id="a-points"></span></div>
   <div class="duo" id="a-duo" onclick="rafraichirDuo()"></div>
-  <div style="margin-top:22px">
-    <button class="b plein" onclick="demarrer('mix')">S'entraîner</button>
-    <div class="puces">
-      <button class="puce" onclick="demarrer('flash')">Cartes</button>
-      <button class="puce" onclick="demarrer('qcm')">QCM</button>
-      <button class="puce" onclick="demarrer('vf')">Vrai ou faux</button>
-    </div>
-    <button class="b fin" onclick="voir('listes')">Changer de liste</button>
+  <div class="modes">
+    <button class="b" onclick="demarrer('flash')">Cartes</button>
+    <button class="b" onclick="demarrer('qcm')">QCM</button>
+    <button class="b" onclick="demarrer('vf')">Vrai ou faux</button>
+    <button class="b plein" onclick="demarrer('mix')">Au hasard</button>
   </div>
+  <button class="b fin" onclick="voir('listes')">Changer de liste</button>
 </div>
 
 <div id="v-listes" class="pad bas cache">
@@ -581,7 +500,6 @@ body[data-heat="5"] .wt-flanc::after { background: radial-gradient(50% 60% at 50
       <div><b id="r-a">0</b><span>acquis</span></div>
     </div>
   </div>
-  <div class="mur" id="r-mur"></div>
   <div id="r-duo" class="duo"></div>
   <div style="margin-top:20px">
     <button class="b plein" onclick="demarrer('mix')">Encore une série</button>
@@ -742,7 +660,7 @@ function voir(n) {
   });
   var c = document.getElementById('v-' + n);
   c.classList.remove('cache');
-  if (n === 'train' || n === 'qui') c.style.display = 'flex';
+  c.style.display = 'flex';
   if (n === 'accueil') rendreAccueil();
   if (n === 'listes') rendreListes();
   if (n === 'reglages') rendreReglages();
@@ -1047,20 +965,11 @@ function finSession() {
   else msg = 'Rien de nouveau au compteur, mais les scores ont bougé.';
   if (!dispo().libres.length && a < 40) msg += ' Tous les mots ont atteint leur maximum du jour.';
   document.getElementById('r-msg').textContent = msg;
-  mur('r-mur');
   rendreDuo('r-duo');
   session = null; cur = null;
   wtStreak = 0; wtPoserChaleur(true);
   voir('recap');
   pousser().then(function () { return tirer(); }).then(function () { rendreDuo('r-duo'); }).catch(function () {});
-}
-function mur(hote) {
-  var s = '';
-  liste.mots.forEach(function (m, i) {
-    var p = prog(liste.id, m);
-    s += '<div class="carreau' + (p.s >= CIBLE ? ' fini' : '') + '" style="animation-delay:' + (i * 14) + 'ms"><i style="height:' + Math.round(p.s / CIBLE * 100) + '%"></i></div>';
-  });
-  document.getElementById(hote).innerHTML = s;
 }
 
 function rendreReglages() {
@@ -1129,7 +1038,7 @@ window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault()
 
 /* ═══════════ Série enflammée ═══════════ */
 var wtStreak = 0, wtPalierCourant = 0, wtTimerFlocons = null;
-var WT_H_PALIER = [0, 22, 48, 86, 134, 168];
+var WT_K = [0, .35, .55, .8, 1, 1.15];
 var WT_DELAI_QCM = [650, 620, 580, 540, 500, 460];
 
 /* 0-2 rien | 3-4 allumage | 5-7 flammèches | 8-10 brasier | 11-14 fournaise | 15+ incandescence */
@@ -1141,27 +1050,24 @@ function wtPalier(s) {
   if (s >= 3) return 1;
   return 0;
 }
+var WT_FEU_PATHS =
+  '<path fill="var(--f-brique)" d="M30 4 C40 20 52 32 52 52 C52 68 42 78 30 78 C18 78 8 68 8 52 C8 38 16 30 20 22 C24 30 28 32 30 26 C31 20 29 12 30 4 Z"/>' +
+  '<path fill="var(--f-orange)" d="M30 20 C37 30 45 38 45 53 C45 65 38 73 30 73 C22 73 15 65 15 53 C15 44 20 39 23 33 C26 39 30 40 31 34 C32 29 29 25 30 20 Z"/>' +
+  '<path fill="var(--f-jaune)" d="M30 38 C34 44 38 48 38 57 C38 65 34 69 30 69 C26 69 22 65 22 57 C22 51 25 48 27 44 C28 48 31 48 30 38 Z"/>' +
+  '<path fill="#FDF0CB" d="M30 50 C32 54 34 56 34 60 C34 64 32 66 30 66 C28 66 26 64 26 60 C26 57 28 55 30 50 Z"/>';
 function wtConstruireFeu() {
   var h = document.getElementById('wt-feu'); h.innerHTML = '';
-  var rangs = [
-    { n: 5, cls: 'r1', w: [70, 110], part: [.8, 1], dur: [.55, .75] },
-    { n: 4, cls: 'r2', w: [50, 80], part: [.58, .78], dur: [.45, .6] },
-    { n: 3, cls: 'r3', w: [34, 52], part: [.4, .55], dur: [.35, .5] }
-  ];
-  rangs.forEach(function (rg) {
-    for (var i = 0; i < rg.n; i++) {
-      var d = document.createElement('div');
-      d.className = 'wt-langue ' + rg.cls;
-      var w = rg.w[0] + Math.random() * (rg.w[1] - rg.w[0]);
-      var x = ((i + .5) / rg.n) * 100 + (Math.random() - .5) * 10;
-      d.style.left = 'calc(' + x.toFixed(1) + '% - ' + (w / 2).toFixed(0) + 'px)';
-      d.style.setProperty('--w', w.toFixed(0) + 'px');
-      d.dataset.part = (rg.part[0] + Math.random() * (rg.part[1] - rg.part[0])).toFixed(2);
-      d.style.setProperty('--h', '0px');
-      d.style.setProperty('--dur', (rg.dur[0] + Math.random() * (rg.dur[1] - rg.dur[0])).toFixed(2) + 's');
-      d.style.setProperty('--del', (-Math.random()).toFixed(2) + 's');
-      h.appendChild(d);
-    }
+  [{ x: 4, w: 58 }, { x: 22, w: 84 }, { x: 42, w: 104 }, { x: 64, w: 78 }, { x: 82, w: 54 }].forEach(function (pz) {
+    var d = document.createElement('div');
+    d.className = 'wtf';
+    d.style.left = pz.x + '%';
+    d.style.setProperty('--w', pz.w + 'px');
+    d.style.setProperty('--sx', (0.92 + Math.random() * .16).toFixed(2));
+    d.style.setProperty('--dur', (.45 + Math.random() * .3).toFixed(2) + 's');
+    d.style.setProperty('--del', (-Math.random()).toFixed(2) + 's');
+    d.dataset.base = (.75 + Math.random() * .35).toFixed(2);
+    d.innerHTML = '<svg viewBox="0 0 60 80" preserveAspectRatio="xMidYMax meet"><g class="taille"><g class="vac">' + WT_FEU_PATHS + '</g></g></svg>';
+    h.appendChild(d);
   });
   var c = document.getElementById('wt-couronne');
   for (var j = 0; j < 5; j++) {
@@ -1170,31 +1076,13 @@ function wtConstruireFeu() {
     f.style.setProperty('--del', (-Math.random() * .5).toFixed(2) + 's');
     c.appendChild(f);
   }
-  ['wt-frange-g', 'wt-frange-d'].forEach(function (id) {
-    var fr = document.getElementById(id);
-    for (var k = 0; k < 6; k++) {
-      var t = document.createElement('i');
-      t.style.bottom = (k * 11) + '%';
-      t.style.setProperty('--h', (26 + Math.random() * 26).toFixed(0) + 'px');
-      t.style.setProperty('--dur', (.4 + Math.random() * .3).toFixed(2) + 's');
-      t.style.setProperty('--del', (-Math.random()).toFixed(2) + 's');
-      fr.appendChild(t);
-    }
-  });
-}
-function wtCarteActive() {
-  var q = document.querySelector('#t-qcm .enonce');
-  if (q && !document.getElementById('t-qcm').classList.contains('cache')) return q;
-  var v = document.querySelector('#t-vf .enonce');
-  if (v && !document.getElementById('t-vf').classList.contains('cache')) return v;
-  return document.getElementById('t-carte');
 }
 function wtPoserChaleur(silencieux) {
   var p = wtPalier(wtStreak), avant = wtPalierCourant;
   wtPalierCourant = p;
   document.body.dataset.heat = p;
-  document.querySelectorAll('#wt-feu .wt-langue').forEach(function (d) {
-    d.style.setProperty('--h', Math.round(WT_H_PALIER[p] * parseFloat(d.dataset.part) + (p ? 12 : 0)) + 'px');
+  document.querySelectorAll('#wt-feu .wtf').forEach(function (d) {
+    d.style.setProperty('--sy', (WT_K[p] * parseFloat(d.dataset.base)).toFixed(2));
   });
   wtReglerFlocons(p);
   var el = document.getElementById('wt-serie');
@@ -1208,8 +1096,6 @@ function wtPoserChaleur(silencieux) {
     el.classList.remove('eteinte');
     el.classList.add('visible', 'allumage');
     setTimeout(function () { el.classList.remove('allumage'); }, 700);
-    var r = el.getBoundingClientRect();
-    wtSalve(6, r.left + r.width / 2, r.top + r.height / 2);
   } else if (p >= 1) {
     el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
     setTimeout(function () { el.classList.remove('pop'); }, 300);
@@ -1222,22 +1108,6 @@ function wtPoserChaleur(silencieux) {
 function wtBoum(p) {
   var feu = document.getElementById('wt-feu');
   feu.classList.remove('boum'); void feu.offsetWidth; feu.classList.add('boum');
-  var carte = wtCarteActive();
-  if (carte) {
-    var r = carte.getBoundingClientRect();
-    var c = document.createElement('div');
-    c.className = 'wt-choc';
-    c.style.left = (r.left + r.width / 2 - 10) + 'px';
-    c.style.top = (r.top + r.height / 2 - 10) + 'px';
-    document.body.appendChild(c);
-    setTimeout(function () { c.remove(); }, 650);
-  }
-  if (p >= 3) {
-    var fl = document.getElementById('wt-flash');
-    fl.classList.remove('va'); void fl.offsetWidth; fl.classList.add('va');
-  }
-  var a = document.querySelector('.app');
-  a.classList.remove('sursature'); void a.offsetWidth; a.classList.add('sursature');
   wtSecouer(p >= 5 ? 3 : (p >= 3 ? 2 : 1));
 }
 function wtSecouer(n) {
@@ -1259,58 +1129,46 @@ function wtReglerFlocons(p) {
     d.style.setProperty('--dur', (2.8 + Math.random() * 2).toFixed(2) + 's');
     b.appendChild(d);
     setTimeout(function () { d.remove(); }, 5200);
-  }, 300);
+  }, 550);
 }
-function wtEtincelle(x, y) {
-  var b = document.getElementById('wt-braises');
-  var d = document.createElement('div');
-  d.className = 'wt-etincelle';
-  d.style.left = x + 'px'; d.style.top = y + 'px';
-  d.style.setProperty('--t', (2.5 + Math.random() * 2.5).toFixed(1) + 'px');
-  d.style.setProperty('--dx', ((Math.random() - .5) * 80).toFixed(0) + 'px');
-  d.style.setProperty('--dy', (55 + Math.random() * 85).toFixed(0) + 'px');
-  d.style.setProperty('--dur', (.6 + Math.random() * .7).toFixed(2) + 's');
-  b.appendChild(d);
-  setTimeout(function () { d.remove(); }, 1500);
+var WT_FL1 = 'M0 -22 C5 -14 8 -9 8 -3 C8 2 4 5 0 5 C-4 5 -8 2 -8 -3 C-8 -8 -4 -12 0 -22 Z';
+var WT_FL2 = 'M0 -12 C2.5 -8 4 -5 4 -2 C4 1 2 2.5 0 2.5 C-2 2.5 -4 1 -4 -2 C-4 -5 -2.5 -8 0 -12 Z';
+function wtFlammeche(x, y, s, rot, del) {
+  return '<g transform="translate(' + x + ',' + y + ') rotate(' + rot + ') scale(' + s.toFixed(2) + ')"><g class="wt-jail" style="--del:' + del + 's">' +
+    '<path fill="var(--f-orange)" d="' + WT_FL1 + '"/><path fill="var(--f-jaune)" d="' + WT_FL2 + '"/></g></g>';
 }
-function wtSalve(n, x, y) {
-  for (var i = 0; i < n; i++) (function (k) {
-    setTimeout(function () { wtEtincelle(x + (Math.random() - .5) * 46, y + (Math.random() - .5) * 14); }, k * 28);
-  })(i);
-}
-function wtMeche(b) {
-  var m = document.createElement('span');
-  m.className = 'wt-meche';
-  b.appendChild(m);
-  setTimeout(function () { m.remove(); b.classList.add('roussi'); }, 470);
-}
+/* flammes latérales : 1 seul SVG inséré, 2 à 4 flammèches selon le palier */
 function wtFlancs(b, p) {
+  var parCote = [0, 1, 1, 2, 2, 2][p];
+  var ech = [0, .9, 1.1, 1.2, 1.4, 1.6][p];
+  if (!parCote) return;
   var r = b.getBoundingClientRect();
-  var parCote = [0, 2, 3, 4, 5, 6][p];
-  var base = [0, 18, 24, 32, 42, 52][p];
-  ['g', 'd'].forEach(function (cote) {
-    for (var i = 0; i < parCote; i++) {
-      var f = document.createElement('span');
-      f.className = 'wt-flanc ' + cote;
-      var hpx = base + Math.random() * base * .7;
-      f.style.setProperty('--w', (hpx * .55).toFixed(0) + 'px');
-      f.style.setProperty('--h', hpx.toFixed(0) + 'px');
-      f.style.bottom = (4 + (i / parCote) * (r.height - 12)) + 'px';
-      f.style.setProperty('--dur', (.55 + Math.random() * .3).toFixed(2) + 's');
-      f.style.setProperty('--del', (i * .045).toFixed(2) + 's');
-      b.appendChild(f);
-      (function (e) { setTimeout(function () { e.remove(); }, 1400); })(f);
-    }
-  });
+  var w = Math.round(r.width), hh = Math.round(r.height);
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('class', 'wt-fx');
+  svg.setAttribute('width', w + 72); svg.setAttribute('height', hh + 34);
+  svg.setAttribute('viewBox', '0 0 ' + (w + 72) + ' ' + (hh + 34));
+  svg.style.left = '-36px'; svg.style.top = '-30px';
+  var s = '';
+  for (var i = 0; i < parCote; i++) {
+    var y = hh + 26 - i * (hh * .55);
+    s += wtFlammeche(30, y, ech * (1 - i * .2), -16, (i * .06).toFixed(2));
+    s += wtFlammeche(w + 42, y, ech * (1 - i * .2), 16, (i * .06 + .03).toFixed(2));
+  }
+  svg.innerHTML = s;
+  b.appendChild(svg);
+  setTimeout(function () { svg.remove(); }, 1200);
 }
-function wtFlashImpact(b) {
-  var hote = b.querySelector('.peau') || b;
-  var f = document.createElement('span');
-  f.className = 'wt-flashb';
-  hote.appendChild(f);
-  setTimeout(function () { f.remove(); }, 300);
+/* balayage doré à travers le bouton (dans la peau, donc clippé) */
+function wtShine(b) {
+  var hote = b.querySelector('.peau');
+  if (!hote) return;
+  var e = document.createElement('span');
+  e.className = 'wt-shine';
+  hote.appendChild(e);
+  setTimeout(function () { e.remove(); }, 700);
 }
-/* impact complet sur l'élément qui vient d'être réussi (bouton QCM ou carte) */
+/* impact sur l'élément réussi : compression, punch, balayage, flancs */
 function wtImpact(b, p) {
   if (p < 1 || !b) return;
   b.style.transform = 'scale(.955)';
@@ -1318,17 +1176,9 @@ function wtImpact(b, p) {
     b.style.transform = '';
     b.classList.remove('punch1', 'punch2', 'punch3', 'punch4'); void b.offsetWidth;
     b.classList.add(p >= 5 ? 'punch4' : (p >= 3 ? 'punch3' : (p >= 2 ? 'punch2' : 'punch1')));
-    wtFlashImpact(b);
-    wtMeche(b);
+    wtShine(b);
     wtFlancs(b, p);
-    var carte = wtCarteActive();
-    if (carte && carte !== b) {
-      carte.classList.remove('kick'); void carte.offsetWidth; carte.classList.add('kick');
-      setTimeout(function () { carte.classList.remove('kick'); }, 400);
-    }
-    var rc = b.getBoundingClientRect();
-    wtSalve(3 + p * 3, rc.left + rc.width / 2, rc.top);
-    if (p >= 5) wtSecouer(2);
+    b.classList.add('roussi');
   }, p >= 3 ? 70 : 40);
 }
 /* extinction : la goutte d'encre Delft tombe sur le compteur */
