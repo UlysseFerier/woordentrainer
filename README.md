@@ -1,37 +1,37 @@
 # Woordentrainer
 
-Entraîneur de vocabulaire néerlandais / français, installable sur Android comme une app.
+Entraîneur de vocabulaire néerlandais / français pour deux personnes, installable sur Android.
 
-## Mise en ligne (une seule fois)
+## Ce qui est dedans
 
-1. Sur GitHub, `Create repository`. Nom : `woordentrainer`. Visibilité **public** (obligatoire pour que Pages soit gratuit). Ne coche rien d'autre.
-2. Sur la page du dépôt vide : `uploading an existing file`. Glisse **tout le contenu de ce dossier** (`index.html`, `manifest.webmanifest`, `sw.js`, les dossiers `icons/`, `data/`, `outils/`). Attention : glisse les fichiers et dossiers eux-mêmes, pas le dossier `woordentrainer` qui les contient, sinon l'app se retrouvera un cran trop bas dans l'arborescence.
-3. `Commit changes`.
-4. `Settings` → `Pages` → Source : `Deploy from a branch`, branche `main`, dossier `/ (root)` → `Save`.
-5. Attends une minute, recharge la page `Pages` : l'URL apparaît, du type `https://TONPSEUDO.github.io/woordentrainer/`.
+Dix listes de 40 mots, aucun doublon d'une liste à l'autre. Un score d'apprentissage de 0 à 10 par mot. Une barre de 40 crans qui sert à la fois de progression et de carte de la liste. Un partage de progression entre les deux téléphones via Supabase, entièrement facultatif.
 
-## Installation sur le téléphone
+## Mettre à jour le site
 
-Ouvrir l'URL dans **Chrome** (pas dans le navigateur intégré de Messenger). Un bandeau « Installer » apparaît dans l'app ; sinon, menu ⋮ → `Installer l'application` ou `Ajouter à l'écran d'accueil`. L'icône arrive dans le tiroir d'apps. Ensuite, tout fonctionne hors ligne.
-
-## Mettre à jour
-
-Modifier un fichier sur GitHub (ou en réuploader un), attendre la reconstruction de Pages, et au lancement suivant l'app affiche « Une nouvelle version est prête ».
-
-Pour le code (`index.html`, `sw.js`, CSS), il faut **aussi changer la ligne `VERSION` en haut de `sw.js`** — sinon les téléphones gardent l'ancienne version en cache. Pour les listes de vocabulaire dans `data/`, rien à faire : elles sont rechargées depuis le réseau à chaque ouverture.
+Modifier un fichier sur GitHub, attendre la reconstruction de Pages. Pour tout changement de code, **incrémenter la ligne `VERSION` en haut de `sw.js`**, sinon les téléphones gardent l'ancienne version en cache. Les fichiers de `data/` sont rechargés depuis le réseau à chaque ouverture, aucune manipulation nécessaire.
 
 La progression est stockée sur chaque téléphone et n'est jamais écrasée par une mise à jour.
 
+## Activer le partage entre les deux téléphones
+
+1. Créer un compte sur supabase.com, puis un projet (région Frankfurt).
+2. Onglet `SQL Editor`, coller le contenu de `outils/supabase.sql`, `Run`.
+3. Onglet `Settings` → `API`, copier `Project URL` et la clé `anon public`.
+4. Les coller dans `config.js`, à la place des deux chaînes vides, et renvoyer le fichier sur GitHub.
+5. Dans l'app, réglages → identité : choisir Ulysse ou Jasmien sur chaque téléphone.
+
+Tant que `config.js` reste vide, l'app fonctionne normalement, simplement sans les deux barres comparées.
+
+Le projet Supabase gratuit se met en pause après sept jours sans aucune activité. Un clic dans le tableau de bord le relance.
+
 ## Ajouter une liste
 
-1. Ouvre `outils/xlsx-vers-json.html` sur l'ordinateur, dépose un xlsx ou colle des lignes `het huis = la maison`, télécharge le JSON.
-2. Dépose ce fichier dans `data/` sur GitHub.
-3. Ajoute-le à `data/index.json` :
+Ouvrir `outils/xlsx-vers-json.html` sur l'ordinateur, déposer un xlsx ou coller des lignes `het huis = la maison`, télécharger le JSON, le déposer dans `data/` et l'ajouter à `data/index.json` :
 
 ```json
 { "semaines": [
-  { "id": "semaine-01", "fichier": "data/semaine-01.json" },
-  { "id": "semaine-02", "fichier": "data/semaine-02.json" }
+  { "id": "semaine-01", "fichier": "data/semaine-01.json", "titre": "Liste 1", "theme": "La maison et le quotidien" },
+  { "id": "semaine-11", "fichier": "data/semaine-11.json", "titre": "Liste 11", "theme": "Le vocabulaire du chantier" }
 ] }
 ```
 
@@ -39,7 +39,7 @@ L'identifiant doit rester stable : c'est la clé sous laquelle la progression es
 
 ## Le score d'apprentissage
 
-Chaque mot a un score de 0 à 10, et devient « acquis » à 10.
+Chaque mot va de 0 à 10 et devient acquis à 10.
 
 | Exercice | Réussite | Erreur |
 |---|---|---|
@@ -47,6 +47,6 @@ Chaque mot a un score de 0 à 10, et devient « acquis » à 10.
 | Carte | +2 | −2 |
 | QCM | +3 | −3 |
 
-Le score ne descend jamais sous 0. Un mot ne peut gagner que 5 points par jour (réglable dans l'app) : une liste de 40 mots demande donc au minimum deux jours, et en pratique quatre ou cinq sessions courtes.
+Le score ne descend jamais sous 0. Un mot ne peut gagner que 5 points par jour, réglable dans l'app : une liste demande donc au minimum deux jours. En pratique, à 85 % de bonnes réponses, il faut environ 270 questions pour terminer une liste de 40 mots, soit deux séries de 25 par jour pendant une semaine.
 
-En mode `Mélange`, l'app choisit l'exercice selon le score du mot : carte tant qu'il est neuf, puis QCM à mesure qu'il monte. Elle sert en priorité les mots au score le plus bas.
+En mode mélange, l'app choisit l'exercice selon le score du mot : carte tant qu'il est neuf, QCM à mesure qu'il monte. Elle sert toujours en priorité les mots au score le plus bas.

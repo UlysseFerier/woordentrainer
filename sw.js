@@ -1,7 +1,7 @@
 /* Woordentrainer — service worker
    Change VERSION à chaque mise à jour du code : ça force le rafraîchissement
    sur les téléphones au lancement suivant. */
-const VERSION = 'wt-2026-08-24-a';
+const VERSION = 'wt-2026-08-24-b';
 const SHELL = VERSION + '-shell';
 const DATA = VERSION + '-data';
 
@@ -9,6 +9,7 @@ const SHELL_FILES = [
   './',
   './index.html',
   './manifest.webmanifest',
+  './config.js',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png'
