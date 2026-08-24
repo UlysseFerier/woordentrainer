@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Woordentrainer</title>
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#F7F5EF">
+<meta name="theme-color" content="#F5F8FC">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,19 +14,23 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 :root {
-  --paper:#F7F5EF; --card:#FFFFFF; --ink:#16233F; --mute:#7B7666; --faint:#9A9482;
-  --line:#DFDCD2; --acc:#2A4B9B; --acc-on:#FFFFFF; --acc-soft:#E9EEF8;
-  --warm:#C08A2E; --empty:#E4E2DA; --bad:#B4573C; --bad-soft:#F6E7E3;
+  --paper:#FFFFFF; --page:#F5F8FC; --card:#FFFFFF;
+  --ink:#0B2545; --mute:#5B6B80; --faint:#93A2B4;
+  --line:#DDE5EF; --empty:#E9EFF6;
+  --b1:#DCE8F7; --b2:#7FA8DC; --b3:#3D6FB8; --acc:#12408C; --acc-on:#FFFFFF; --acc-soft:#EAF1FB;
+  --bad:#C0392B; --bad-soft:#FBEBE9; --bad-line:#E8B4AE;
   --serif:'Fraunces',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
 }
 body.nuit {
-  --paper:#12161F; --card:#1A202B; --ink:#ECEFF5; --mute:#8A93A6; --faint:#6C7488;
-  --line:#252D3B; --acc:#E0A33E; --acc-on:#12161F; --acc-soft:#241F16;
-  --warm:#7FA7D8; --empty:#232B38; --bad:#D9705A; --bad-soft:#2A1E1E;
+  --paper:#0C1420; --page:#0C1420; --card:#131E2E;
+  --ink:#E8EFF8; --mute:#8DA0B8; --faint:#65788F;
+  --line:#1E2C40; --empty:#182437;
+  --b1:#1B2C45; --b2:#3D6FB8; --b3:#5D95DD; --acc:#7FB3F0; --acc-on:#0C1420; --acc-soft:#152238;
+  --bad:#E0705F; --bad-soft:#2A1714; --bad-line:#5A2A22;
 }
-html { background: var(--paper); }
+html { background: var(--page); }
 body {
-  font-family: var(--sans); background: var(--paper); color: var(--ink);
+  font-family: var(--sans); background: var(--page); color: var(--ink);
   min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
   padding: max(12px, env(safe-area-inset-top)) 0 0;
   transition: background .25s, color .25s; overscroll-behavior-y: contain;
@@ -44,11 +48,15 @@ body {
 .ico:active { background: var(--empty); }
 
 .crans { display: flex; gap: 1.5px; height: 34px; align-items: flex-end; margin-top: 16px; }
-.cran { flex: 1; height: 100%; background: var(--empty); border-radius: 2px; display: flex; align-items: flex-end; overflow: hidden; }
-.cran > i { display: block; width: 100%; height: 0; background: var(--warm); transition: height .4s ease, background .3s ease; }
+.cran { flex: 1; height: 100%; background: var(--empty); border-radius: 2px; display: flex; align-items: flex-end; overflow: hidden; position: relative; }
+.cran > i { display: block; width: 100%; height: 0; background: var(--b2); transition: height .55s cubic-bezier(.3,1.3,.5,1), background .35s ease; }
+.cran.demi > i { background: var(--b3); }
 .cran.fini > i { background: var(--acc); }
-.cran.eclat { animation: eclat .5s ease; }
-@keyframes eclat { 0%{transform:scaleY(1)} 40%{transform:scaleY(1.3)} 100%{transform:scaleY(1)} }
+.cran > em { position: absolute; left: 0; right: 0; height: 2px; background: var(--acc); opacity: 0; border-radius: 2px; }
+.cran > em.vague { animation: vague .65s ease-out; }
+@keyframes vague { 0%{opacity:.9;transform:translateY(0)} 55%{opacity:.6;transform:translateY(-8px)} 100%{opacity:0;transform:translateY(-2px)} }
+.cran.eclat { animation: eclat .6s cubic-bezier(.3,1.4,.5,1); }
+@keyframes eclat { 0%{transform:scaleY(1)} 45%{transform:scaleY(1.35)} 100%{transform:scaleY(1)} }
 .sous-crans { display: flex; justify-content: space-between; margin-top: 7px; font-size: .74rem; }
 .sous-crans .d { color: var(--mute); }
 
@@ -66,8 +74,10 @@ body {
 .b.plein { background: var(--acc); color: var(--acc-on); border-color: var(--acc); }
 .b.fin { border: none; background: transparent; color: var(--mute); font-weight: 400; padding: 12px; min-height: 0; }
 .b.oui { color: var(--acc); border-color: var(--acc); }
-.b.non { color: var(--bad); border-color: var(--bad); }
+.b.non { color: var(--bad); border-color: var(--bad-line); }
 .b + .b { margin-top: 8px; }
+.paire-btn { display: flex; gap: 8px; }
+.paire-btn .b + .b { margin-top: 0; }
 .puces { display: flex; gap: 6px; margin-top: 10px; }
 .puce { flex: 1; padding: 11px 4px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--mute); font-family: var(--sans); font-size: .78rem; cursor: pointer; }
 
@@ -89,12 +99,16 @@ body {
 .flotte.va { animation: monte .9s ease forwards; }
 @keyframes monte { 0%{opacity:0;transform:translateY(8px)} 25%{opacity:1} 100%{opacity:0;transform:translateY(-18px)} }
 .opts { display: grid; gap: 8px; margin-top: 12px; }
-.opt { padding: 16px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-family: var(--sans); font-size: .95rem; cursor: pointer; min-height: 54px; }
-.opt.juste { background: var(--acc); color: var(--acc-on); border-color: var(--acc); }
-.opt.faux { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+.opt { position: relative; overflow: hidden; padding: 16px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-family: var(--sans); font-size: .95rem; cursor: pointer; min-height: 54px; transition: color .25s ease .18s; }
+.onde { position: absolute; border-radius: 50%; background: var(--acc); transform: scale(0); pointer-events: none; }
+.onde.rouge { background: var(--bad); }
+.onde.va { animation: onde .55s cubic-bezier(.2,.7,.3,1) forwards; }
+@keyframes onde { to { transform: scale(2.8); } }
+.opt.juste { color: var(--acc-on); border-color: var(--acc); }
+.opt.faux { color: #fff; border-color: var(--bad); }
 .opt.pale { opacity: .35; }
-.opt.attire { animation: attire .8s ease infinite alternate; }
-@keyframes attire { from { border-color: var(--line); } to { border-color: var(--acc); } }
+.opt.attire { animation: attire 1s ease infinite alternate; }
+@keyframes attire { from { border-color: var(--line); background: var(--card); } to { border-color: var(--acc); background: var(--acc-soft); } }
 .carte3d { perspective: 1200px; height: 180px; cursor: pointer; }
 .carte3d > div { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .45s cubic-bezier(.2,.8,.3,1); }
 .carte3d.tourne > div { transform: rotateY(180deg); }
@@ -126,7 +140,7 @@ select, textarea { background: var(--card); color: var(--ink); border: 1px solid
 textarea { width: 100%; min-height: 70px; font-size: .68rem; margin-top: 8px; }
 .titre-section { font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
 .cache { display: none !important; }
-.sticky { position: sticky; bottom: 0; background: var(--paper); padding-top: 10px; }
+.sticky { position: sticky; bottom: 0; background: var(--page); padding-top: 10px; }
 </style>
 </head>
 <body>
@@ -198,7 +212,6 @@ textarea { width: 100%; min-height: 70px; font-size: .68rem; margin-top: 8px; }
     <div id="t-qcm" class="cache">
       <div class="enonce">
         <div class="e-score" id="q-score"></div>
-        <div class="flotte" id="q-flotte"></div>
         <div class="e-lang" id="q-lang">nederlands</div>
         <div class="e-mot" id="q-mot">—</div>
       </div>
@@ -207,7 +220,6 @@ textarea { width: 100%; min-height: 70px; font-size: .68rem; margin-top: 8px; }
     <div id="t-vf" class="cache">
       <div class="enonce">
         <div class="e-score" id="v-score"></div>
-        <div class="flotte" id="v-flotte"></div>
         <div class="e-lang">cette traduction est-elle correcte</div>
         <div class="e-mot" id="v-nl">—</div>
         <div class="e-mot" id="v-fr" style="font-size:1.3rem;color:var(--mute);margin-top:6px">—</div>
@@ -216,13 +228,16 @@ textarea { width: 100%; min-height: 70px; font-size: .68rem; margin-top: 8px; }
     <div class="retour" id="t-retour"></div>
   </div>
   <div class="sticky bas">
-    <div id="t-actions-flash" class="cache" style="gap:8px">
-      <button class="b non" onclick="repFlash(false)">Je ne savais pas</button>
-      <button class="b oui" onclick="repFlash(true)">Je savais</button>
+    <div id="t-actions-flash" style="display:none">
+      <button class="b plein" id="t-flip" onclick="retourner()">Retourner la carte</button>
+      <div id="t-juge" class="paire-btn" style="display:none">
+        <button class="b non" onclick="repFlash(false)">Je ne savais pas</button>
+        <button class="b oui" onclick="repFlash(true)">Je savais</button>
+      </div>
     </div>
-    <div id="t-actions-vf" class="cache" style="gap:8px">
-      <button class="b non" onclick="repVF(false)">Faux</button>
-      <button class="b oui" onclick="repVF(true)">Vrai</button>
+    <div id="t-actions-vf" class="paire-btn" style="display:none">
+      <button class="b non" id="v-faux" onclick="repVF(false)">Faux</button>
+      <button class="b oui" id="v-vrai" onclick="repVF(true)">Vrai</button>
     </div>
     <button class="b fin" onclick="finSession()">Terminer</button>
   </div>
@@ -412,10 +427,11 @@ function crans(hote, l) {
   var s = '';
   l.mots.forEach(function (m, i) {
     var p = prog(l.id, m);
-    s += '<span class="cran' + (p.s >= CIBLE ? ' fini' : '') + '" id="' + hote + '-' + i + '"><i style="height:' + Math.round(p.s / CIBLE * 100) + '%"></i></span>';
+    s += '<span class="cran' + classeCran(p.s) + '" id="' + hote + '-' + i + '"><em></em><i style="height:' + Math.round(p.s / CIBLE * 100) + '%"></i></span>';
   });
   document.getElementById(hote).innerHTML = s;
 }
+function classeCran(v) { return v >= CIBLE ? ' fini' : v >= 5 ? ' demi' : ''; }
 function rendreAccueil() {
   if (!liste) return;
   document.getElementById('a-titre').textContent = liste.titre;
@@ -516,6 +532,8 @@ function suite() {
   ['t-flash', 't-qcm', 't-vf'].forEach(function (i) { document.getElementById(i).classList.add('cache'); });
   document.getElementById('t-actions-flash').style.display = 'none';
   document.getElementById('t-actions-vf').style.display = 'none';
+  document.getElementById('t-juge').style.display = 'none';
+  document.getElementById('t-carte').classList.remove('tourne');
   if (!session) return;
   document.getElementById('t-compte').textContent = acquisDe(liste) + ' sur 40 acquis';
   document.getElementById('t-session').textContent = session.n + ' / ' + PAR_SESSION;
@@ -538,14 +556,22 @@ function montrerFlash() {
   document.getElementById('f-lang-b').textContent = nl ? 'français' : 'nederlands';
   document.getElementById('f-mot-b').textContent = nl ? m.fr : m.nl;
   document.getElementById('t-flash').classList.remove('cache');
-  document.getElementById('t-actions-flash').style.display = 'flex';
+  document.getElementById('t-actions-flash').style.display = 'block';
+  document.getElementById('t-flip').style.display = 'block';
+  document.getElementById('t-juge').style.display = 'none';
 }
-function retourner() { document.getElementById('t-carte').classList.toggle('tourne'); }
+function retourner() {
+  var c = document.getElementById('t-carte');
+  c.classList.add('tourne');
+  document.getElementById('t-flip').style.display = 'none';
+  document.getElementById('t-juge').style.display = 'flex';
+}
 function repFlash(su) {
   if (!cur || cur.fait) return; cur.fait = true;
   document.getElementById('t-carte').classList.add('tourne');
+  document.getElementById('t-juge').style.display = 'none';
   appliquer(su, 'flash');
-  setTimeout(suite, su ? 700 : 1300);
+  setTimeout(suite, su ? 950 : 1600);
 }
 function montrerQCM() {
   var m = cur.mot, nl = cur.sens === 'nl-fr';
@@ -559,7 +585,7 @@ function montrerQCM() {
   opts.forEach(function (o) {
     var b = document.createElement('button');
     b.className = 'opt'; b.textContent = o;
-    b.onclick = function () { repQCM(b, o === r, r); };
+    b.onclick = function (e) { onde(b, e, o === r); repQCM(b, o === r, r); };
     c.appendChild(b);
   });
   document.getElementById('t-qcm').classList.remove('cache');
@@ -595,13 +621,17 @@ function montrerVF() {
   document.getElementById('v-score').textContent = prog(liste.id, m).s + ' / ' + CIBLE;
   document.getElementById('t-vf').classList.remove('cache');
   document.getElementById('t-actions-vf').style.display = 'flex';
+  document.getElementById('v-vrai').disabled = false;
+  document.getElementById('v-faux').disabled = false;
 }
 function repVF(r) {
   if (!cur || cur.fait) return; cur.fait = true;
+  document.getElementById('v-vrai').disabled = true;
+  document.getElementById('v-faux').disabled = true;
   var juste = (r === cur.vrai);
   appliquer(juste, 'vf');
   if (!juste) document.getElementById('t-retour').textContent = cur.mot.nl + ' = ' + cur.mot.fr;
-  setTimeout(suite, juste ? 560 : 1500);
+  setTimeout(suite, juste ? 620 : 1700);
 }
 
 function appliquer(juste, mode) {
@@ -615,8 +645,7 @@ function appliquer(juste, mode) {
     } else {
       var g = Math.min(val, Math.max(0, cap - p.gj), CIBLE - p.s);
       p.s += g; p.gj += g; session.gain += g;
-      if (g > 0) flotter(g);
-      else document.getElementById('t-retour').textContent = 'ce mot a atteint son maximum du jour';
+      if (g === 0) document.getElementById('t-retour').textContent = 'ce mot a atteint son maximum du jour';
       if (p.s >= CIBLE) { document.getElementById('t-retour').textContent = 'mot acquis'; vibrer([12, 45, 20]); }
       else vibrer(12);
     }
@@ -624,7 +653,6 @@ function appliquer(juste, mode) {
     p.ko++;
     cur.perte = cur.sansPts ? 0 : Math.min(val, p.s);
     p.s -= cur.perte; session.gain -= cur.perte;
-    if (cur.perte) flotter(-cur.perte);
     vibrer([26, 30, 26]);
   }
   sauver();
@@ -634,20 +662,32 @@ function majCran() {
   var e = document.getElementById('t-crans-' + cur.idx);
   var p = prog(liste.id, cur.mot);
   if (e) {
-    e.querySelector('i').style.height = Math.round(p.s / CIBLE * 100) + '%';
-    if (p.s >= CIBLE && e.className.indexOf('fini') === -1) {
-      e.classList.add('fini', 'eclat');
-      setTimeout(function () { e.classList.remove('eclat'); }, 520);
+    var haut = Math.round(p.s / CIBLE * 100);
+    e.querySelector('i').style.height = haut + '%';
+    var neuf = p.s >= CIBLE && e.className.indexOf('fini') === -1;
+    e.className = 'cran' + classeCran(p.s);
+    var c = e.querySelector('em');
+    if (c) {
+      c.style.bottom = (haut / 100 * 22) + 'px';
+      c.classList.remove('vague'); void c.offsetWidth; c.classList.add('vague');
     }
+    if (neuf) { e.classList.add('eclat'); setTimeout(function () { e.classList.remove('eclat'); }, 620); }
   }
   document.getElementById('t-compte').textContent = acquisDe(liste) + ' sur 40 acquis';
   document.getElementById('t-session').textContent = session.n + ' / ' + PAR_SESSION;
 }
-function flotter(n) {
-  var f = document.getElementById(cur.mode === 'vf' ? 'v-flotte' : 'q-flotte');
-  if (cur.mode === 'flash' || !f) return;
-  f.textContent = (n > 0 ? '+' : '−') + Math.abs(n) + ' point' + (Math.abs(n) > 1 ? 's' : '');
-  f.classList.remove('va'); void f.offsetWidth; f.classList.add('va');
+function onde(bouton, ev, juste) {
+  var r = bouton.getBoundingClientRect();
+  var d = document.createElement('span');
+  d.className = 'onde' + (juste ? '' : ' rouge');
+  var t = Math.max(r.width, r.height);
+  d.style.width = d.style.height = t + 'px';
+  var x = (ev && ev.clientX) ? ev.clientX : r.left + r.width / 2;
+  var y = (ev && ev.clientY) ? ev.clientY : r.top + r.height / 2;
+  d.style.left = (x - r.left - t / 2) + 'px';
+  d.style.top = (y - r.top - t / 2) + 'px';
+  bouton.appendChild(d);
+  requestAnimationFrame(function () { d.classList.add('va'); });
 }
 function vibrer(m) { try { if (navigator.vibrate) navigator.vibrate(m); } catch (e) {} }
 
@@ -700,7 +740,7 @@ function poserTheme() {
   var n = etat.reglages.theme === 'nuit';
   document.body.classList.toggle('nuit', n);
   var m = document.querySelector('meta[name="theme-color"]');
-  if (m) m.setAttribute('content', n ? '#12161F' : '#F7F5EF');
+  if (m) m.setAttribute('content', n ? '#0C1420' : '#F5F8FC');
 }
 function copier() {
   var t = document.getElementById('g-copie');
