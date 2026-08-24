@@ -1,0 +1,167 @@
+{
+ "id": "semaine-10",
+ "titre": "Liste 10",
+ "theme": "La nature et les animaux",
+ "mots": [
+  {
+   "nl": "de natuur",
+   "fr": "la nature"
+  },
+  {
+   "nl": "de boom",
+   "fr": "l'arbre"
+  },
+  {
+   "nl": "het blad",
+   "fr": "la feuille"
+  },
+  {
+   "nl": "de bloem",
+   "fr": "la fleur"
+  },
+  {
+   "nl": "het gras",
+   "fr": "l'herbe"
+  },
+  {
+   "nl": "het bos",
+   "fr": "la forêt"
+  },
+  {
+   "nl": "het veld",
+   "fr": "le champ"
+  },
+  {
+   "nl": "de wei",
+   "fr": "le pré"
+  },
+  {
+   "nl": "de berg",
+   "fr": "la montagne"
+  },
+  {
+   "nl": "de heuvel",
+   "fr": "la colline"
+  },
+  {
+   "nl": "de rivier",
+   "fr": "la rivière"
+  },
+  {
+   "nl": "het meer",
+   "fr": "le lac"
+  },
+  {
+   "nl": "de zee",
+   "fr": "la mer"
+  },
+  {
+   "nl": "het strand",
+   "fr": "la plage"
+  },
+  {
+   "nl": "het zand",
+   "fr": "le sable"
+  },
+  {
+   "nl": "de steen",
+   "fr": "la pierre"
+  },
+  {
+   "nl": "de aarde",
+   "fr": "la terre"
+  },
+  {
+   "nl": "het eiland",
+   "fr": "l'île"
+  },
+  {
+   "nl": "het dier",
+   "fr": "l'animal"
+  },
+  {
+   "nl": "de hond",
+   "fr": "le chien"
+  },
+  {
+   "nl": "de kat",
+   "fr": "le chat"
+  },
+  {
+   "nl": "het paard",
+   "fr": "le cheval"
+  },
+  {
+   "nl": "de koe",
+   "fr": "la vache"
+  },
+  {
+   "nl": "het schaap",
+   "fr": "le mouton"
+  },
+  {
+   "nl": "het varken",
+   "fr": "le cochon"
+  },
+  {
+   "nl": "de kip",
+   "fr": "la poule"
+  },
+  {
+   "nl": "de haan",
+   "fr": "le coq"
+  },
+  {
+   "nl": "de vogel",
+   "fr": "l'oiseau"
+  },
+  {
+   "nl": "de muis",
+   "fr": "la souris"
+  },
+  {
+   "nl": "de eend",
+   "fr": "le canard"
+  },
+  {
+   "nl": "het konijn",
+   "fr": "le lapin"
+  },
+  {
+   "nl": "de kikker",
+   "fr": "la grenouille"
+  },
+  {
+   "nl": "de slang",
+   "fr": "le serpent"
+  },
+  {
+   "nl": "de spin",
+   "fr": "l'araignée"
+  },
+  {
+   "nl": "de bij",
+   "fr": "l'abeille"
+  },
+  {
+   "nl": "de vlinder",
+   "fr": "le papillon"
+  },
+  {
+   "nl": "de mier",
+   "fr": "la fourmi"
+  },
+  {
+   "nl": "de wolf",
+   "fr": "le loup"
+  },
+  {
+   "nl": "de vos",
+   "fr": "le renard"
+  },
+  {
+   "nl": "de vleugel",
+   "fr": "l'aile"
+  }
+ ]
+}

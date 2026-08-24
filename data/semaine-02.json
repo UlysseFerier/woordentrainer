@@ -1,0 +1,167 @@
+{
+ "id": "semaine-02",
+ "titre": "Liste 2",
+ "theme": "Manger et boire",
+ "mots": [
+  {
+   "nl": "het brood",
+   "fr": "le pain"
+  },
+  {
+   "nl": "de melk",
+   "fr": "le lait"
+  },
+  {
+   "nl": "de kaas",
+   "fr": "le fromage"
+  },
+  {
+   "nl": "het vlees",
+   "fr": "la viande"
+  },
+  {
+   "nl": "de vis",
+   "fr": "le poisson"
+  },
+  {
+   "nl": "de groente",
+   "fr": "le légume"
+  },
+  {
+   "nl": "het fruit",
+   "fr": "le fruit"
+  },
+  {
+   "nl": "de appel",
+   "fr": "la pomme"
+  },
+  {
+   "nl": "de aardappel",
+   "fr": "la pomme de terre"
+  },
+  {
+   "nl": "de ui",
+   "fr": "l'oignon"
+  },
+  {
+   "nl": "de wortel",
+   "fr": "la carotte"
+  },
+  {
+   "nl": "de tomaat",
+   "fr": "la tomate"
+  },
+  {
+   "nl": "de sla",
+   "fr": "la salade"
+  },
+  {
+   "nl": "het ei",
+   "fr": "l'œuf"
+  },
+  {
+   "nl": "de boter",
+   "fr": "le beurre"
+  },
+  {
+   "nl": "de suiker",
+   "fr": "le sucre"
+  },
+  {
+   "nl": "het zout",
+   "fr": "le sel"
+  },
+  {
+   "nl": "de peper",
+   "fr": "le poivre"
+  },
+  {
+   "nl": "de soep",
+   "fr": "la soupe"
+  },
+  {
+   "nl": "de saus",
+   "fr": "la sauce"
+  },
+  {
+   "nl": "de rijst",
+   "fr": "le riz"
+  },
+  {
+   "nl": "de koek",
+   "fr": "le biscuit"
+  },
+  {
+   "nl": "de taart",
+   "fr": "la tarte"
+  },
+  {
+   "nl": "het snoep",
+   "fr": "le bonbon"
+  },
+  {
+   "nl": "de chocolade",
+   "fr": "le chocolat"
+  },
+  {
+   "nl": "het water",
+   "fr": "l'eau"
+  },
+  {
+   "nl": "het bier",
+   "fr": "la bière"
+  },
+  {
+   "nl": "de wijn",
+   "fr": "le vin"
+  },
+  {
+   "nl": "de koffie",
+   "fr": "le café (boisson)"
+  },
+  {
+   "nl": "de thee",
+   "fr": "le thé"
+  },
+  {
+   "nl": "het sap",
+   "fr": "le jus"
+  },
+  {
+   "nl": "het ontbijt",
+   "fr": "le petit-déjeuner"
+  },
+  {
+   "nl": "de lunch",
+   "fr": "le déjeuner"
+  },
+  {
+   "nl": "het avondeten",
+   "fr": "le souper"
+  },
+  {
+   "nl": "de honger",
+   "fr": "la faim"
+  },
+  {
+   "nl": "de dorst",
+   "fr": "la soif"
+  },
+  {
+   "nl": "de maaltijd",
+   "fr": "le repas"
+  },
+  {
+   "nl": "de smaak",
+   "fr": "le goût"
+  },
+  {
+   "nl": "lekker",
+   "fr": "bon, savoureux"
+  },
+  {
+   "nl": "het recept",
+   "fr": "la recette"
+  }
+ ]
+}

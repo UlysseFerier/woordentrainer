@@ -1,0 +1,167 @@
+{
+ "id": "semaine-09",
+ "titre": "Liste 9",
+ "theme": "Les vêtements et les couleurs",
+ "mots": [
+  {
+   "nl": "de kleren",
+   "fr": "les vêtements"
+  },
+  {
+   "nl": "het hemd",
+   "fr": "la chemise"
+  },
+  {
+   "nl": "de broek",
+   "fr": "le pantalon"
+  },
+  {
+   "nl": "de jas",
+   "fr": "le manteau"
+  },
+  {
+   "nl": "de trui",
+   "fr": "le pull"
+  },
+  {
+   "nl": "de rok",
+   "fr": "la jupe"
+  },
+  {
+   "nl": "de jurk",
+   "fr": "la robe"
+  },
+  {
+   "nl": "het T-shirt",
+   "fr": "le t-shirt"
+  },
+  {
+   "nl": "de sok",
+   "fr": "la chaussette"
+  },
+  {
+   "nl": "de schoen",
+   "fr": "la chaussure"
+  },
+  {
+   "nl": "de laars",
+   "fr": "la botte"
+  },
+  {
+   "nl": "de hoed",
+   "fr": "le chapeau"
+  },
+  {
+   "nl": "de muts",
+   "fr": "le bonnet"
+  },
+  {
+   "nl": "de sjaal",
+   "fr": "l'écharpe"
+  },
+  {
+   "nl": "de handschoen",
+   "fr": "le gant"
+  },
+  {
+   "nl": "de riem",
+   "fr": "la ceinture"
+  },
+  {
+   "nl": "de knoop",
+   "fr": "le bouton"
+  },
+  {
+   "nl": "de zak",
+   "fr": "la poche"
+  },
+  {
+   "nl": "de tas",
+   "fr": "le sac"
+  },
+  {
+   "nl": "de bril",
+   "fr": "les lunettes"
+  },
+  {
+   "nl": "het horloge",
+   "fr": "la montre"
+  },
+  {
+   "nl": "de ring",
+   "fr": "la bague"
+  },
+  {
+   "nl": "de kleur",
+   "fr": "la couleur"
+  },
+  {
+   "nl": "rood",
+   "fr": "rouge"
+  },
+  {
+   "nl": "blauw",
+   "fr": "bleu"
+  },
+  {
+   "nl": "geel",
+   "fr": "jaune"
+  },
+  {
+   "nl": "groen",
+   "fr": "vert"
+  },
+  {
+   "nl": "zwart",
+   "fr": "noir"
+  },
+  {
+   "nl": "wit",
+   "fr": "blanc"
+  },
+  {
+   "nl": "grijs",
+   "fr": "gris"
+  },
+  {
+   "nl": "bruin",
+   "fr": "brun"
+  },
+  {
+   "nl": "oranje",
+   "fr": "orange"
+  },
+  {
+   "nl": "roze",
+   "fr": "rose"
+  },
+  {
+   "nl": "paars",
+   "fr": "violet"
+  },
+  {
+   "nl": "de maat",
+   "fr": "la taille (mesure)"
+  },
+  {
+   "nl": "de stof",
+   "fr": "le tissu"
+  },
+  {
+   "nl": "de mode",
+   "fr": "la mode"
+  },
+  {
+   "nl": "schoon",
+   "fr": "propre"
+  },
+  {
+   "nl": "vuil",
+   "fr": "sale"
+  },
+  {
+   "nl": "nieuw",
+   "fr": "neuf"
+  }
+ ]
+}

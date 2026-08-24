@@ -1,0 +1,167 @@
+{
+ "id": "semaine-03",
+ "titre": "Liste 3",
+ "theme": "Le corps et la santé",
+ "mots": [
+  {
+   "nl": "het hoofd",
+   "fr": "la tête"
+  },
+  {
+   "nl": "het haar",
+   "fr": "les cheveux"
+  },
+  {
+   "nl": "het oog",
+   "fr": "l'œil"
+  },
+  {
+   "nl": "het oor",
+   "fr": "l'oreille"
+  },
+  {
+   "nl": "de neus",
+   "fr": "le nez"
+  },
+  {
+   "nl": "de mond",
+   "fr": "la bouche"
+  },
+  {
+   "nl": "de tand",
+   "fr": "la dent"
+  },
+  {
+   "nl": "de tong",
+   "fr": "la langue (organe)"
+  },
+  {
+   "nl": "de nek",
+   "fr": "le cou"
+  },
+  {
+   "nl": "de schouder",
+   "fr": "l'épaule"
+  },
+  {
+   "nl": "de arm",
+   "fr": "le bras"
+  },
+  {
+   "nl": "de hand",
+   "fr": "la main"
+  },
+  {
+   "nl": "de vinger",
+   "fr": "le doigt"
+  },
+  {
+   "nl": "de rug",
+   "fr": "le dos"
+  },
+  {
+   "nl": "de buik",
+   "fr": "le ventre"
+  },
+  {
+   "nl": "het hart",
+   "fr": "le cœur"
+  },
+  {
+   "nl": "het been",
+   "fr": "la jambe"
+  },
+  {
+   "nl": "de knie",
+   "fr": "le genou"
+  },
+  {
+   "nl": "de voet",
+   "fr": "le pied"
+  },
+  {
+   "nl": "de huid",
+   "fr": "la peau"
+  },
+  {
+   "nl": "het bloed",
+   "fr": "le sang"
+  },
+  {
+   "nl": "de pijn",
+   "fr": "la douleur"
+  },
+  {
+   "nl": "de koorts",
+   "fr": "la fièvre"
+  },
+  {
+   "nl": "de hoest",
+   "fr": "la toux"
+  },
+  {
+   "nl": "de arts",
+   "fr": "le médecin"
+  },
+  {
+   "nl": "de tandarts",
+   "fr": "le dentiste"
+  },
+  {
+   "nl": "het ziekenhuis",
+   "fr": "l'hôpital"
+  },
+  {
+   "nl": "de apotheek",
+   "fr": "la pharmacie"
+  },
+  {
+   "nl": "het medicijn",
+   "fr": "le médicament"
+  },
+  {
+   "nl": "de ziekte",
+   "fr": "la maladie"
+  },
+  {
+   "nl": "gezond",
+   "fr": "en bonne santé"
+  },
+  {
+   "nl": "ziek",
+   "fr": "malade"
+  },
+  {
+   "nl": "moe",
+   "fr": "fatigué"
+  },
+  {
+   "nl": "de slaap",
+   "fr": "le sommeil"
+  },
+  {
+   "nl": "de adem",
+   "fr": "le souffle"
+  },
+  {
+   "nl": "de spier",
+   "fr": "le muscle"
+  },
+  {
+   "nl": "het bot",
+   "fr": "l'os"
+  },
+  {
+   "nl": "de wond",
+   "fr": "la blessure"
+  },
+  {
+   "nl": "de gezondheid",
+   "fr": "la santé"
+  },
+  {
+   "nl": "het lichaam",
+   "fr": "le corps"
+  }
+ ]
+}

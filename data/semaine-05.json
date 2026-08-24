@@ -1,0 +1,167 @@
+{
+ "id": "semaine-05",
+ "titre": "Liste 5",
+ "theme": "Le temps et le calendrier",
+ "mots": [
+  {
+   "nl": "het weer",
+   "fr": "le temps qu'il fait"
+  },
+  {
+   "nl": "de zon",
+   "fr": "le soleil"
+  },
+  {
+   "nl": "de regen",
+   "fr": "la pluie"
+  },
+  {
+   "nl": "de wind",
+   "fr": "le vent"
+  },
+  {
+   "nl": "de wolk",
+   "fr": "le nuage"
+  },
+  {
+   "nl": "de sneeuw",
+   "fr": "la neige"
+  },
+  {
+   "nl": "het ijs",
+   "fr": "la glace"
+  },
+  {
+   "nl": "de mist",
+   "fr": "le brouillard"
+  },
+  {
+   "nl": "de storm",
+   "fr": "la tempête"
+  },
+  {
+   "nl": "het onweer",
+   "fr": "l'orage"
+  },
+  {
+   "nl": "de bliksem",
+   "fr": "l'éclair"
+  },
+  {
+   "nl": "de donder",
+   "fr": "le tonnerre"
+  },
+  {
+   "nl": "de hemel",
+   "fr": "le ciel"
+  },
+  {
+   "nl": "de lucht",
+   "fr": "l'air"
+  },
+  {
+   "nl": "de temperatuur",
+   "fr": "la température"
+  },
+  {
+   "nl": "warm",
+   "fr": "chaud"
+  },
+  {
+   "nl": "koud",
+   "fr": "froid"
+  },
+  {
+   "nl": "de lente",
+   "fr": "le printemps"
+  },
+  {
+   "nl": "de zomer",
+   "fr": "l'été"
+  },
+  {
+   "nl": "de herfst",
+   "fr": "l'automne"
+  },
+  {
+   "nl": "de winter",
+   "fr": "l'hiver"
+  },
+  {
+   "nl": "het seizoen",
+   "fr": "la saison"
+  },
+  {
+   "nl": "de dag",
+   "fr": "le jour"
+  },
+  {
+   "nl": "de nacht",
+   "fr": "la nuit"
+  },
+  {
+   "nl": "de ochtend",
+   "fr": "le matin"
+  },
+  {
+   "nl": "de middag",
+   "fr": "l'après-midi"
+  },
+  {
+   "nl": "de avond",
+   "fr": "le soir"
+  },
+  {
+   "nl": "de week",
+   "fr": "la semaine"
+  },
+  {
+   "nl": "de maand",
+   "fr": "le mois"
+  },
+  {
+   "nl": "het jaar",
+   "fr": "l'année"
+  },
+  {
+   "nl": "maandag",
+   "fr": "lundi"
+  },
+  {
+   "nl": "dinsdag",
+   "fr": "mardi"
+  },
+  {
+   "nl": "woensdag",
+   "fr": "mercredi"
+  },
+  {
+   "nl": "donderdag",
+   "fr": "jeudi"
+  },
+  {
+   "nl": "vrijdag",
+   "fr": "vendredi"
+  },
+  {
+   "nl": "zaterdag",
+   "fr": "samedi"
+  },
+  {
+   "nl": "zondag",
+   "fr": "dimanche"
+  },
+  {
+   "nl": "vandaag",
+   "fr": "aujourd'hui"
+  },
+  {
+   "nl": "morgen",
+   "fr": "demain"
+  },
+  {
+   "nl": "gisteren",
+   "fr": "hier"
+  }
+ ]
+}

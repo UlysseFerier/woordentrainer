@@ -1,0 +1,167 @@
+{
+ "id": "semaine-06",
+ "titre": "Liste 6",
+ "theme": "La ville et les déplacements",
+ "mots": [
+  {
+   "nl": "de stad",
+   "fr": "la ville"
+  },
+  {
+   "nl": "het dorp",
+   "fr": "le village"
+  },
+  {
+   "nl": "de straat",
+   "fr": "la rue"
+  },
+  {
+   "nl": "het plein",
+   "fr": "la place"
+  },
+  {
+   "nl": "de weg",
+   "fr": "la route"
+  },
+  {
+   "nl": "het kruispunt",
+   "fr": "le carrefour"
+  },
+  {
+   "nl": "de brug",
+   "fr": "le pont"
+  },
+  {
+   "nl": "de fiets",
+   "fr": "le vélo"
+  },
+  {
+   "nl": "de auto",
+   "fr": "la voiture"
+  },
+  {
+   "nl": "de bus",
+   "fr": "le bus"
+  },
+  {
+   "nl": "de trein",
+   "fr": "le train"
+  },
+  {
+   "nl": "de tram",
+   "fr": "le tram"
+  },
+  {
+   "nl": "het station",
+   "fr": "la gare"
+  },
+  {
+   "nl": "de halte",
+   "fr": "l'arrêt"
+  },
+  {
+   "nl": "het vliegtuig",
+   "fr": "l'avion"
+  },
+  {
+   "nl": "de boot",
+   "fr": "le bateau"
+  },
+  {
+   "nl": "de haven",
+   "fr": "le port"
+  },
+  {
+   "nl": "de kaart",
+   "fr": "la carte"
+  },
+  {
+   "nl": "de reis",
+   "fr": "le voyage"
+  },
+  {
+   "nl": "de winkel",
+   "fr": "le magasin"
+  },
+  {
+   "nl": "de markt",
+   "fr": "le marché"
+  },
+  {
+   "nl": "de bakker",
+   "fr": "le boulanger"
+  },
+  {
+   "nl": "de slager",
+   "fr": "le boucher"
+  },
+  {
+   "nl": "het postkantoor",
+   "fr": "la poste"
+  },
+  {
+   "nl": "het geld",
+   "fr": "l'argent"
+  },
+  {
+   "nl": "de kerk",
+   "fr": "l'église"
+  },
+  {
+   "nl": "het museum",
+   "fr": "le musée"
+  },
+  {
+   "nl": "het park",
+   "fr": "le parc"
+  },
+  {
+   "nl": "het restaurant",
+   "fr": "le restaurant"
+  },
+  {
+   "nl": "de bibliotheek",
+   "fr": "la bibliothèque"
+  },
+  {
+   "nl": "het stadhuis",
+   "fr": "l'hôtel de ville"
+  },
+  {
+   "nl": "de politie",
+   "fr": "la police"
+  },
+  {
+   "nl": "de brandweer",
+   "fr": "les pompiers"
+  },
+  {
+   "nl": "het verkeer",
+   "fr": "la circulation"
+  },
+  {
+   "nl": "de file",
+   "fr": "l'embouteillage"
+  },
+  {
+   "nl": "de parkeerplaats",
+   "fr": "la place de parking"
+  },
+  {
+   "nl": "het adres",
+   "fr": "l'adresse"
+  },
+  {
+   "nl": "de buurt",
+   "fr": "le quartier"
+  },
+  {
+   "nl": "de hoek",
+   "fr": "le coin"
+  },
+  {
+   "nl": "het bord (verkeer)",
+   "fr": "le panneau"
+  }
+ ]
+}

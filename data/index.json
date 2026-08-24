@@ -1,5 +1,64 @@
 {
-  "semaines": [
-    { "id": "semaine-01", "fichier": "data/semaine-01.json" }
-  ]
+ "semaines": [
+  {
+   "id": "semaine-01",
+   "fichier": "data/semaine-01.json",
+   "titre": "Liste 1",
+   "theme": "La maison et le quotidien"
+  },
+  {
+   "id": "semaine-02",
+   "fichier": "data/semaine-02.json",
+   "titre": "Liste 2",
+   "theme": "Manger et boire"
+  },
+  {
+   "id": "semaine-03",
+   "fichier": "data/semaine-03.json",
+   "titre": "Liste 3",
+   "theme": "Le corps et la santé"
+  },
+  {
+   "id": "semaine-04",
+   "fichier": "data/semaine-04.json",
+   "titre": "Liste 4",
+   "theme": "La famille et les gens"
+  },
+  {
+   "id": "semaine-05",
+   "fichier": "data/semaine-05.json",
+   "titre": "Liste 5",
+   "theme": "Le temps et le calendrier"
+  },
+  {
+   "id": "semaine-06",
+   "fichier": "data/semaine-06.json",
+   "titre": "Liste 6",
+   "theme": "La ville et les déplacements"
+  },
+  {
+   "id": "semaine-07",
+   "fichier": "data/semaine-07.json",
+   "titre": "Liste 7",
+   "theme": "Le travail et l'école"
+  },
+  {
+   "id": "semaine-08",
+   "fichier": "data/semaine-08.json",
+   "titre": "Liste 8",
+   "theme": "Les verbes de tous les jours"
+  },
+  {
+   "id": "semaine-09",
+   "fichier": "data/semaine-09.json",
+   "titre": "Liste 9",
+   "theme": "Les vêtements et les couleurs"
+  },
+  {
+   "id": "semaine-10",
+   "fichier": "data/semaine-10.json",
+   "titre": "Liste 10",
+   "theme": "La nature et les animaux"
+  }
+ ]
 }
