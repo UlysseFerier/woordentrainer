@@ -1,0 +1,5 @@
+{
+  "semaines": [
+    { "id": "semaine-01", "fichier": "data/semaine-01.json" }
+  ]
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woordentrainer — convertir une liste</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: #121212; color: #e0e0e0; padding: 32px 18px; display: flex; justify-content: center; }
+.wrap { width: 100%; max-width: 640px; }
+h1 { font-size: 1.3rem; color: #fff; margin-bottom: 6px; }
+p { font-size: .86rem; color: #999; line-height: 1.55; margin-bottom: 18px; }
+.zone { border: 2px dashed #444; border-radius: 14px; padding: 34px 20px; text-align: center; cursor: pointer; background: #1e1e1e; margin-bottom: 16px; }
+.zone:hover { border-color: #fff; }
+label { display: block; font-size: .78rem; color: #888; margin: 12px 0 5px; }
+input, textarea { width: 100%; background: #1e1e1e; color: #e0e0e0; border: 1px solid #444; border-radius: 9px; padding: 10px; font-family: ui-monospace, monospace; font-size: .82rem; }
+textarea { min-height: 260px; margin-top: 4px; }
+button { width: 100%; padding: 13px; margin-top: 12px; border: none; border-radius: 10px; background: #fff; color: #121212; font-size: .92rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+button.secondaire { background: #1e1e1e; color: #e0e0e0; border: 1px solid #444; }
+code { background: #2a2a2a; padding: 1px 5px; border-radius: 4px; font-size: .8rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Convertir une liste</h1>
+  <p>À utiliser sur l'ordinateur, pas sur le téléphone. Dépose un xlsx (colonne A en néerlandais, colonne B en français, colonne C facultative pour une note) ou colle directement des lignes au format <code>het huis = la maison</code>. Tu récupères un fichier JSON à déposer dans <code>data/</code> du dépôt, puis tu l'ajoutes à <code>data/index.json</code>.</p>
+
+  <div class="zone" id="zone">Déposer un .xlsx ici, ou cliquer pour choisir</div>
+  <input type="file" id="fichier" accept=".xlsx" style="display:none">
+
+  <label for="colle">Ou coller des lignes « néerlandais = français »</label>
+  <textarea id="colle" placeholder="het huis = la maison&#10;de deur = la porte"></textarea>
+  <button class="secondaire" onclick="depuisTexte()">Lire le texte collé</button>
+
+  <label for="id">Identifiant du fichier (sans espaces)</label>
+  <input id="id" value="semaine-02">
+  <label for="titre">Titre affiché</label>
+  <input id="titre" value="Semaine 2">
+  <label for="theme">Thème</label>
+  <input id="theme" value="">
+
+  <label for="sortie">Résultat</label>
+  <textarea id="sortie" readonly></textarea>
+  <button onclick="telecharger()">Télécharger le fichier JSON</button>
+</div>
+<script>
+var mots = [];
+var zone = document.getElementById('zone'), input = document.getElementById('fichier');
+zone.onclick = function () { input.click(); };
+zone.ondragover = function (e) { e.preventDefault(); zone.style.borderColor = '#fff'; };
+zone.ondragleave = function () { zone.style.borderColor = '#444'; };
+zone.ondrop = function (e) { e.preventDefault(); zone.style.borderColor = '#444'; lire(e.dataTransfer.files[0]); };
+input.onchange = function () { lire(input.files[0]); };
+
+function lire(f) {
+  if (!f) return;
+  var r = new FileReader();
+  r.onload = function (e) {
+    var wb = XLSX.read(e.target.result, { type: 'array' });
+    var rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, defval: '' });
+    var start = 0;
+    if (rows.length && (String(rows[0][0]).toLowerCase() === 'nl' || String(rows[0][1]).toLowerCase() === 'fr')) start = 1;
+    mots = [];
+    for (var i = start; i < rows.length; i++) {
+      var nl = String(rows[i][0] || '').trim(), fr = String(rows[i][1] || '').trim(), note = String(rows[i][2] || '').trim();
+      if (nl && fr) { var o = { nl: nl, fr: fr }; if (note) o.note = note; mots.push(o); }
+    }
+    if (!document.getElementById('theme').value) document.getElementById('theme').value = f.name.replace('.xlsx', '');
+    rendre();
+  };
+  r.readAsArrayBuffer(f);
+}
+function depuisTexte() {
+  mots = [];
+  document.getElementById('colle').value.split('\n').forEach(function (l) {
+    var p = l.split('=');
+    if (p.length < 2) return;
+    var nl = p[0].trim(), fr = p.slice(1).join('=').trim();
+    if (nl && fr) mots.push({ nl: nl, fr: fr });
+  });
+  rendre();
+}
+function objet() {
+  return {
+    id: document.getElementById('id').value.trim(),
+    titre: document.getElementById('titre').value.trim(),
+    theme: document.getElementById('theme').value.trim(),
+    mots: mots
+  };
+}
+function rendre() {
+  document.getElementById('sortie').value = JSON.stringify(objet(), null, 2);
+}
+function telecharger() {
+  rendre();
+  var o = objet();
+  if (!o.mots.length) { alert('Aucun mot lu.'); return; }
+  var b = new Blob([JSON.stringify(o, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = o.id + '.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+['id', 'titre', 'theme'].forEach(function (k) { document.getElementById(k).oninput = rendre; });
+</script>
+</body>
+</html>

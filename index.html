@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Woordentrainer</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#121212">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg:#121212; --bg-elev:#1e1e1e; --bg-elev2:#2a2a2a; --bg-hover:#252525;
+  --text:#e0e0e0; --text-strong:#fff; --text-muted:#aaa; --text-dim:#888; --text-faint:#666;
+  --border:#333; --border-soft:#444; --shadow:rgba(0,0,0,.3);
+  --accent:#fff; --accent-text:#121212;
+  --green:#66bb6a; --green-bg:#1a2c1e; --green-border:#2e7d32;
+  --red:#ef5350; --red-bg:#2c1a1a; --red-border:#5c2523;
+  --yellow:#ffca28; --yellow-bg:#2c2512; --yellow-border:#b78f10;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',ui-monospace,monospace;
+}
+body.clair {
+  --bg:#f5f5f0; --bg-elev:#fff; --bg-elev2:#ebebe5; --bg-hover:#f0f0ea;
+  --text:#2a2a2a; --text-strong:#121212; --text-muted:#555; --text-dim:#666; --text-faint:#888;
+  --border:#dcdcd6; --border-soft:#c4c4bc; --shadow:rgba(0,0,0,.08);
+  --accent:#121212; --accent-text:#fff;
+  --green:#2e7d32; --green-bg:#e8f5e9; --green-border:#a5d6a7;
+  --red:#c62828; --red-bg:#ffebee; --red-border:#ef9a9a;
+  --yellow:#8a6a00; --yellow-bg:#fff8e1; --yellow-border:#ffc107;
+}
+html, body { height: 100%; }
+body {
+  font-family: var(--sans); background: var(--bg); color: var(--text);
+  min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
+  padding: max(14px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom));
+  transition: background .2s, color .2s; overscroll-behavior-y: contain;
+}
+.wrap { width: 100%; max-width: 560px; flex: 1; display: flex; flex-direction: column; }
+
+/* ── En-tête ─────────────────────────────────────────── */
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 18px; }
+.titre { font-family: var(--serif); font-size: 1.45rem; font-weight: 700; color: var(--text-strong); line-height: 1.1; }
+.soustitre { font-family: var(--mono); font-size: .62rem; letter-spacing: .09em; text-transform: uppercase; color: var(--text-dim); margin-top: 3px; }
+.actions-topbar { display: flex; gap: 6px; }
+.ico-btn {
+  width: 38px; height: 38px; border-radius: 10px; background: var(--bg-elev);
+  border: 1px solid var(--border); color: var(--text-muted); font-size: 1rem;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+}
+.ico-btn:active { background: var(--bg-hover); }
+
+/* ── Bandeaux ────────────────────────────────────────── */
+.bandeau {
+  display: none; align-items: center; gap: 10px; width: 100%;
+  background: var(--yellow-bg); border: 1px solid var(--yellow-border); color: var(--yellow);
+  border-radius: 12px; padding: 11px 13px; margin-bottom: 14px; font-size: .82rem; line-height: 1.4;
+}
+.bandeau.visible { display: flex; }
+.bandeau button {
+  margin-left: auto; flex-shrink: 0; background: var(--yellow); color: #121212; border: none;
+  border-radius: 8px; padding: 7px 12px; font-family: var(--sans); font-size: .78rem; font-weight: 600; cursor: pointer;
+}
+
+/* ── Écran d'accueil ─────────────────────────────────── */
+.section-titre { font-family: var(--mono); font-size: .64rem; letter-spacing: .11em; text-transform: uppercase; color: var(--text-faint); margin: 4px 0 10px; }
+.carte-semaine {
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: 16px;
+  padding: 18px; margin-bottom: 12px; cursor: pointer; transition: border-color .15s;
+}
+.carte-semaine:active { border-color: var(--border-soft); }
+.carte-semaine.terminee { border-color: var(--green-border); }
+.cs-haut { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+.cs-titre { font-family: var(--serif); font-size: 1.2rem; color: var(--text-strong); }
+.cs-fraction { font-family: var(--mono); font-size: .8rem; color: var(--text-muted); white-space: nowrap; }
+.cs-theme { font-size: .82rem; color: var(--text-dim); margin-bottom: 14px; }
+.jauge { height: 6px; background: var(--bg-elev2); border-radius: 999px; overflow: hidden; }
+.jauge > i { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width .45s ease; }
+.jauge.verte > i { background: var(--green); }
+.cs-bas { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-family: var(--mono); font-size: .68rem; color: var(--text-faint); }
+
+.grille-mots { display: grid; grid-template-columns: repeat(auto-fill, minmax(26px, 1fr)); gap: 5px; margin-top: 14px; }
+.tuile { aspect-ratio: 1; border-radius: 5px; background: var(--bg-elev2); border: 1px solid transparent; }
+.tuile.n1 { background: color-mix(in srgb, var(--yellow) 22%, var(--bg-elev2)); }
+.tuile.n2 { background: color-mix(in srgb, var(--yellow) 48%, var(--bg-elev2)); }
+.tuile.n3 { background: color-mix(in srgb, var(--green) 55%, var(--bg-elev2)); }
+.tuile.ok { background: var(--green); }
+
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 4px; }
+.mode-carte {
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: 14px;
+  padding: 14px; text-align: left; cursor: pointer; font-family: var(--sans); color: var(--text);
+}
+.mode-carte:active { background: var(--bg-hover); }
+.mode-carte.large { grid-column: 1 / -1; }
+.mode-nom { font-size: .95rem; font-weight: 600; color: var(--text-strong); margin-bottom: 3px; }
+.mode-pts { font-family: var(--mono); font-size: .66rem; color: var(--yellow); }
+.mode-desc { font-size: .74rem; color: var(--text-dim); margin-top: 5px; line-height: 1.35; }
+
+/* ── Entraînement ────────────────────────────────────── */
+.barre-session { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.barre-session .jauge { flex: 1; }
+.compteur { font-family: var(--mono); font-size: .72rem; color: var(--text-muted); white-space: nowrap; }
+.zone { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+.enonce {
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: 18px;
+  padding: 30px 20px; text-align: center; margin-bottom: 14px; position: relative;
+}
+.enonce-lang { font-family: var(--mono); font-size: .6rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 10px; }
+.enonce-mot { font-family: var(--serif); font-size: 1.75rem; color: var(--text-strong); line-height: 1.2; }
+.enonce-note { font-size: .78rem; color: var(--text-dim); font-style: italic; margin-top: 8px; }
+.pastille-score {
+  position: absolute; top: 12px; right: 14px; font-family: var(--mono);
+  font-size: .62rem; color: var(--text-faint); letter-spacing: .05em;
+}
+
+.carte-3d { perspective: 1200px; height: 190px; margin-bottom: 14px; cursor: pointer; }
+.carte-int { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .4s cubic-bezier(.2,.8,.3,1); }
+.carte-int.retournee { transform: rotateY(180deg); }
+.face {
+  position: absolute; inset: 0; backface-visibility: hidden; border-radius: 18px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 22px; text-align: center; border: 1px solid var(--border); background: var(--bg-elev);
+}
+.face.dos { transform: rotateY(180deg); background: var(--bg-elev2); border-color: var(--border-soft); }
+.face-indice { font-family: var(--mono); font-size: .6rem; color: var(--text-faint); margin-top: 12px; letter-spacing: .05em; }
+
+.options { display: grid; gap: 8px; }
+.option {
+  padding: 16px 14px; border: 1px solid var(--border); border-radius: 12px;
+  background: var(--bg-elev); color: var(--text); font-family: var(--sans); font-size: .95rem;
+  text-align: center; cursor: pointer; line-height: 1.3;
+}
+.option.juste { background: var(--green-bg); border-color: var(--green); color: var(--green); font-weight: 600; }
+.option.fausse { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+.option.eteinte { opacity: .35; }
+.option.a-toucher { animation: pulse .7s ease infinite alternate; }
+@keyframes pulse { from { border-color: var(--green); } to { border-color: var(--green-border); background: var(--green-bg); } }
+
+.paire { display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: var(--serif); }
+.paire span { font-size: 1.35rem; color: var(--text-strong); }
+.paire .sep { font-family: var(--sans); font-size: .9rem; color: var(--text-faint); }
+
+.rangee { display: flex; gap: 8px; }
+.btn {
+  flex: 1; padding: 16px 12px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--bg-elev); color: var(--text); font-family: var(--sans);
+  font-size: .95rem; font-weight: 500; cursor: pointer;
+}
+.btn:active { background: var(--bg-hover); }
+.btn.plein { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
+.btn.vert { color: var(--green); border-color: var(--green-border); }
+.btn.rouge { color: var(--red); border-color: var(--red-border); }
+.btn:disabled { opacity: .3; cursor: default; }
+.btn.pleine-largeur { width: 100%; margin-top: 8px; }
+
+.retour-info { text-align: center; font-size: .84rem; color: var(--text-muted); min-height: 22px; margin: 10px 0 2px; line-height: 1.4; }
+.gain { display: inline-block; font-family: var(--mono); font-size: .78rem; font-weight: 500; }
+.gain.plus { color: var(--green); }
+.gain.moins { color: var(--red); }
+
+/* ── Récapitulatif ───────────────────────────────────── */
+.recap { text-align: center; padding: 10px 0; }
+.recap-score { font-family: var(--serif); font-size: 3.4rem; color: var(--text-strong); font-weight: 700; line-height: 1; margin: 14px 0 6px; }
+.recap-msg { color: var(--text-muted); font-size: .9rem; line-height: 1.55; margin-bottom: 20px; }
+.stats-ligne { display: flex; justify-content: center; gap: 26px; margin-bottom: 22px; font-family: var(--mono); }
+.stat-val { display: block; font-size: 1.3rem; color: var(--text-strong); }
+.stat-lbl { font-size: .58rem; text-transform: uppercase; letter-spacing: .1em; color: var(--text-faint); }
+
+/* ── Réglages ────────────────────────────────────────── */
+.bloc { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+.bloc h3 { font-family: var(--sans); font-size: .9rem; color: var(--text-strong); margin-bottom: 6px; font-weight: 600; }
+.bloc p { font-size: .78rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 10px; }
+.ligne-reglage { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0; }
+.ligne-reglage:not(:last-child) { border-bottom: 1px solid var(--border); }
+.ligne-reglage span { font-size: .88rem; }
+select, textarea {
+  width: 100%; background: var(--bg-elev2); color: var(--text); border: 1px solid var(--border-soft);
+  border-radius: 9px; padding: 10px; font-family: var(--mono); font-size: .8rem;
+}
+textarea { min-height: 90px; resize: vertical; }
+.mini { font-family: var(--mono); font-size: .62rem; color: var(--text-faint); text-align: center; margin-top: 14px; }
+.cache { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div>
+      <div class="titre" id="ecran-titre">Woordentrainer</div>
+      <div class="soustitre" id="ecran-soustitre">Néerlandais · Français</div>
+    </div>
+    <div class="actions-topbar">
+      <button class="ico-btn" id="btn-retour" onclick="allerAccueil()" title="Retour" style="display:none">←</button>
+      <button class="ico-btn" onclick="basculerTheme()" title="Thème" id="btn-theme">☀</button>
+      <button class="ico-btn" onclick="allerReglages()" title="Réglages">⚙</button>
+    </div>
+  </div>
+
+  <div class="bandeau" id="bandeau-maj">
+    <span>Une nouvelle version est prête.</span>
+    <button onclick="appliquerMaj()">Mettre à jour</button>
+  </div>
+  <div class="bandeau" id="bandeau-install">
+    <span>Ajoute Woordentrainer à ton écran d'accueil.</span>
+    <button onclick="lancerInstall()">Installer</button>
+  </div>
+
+  <!-- ACCUEIL -->
+  <div id="ecran-accueil">
+    <div class="section-titre">Listes</div>
+    <div id="liste-semaines"></div>
+  </div>
+
+  <!-- CHOIX DU MODE -->
+  <div id="ecran-modes" class="cache">
+    <div id="resume-semaine"></div>
+    <div class="section-titre" style="margin-top:18px">Choisis un exercice</div>
+    <div class="modes">
+      <button class="mode-carte large" onclick="demarrer('mix')">
+        <div class="mode-nom">Mélange</div>
+        <div class="mode-pts">l'app choisit selon ton niveau sur chaque mot</div>
+        <div class="mode-desc">Le plus efficace : découverte en carte, puis reconnaissance, puis QCM.</div>
+      </button>
+      <button class="mode-carte" onclick="demarrer('flash')">
+        <div class="mode-nom">Cartes</div>
+        <div class="mode-pts">+2 points</div>
+        <div class="mode-desc">Tu retournes et tu juges toi-même.</div>
+      </button>
+      <button class="mode-carte" onclick="demarrer('qcm')">
+        <div class="mode-nom">QCM</div>
+        <div class="mode-pts">+3 points</div>
+        <div class="mode-desc">Quatre propositions, une seule correcte.</div>
+      </button>
+      <button class="mode-carte large" onclick="demarrer('vf')">
+        <div class="mode-nom">Vrai ou faux</div>
+        <div class="mode-pts">+1 point</div>
+        <div class="mode-desc">Rapide, pour dégrossir une liste toute neuve.</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ENTRAÎNEMENT -->
+  <div id="ecran-train" class="cache" style="flex:1;display:none;flex-direction:column">
+    <div class="barre-session">
+      <div class="jauge" id="jauge-semaine"><i style="width:0%"></i></div>
+      <div class="compteur" id="compteur-semaine">0 / 0</div>
+    </div>
+    <div class="zone">
+      <div id="bloc-flash" class="cache">
+        <div class="carte-3d" onclick="retournerCarte()">
+          <div class="carte-int" id="carte-int">
+            <div class="face">
+              <div class="enonce-lang" id="flash-lang-av">Français</div>
+              <div class="enonce-mot" id="flash-mot-av">—</div>
+              <div class="face-indice">Touche pour retourner</div>
+            </div>
+            <div class="face dos">
+              <div class="enonce-lang" id="flash-lang-ar">Nederlands</div>
+              <div class="enonce-mot" id="flash-mot-ar">—</div>
+              <div class="enonce-note" id="flash-note"></div>
+            </div>
+          </div>
+        </div>
+        <div class="rangee">
+          <button class="btn rouge" onclick="repondreFlash(false)">Je ne savais pas</button>
+          <button class="btn vert" onclick="repondreFlash(true)">Je savais</button>
+        </div>
+      </div>
+
+      <div id="bloc-qcm" class="cache">
+        <div class="enonce">
+          <div class="pastille-score" id="qcm-score"></div>
+          <div class="enonce-lang" id="qcm-lang">Français</div>
+          <div class="enonce-mot" id="qcm-mot">—</div>
+        </div>
+        <div class="options" id="qcm-options"></div>
+      </div>
+
+      <div id="bloc-vf" class="cache">
+        <div class="enonce">
+          <div class="pastille-score" id="vf-score"></div>
+          <div class="enonce-lang">Cette traduction est-elle correcte ?</div>
+          <div class="paire">
+            <span id="vf-nl">—</span>
+            <span class="sep">↕</span>
+            <span id="vf-fr">—</span>
+          </div>
+        </div>
+        <div class="rangee">
+          <button class="btn rouge" id="vf-faux" onclick="repondreVF(false)">Faux</button>
+          <button class="btn vert" id="vf-vrai" onclick="repondreVF(true)">Vrai</button>
+        </div>
+      </div>
+
+      <div class="retour-info" id="retour-info"></div>
+      <button class="btn plein pleine-largeur cache" id="btn-suivant" onclick="prochaine()">Suivant</button>
+    </div>
+    <button class="btn pleine-largeur" onclick="terminerSession()">Terminer la session</button>
+  </div>
+
+  <!-- RÉCAP -->
+  <div id="ecran-recap" class="cache">
+    <div class="recap">
+      <div class="section-titre" style="text-align:center">Session terminée</div>
+      <div class="recap-score" id="recap-gain">+0</div>
+      <div class="recap-msg" id="recap-msg"></div>
+      <div class="stats-ligne">
+        <div><span class="stat-val" id="recap-questions">0</span><span class="stat-lbl">Questions</span></div>
+        <div><span class="stat-val" id="recap-justes">0</span><span class="stat-lbl">Justes</span></div>
+        <div><span class="stat-val" id="recap-acquis">0</span><span class="stat-lbl">Acquis</span></div>
+      </div>
+      <div class="jauge" id="recap-jauge"><i style="width:0%"></i></div>
+      <div class="cs-bas" style="justify-content:center;margin-bottom:20px" id="recap-restant"></div>
+      <button class="btn plein pleine-largeur" onclick="allerModes()">Continuer</button>
+      <button class="btn pleine-largeur" onclick="allerAccueil()">Retour aux listes</button>
+    </div>
+  </div>
+
+  <!-- RÉGLAGES -->
+  <div id="ecran-reglages" class="cache">
+    <div class="bloc">
+      <h3>Rythme</h3>
+      <p>Un mot ne peut gagner que quelques points par jour : c'est ce qui vous empêche de boucler la liste en une soirée, et c'est là que se joue la mémorisation à long terme.</p>
+      <div class="ligne-reglage">
+        <span>Points maximum par mot et par jour</span>
+        <select id="reg-cap" onchange="majReglage('capJour', this.value)" style="width:auto">
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="99">Aucune limite</option>
+        </select>
+      </div>
+      <div class="ligne-reglage">
+        <span>Sens des questions</span>
+        <select id="reg-dir" onchange="majReglage('direction', this.value)" style="width:auto">
+          <option value="auto">Les deux</option>
+          <option value="fr-nl">Français → NL</option>
+          <option value="nl-fr">NL → Français</option>
+        </select>
+      </div>
+    </div>
+    <div class="bloc">
+      <h3>Sauvegarde</h3>
+      <p>Ta progression vit sur ce téléphone, pas dans le dépôt. Copie ce texte quelque part de temps en temps.</p>
+      <textarea id="zone-sauvegarde" readonly></textarea>
+      <button class="btn pleine-largeur" onclick="copierSauvegarde()">Copier ma progression</button>
+      <button class="btn pleine-largeur" onclick="restaurerSauvegarde()">Restaurer depuis un texte collé</button>
+    </div>
+    <div class="bloc">
+      <h3>Remise à zéro</h3>
+      <p>Efface les scores d'une liste pour la recommencer de zéro. Les mots eux-mêmes ne bougent pas.</p>
+      <select id="reg-reset"></select>
+      <button class="btn pleine-largeur rouge" onclick="reinitialiserSemaine()">Effacer les scores de cette liste</button>
+    </div>
+    <div class="mini" id="mini-version"></div>
+  </div>
+
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   Woordentrainer — moteur
+   Score par mot : 0 → 10. Un mot est « acquis » à 10.
+   Vrai/faux +1, carte +2, QCM +3. Une erreur retire autant.
+   ════════════════════════════════════════════════════════════ */
+
+var POINTS = { vf: 1, flash: 2, qcm: 3 };
+var CIBLE = 10;
+var QUESTIONS_PAR_SESSION = 20;
+
+var etat = null;          // progression persistée
+var semaines = [];        // listes chargées depuis /data
+var semaineCourante = null;
+var session = null;
+var courant = null;       // { mot, cle, mode, sens, reponse, ... }
+var recemment = [];
+var promptInstall = null;
+var swAttente = null;
+
+/* ── Stockage ─────────────────────────────────────────── */
+var CLE_STOCKAGE = 'wt2_etat';
+
+function chargerEtat() {
+  var brut = null;
+  try { brut = localStorage.getItem(CLE_STOCKAGE); } catch (e) {}
+  var e = null;
+  try { e = brut ? JSON.parse(brut) : null; } catch (err) { e = null; }
+  if (!e || !e.semaines) e = { v: 1, reglages: {}, semaines: {} };
+  if (!e.reglages) e.reglages = {};
+  if (e.reglages.capJour === undefined) e.reglages.capJour = 5;
+  if (!e.reglages.direction) e.reglages.direction = 'auto';
+  if (!e.reglages.theme) e.reglages.theme = 'sombre';
+  return e;
+}
+function sauverEtat() {
+  try { localStorage.setItem(CLE_STOCKAGE, JSON.stringify(etat)); } catch (e) {}
+}
+function aujourdhui() {
+  var d = new Date();
+  return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+}
+function cleMot(m) { return m.nl + '|||' + m.fr; }
+
+function progres(idSemaine, m) {
+  if (!etat.semaines[idSemaine]) etat.semaines[idSemaine] = { mots: {} };
+  var mots = etat.semaines[idSemaine].mots;
+  var k = cleMot(m);
+  if (!mots[k]) mots[k] = { s: 0, jour: '', gainJour: 0, vus: 0, ok: 0, ko: 0 };
+  if (mots[k].jour !== aujourdhui()) { mots[k].jour = aujourdhui(); mots[k].gainJour = 0; }
+  return mots[k];
+}
+function acquis(idSemaine, m) { return progres(idSemaine, m).s >= CIBLE; }
+function nbAcquis(sem) {
+  var n = 0;
+  for (var i = 0; i < sem.mots.length; i++) if (acquis(sem.id, sem.mots[i])) n++;
+  return n;
+}
+function pointsTotaux(sem) {
+  var t = 0;
+  for (var i = 0; i < sem.mots.length; i++) t += progres(sem.id, sem.mots[i]).s;
+  return t;
+}
+
+/* ── Chargement des listes ────────────────────────────── */
+function charger() {
+  return fetch('data/index.json', { cache: 'no-cache' })
+    .then(function (r) { return r.json(); })
+    .then(function (idx) {
+      return Promise.all(idx.semaines.map(function (s) {
+        return fetch(s.fichier, { cache: 'no-cache' }).then(function (r) { return r.json(); });
+      }));
+    })
+    .then(function (listes) {
+      semaines = listes.filter(function (l) { return l && l.mots && l.mots.length; });
+      return semaines;
+    });
+}
+
+/* ── Navigation ───────────────────────────────────────── */
+function montrer(id) {
+  ['ecran-accueil', 'ecran-modes', 'ecran-train', 'ecran-recap', 'ecran-reglages'].forEach(function (e) {
+    var el = document.getElementById(e);
+    el.classList.add('cache');
+    if (e === 'ecran-train') el.style.display = 'none';
+  });
+  var cible = document.getElementById(id);
+  cible.classList.remove('cache');
+  if (id === 'ecran-train') cible.style.display = 'flex';
+  document.getElementById('btn-retour').style.display = (id === 'ecran-accueil') ? 'none' : 'flex';
+  window.scrollTo(0, 0);
+}
+
+function allerAccueil() {
+  session = null; courant = null; semaineCourante = null;
+  document.getElementById('ecran-titre').textContent = 'Woordentrainer';
+  document.getElementById('ecran-soustitre').textContent = 'Néerlandais · Français';
+  rendreAccueil();
+  montrer('ecran-accueil');
+}
+function allerModes() {
+  document.getElementById('ecran-titre').textContent = semaineCourante.titre;
+  document.getElementById('ecran-soustitre').textContent = semaineCourante.theme || '';
+  rendreResumeSemaine();
+  montrer('ecran-modes');
+}
+function allerReglages() {
+  rendreReglages();
+  document.getElementById('ecran-titre').textContent = 'Réglages';
+  document.getElementById('ecran-soustitre').textContent = 'Rythme, sauvegarde, remise à zéro';
+  montrer('ecran-reglages');
+}
+
+/* ── Accueil ──────────────────────────────────────────── */
+function rendreAccueil() {
+  var c = document.getElementById('liste-semaines');
+  c.innerHTML = '';
+  if (!semaines.length) {
+    c.innerHTML = '<div class="bloc"><h3>Aucune liste</h3><p>Les listes se chargent depuis le dossier <code>data/</code> du dépôt. Vérifie ta connexion pour la première ouverture.</p></div>';
+    return;
+  }
+  semaines.forEach(function (sem) {
+    var a = nbAcquis(sem), tot = sem.mots.length;
+    var pct = Math.round(a / tot * 100);
+    var d = document.createElement('div');
+    d.className = 'carte-semaine' + (a === tot ? ' terminee' : '');
+    d.onclick = function () { semaineCourante = sem; allerModes(); };
+    d.innerHTML =
+      '<div class="cs-haut"><div class="cs-titre">' + esc(sem.titre) + '</div>' +
+      '<div class="cs-fraction">' + a + ' / ' + tot + '</div></div>' +
+      '<div class="cs-theme">' + esc(sem.theme || '') + '</div>' +
+      '<div class="jauge' + (a === tot ? ' verte' : '') + '"><i style="width:' + pct + '%"></i></div>' +
+      '<div class="cs-bas"><span>' + pointsTotaux(sem) + ' / ' + (tot * CIBLE) + ' points</span>' +
+      '<span>' + (a === tot ? 'Liste terminée' : 'Toucher pour continuer') + '</span></div>' +
+      '<div class="grille-mots">' + tuiles(sem) + '</div>';
+    c.appendChild(d);
+  });
+}
+function tuiles(sem) {
+  return sem.mots.map(function (m) {
+    var s = progres(sem.id, m).s;
+    var cl = s >= CIBLE ? 'ok' : s >= 7 ? 'n3' : s >= 4 ? 'n2' : s >= 1 ? 'n1' : '';
+    return '<div class="tuile ' + cl + '"></div>';
+  }).join('');
+}
+function rendreResumeSemaine() {
+  var sem = semaineCourante;
+  var a = nbAcquis(sem), tot = sem.mots.length;
+  var restants = tot - a;
+  document.getElementById('resume-semaine').innerHTML =
+    '<div class="carte-semaine" style="cursor:default">' +
+    '<div class="cs-haut"><div class="cs-titre">' + a + ' mot' + (a > 1 ? 's' : '') + ' acquis</div>' +
+    '<div class="cs-fraction">sur ' + tot + '</div></div>' +
+    '<div class="cs-theme">' + (restants === 0 ? 'Liste terminée, tu peux réviser librement.' : restants + ' mot' + (restants > 1 ? 's' : '') + ' à amener au bout.') + '</div>' +
+    '<div class="jauge' + (a === tot ? ' verte' : '') + '"><i style="width:' + Math.round(a / tot * 100) + '%"></i></div>' +
+    '<div class="grille-mots">' + tuiles(sem) + '</div></div>';
+}
+
+/* ── Choix du prochain mot ────────────────────────────── */
+function candidats() {
+  var sem = semaineCourante;
+  var cap = parseInt(etat.reglages.capJour, 10);
+  var libres = [], captes = [], finis = [];
+  sem.mots.forEach(function (m) {
+    var p = progres(sem.id, m);
+    if (p.s >= CIBLE) finis.push(m);
+    else if (p.gainJour >= cap) captes.push(m);
+    else libres.push(m);
+  });
+  return { libres: libres, captes: captes, finis: finis };
+}
+function choisirMot() {
+  var c = candidats();
+  var pool = c.libres;
+  var sansPoints = false;
+  if (!pool.length) { pool = c.captes.concat(c.finis); sansPoints = true; }
+  if (!pool.length) return null;
+
+  var sem = semaineCourante;
+  pool = pool.slice().sort(function (a, b) { return progres(sem.id, a).s - progres(sem.id, b).s; });
+  var fenetre = pool.slice(0, Math.max(6, Math.ceil(pool.length * 0.3)));
+  var dispo = fenetre.filter(function (m) { return recemment.indexOf(cleMot(m)) === -1; });
+  if (!dispo.length) dispo = fenetre;
+  var m = dispo[Math.floor(Math.random() * dispo.length)];
+  recemment.push(cleMot(m));
+  if (recemment.length > 4) recemment.shift();
+  return { mot: m, sansPoints: sansPoints };
+}
+function choisirSens() {
+  var d = etat.reglages.direction;
+  if (d === 'fr-nl') return 'fr-nl';
+  if (d === 'nl-fr') return 'nl-fr';
+  return Math.random() < 0.5 ? 'fr-nl' : 'nl-fr';
+}
+function choisirMode(score) {
+  if (session.mode !== 'mix') return session.mode;
+  if (score < 3) return Math.random() < 0.7 ? 'flash' : 'vf';
+  if (score < 7) return Math.random() < 0.55 ? 'qcm' : 'flash';
+  return Math.random() < 0.8 ? 'qcm' : 'flash';
+}
+
+/* ── Session ──────────────────────────────────────────── */
+function demarrer(mode) {
+  session = { mode: mode, faites: 0, justes: 0, faux: 0, gain: 0, acquisAvant: nbAcquis(semaineCourante) };
+  recemment = [];
+  document.getElementById('ecran-titre').textContent = semaineCourante.titre;
+  document.getElementById('ecran-soustitre').textContent =
+    ({ mix: 'Mélange', flash: 'Cartes', qcm: 'QCM', vf: 'Vrai ou faux' })[mode];
+  montrer('ecran-train');
+  prochaine();
+}
+
+function prochaine() {
+  document.getElementById('btn-suivant').classList.add('cache');
+  document.getElementById('retour-info').innerHTML = '';
+  majJaugeSemaine();
+
+  if (session.faites >= QUESTIONS_PAR_SESSION) { terminerSession(); return; }
+
+  var pick = choisirMot();
+  if (!pick) { terminerSession(); return; }
+
+  var sem = semaineCourante;
+  var p = progres(sem.id, pick.mot);
+  var mode = choisirMode(p.s);
+  courant = { mot: pick.mot, mode: mode, sens: choisirSens(), sansPoints: pick.sansPoints, repondu: false };
+
+  ['bloc-flash', 'bloc-qcm', 'bloc-vf'].forEach(function (id) { document.getElementById(id).classList.add('cache'); });
+  if (mode === 'flash') afficherFlash();
+  else if (mode === 'qcm') afficherQCM();
+  else afficherVF();
+}
+
+function majJaugeSemaine() {
+  var sem = semaineCourante;
+  var a = nbAcquis(sem), tot = sem.mots.length;
+  document.querySelector('#jauge-semaine i').style.width = Math.round(a / tot * 100) + '%';
+  document.getElementById('jauge-semaine').classList.toggle('verte', a === tot);
+  document.getElementById('compteur-semaine').textContent = a + ' / ' + tot + ' acquis';
+}
+function libelleScore(p) {
+  var cap = parseInt(etat.reglages.capJour, 10);
+  if (p.gainJour >= cap && p.s < CIBLE) return p.s + '/' + CIBLE + ' · max du jour';
+  return p.s + '/' + CIBLE;
+}
+
+/* ── Carte ────────────────────────────────────────────── */
+function afficherFlash() {
+  var m = courant.mot, nlAv = (courant.sens === 'nl-fr');
+  document.getElementById('carte-int').classList.remove('retournee');
+  document.getElementById('flash-lang-av').textContent = nlAv ? 'Nederlands' : 'Français';
+  document.getElementById('flash-mot-av').textContent = nlAv ? m.nl : m.fr;
+  document.getElementById('flash-lang-ar').textContent = nlAv ? 'Français' : 'Nederlands';
+  document.getElementById('flash-mot-ar').textContent = nlAv ? m.fr : m.nl;
+  document.getElementById('flash-note').textContent = m.note || '';
+  document.getElementById('bloc-flash').classList.remove('cache');
+}
+function retournerCarte() {
+  document.getElementById('carte-int').classList.toggle('retournee');
+}
+function repondreFlash(su) {
+  if (courant.repondu) return;
+  courant.repondu = true;
+  document.getElementById('carte-int').classList.add('retournee');
+  appliquer(su, 'flash');
+  if (su) { setTimeout(prochaine, 550); }
+  else { document.getElementById('btn-suivant').classList.remove('cache'); }
+}
+
+/* ── QCM ──────────────────────────────────────────────── */
+function afficherQCM() {
+  var m = courant.mot, sem = semaineCourante;
+  var question = (courant.sens === 'nl-fr') ? m.nl : m.fr;
+  var reponse = (courant.sens === 'nl-fr') ? m.fr : m.nl;
+  document.getElementById('qcm-lang').textContent = (courant.sens === 'nl-fr') ? 'Nederlands' : 'Français';
+  document.getElementById('qcm-mot').textContent = question;
+  document.getElementById('qcm-score').textContent = libelleScore(progres(sem.id, m));
+
+  var autres = sem.mots
+    .map(function (x) { return (courant.sens === 'nl-fr') ? x.fr : x.nl; })
+    .filter(function (t) { return t !== reponse; });
+  autres = melange(autres).slice(0, 3);
+  var opts = melange([reponse].concat(autres));
+
+  var c = document.getElementById('qcm-options');
+  c.innerHTML = '';
+  opts.forEach(function (t) {
+    var b = document.createElement('button');
+    b.className = 'option';
+    b.textContent = t;
+    b.onclick = function () { repondreQCM(b, t, reponse); };
+    c.appendChild(b);
+  });
+  document.getElementById('bloc-qcm').classList.remove('cache');
+}
+function repondreQCM(btn, choix, reponse) {
+  if (courant.repondu) return;
+  courant.repondu = true;
+  var boutons = document.querySelectorAll('#qcm-options .option');
+  if (choix === reponse) {
+    btn.classList.add('juste');
+    boutons.forEach(function (b) { if (b !== btn) b.classList.add('eteinte'); });
+    appliquer(true, 'qcm');
+    setTimeout(prochaine, 450);
+  } else {
+    btn.classList.add('fausse');
+    appliquer(false, 'qcm');
+    boutons.forEach(function (b) {
+      if (b.textContent === reponse) {
+        b.classList.add('a-toucher');
+        b.onclick = function () { b.classList.remove('a-toucher'); b.classList.add('juste'); prochaine(); };
+      } else if (b !== btn) { b.classList.add('eteinte'); b.onclick = null; }
+    });
+    document.getElementById('retour-info').innerHTML =
+      'C\'était <strong>' + esc(reponse) + '</strong>. Touche-le pour continuer. ' + badge(-courant.perte);
+  }
+}
+
+/* ── Vrai / faux ──────────────────────────────────────── */
+function afficherVF() {
+  var m = courant.mot, sem = semaineCourante;
+  courant.vfVrai = Math.random() < 0.5;
+  var affiche = m.fr;
+  if (!courant.vfVrai) {
+    var autres = sem.mots.filter(function (x) { return x.fr !== m.fr; });
+    if (autres.length) affiche = autres[Math.floor(Math.random() * autres.length)].fr;
+    else courant.vfVrai = true;
+  }
+  document.getElementById('vf-nl').textContent = m.nl;
+  document.getElementById('vf-fr').textContent = affiche;
+  document.getElementById('vf-score').textContent = libelleScore(progres(sem.id, m));
+  document.getElementById('vf-vrai').disabled = false;
+  document.getElementById('vf-faux').disabled = false;
+  document.getElementById('bloc-vf').classList.remove('cache');
+}
+function repondreVF(rep) {
+  if (courant.repondu) return;
+  courant.repondu = true;
+  document.getElementById('vf-vrai').disabled = true;
+  document.getElementById('vf-faux').disabled = true;
+  var juste = (rep === courant.vfVrai);
+  appliquer(juste, 'vf');
+  if (juste) { setTimeout(prochaine, 400); }
+  else {
+    document.getElementById('retour-info').innerHTML =
+      '<strong>' + esc(courant.mot.nl) + '</strong> = ' + esc(courant.mot.fr) + ' ' + badge(-courant.perte);
+    document.getElementById('btn-suivant').classList.remove('cache');
+  }
+}
+
+/* ── Points ───────────────────────────────────────────── */
+function appliquer(juste, mode) {
+  var sem = semaineCourante;
+  var p = progres(sem.id, courant.mot);
+  var val = POINTS[mode];
+  var cap = parseInt(etat.reglages.capJour, 10);
+  p.vus++;
+  session.faites++;
+
+  if (juste) {
+    session.justes++;
+    if (!courant.sansPoints) {
+      var possible = Math.max(0, cap - p.gainJour);
+      var gain = Math.min(val, possible, CIBLE - p.s);
+      p.s += gain; p.gainJour += gain; session.gain += gain;
+      p.ok++;
+      if (gain > 0) {
+        document.getElementById('retour-info').innerHTML =
+          badge(gain) + (p.s >= CIBLE ? ' <span style="color:var(--green)">mot acquis</span>' : '');
+      } else {
+        document.getElementById('retour-info').innerHTML =
+          '<span class="gain">maximum atteint pour ce mot aujourd\'hui</span>';
+      }
+    } else {
+      p.ok++;
+      document.getElementById('retour-info').innerHTML = '<span class="gain">révision libre</span>';
+    }
+  } else {
+    session.faux++;
+    p.ko++;
+    var perte = courant.sansPoints ? 0 : Math.min(val, p.s);
+    p.s -= perte; session.gain -= perte;
+    courant.perte = perte;
+  }
+  sauverEtat();
+  majJaugeSemaine();
+}
+function badge(n) {
+  return '<span class="gain ' + (n >= 0 ? 'plus' : 'moins') + '">' + (n >= 0 ? '+' : '') + n + ' point' + (Math.abs(n) > 1 ? 's' : '') + '</span>';
+}
+
+/* ── Fin de session ───────────────────────────────────── */
+function terminerSession() {
+  if (!session) { allerAccueil(); return; }
+  var sem = semaineCourante;
+  var a = nbAcquis(sem), tot = sem.mots.length;
+  var nouveaux = a - session.acquisAvant;
+
+  document.getElementById('recap-gain').textContent = (session.gain >= 0 ? '+' : '') + session.gain;
+  document.getElementById('recap-questions').textContent = session.faites;
+  document.getElementById('recap-justes').textContent = session.justes;
+  document.getElementById('recap-acquis').textContent = nouveaux;
+  document.querySelector('#recap-jauge i').style.width = Math.round(a / tot * 100) + '%';
+  document.getElementById('recap-jauge').classList.toggle('verte', a === tot);
+
+  var msg;
+  if (session.faites === 0) msg = 'Aucune question, rien de perdu.';
+  else if (a === tot) msg = 'La liste est terminée. Tu peux réviser librement ou passer à la suivante.';
+  else if (nouveaux > 0) msg = nouveaux + ' mot' + (nouveaux > 1 ? 's ont' : ' a') + ' atteint le bout. Il en reste ' + (tot - a) + '.';
+  else msg = 'Rien de nouveau au compteur, mais les scores ont bougé.';
+  document.getElementById('recap-msg').textContent = msg;
+
+  var c = candidats();
+  document.getElementById('recap-restant').textContent =
+    c.libres.length ? c.libres.length + ' mot' + (c.libres.length > 1 ? 's' : '') + ' peuvent encore progresser aujourd\'hui'
+                    : 'Tous les mots ont atteint leur maximum du jour. Reviens demain.';
+
+  session = null;
+  montrer('ecran-recap');
+  document.getElementById('ecran-soustitre').textContent = 'Session terminée';
+}
+
+/* ── Réglages ─────────────────────────────────────────── */
+function rendreReglages() {
+  document.getElementById('reg-cap').value = String(etat.reglages.capJour);
+  document.getElementById('reg-dir').value = etat.reglages.direction;
+  document.getElementById('zone-sauvegarde').value = JSON.stringify(etat);
+  var sel = document.getElementById('reg-reset');
+  sel.innerHTML = semaines.map(function (s) { return '<option value="' + s.id + '">' + esc(s.titre) + '</option>'; }).join('');
+  document.getElementById('mini-version').textContent = 'Woordentrainer · ' + (semaines.length) + ' liste(s) chargée(s)';
+}
+function majReglage(k, v) { etat.reglages[k] = (k === 'capJour') ? parseInt(v, 10) : v; sauverEtat(); }
+function copierSauvegarde() {
+  var t = document.getElementById('zone-sauvegarde');
+  t.removeAttribute('readonly'); t.select(); t.setSelectionRange(0, 999999);
+  try { document.execCommand('copy'); } catch (e) {}
+  if (navigator.clipboard) { navigator.clipboard.writeText(t.value); }
+  t.setAttribute('readonly', 'readonly');
+  alert('Progression copiée.');
+}
+function restaurerSauvegarde() {
+  var v = prompt('Colle ici une sauvegarde :');
+  if (!v) return;
+  try {
+    var o = JSON.parse(v);
+    if (!o.semaines) throw new Error('format');
+    etat = o; sauverEtat(); rendreReglages();
+    alert('Progression restaurée.');
+  } catch (e) { alert('Ce texte n\'est pas une sauvegarde valide.'); }
+}
+function reinitialiserSemaine() {
+  var id = document.getElementById('reg-reset').value;
+  if (!id) return;
+  if (!confirm('Effacer tous les scores de cette liste ?')) return;
+  delete etat.semaines[id];
+  sauverEtat();
+  alert('Scores effacés.');
+}
+
+/* ── Thème ────────────────────────────────────────────── */
+function appliquerTheme(t) {
+  document.body.classList.toggle('clair', t === 'clair');
+  document.getElementById('btn-theme').textContent = (t === 'clair') ? '☾' : '☀';
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', t === 'clair' ? '#f5f5f0' : '#121212');
+}
+function basculerTheme() {
+  etat.reglages.theme = (etat.reglages.theme === 'clair') ? 'sombre' : 'clair';
+  appliquerTheme(etat.reglages.theme);
+  sauverEtat();
+}
+
+/* ── Outils ───────────────────────────────────────────── */
+function melange(a) {
+  var b = a.slice();
+  for (var i = b.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = b[i]; b[i] = b[j]; b[j] = t; }
+  return b;
+}
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c];
+  });
+}
+
+/* ── Installation & mise à jour ───────────────────────── */
+window.addEventListener('beforeinstallprompt', function (e) {
+  e.preventDefault();
+  promptInstall = e;
+  document.getElementById('bandeau-install').classList.add('visible');
+});
+function lancerInstall() {
+  document.getElementById('bandeau-install').classList.remove('visible');
+  if (promptInstall) { promptInstall.prompt(); promptInstall = null; }
+}
+window.addEventListener('appinstalled', function () {
+  document.getElementById('bandeau-install').classList.remove('visible');
+});
+function appliquerMaj() {
+  if (swAttente) swAttente.postMessage('skip-waiting');
+  document.getElementById('bandeau-maj').classList.remove('visible');
+  setTimeout(function () { location.reload(); }, 300);
+}
+function enregistrerSW() {
+  if (!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker.register('sw.js').then(function (reg) {
+    if (reg.waiting) { swAttente = reg.waiting; document.getElementById('bandeau-maj').classList.add('visible'); }
+    reg.addEventListener('updatefound', function () {
+      var nv = reg.installing;
+      if (!nv) return;
+      nv.addEventListener('statechange', function () {
+        if (nv.state === 'installed' && navigator.serviceWorker.controller) {
+          swAttente = nv;
+          document.getElementById('bandeau-maj').classList.add('visible');
+        }
+      });
+    });
+  }).catch(function () {});
+}
+
+/* ── Démarrage ────────────────────────────────────────── */
+etat = chargerEtat();
+appliquerTheme(etat.reglages.theme);
+charger().then(function () {
+  rendreAccueil();
+  montrer('ecran-accueil');
+}).catch(function () {
+  document.getElementById('liste-semaines').innerHTML =
+    '<div class="bloc"><h3>Listes introuvables</h3><p>L\'app n\'a pas pu lire le dossier <code>data/</code>. Si c\'est la première ouverture, connecte-toi une fois à Internet.</p></div>';
+  montrer('ecran-accueil');
+});
+enregistrerSW();
+</script>
+</body>
+</html>
