@@ -8,9 +8,6 @@
 <meta name="theme-color" content="#F5F8FC">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 :root {
@@ -19,7 +16,7 @@
   --line:#DDE5EF; --empty:#E9EFF6;
   --b1:#DCE8F7; --b2:#7FA8DC; --b3:#3D6FB8; --acc:#12408C; --acc-on:#FFFFFF; --acc-soft:#EAF1FB;
   --bad:#C0392B; --bad-soft:#FBEBE9; --bad-line:#E8B4AE;
-  --serif:'Fraunces',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+  --serif:Verdana,Geneva,sans-serif; --sans:Arial,Helvetica,sans-serif;
 }
 body.nuit {
   --paper:#0C1420; --page:#0C1420; --card:#131E2E;
@@ -201,29 +198,28 @@ body:not([data-heat="0"]) #wt-sol { opacity: .9; }
 .wt-langue {
   position: absolute; bottom: 0; width: var(--w); height: var(--h);
   transform-origin: 50% 100%;
-  background: radial-gradient(56% 62% at 50% 84%,
-    var(--f-jaune) 0%, var(--f-ambre) 38%, var(--f-orange) 66%, var(--f-brique) 88%, transparent 91%);
   border-radius: 46% 54% 30% 70% / 72% 66% 34% 28%;
   animation: wtLecher calc(var(--dur) * var(--tempo)) ease-in-out var(--del) infinite;
-  opacity: var(--op);
   transition: height .7s cubic-bezier(.3,1.2,.5,1);
+  will-change: transform;
 }
-.wt-langue::after {
-  content: ''; position: absolute; left: 24%; right: 24%; top: 34%; bottom: 5%;
-  background: radial-gradient(50% 58% at 50% 86%, #FBE9B8 0%, var(--f-jaune) 48%, transparent 76%);
-  border-radius: inherit;
-  animation: wtLecher calc(var(--dur) * var(--tempo) * .8) ease-in-out calc(var(--del) * 1.3) infinite reverse;
-}
-body[data-heat="5"] .wt-langue::after { background: radial-gradient(50% 58% at 50% 86%, #FFFFFF 0%, #FFF3D6 48%, transparent 76%); }
+/* trois rangs superposés : silhouette brique à l'arrière, corps orange,
+   cœurs clairs à l'avant — le relief vient des couches, pas du nombre */
+.wt-langue.r1 { background: radial-gradient(58% 66% at 50% 86%, var(--f-orange) 0%, var(--f-brique) 58%, transparent 86%); opacity: .85; }
+.wt-langue.r2 { background: radial-gradient(56% 62% at 50% 84%, var(--f-ambre) 0%, var(--f-orange) 48%, var(--f-brique) 78%, transparent 88%); opacity: .95; }
+.wt-langue.r3 { background: radial-gradient(54% 60% at 50% 84%, #FBE9B8 0%, var(--f-jaune) 28%, var(--f-ambre) 56%, var(--f-orange) 84%, transparent 90%); }
+body[data-heat="5"] .wt-langue.r3 { background: radial-gradient(54% 60% at 50% 84%, #FFFFFF 0%, #FFF3D6 30%, var(--f-ambre) 60%, var(--f-orange) 86%, transparent 90%); }
+/* à froid, rien ne tourne : les couches de feu sont retirées du rendu */
+body[data-heat="0"] #wt-feu:not(.etouffe), body[data-heat="0"] #wt-lueur, body[data-heat="0"] #wt-sol { display: none; }
 @keyframes wtLecher {
   0%,100% { transform: translateY(9%) scaleY(.9) scaleX(1.02); }
   28% { transform: translateY(0) scaleY(1.1) scaleX(.94) skewX(2.5deg); }
   55% { transform: translateY(5%) scaleY(.96) scaleX(1.04) skewX(-2deg); }
   78% { transform: translateY(1%) scaleY(1.05) scaleX(.98) skewX(1.5deg); }
 }
-.wt-frange { position: fixed; top: 10dvh; bottom: 0; width: 26px; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 1s ease; }
+.wt-frange { position: fixed; top: 10dvh; bottom: 0; width: 26px; z-index: 1; pointer-events: none; display: none; opacity: .85; }
 .wt-frange.g { left: -8px; } .wt-frange.d { right: -8px; }
-body[data-heat="5"] .wt-frange { opacity: .85; }
+body[data-heat="5"] .wt-frange { display: block; }
 .wt-frange i {
   position: absolute; width: 22px; height: var(--h); transform-origin: 50% 100%;
   background: radial-gradient(56% 64% at 50% 84%, var(--f-jaune) 0%, var(--f-ambre) 42%, var(--f-orange) 72%, transparent 78%);
@@ -233,10 +229,10 @@ body[data-heat="5"] .wt-frange { opacity: .85; }
 .wt-chaleur {
   position: fixed; bottom: 0; width: 34px; height: 30dvh; z-index: 0; pointer-events: none;
   background: linear-gradient(to top, rgba(240,114,38,.12), transparent 80%);
-  border-radius: 50%; opacity: 0;
+  border-radius: 50%; display: none;
   animation: wtMonterVague calc(2.6s * var(--tempo)) ease-in var(--del) infinite;
 }
-body[data-heat="4"] .wt-chaleur, body[data-heat="5"] .wt-chaleur { opacity: 1; }
+body[data-heat="4"] .wt-chaleur, body[data-heat="5"] .wt-chaleur { display: block; }
 @keyframes wtMonterVague {
   0% { transform: translateY(20%) scaleY(.6); opacity: 0; }
   25% { opacity: .8; }
@@ -269,8 +265,8 @@ body[data-heat="5"] .wt-serie b {
   background: linear-gradient(180deg, var(--f-brique) 20%, var(--f-orange) 60%, var(--f-ambre) 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.wt-serie .couronne { position: absolute; left: 10px; right: 10px; top: -9px; height: 12px; pointer-events: none; opacity: 0; transition: opacity .6s; }
-body[data-heat="3"] .wt-serie .couronne, body[data-heat="4"] .wt-serie .couronne, body[data-heat="5"] .wt-serie .couronne { opacity: 1; }
+.wt-serie .couronne { position: absolute; left: 10px; right: 10px; top: -9px; height: 12px; pointer-events: none; display: none; }
+body[data-heat="3"] .wt-serie .couronne, body[data-heat="4"] .wt-serie .couronne, body[data-heat="5"] .wt-serie .couronne { display: block; }
 .wt-serie .couronne i {
   position: absolute; bottom: 0; width: 9px; height: 12px; transform-origin: 50% 100%;
   background: radial-gradient(58% 64% at 50% 84%, var(--f-jaune) 0%, var(--f-ambre) 46%, var(--f-orange) 76%, transparent 80%);
@@ -346,8 +342,10 @@ body:not([data-heat="0"]) .opt.juste { border-color: var(--f-ambre); }
 .wt-flashb { position: absolute; inset: 0; background: #fff; opacity: .8; pointer-events: none; animation: wtFlashImpact calc(.22s * var(--tempo)) ease-out forwards; }
 body.nuit .wt-flashb { opacity: .45; }
 @keyframes wtFlashImpact { to { opacity: 0; } }
-body[data-heat="4"] .opt:not(.juste):not(.faux):not(.pale), body[data-heat="5"] .opt:not(.juste):not(.faux):not(.pale) { animation: wtPresIgnition 1.6s ease-in-out infinite alternate; }
-@keyframes wtPresIgnition { from { border-color: var(--line); } to { border-color: #E5C09A; } }
+.opt .peau::before { content: ''; position: absolute; inset: -1px; border: 1px solid #E5C09A; border-radius: inherit; opacity: 0; }
+body.nuit .opt .peau::before { border-color: #6B4A2A; }
+body[data-heat="4"] .opt:not(.juste):not(.faux):not(.pale) .peau::before, body[data-heat="5"] .opt:not(.juste):not(.faux):not(.pale) .peau::before { animation: wtPresIgnition 1.6s ease-in-out infinite alternate; }
+@keyframes wtPresIgnition { from { opacity: 0; } to { opacity: 1; } }
 .opt.roussi { border-color: #E0BE97; }
 body.nuit .opt.roussi { border-color: #5A4028; }
 .opt.roussi .peau::after {
@@ -1145,20 +1143,26 @@ function wtPalier(s) {
 }
 function wtConstruireFeu() {
   var h = document.getElementById('wt-feu'); h.innerHTML = '';
-  for (var i = 0; i < 24; i++) {
-    var d = document.createElement('div');
-    d.className = 'wt-langue';
-    var x = (i / 23) * 100;
-    var w = 28 + Math.random() * 32;
-    d.style.left = 'calc(' + x + '% - ' + (w / 2).toFixed(0) + 'px)';
-    d.style.setProperty('--w', w.toFixed(0) + 'px');
-    d.dataset.part = (.45 + Math.random() * .55).toFixed(2);
-    d.style.setProperty('--h', '0px');
-    d.style.setProperty('--dur', (.38 + Math.random() * .34).toFixed(2) + 's');
-    d.style.setProperty('--del', (-Math.random()).toFixed(2) + 's');
-    d.style.setProperty('--op', (.8 + Math.random() * .2).toFixed(2));
-    h.appendChild(d);
-  }
+  var rangs = [
+    { n: 5, cls: 'r1', w: [70, 110], part: [.8, 1], dur: [.55, .75] },
+    { n: 4, cls: 'r2', w: [50, 80], part: [.58, .78], dur: [.45, .6] },
+    { n: 3, cls: 'r3', w: [34, 52], part: [.4, .55], dur: [.35, .5] }
+  ];
+  rangs.forEach(function (rg) {
+    for (var i = 0; i < rg.n; i++) {
+      var d = document.createElement('div');
+      d.className = 'wt-langue ' + rg.cls;
+      var w = rg.w[0] + Math.random() * (rg.w[1] - rg.w[0]);
+      var x = ((i + .5) / rg.n) * 100 + (Math.random() - .5) * 10;
+      d.style.left = 'calc(' + x.toFixed(1) + '% - ' + (w / 2).toFixed(0) + 'px)';
+      d.style.setProperty('--w', w.toFixed(0) + 'px');
+      d.dataset.part = (rg.part[0] + Math.random() * (rg.part[1] - rg.part[0])).toFixed(2);
+      d.style.setProperty('--h', '0px');
+      d.style.setProperty('--dur', (rg.dur[0] + Math.random() * (rg.dur[1] - rg.dur[0])).toFixed(2) + 's');
+      d.style.setProperty('--del', (-Math.random()).toFixed(2) + 's');
+      h.appendChild(d);
+    }
+  });
   var c = document.getElementById('wt-couronne');
   for (var j = 0; j < 5; j++) {
     var f = document.createElement('i');
@@ -1168,7 +1172,7 @@ function wtConstruireFeu() {
   }
   ['wt-frange-g', 'wt-frange-d'].forEach(function (id) {
     var fr = document.getElementById(id);
-    for (var k = 0; k < 9; k++) {
+    for (var k = 0; k < 6; k++) {
       var t = document.createElement('i');
       t.style.bottom = (k * 11) + '%';
       t.style.setProperty('--h', (26 + Math.random() * 26).toFixed(0) + 'px');
