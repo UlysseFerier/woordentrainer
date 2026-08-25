@@ -181,13 +181,20 @@ body[data-heat="5"] #wt-lueur { background: linear-gradient(to top, rgba(255,194
 }
 body:not([data-heat="0"]) #wt-sol { opacity: .9; }
 @keyframes wtSolFlick { from{opacity:.75} to{opacity:1} }
+/* La transform de #wt-feu ne bouge JAMAIS : c'est ce qui garde la couche
+   compositée promue en permanence. Tout le mouvement passe par .wtf-boite. */
 #wt-feu {
-  position: fixed; left: 0; right: 0; bottom: -4px; height: 160px; z-index: 1;
-  pointer-events: none; transform: translateZ(0); transform-origin: 50% 100%;
+  /* 300px et non 160 : contain:paint découpe au ras de la boîte, or au palier
+     le plus haut une flamme monte à ~200px. Les foyers restent calés en bas. */
+  position: fixed; left: 0; right: 0; bottom: -4px; height: 300px; z-index: 1;
+  pointer-events: none; transform: translateZ(0); contain: paint;
+}
+.wtf-boite {
+  position: absolute; inset: 0; transform-origin: 50% 100%;
   transition: transform .5s cubic-bezier(.3,1.3,.5,1);
 }
-#wt-feu.etouffe { transform: translateY(105%); transition: transform .4s ease-in; }
-#wt-feu.boum { animation: wtFeuBoum .5s cubic-bezier(.3,1.5,.5,1); }
+#wt-feu.etouffe .wtf-boite { transform: translateY(105%); transition: transform .4s ease-in; }
+#wt-feu.boum .wtf-boite { animation: wtFeuBoum .5s cubic-bezier(.3,1.5,.5,1); }
 @keyframes wtFeuBoum { 0%{transform:scaleY(1)} 35%{transform:scaleY(1.18)} 100%{transform:scaleY(1)} }
 .wtf { position: absolute; bottom: 0; width: var(--w); height: calc(var(--w) * 1.35); }
 .wtf svg { display: block; width: 100%; height: 100%; overflow: visible; }
@@ -199,14 +206,17 @@ body:not([data-heat="0"]) #wt-sol { opacity: .9; }
   transition: transform .5s steps(5, end);
 }
 /* trois poses dessinées, jouées en boucle sans interpolation : le saut d'une
-   pose à l'autre remplace l'ondulation, qui donnait l'effet feuille de papier. */
-.wtf .pose { animation-duration: calc(var(--cad) * var(--tempo)); animation-timing-function: steps(1, end); animation-iteration-count: infinite; animation-delay: var(--del); }
-.wtf .pose1 { animation-name: wtPose1; }
-.wtf .pose2 { animation-name: wtPose2; }
-.wtf .pose3 { animation-name: wtPose3; }
-@keyframes wtPose1 { 0%,33% { opacity: 1 } 34%,100% { opacity: 0 } }
-@keyframes wtPose2 { 0%,33% { opacity: 0 } 34%,66% { opacity: 1 } 67%,100% { opacity: 0 } }
-@keyframes wtPose3 { 0%,66% { opacity: 0 } 67%,100% { opacity: 1 } }
+   pose à l'autre remplace l'ondulation, qui donnait l'effet feuille de papier.
+   La pose courante est un ATTRIBUT, pas une animation CSS : une animation
+   d'opacité sur un <g> SVG n'est pas compositée par Chrome, elle réclame le
+   thread principal à chaque changement de pose. Quand une bonne réponse
+   bloquait ce thread, la couche du feu n'était plus rastérisée et s'effaçait.
+   Ici une seule horloge JS écrit un attribut : rien à relancer, rien à
+   recalculer quand --tempo change. */
+.wtf .pose { opacity: 0; will-change: opacity; }
+.wtf[data-pose="1"] .pose1,
+.wtf[data-pose="2"] .pose2,
+.wtf[data-pose="3"] .pose3 { opacity: 1; }
 body[data-heat="0"] #wt-feu:not(.etouffe), body[data-heat="0"] #wt-lueur, body[data-heat="0"] #wt-sol { display: none; }
 
 /* compteur de série — n'existe qu'en entraînement, apparaît à 3 justes d'affilée */
@@ -371,8 +381,17 @@ body.nuit .opt.roussi { border-color: #5A4028; }
 #v-reglages { flex: 1; flex-direction: column; min-height: 0; overflow-y: auto; }
 #l-items { flex: 1; min-height: 0; overflow-y: auto; }
 .duo { flex: none; }
-.modes { margin-top: auto; padding-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.modes .b { margin: 0; min-height: 62px; }
+/* le vide de l'accueil part dans les boutons, il ne s'accumule plus dans un
+   trou entre la barre duo et eux */
+.modes {
+  margin-top: 18px; flex: 1 1 auto; min-height: 0; max-height: 46dvh;
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px;
+}
+.modes .b {
+  margin: 0; height: 100%; min-height: 64px; padding: 10px 8px;
+  font-size: 1.06rem; line-height: 1.2;
+  display: flex; align-items: center; justify-content: center;
+}
 #v-recap > div:last-child { margin-top: auto; }
 
 
@@ -409,8 +428,24 @@ body[data-heat="6"] #wt-lueur { background: linear-gradient(to top, rgba(255,231
 body[data-heat="6"] .wt-serie { box-shadow: 0 0 26px rgba(255,255,255,.8), 0 0 12px rgba(255,154,51,.7); }
 
 /* la zone d'actions ne fait plus rien de spécial : le contenu est déjà
-   au-dessus du feu grâce au z-index de .app */
-#v-train .sticky { position: static; margin-bottom: auto; padding: 0 0 6px; }
+   au-dessus du feu grâce au z-index de .app. Elle reste en bas, sous le
+   pouce, et c'est la scène qui absorbe la hauteur libre. */
+#v-train { padding-bottom: max(14px, env(safe-area-inset-bottom)); }
+#v-train .scene {
+  flex: 1 1 auto; min-height: 0;
+  overflow: clip; overflow-clip-margin: 44px;
+  justify-content: center; padding: 14px 0 10px;
+}
+#v-train .sticky { position: static; flex: none; margin: 0; padding: 0; }
+#v-train .opts { gap: 10px; }
+#v-train .opt {
+  min-height: clamp(52px, 8.5dvh, 68px); font-size: 1.02rem;
+  display: flex; align-items: center; justify-content: center;
+}
+/* un item flex ne descend jamais sous sa largeur min-content sans min-width:0 :
+   « Je ne savais pas » débordait face à « Je savais » sur écran étroit */
+.paire-btn .b { flex: 1 1 0; width: auto; min-width: 0; }
+.carte3d { height: clamp(150px, 26dvh, 230px); }
 
 /* en-tête de l'entraînement : sortie à gauche, sens au centre, série à droite */
 .tete-t { display: flex; align-items: center; gap: 10px; min-height: 40px; margin-top: 2px; }
@@ -466,8 +501,9 @@ body:not([data-heat="0"]) #t-actions-vf .b, body:not([data-heat="0"]) #t-juge .b
 .sous-crans { align-items: center; }
 
 /* les boutons de mode respirent, ils ne collent plus au bord */
-#v-accueil .modes { margin-bottom: 6px; }
-#v-accueil.bas { padding-bottom: max(26px, calc(env(safe-area-inset-bottom) + 16px)); }
+#v-accueil .modes { margin-bottom: 4px; }
+#v-accueil.bas { padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px)); }
+#v-train .opt .txt { text-align: center; }
 
 </style>
 </head>
@@ -876,6 +912,20 @@ function charger() {
   return e;
 }
 function sauver() { try { localStorage.setItem('wt2_etat', JSON.stringify(etat)); } catch (x) {} }
+/* sérialiser tout l'état est synchrone et coûte plusieurs dizaines de ms sur
+   téléphone. Le faire dans la frame du clic bloquait le rendu du feu, donc on
+   le repousse — en vidant systématiquement avant que l'app parte en arrière-plan. */
+var wtSauveDiffere = null;
+function sauverPlusTard() {
+  if (wtSauveDiffere) return;
+  wtSauveDiffere = setTimeout(function () { wtSauveDiffere = null; sauver(); }, 450);
+}
+function viderSauvegarde() {
+  if (!wtSauveDiffere) return;
+  clearTimeout(wtSauveDiffere); wtSauveDiffere = null; sauver();
+}
+document.addEventListener('visibilitychange', function () { if (document.hidden) viderSauvegarde(); });
+window.addEventListener('pagehide', viderSauvegarde);
 function jour(d) { d = d || new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
 
 function prog(idl, m) {
@@ -962,6 +1012,7 @@ function voir(n) {
   c.style.display = 'flex';
   document.body.dataset.vue = n;
   if (n !== 'train') { wtStreak = 0; wtPoserChaleur(true); }
+  wtLancerPoses(n === 'train' && wtPalier(wtStreak) >= 1, wtPalier(wtStreak));
   if (n === 'accueil') rendreAccueil();
   if (n === 'listes') rendreListes();
   if (n === 'reglages') rendreReglages();
@@ -1107,6 +1158,7 @@ function montrerFlash() {
   document.getElementById('f-lang-b').textContent = nl ? 'français' : 'nederlands';
   document.getElementById('f-mot-b').textContent = nl ? m.fr : m.nl;
   document.getElementById('t-flash').classList.remove('cache');
+  mesurer([document.getElementById('t-carte')]);
   document.getElementById('t-actions-flash').style.display = 'block';
   document.getElementById('t-flip').style.display = 'block';
   document.getElementById('t-juge').style.display = 'none';
@@ -1151,6 +1203,15 @@ function montrerQCM() {
     c.appendChild(b);
   });
   document.getElementById('t-qcm').classList.remove('cache');
+  mesurer(c.children);
+}
+/* une seule lecture de géométrie, une frame après l'affichage */
+function mesurer(els) {
+  requestAnimationFrame(function () {
+    Array.prototype.forEach.call(els, function (x) {
+      x.dataset.w = x.offsetWidth; x.dataset.h = x.offsetHeight;
+    });
+  });
 }
 function repQCM(b, juste, r) {
   if (!cur || cur.fait) return; cur.fait = true;
@@ -1229,7 +1290,7 @@ function appliquer(juste, mode) {
   var apresPalier = wtPalier(wtStreak);
   if (juste) { son('juste', apresPalier); vibrer(VIBRE[apresPalier] || [12]); }
   wtPoserChaleur();
-  sauver();
+  sauverPlusTard();
   majCran();
 }
 function majCran() {
@@ -1281,6 +1342,7 @@ function finSession() {
   document.getElementById('r-msg').textContent = msg;
   rendreDuo('r-duo');
   session = null; cur = null;
+  viderSauvegarde();
   wtStreak = 0; wtPoserChaleur(true);
   voir('recap');
   pousser().then(function () { return tirer(); }).then(function () { rendreDuo('r-duo'); }).catch(function () {});
@@ -1402,18 +1464,22 @@ function wtPose(s, n) {
 }
 function wtConstruireFeu() {
   var h = document.getElementById('wt-feu'); h.innerHTML = '';
+  var boite = document.createElement('div');
+  boite.className = 'wtf-boite';
+  h.appendChild(boite);
   [{ x: 4, w: 58 }, { x: 22, w: 84 }, { x: 42, w: 104 }, { x: 64, w: 78 }, { x: 82, w: 54 }].forEach(function (pz, i) {
     var d = document.createElement('div');
     d.className = 'wtf';
     d.style.left = pz.x + '%';
     d.style.setProperty('--w', pz.w + 'px');
-    d.style.setProperty('--cad', (.38 + Math.random() * .12).toFixed(2) + 's');
-    d.style.setProperty('--del', (-Math.random() * .5).toFixed(2) + 's');
     d.dataset.base = (.78 + Math.random() * .32).toFixed(2);
+    /* cadence propre à chaque foyer, en ms : c'est ce qui les désynchronise */
+    d.dataset.cad = Math.round(380 + Math.random() * 120);
+    d.dataset.pose = 1 + (i % 3);
     var g = '', dec = i % 3;
     for (var k = 0; k < 3; k++) g += wtPose(WT_SIL[(dec + k) % 3], k + 1);
     d.innerHTML = '<svg viewBox="0 0 60 80" preserveAspectRatio="xMidYMax meet"><g class="taille">' + g + '</g></svg>';
-    h.appendChild(d);
+    boite.appendChild(d);
   });
   var c = document.getElementById('wt-couronne');
   for (var j = 0; j < 5; j++) {
@@ -1422,6 +1488,21 @@ function wtConstruireFeu() {
     f.style.setProperty('--del', (-Math.random() * .5).toFixed(2) + 's');
     c.appendChild(f);
   }
+}
+/* une horloge par foyer, arrêtée dès que le feu n'est pas à l'écran.
+   Changer de palier ne relance rien d'autre que la cadence. */
+var wtHorloges = [];
+var WT_TEMPO = [1, 1, .9, .78, .65, .52, .44];
+function wtLancerPoses(actif, p) {
+  wtHorloges.forEach(function (t) { clearInterval(t); });
+  wtHorloges = [];
+  if (!actif) return;
+  var k = WT_TEMPO[p] || 1;
+  Array.prototype.forEach.call(document.querySelectorAll('#wt-feu .wtf'), function (d) {
+    wtHorloges.push(setInterval(function () {
+      d.dataset.pose = (parseInt(d.dataset.pose, 10) % 3) + 1;
+    }, Math.round(parseInt(d.dataset.cad, 10) * k)));
+  });
 }
 function wtPoserChaleur(silencieux) {
   var p = wtPalier(wtStreak), avant = wtPalierCourant;
@@ -1437,6 +1518,7 @@ function wtPoserChaleur(silencieux) {
       d.style.setProperty('--sx', (sy > 0 ? Math.pow(sy, .55) : 0).toFixed(2));
     });
     wtReglerFlocons(p);
+    wtLancerPoses(p >= 1 && document.body.dataset.vue === 'train', p);
   }
   var el = document.getElementById('wt-serie');
   document.getElementById('wt-serie-n').textContent = wtStreak;
@@ -1461,6 +1543,7 @@ function wtPoserChaleur(silencieux) {
 function wtBoum(p) {
   var feu = document.getElementById('wt-feu');
   feu.classList.remove('boum'); void feu.offsetWidth; feu.classList.add('boum');
+  setTimeout(function () { feu.classList.remove('boum'); }, 520);
   wtSecouer(p >= 5 ? 3 : (p >= 3 ? 2 : 1));
   son('palier', p);
 }
@@ -1496,8 +1579,11 @@ function wtFlancs(b, p) {
   var parCote = [0, 1, 1, 2, 2, 2][p];
   var ech = [0, .9, 1.1, 1.2, 1.4, 1.6][p];
   if (!parCote) return;
-  var r = b.getBoundingClientRect();
-  var w = Math.round(r.width), hh = Math.round(r.height);
+  /* dimensions mesurées à l'affichage de la question, pas ici : lire la
+     géométrie juste après avoir écrit b.style.transform forçait un reflow
+     synchrone en plein clic. */
+  var w = parseInt(b.dataset.w, 10), hh = parseInt(b.dataset.h, 10);
+  if (!w || !hh) { var r = b.getBoundingClientRect(); w = Math.round(r.width); hh = Math.round(r.height); }
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('class', 'wt-fx');
   svg.setAttribute('width', w + 72); svg.setAttribute('height', hh + 34);
