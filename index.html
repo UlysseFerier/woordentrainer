@@ -739,7 +739,8 @@ body[data-vue="train"][data-heat="9"] #wt-eclipse { opacity:1; animation:wtEclip
   <div class="hebdo" id="a-hebdo">
     <span class="pastilles" id="a-pastilles"></span>
     <span class="texte" id="a-hebdo-t"></span>
-    <button class="puce-cad" id="a-cad" onclick="voir('cadeaux')" data-t="cad-t">Récompenses</button>
+    <button class="puce-cad" id="a-cad" onclick="voir('cadeaux')">Cadeaux</button>
+    <button class="puce-cad" id="a-mot" onclick="voir('motecrire')">Un mot</button>
   </div>
   <div class="modes">
     <button class="b" onclick="demarrer('flash')" data-t="m-flash">Cartes</button>
@@ -860,13 +861,6 @@ body[data-vue="train"][data-heat="9"] #wt-eclipse { opacity:1; animation:wtEclip
       </select></div>
   </div>
   <div class="bloc">
-    <h3 id="mot-h">Un mot pour l'autre</h3>
-    <p data-t="mot-p">Ce mot reste invisible jusqu'à ce que l'autre ouvre l'app. Il s'affiche alors une seule fois, puis passe en « lu ».</p>
-    <textarea id="g-mot" maxlength="240" placeholder="…"></textarea>
-    <button class="b" style="margin-top:8px" onclick="deposerMot()" data-t="mot-deposer">Déposer le mot</button>
-    <div class="mot-etat" id="g-mot-etat"></div>
-  </div>
-  <div class="bloc">
     <h3 data-t="g-app">Application</h3>
     <p data-t="g-app-p">La langue de l'interface est indépendante des mots à réviser. Les sons sont générés par le téléphone, aucun fichier n'est téléchargé.</p>
     <div class="rangee"><span data-t="g-langue">Langue de l'interface</span>
@@ -906,6 +900,17 @@ body[data-vue="train"][data-heat="9"] #wt-eclipse { opacity:1; animation:wtEclip
   <div style="font-size:.64rem;color:var(--faint);text-align:center;margin-top:18px" id="g-version"></div>
 </div>
 
+<div id="v-motecrire" class="pad bas cache">
+  <div class="tete">
+    <div class="h-titre" id="mot-h">Un mot</div>
+    <div class="icones"><button class="ico" onclick="voir('accueil')" aria-label="Fermer">✕</button></div>
+  </div>
+  <p style="font-size:.78rem;color:var(--mute);margin-top:6px;line-height:1.5" data-t="mot-p">Ce mot reste invisible jusqu'à ce que l'autre ouvre l'app. Il s'affiche alors une seule fois, puis passe en « lu ».</p>
+  <textarea id="g-mot" maxlength="240" placeholder="…"></textarea>
+  <button class="b plein" style="margin-top:10px" onclick="deposerMot()" data-t="mot-deposer">Déposer le mot</button>
+  <div class="mot-etat" id="g-mot-etat"></div>
+</div>
+
 <div id="v-cadeaux" class="pad bas cache">
   <div class="tete">
     <div class="h-titre" data-t="cad-t">Récompenses</div>
@@ -917,6 +922,8 @@ body[data-vue="train"][data-heat="9"] #wt-eclipse { opacity:1; animation:wtEclip
     <input class="cad-in" id="cad-0" maxlength="90" onchange="ecrireCadeau(0, this.value)">
     <input class="cad-in" id="cad-1" maxlength="90" onchange="ecrireCadeau(1, this.value)">
     <input class="cad-in" id="cad-2" maxlength="90" onchange="ecrireCadeau(2, this.value)">
+    <button class="b plein" style="margin-top:10px" onclick="enregistrerCadeaux()" data-t="cad-enr">Enregistrer mes trois cadeaux</button>
+    <div class="mot-etat" id="cad-etat"></div>
   </div>
   <div class="bloc">
     <h3 id="cad-h-ses">Ce que l'autre propose</h3>
@@ -1026,7 +1033,11 @@ var T = {
     'cad-coupons': 'Récompenses gagnées', 'cad-aucun': 'aucune pour le moment',
     'cad-du-moi': 'gagné par moi', 'cad-du-autre': 'je le dois à @',
     'cad-honorer': 'Honoré', 'cad-fait': 'honoré',
-    'cad-manque': 'Trois cadeaux à poser',
+    'cad-manque': '3 à poser', 'cad-puce': 'Cadeaux', 'mot-puce': 'Un mot',
+    'cad-enr': 'Enregistrer mes trois cadeaux',
+    'cad-ok': 'Cadeaux enregistrés.',
+    'cad-ko': "Les cadeaux sont gardés sur ce téléphone, mais n'ont pas pu partir vers la base. Vérifie la connexion, et que le script SQL a bien été relancé.",
+    'cad-local': 'gardé sur ce téléphone seulement',
     'choix-t': 'Liste terminée',
     'choix-p': 'Les 40 mots sont acquis. Choisis ta récompense parmi les trois propositions de @.',
     'choix-rien': "Les 40 mots sont acquis, mais @ n'a pas encore posé ses trois cadeaux. Reviens ici quand ce sera fait.",
@@ -1103,7 +1114,11 @@ var T = {
     'cad-coupons': 'Verdiende beloningen', 'cad-aucun': 'voorlopig geen',
     'cad-du-moi': 'door mij verdiend', 'cad-du-autre': 'ik ben dit @ verschuldigd',
     'cad-honorer': 'Ingelost', 'cad-fait': 'ingelost',
-    'cad-manque': 'Drie cadeaus in te vullen',
+    'cad-manque': '3 in te vullen', 'cad-puce': 'Cadeaus', 'mot-puce': 'Woordje',
+    'cad-enr': 'Mijn drie cadeaus bewaren',
+    'cad-ok': 'Cadeaus bewaard.',
+    'cad-ko': 'De cadeaus staan op deze telefoon, maar konden niet naar de basis vertrekken. Kijk de verbinding na, en of het SQL-script opnieuw is uitgevoerd.',
+    'cad-local': 'enkel op deze telefoon bewaard',
     'choix-t': 'Lijst afgewerkt',
     'choix-p': 'Alle 40 woorden zijn gekend. Kies je beloning uit de drie voorstellen van @.',
     'choix-rien': 'Alle 40 woorden zijn gekend, maar @ heeft nog geen drie cadeaus vastgelegd. Kom hier terug wanneer dat gebeurd is.',
@@ -1305,7 +1320,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'aa';
+var WT_BUILD = 'ab';
 
 function charger() {
   var e = null;
@@ -1454,7 +1469,7 @@ function restaurerNuage() {
 }
 
 function voir(n) {
-  ['qui', 'accueil', 'listes', 'train', 'recap', 'reglages', 'cadeaux', 'choix'].forEach(function (v) {
+  ['qui', 'accueil', 'listes', 'train', 'recap', 'reglages', 'cadeaux', 'choix', 'motecrire'].forEach(function (v) {
     var e = document.getElementById('v-' + v);
     e.classList.add('cache'); e.style.display = '';
   });
@@ -1468,6 +1483,7 @@ function voir(n) {
   if (n === 'listes') rendreListes();
   if (n === 'reglages') rendreReglages();
   if (n === 'cadeaux') { rendreCadeaux(); rafraichirCadeaux(); }
+  if (n === 'motecrire') { majMot(); if (cfg()) tirer().then(majMot).catch(function () {}); }
   if (n === 'choix') { rendreChoix(); rafraichirCadeaux(); }
   window.scrollTo(0, 0);
 }
@@ -1914,7 +1930,6 @@ function rendreReglages() {
   brancherSonde();
   document.getElementById('g-lang').value = lg();
   document.getElementById('g-son').value = String(etat.reglages.son || 0);
-  majMot();
   majSync();
 }
 function regler(k, v) {
@@ -2426,7 +2441,9 @@ function deposerMot() {
     return tirer();
   }).then(function () {
     majMot();
+    rendreHebdo();
     alert(t ? tr('mot-fait', NOMS[autre()]) : tr('mot-rien'));
+    voir('accueil');
   }).catch(function () { alert(tr('mot-ko')); });
 }
 function majMot() {
@@ -2459,6 +2476,11 @@ function cadeauxPrets(l) {
   for (var i = 0; i < 3; i++) if (l[i] && String(l[i]).trim()) n++;
   return n >= 3;
 }
+/* La base fait autorité pour les cadeaux de l'AUTRE, jamais pour les miens :
+   c'est moi qui les écris. Une réponse vide côté serveur — table absente,
+   envoi qui a échoué, hors ligne — ne doit donc pas effacer ce que je viens de
+   taper. Là où le local a un texte que la base ignore, on renvoie au lieu de
+   perdre : le catalogue se répare tout seul à la première connexion. */
 function tirerCadeaux() {
   if (!cfg() || !liste) return Promise.resolve();
   return api('cadeaux?liste=eq.' + encodeURIComponent(liste.id) + '&select=de,i,texte')
@@ -2467,6 +2489,17 @@ function tirerCadeaux() {
       if (!Array.isArray(l)) return;
       var n = { ulysse: [], jasmien: [] };
       l.forEach(function (x) { if (n[x.de]) n[x.de][x.i] = x.texte; });
+      var m = moi();
+      if (m) {
+        var loc = (etat.cadeaux[liste.id] || {})[m] || [];
+        var aRenvoyer = [];
+        for (var i = 0; i < 3; i++) {
+          var vl = loc[i] && String(loc[i]).trim();
+          var vd = n[m][i] && String(n[m][i]).trim();
+          if (vl && !vd) { n[m][i] = loc[i]; aRenvoyer.push(i); }
+        }
+        aRenvoyer.forEach(function (i) { pousserCadeau(i, n[m][i]); });
+      }
       cadeaux = n;
       etat.cadeaux[liste.id] = { ulysse: n.ulysse.slice(), jasmien: n.jasmien.slice() };
       sauverPlusTard();
@@ -2489,20 +2522,52 @@ function rafraichirCadeaux() {
     })
     .catch(function () {});
 }
+/* écriture locale immédiate : elle ne dépend ni du réseau ni de la base. */
 function ecrireCadeau(i, texte) {
   texte = String(texte || '').trim().slice(0, 90);
-  if (!moi()) return;
+  if (!moi() || !liste) return;
+  if (!cadeaux[moi()]) cadeaux[moi()] = [];
   cadeaux[moi()][i] = texte;
   if (!etat.cadeaux[liste.id]) etat.cadeaux[liste.id] = {};
   etat.cadeaux[liste.id][moi()] = cadeaux[moi()].slice();
   sauver();
   rendreHebdo();
-  if (!cfg()) return;
-  api('cadeaux', {
+  pousserCadeau(i, texte).catch(function () {});
+}
+function pousserCadeau(i, texte) {
+  if (!cfg() || !moi() || !liste) return Promise.reject(new Error('inactif'));
+  return api('cadeaux', {
     method: 'POST',
     headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
     body: JSON.stringify([{ liste: liste.id, de: moi(), i: i, texte: texte, maj: new Date().toISOString() }])
-  }).catch(function () {});
+  }).then(function (r) {
+    if (!r.ok) throw new Error('cadeaux ' + r.status);
+    return r;
+  });
+}
+/* Le bouton d'enregistrement : il relit les trois champs à l'écran, ce qui
+   rattrape le cas où le clavier est encore ouvert et où le dernier champ n'a
+   pas encore émis son évènement de sortie. */
+function enregistrerCadeaux() {
+  if (!moi() || !liste) return;
+  var e = document.getElementById('cad-etat');
+  var vals = [];
+  for (var i = 0; i < 3; i++) vals.push(String(document.getElementById('cad-' + i).value || '').trim().slice(0, 90));
+  if (!cadeaux[moi()]) cadeaux[moi()] = [];
+  for (var j = 0; j < 3; j++) cadeaux[moi()][j] = vals[j];
+  if (!etat.cadeaux[liste.id]) etat.cadeaux[liste.id] = {};
+  etat.cadeaux[liste.id][moi()] = vals.slice();
+  sauver();
+  rendreHebdo();
+  if (!cfg()) { e.textContent = tr('cad-local'); e.classList.add('attente'); return; }
+  Promise.all(vals.map(function (v, k) { return pousserCadeau(k, v); }))
+    .then(function () {
+      e.textContent = tr('cad-ok');
+      e.classList.remove('attente');
+      return tirerCadeaux();
+    })
+    .then(function () { rendreCadeaux(); })
+    .catch(function () { e.textContent = tr('cad-ko'); e.classList.add('attente'); });
 }
 function couponDeLaListe() {
   for (var i = 0; i < coupons.length; i++)
@@ -2585,7 +2650,12 @@ function rendreHebdo() {
   var b = document.getElementById('a-cad');
   var pret = cadeauxPrets(cadeaux[moi()]);
   b.classList.toggle('alerte', !pret);
-  b.textContent = pret ? tr('cad-t') : tr('cad-manque');
+  b.textContent = pret ? tr('cad-puce') : tr('cad-manque');
+  var d = distant[moi()];
+  var m = document.getElementById('a-mot');
+  m.textContent = tr('mot-puce');
+  /* pastille soulignée tant que le mot déposé n'a pas été lu */
+  m.classList.toggle('alerte', !!(d && d.mot && String(d.mot).trim() && !d.mot_lu));
 }
 
 wtConstruireFeu();
