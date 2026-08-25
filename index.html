@@ -823,15 +823,26 @@ var T = {
    On mesure la hauteur une fois et on ne la rebouge que pour une vraie
    raison : rotation, ou changement de plus de 120 px. Le va-et-vient de la
    barre d'URL d'Android fait 50 à 80 px et doit être ignoré, sinon la boîte
-   de l'app grandit sous les éléments qui y sont ancrés. */
+   de l'app grandit sous les éléments qui y sont ancrés.
+   wtRedimGele bloque TOUT redimensionnement (même > 120px) pendant la
+   fenêtre de feedback d'une réponse : c'est justement l'interaction (tap +
+   vibration/son) qui peut faire bouger la barre d'adresse d'Android, et un
+   agrandissement de --vh à ce moment précis décale le feu ancré en bas hors
+   de l'écran visible. */
+var wtRedimGele = false;
 function wtGelerHauteur(force) {
   var h = window.innerHeight;
   if (!h) return;
   if (!force) {
+    if (wtRedimGele) return;
     var a = parseInt(document.documentElement.style.getPropertyValue('--vh'), 10);
     if (a && Math.abs(h - a) < 120) return;
   }
   document.documentElement.style.setProperty('--vh', h + 'px');
+}
+function wtBloquerRedim(duree) {
+  wtRedimGele = true;
+  setTimeout(function () { wtRedimGele = false; }, duree);
 }
 wtGelerHauteur(true);
 window.addEventListener('resize', function () { wtGelerHauteur(false); });
@@ -1302,6 +1313,10 @@ function repVF(r) {
 }
 
 function appliquer(juste, mode) {
+  /* bloque tout redimensionnement de --vh pendant le feedback (vibration +
+     son + animations) : c'est ce court instant, pas l'animation elle-même,
+     qui pouvait faire « grandir » l'app si la barre d'adresse Android bouge. */
+  wtBloquerRedim(2000);
   var p = prog(liste.id, cur.mot), val = PTS[mode], cap = parseInt(etat.reglages.cap, 10);
   var avantPalier = wtPalier(wtStreak);
   session.n++;
