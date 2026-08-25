@@ -1348,6 +1348,12 @@ function ech(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function 
 function sw() {
   if (!('serviceWorker' in navigator)) return;
   navigator.serviceWorker.register('sw.js').then(function (reg) {
+    /* une PWA lancée depuis l'écran d'accueil ne revérifie pas toujours d'elle-même :
+       on force le contrôle à l'ouverture et à chaque retour au premier plan */
+    try { reg.update(); } catch (e) {}
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) { try { reg.update(); } catch (e) {} }
+    });
     reg.addEventListener('updatefound', function () {
       var nv = reg.installing; if (!nv) return;
       nv.addEventListener('statechange', function () {
