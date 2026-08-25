@@ -31,7 +31,7 @@ body.nuit {
    ce qui faisait glisser tout ce qui est ancré au viewport (le feu) sans
    bouger ce qui est ancré à .app (les boutons). 100svh sert de repli avant
    que le JS ait mesuré : c'est la variante stable, elle ne bouge jamais. */
-html { background: var(--page); height: 100%; }
+html { background: var(--page); height: 100%; overflow: hidden; }
 body {
   font-family: var(--sans); background: var(--page); color: var(--ink);
   height: var(--vh); overflow: hidden; position: relative;
@@ -39,7 +39,15 @@ body {
   padding: max(12px, env(safe-area-inset-top)) 0 0;
   transition: background .25s, color .25s; overscroll-behavior-y: contain;
 }
-.app { width: 100%; max-width: 480px; flex: 1; min-height: 0; display: flex; flex-direction: column; position: relative; z-index: 2; }
+/* overflow:clip ne fabrique pas de conteneur de défilement et ne transmet
+   AUCUN débordement aux ancêtres : quoi qu'on ajoute dans .app, le document
+   ne peut plus s'allonger. La marge de 60px laisse passer les flammes
+   latérales des boutons, qui dépassent de 36px. */
+.app {
+  width: 100%; max-width: 480px; flex: 1; min-height: 0;
+  display: flex; flex-direction: column; position: relative; z-index: 2;
+  overflow: clip; overflow-clip-margin: 60px;
+}
 .pad { padding: 0 18px; }
 .bas { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
 
@@ -402,6 +410,13 @@ body.nuit .opt.roussi { border-color: #5A4028; }
 #v-recap > div:last-child { margin-top: auto; }
 
 
+#wt-sonde {
+  display: none; position: absolute; left: 0; right: 0; top: 0; z-index: 99;
+  background: rgba(11,37,69,.92); color: #fff; font-family: var(--sans);
+  font-size: .62rem; line-height: 1.35; padding: 5px 8px; pointer-events: none;
+  word-break: break-all;
+}
+
 /* ═ flancs SVG du bouton juste + balayage doré ═ */
 .wt-fx { position: absolute; pointer-events: none; z-index: 3; overflow: visible; }
 .wt-jail { transform-box: fill-box; transform-origin: 50% 100%; animation: wtJaillir calc(.72s * var(--tempo)) ease-out var(--del, 0s) both; }
@@ -519,6 +534,7 @@ body:not([data-heat="0"]) #t-actions-vf .b, body:not([data-heat="0"]) #t-juge .b
 <div id="wt-feu"></div>
 <div id="wt-sol"></div>
 <div id="wt-braises"></div>
+<div id="wt-sonde"></div>
 <div class="app">
 
 <div id="v-qui" class="pad cache" style="flex:1;flex-direction:column;justify-content:center">
@@ -1375,6 +1391,60 @@ function finSession() {
   pousser().then(function () { return tirer(); }).then(function () { rendreDuo('r-duo'); }).catch(function () {});
 }
 
+/* ═══════════ sonde de débordement ═══════════
+   Appui long sur la ligne de version, dans les réglages, pour l'allumer.
+   Elle nomme, quatre fois par seconde, l'élément qui dépasse le plus de la
+   boîte de l'app — c'est lui qui allonge le document. */
+var wtSondeTimer = null;
+function nomDe(el) {
+  var c = el.getAttribute ? (el.getAttribute('class') || '') : '';
+  return el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + (c ? '.' + c.trim().split(/\s+/).join('.') : '');
+}
+function wtSonde(actif) {
+  var o = document.getElementById('wt-sonde');
+  if (wtSondeTimer) { clearInterval(wtSondeTimer); wtSondeTimer = null; }
+  if (!actif) { o.style.display = 'none'; return; }
+  o.style.display = 'block';
+  wtSondeTimer = setInterval(function () {
+    var cadre = document.body.getBoundingClientRect();
+    var pire = null, ecart = 0, sens = '';
+    var tous = document.querySelectorAll('.app, .app *');
+    for (var i = 0; i < tous.length; i++) {
+      var r = tous[i].getBoundingClientRect();
+      if (!r.width && !r.height) continue;
+      var essais = [
+        [r.bottom - cadre.bottom, 'bas'], [r.right - cadre.right, 'droite'],
+        [cadre.top - r.top, 'haut'], [cadre.left - r.left, 'gauche']
+      ];
+      for (var k = 0; k < 4; k++) {
+        if (essais[k][0] > ecart) { ecart = essais[k][0]; pire = tous[i]; sens = essais[k][1]; }
+      }
+    }
+    var de = document.documentElement;
+    o.textContent =
+      'doc ' + de.scrollHeight + '\u00d7' + de.scrollWidth +
+      ' | fenetre ' + window.innerHeight + '\u00d7' + window.innerWidth +
+      ' | --vh ' + (de.style.getPropertyValue('--vh') || '?') +
+      ' | defile ' + de.scrollTop +
+      '\n' + (pire ? nomDe(pire) + ' depasse de ' + Math.round(ecart) + 'px par le ' + sens : 'rien ne depasse');
+  }, 250);
+}
+var wtSondeOn = false;
+function brancherSonde() {
+  var v = document.getElementById('g-version');
+  if (v.dataset.branche) return;
+  v.dataset.branche = '1';
+  var t = null;
+  function debut() { t = setTimeout(function () { wtSondeOn = !wtSondeOn; wtSonde(wtSondeOn); vibrer([30]); }, 700); }
+  function fin() { clearTimeout(t); }
+  v.addEventListener('touchstart', debut, { passive: true });
+  v.addEventListener('touchend', fin);
+  v.addEventListener('touchmove', fin);
+  v.addEventListener('mousedown', debut);
+  v.addEventListener('mouseup', fin);
+  v.addEventListener('mouseleave', fin);
+}
+
 function rendreReglages() {
   document.getElementById('g-cap').value = String(etat.reglages.cap);
   document.getElementById('g-dir').value = etat.reglages.dir;
@@ -1382,6 +1452,7 @@ function rendreReglages() {
   document.getElementById('g-copie').value = JSON.stringify(etat);
   document.getElementById('g-reset').innerHTML = listes.map(function (l) { return '<option value="' + l.id + '">' + ech(l.titre) + '</option>'; }).join('');
   document.getElementById('g-version').textContent = tr('versions', listes.length, listes.length * 40);
+  brancherSonde();
   document.getElementById('g-lang').value = lg();
   document.getElementById('g-son').value = String(etat.reglages.son || 0);
   majSync();
