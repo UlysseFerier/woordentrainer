@@ -157,6 +157,7 @@ body[data-heat="5"]:not(.nuit) { background: #FBEFDC; }
 body.nuit[data-heat="3"] { background: #16101B; }
 body.nuit[data-heat="4"] { background: #1A1016; }
 body.nuit[data-heat="5"] { background: #1E1211; }
+.app.secousse, .app.secousse2, .app.secousse3 { will-change: transform; }
 .app.secousse { animation: secousse .28s ease; }
 .app.secousse2 { animation: secousse2 .38s ease; }
 .app.secousse3 { animation: secousse3 .46s ease; }
@@ -183,12 +184,13 @@ body:not([data-heat="0"]) #wt-sol { opacity: .9; }
 #wt-feu {
   position: fixed; left: 0; right: 0; bottom: -4px; height: 160px; z-index: 1;
   pointer-events: none; transform: translateZ(0); transform-origin: 50% 100%;
+  contain: layout paint style;
   transition: transform .5s cubic-bezier(.3,1.3,.5,1);
 }
 #wt-feu.etouffe { transform: translateY(105%); transition: transform .4s ease-in; }
 #wt-feu.boum { animation: wtFeuBoum .5s cubic-bezier(.3,1.5,.5,1); }
 @keyframes wtFeuBoum { 0%{transform:scaleY(1)} 35%{transform:scaleY(1.18)} 100%{transform:scaleY(1)} }
-.wtf { position: absolute; bottom: 0; width: var(--w); height: calc(var(--w) * 1.45); }
+.wtf { position: absolute; bottom: 0; width: var(--w); height: calc(var(--w) * 1.45); contain: layout paint style; }
 .wtf svg { display: block; width: 100%; height: 100%; overflow: visible; }
 /* la largeur suit la hauteur en sy^0,55 : une petite série donne une flamme
    étroite et courte, plus jamais une flaque aplatie. */
@@ -258,7 +260,7 @@ body[data-heat="3"] .wt-serie .couronne, body[data-heat="4"] .wt-serie .couronne
 
 /* papier qui roussit — carte d'énoncé (QCM, vrai/faux) et faces des cartes */
 .enonce {
-  transition: border-color 1s, box-shadow 1s;
+  transition: border-color 1s;
   border-color: color-mix(in srgb, var(--line), var(--f-ambre) calc(var(--h-roussi) * 45%));
   box-shadow: inset 0 calc(var(--h-lisere) * -14px) 22px -16px rgba(217,83,30, calc(var(--h-lisere) * .8)),
               0 0 calc(var(--h-lisere) * 22px) rgba(217,83,30, calc(var(--h-lisere) * .14));
@@ -275,7 +277,7 @@ body[data-heat="3"] .wt-serie .couronne, body[data-heat="4"] .wt-serie .couronne
 .enonce.kick, .carte3d.kick { animation: wtKick calc(.3s * var(--tempo)) cubic-bezier(.3,1.6,.5,1); }
 @keyframes wtKick { 35% { transform: translateY(-3px) scale(1.008); } }
 .face {
-  transition: border-color 1s, box-shadow 1s;
+  transition: border-color 1s;
   border-color: color-mix(in srgb, var(--line), var(--f-ambre) calc(var(--h-roussi) * 45%));
   box-shadow: inset 0 calc(var(--h-lisere) * -12px) 20px -15px rgba(217,83,30, calc(var(--h-lisere) * .7));
 }
@@ -414,11 +416,15 @@ body[data-heat="6"] .wt-serie { box-shadow: 0 0 26px rgba(255,255,255,.8), 0 0 1
   margin: 0 -18px;
   padding: 13px 18px max(14px, env(safe-area-inset-bottom));
   background: var(--page);
+  min-height: var(--socle); box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: flex-end;
 }
+body { --socle: 0px; }
+body[data-vue="train"] { --socle: calc(126px + max(14px, env(safe-area-inset-bottom))); }
 #v-train .b.fin { background: transparent; border-radius: 0; }
-#wt-feu   { bottom: calc(var(--socle, 0px) - 4px); }
-#wt-sol   { bottom: var(--socle, 0px); }
-#wt-lueur { bottom: var(--socle, 0px); }
+#wt-feu   { bottom: calc(var(--socle) - 4px); }
+#wt-sol   { bottom: var(--socle); }
+#wt-lueur { bottom: var(--socle); }
 
 /* bouton de sortie : large, calme, avec la goutte d'encre */
 #v-train .b.fin.terminer {
@@ -434,7 +440,7 @@ body[data-heat="2"] { --h-braise: .35; --h-plaque: .5; }
 body[data-heat="3"] { --h-braise: .7;  --h-plaque: .75; }
 body[data-heat="4"] { --h-braise: 1;   --h-plaque: 1; }
 body[data-heat="5"] { --h-braise: 1;   --h-plaque: 1.25; }
-.opt, #t-actions-vf .b, #t-juge .b { transition: border-color .7s ease, background .7s ease, box-shadow .7s ease, color .4s ease; }
+.opt, #t-actions-vf .b, #t-juge .b { transition: border-color .7s ease, background .7s ease, color .4s ease; }
 body:not([data-heat="0"]) .opt:not(.juste):not(.faux) {
   border-color: color-mix(in srgb, var(--line), var(--f-ambre) calc(var(--h-plaque, 0) * 55%));
   background: linear-gradient(to top, rgba(232,137,28, calc(var(--h-plaque, 0) * .16)) 0%, transparent 58%), var(--card);
@@ -714,7 +720,7 @@ var T = {
     'r-reste': 'Il en reste @.', 'r-bouge': 'Rien de nouveau au compteur, mais les scores ont bougé.',
     'r-max': ' Tous les mots ont atteint leur maximum du jour.',
     'sens-nf': 'NL → FR', 'sens-fn': 'FR → NL', 'sens-auto': 'au hasard',
-    'versions': '@ listes · @@ mots'
+    'versions': '@ listes · @@ mots', 'q-faites': '@ questions'
   },
   nl: {
     'qui-t': 'Wie gebruikt deze telefoon?',
@@ -758,7 +764,7 @@ var T = {
     'r-reste': 'Er blijven er @ over.', 'r-bouge': 'Niets nieuws op de teller, maar de scores zijn bewogen.',
     'r-max': ' Alle woorden zitten aan hun maximum voor vandaag.',
     'sens-nf': 'NL → FR', 'sens-fn': 'FR → NL', 'sens-auto': 'willekeurig',
-    'versions': '@ lijsten · @@ woorden'
+    'versions': '@ lijsten · @@ woorden', 'q-faites': '@ vragen'
   }
 };
 function lg() { return etat && etat.reglages && etat.reglages.langue === 'nl' ? 'nl' : 'fr'; }
@@ -852,16 +858,9 @@ function son(quoi, p) {
 }
 var VIBRE = [[10], [12], [14], [10, 40, 14], [12, 40, 18], [14, 45, 22, 45, 26], [16, 40, 20, 40, 24, 40, 30]];
 
-/* le sol du feu se cale sur la barre d'actions : rien n'est jamais couvert */
-function poserSocle() {
-  var b = document.querySelector('#v-train .sticky');
-  var h = (b && !document.getElementById('v-train').classList.contains('cache')) ? b.offsetHeight : 0;
-  document.body.style.setProperty('--socle', h + 'px');
-}
-window.addEventListener('resize', poserSocle);
 
 var PTS = { vf: 1, flash: 2, qcm: 3 };
-var CIBLE = 10, PAR_SESSION = 25;
+var CIBLE = 10;
 var NOMS = { ulysse: 'Ulysse', jasmien: 'Jasmien' };
 
 var etat, listes = [], liste = null, session = null, cur = null, recents = [];
@@ -970,7 +969,6 @@ function voir(n) {
   c.style.display = 'flex';
   document.body.dataset.vue = n;
   if (n !== 'train') { wtStreak = 0; wtPoserChaleur(true); }
-  requestAnimationFrame(poserSocle);
   if (n === 'accueil') rendreAccueil();
   if (n === 'listes') rendreListes();
   if (n === 'reglages') rendreReglages();
@@ -1080,6 +1078,7 @@ function modeDe(s) {
   return Math.random() < .8 ? 'qcm' : 'flash';
 }
 function demarrer(mode) {
+  if (sonActif()) ac();
   session = { mode: mode, n: 0, justes: 0, gain: 0, avant: acquisDe(liste) };
   recents = [];
   wtStreak = 0; wtPoserChaleur(true);
@@ -1096,10 +1095,9 @@ function suite() {
   document.getElementById('t-carte').classList.remove('tourne');
   if (!session) return;
   document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste));
-  document.getElementById('t-session').textContent = session.n + ' / ' + PAR_SESSION;
-  if (session.n >= PAR_SESSION) { finSession(); return; }
-  var d = dispo();
-  if (!d.libres.length && d.finis.length < liste.mots.length) { finSession(); return; }
+  document.getElementById('t-session').textContent = tr('q-faites', session.n);
+  /* aucune limite de session : on continue tant qu'il reste un mot à poser,
+     en révision libre une fois le plafond du jour atteint partout */
   var t = tirerMot();
   if (!t) { finSession(); return; }
   var p = prog(liste.id, t.mot);
@@ -1257,7 +1255,7 @@ function majCran() {
     if (neuf) { e.classList.add('eclat'); setTimeout(function () { e.classList.remove('eclat'); }, 620); }
   }
   document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste));
-  document.getElementById('t-session').textContent = session.n + ' / ' + PAR_SESSION;
+  document.getElementById('t-session').textContent = tr('q-faites', session.n);
 }
 function onde(bouton, ev, juste) {
   var r = bouton.getBoundingClientRect();
