@@ -662,7 +662,11 @@ body[data-vue="train"][data-heat="9"] #wt-eclipse { opacity:1; animation:wtEclip
 .fete-b .b + .b { margin-top:8px; }
 
 /* ═ récompenses ═ */
-#v-cadeaux, #v-choix { flex:1; flex-direction:column; min-height:0; overflow-y:auto; }
+#v-cadeaux, #v-choix, #v-motecrire { flex:1; flex-direction:column; min-height:0; overflow-y:auto; }
+/* aucun enfant ne s'étire ni ne se comprime : chacun fait sa hauteur propre
+   et le vide restant part en bas, sous le bouton. */
+#v-motecrire > * { flex:none; }
+#v-motecrire .mot-etat { margin-bottom:auto; }
 .cad-in {
   width:100%; margin-top:8px; padding:12px 12px; border-radius:12px;
   border:1px solid var(--line); background:var(--card); color:var(--ink);
@@ -696,7 +700,7 @@ body[data-vue="train"][data-heat="9"] #wt-eclipse { opacity:1; animation:wtEclip
 }
 .mot-txt { font-family:var(--serif); font-size:1.24rem; line-height:1.55; word-break:break-word; }
 .mot-d { font-size:.66rem; color:var(--faint); margin-top:12px; }
-#g-mot { min-height:82px; font-size:.84rem; }
+#g-mot { min-height:118px; font-size:.92rem; line-height:1.45; margin-top:14px; }
 .mot-etat { font-size:.72rem; color:var(--mute); margin-top:8px; }
 .mot-etat.attente { color:var(--warm); }
 
@@ -1336,7 +1340,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'ac';
+var WT_BUILD = 'ad';
 
 function charger() {
   var e = null;
