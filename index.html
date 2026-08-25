@@ -184,13 +184,12 @@ body:not([data-heat="0"]) #wt-sol { opacity: .9; }
 #wt-feu {
   position: fixed; left: 0; right: 0; bottom: -4px; height: 160px; z-index: 1;
   pointer-events: none; transform: translateZ(0); transform-origin: 50% 100%;
-  contain: layout paint style;
   transition: transform .5s cubic-bezier(.3,1.3,.5,1);
 }
 #wt-feu.etouffe { transform: translateY(105%); transition: transform .4s ease-in; }
 #wt-feu.boum { animation: wtFeuBoum .5s cubic-bezier(.3,1.5,.5,1); }
 @keyframes wtFeuBoum { 0%{transform:scaleY(1)} 35%{transform:scaleY(1.18)} 100%{transform:scaleY(1)} }
-.wtf { position: absolute; bottom: 0; width: var(--w); height: calc(var(--w) * 1.45); contain: layout paint style; }
+.wtf { position: absolute; bottom: 0; width: var(--w); height: calc(var(--w) * 1.45); }
 .wtf svg { display: block; width: 100%; height: 100%; overflow: visible; }
 /* la largeur suit la hauteur en sy^0,55 : une petite série donne une flamme
    étroite et courte, plus jamais une flaque aplatie. */
@@ -1369,7 +1368,8 @@ function sw() {
 window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); });
 
 /* ═══════════ Série enflammée ═══════════ */
-var wtStreak = 0, wtPalierCourant = 0, wtTimerFlocons = null;
+/* -1 et non 0 : le tout premier appel doit poser data-heat sur le corps de page */
+var wtStreak = 0, wtPalierCourant = -1, wtTimerFlocons = null;
 var WT_K = [0, .35, .55, .8, 1, 1.15, 1.3];
 var WT_DELAI_QCM = [650, 620, 580, 540, 500, 460, 430];
 
@@ -1432,13 +1432,18 @@ function wtConstruireFeu() {
 function wtPoserChaleur(silencieux) {
   var p = wtPalier(wtStreak), avant = wtPalierCourant;
   wtPalierCourant = p;
-  document.body.dataset.heat = p;
-  document.querySelectorAll('#wt-feu .wtf').forEach(function (d) {
-    var sy = WT_K[p] * parseFloat(d.dataset.base);
-    d.style.setProperty('--sy', sy.toFixed(2));
-    d.style.setProperty('--sx', (sy > 0 ? Math.pow(sy, .55) : 0).toFixed(2));
-  });
-  wtReglerFlocons(p);
+  /* Écrire une variable CSS sur un foyer invalide son style et relance les
+     animations de poses, ce qui fait clignoter le feu. On ne touche donc au
+     feu que lorsque le palier change réellement. */
+  if (p !== avant) {
+    document.body.dataset.heat = p;
+    document.querySelectorAll('#wt-feu .wtf').forEach(function (d) {
+      var sy = WT_K[p] * parseFloat(d.dataset.base);
+      d.style.setProperty('--sy', sy.toFixed(2));
+      d.style.setProperty('--sx', (sy > 0 ? Math.pow(sy, .55) : 0).toFixed(2));
+    });
+    wtReglerFlocons(p);
+  }
   var el = document.getElementById('wt-serie');
   document.getElementById('wt-serie-n').textContent = wtStreak;
   if (silencieux) {
