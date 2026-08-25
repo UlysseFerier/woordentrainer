@@ -1,7 +1,7 @@
 /* Woordentrainer — service worker
    Change VERSION à chaque mise à jour du code : ça force le rafraîchissement
    sur les téléphones au lancement suivant. */
-const VERSION = 'wt-2026-08-26-ad';
+const VERSION = 'wt-2026-08-26-ae';
 const SHELL = VERSION + '-shell';
 const DATA = VERSION + '-data';
 
@@ -15,10 +15,17 @@ const SHELL_FILES = [
   './icons/icon-maskable-512.png'
 ];
 
+/* cache:'reload' force chaque fichier à repartir du réseau : addAll peut
+   sinon se resservir dans le cache HTTP du navigateur et réinstaller la
+   version qu'on cherchait justement à remplacer. */
 self.addEventListener('install', function (e) {
   e.waitUntil(
     caches.open(SHELL).then(function (c) {
-      return c.addAll(SHELL_FILES);
+      return Promise.all(SHELL_FILES.map(function (f) {
+        return fetch(f, { cache: 'reload' }).then(function (r) {
+          if (r.ok) return c.put(f, r);
+        });
+      }));
     })
   );
 });
@@ -73,7 +80,29 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // Le reste (coquille de l'app) : cache d'abord.
+  // Page et code de l'app : RÉSEAU D'ABORD, cache en secours hors ligne.
+  // En cache d'abord, une nouvelle version d'index.html restait invisible tant
+  // que sw.js lui-même ne changeait pas — si seul index.html était déposé, le
+  // téléphone gardait l'ancienne version pour toujours.
+  const estCoquille = req.mode === 'navigate' ||
+    url.pathname.slice(-1) === '/' ||
+    url.pathname.indexOf('index.html') !== -1 ||
+    url.pathname.indexOf('config.js') !== -1 ||
+    url.pathname.indexOf('manifest.webmanifest') !== -1;
+  if (estCoquille) {
+    e.respondWith(
+      fetch(req).then(function (res) {
+        const copy = res.clone();
+        caches.open(SHELL).then(function (c) { c.put(req, copy); });
+        return res;
+      }).catch(function () {
+        return caches.match(req).then(function (hit) { return hit || caches.match('./index.html'); });
+      })
+    );
+    return;
+  }
+
+  // Icônes et fichiers immuables : cache d'abord.
   e.respondWith(
     caches.match(req).then(function (hit) {
       return hit || fetch(req).then(function (res) {
