@@ -188,18 +188,24 @@ body:not([data-heat="0"]) #wt-sol { opacity: .9; }
 #wt-feu.etouffe { transform: translateY(105%); transition: transform .4s ease-in; }
 #wt-feu.boum { animation: wtFeuBoum .5s cubic-bezier(.3,1.5,.5,1); }
 @keyframes wtFeuBoum { 0%{transform:scaleY(1)} 35%{transform:scaleY(1.18)} 100%{transform:scaleY(1)} }
-.wtf { position: absolute; bottom: 0; width: var(--w); height: calc(var(--w) * 1.35); }
+.wtf { position: absolute; bottom: 0; width: var(--w); height: calc(var(--w) * 1.45); }
 .wtf svg { display: block; width: 100%; height: 100%; overflow: visible; }
+/* la largeur suit la hauteur en sy^0,55 : une petite série donne une flamme
+   étroite et courte, plus jamais une flaque aplatie. */
 .wtf .taille {
   transform-box: fill-box; transform-origin: 50% 100%;
-  transform: scale(var(--sx, 1), var(--sy, 0));
-  transition: transform .7s cubic-bezier(.3,1.2,.5,1);
+  transform: scale(var(--sx, 0), var(--sy, 0));
+  transition: transform .5s steps(5, end);
 }
-.wtf .vac {
-  transform-box: fill-box; transform-origin: 50% 100%;
-  animation: wtVac calc(var(--dur) * var(--tempo)) ease-in-out var(--del) infinite;
-}
-@keyframes wtVac { 0%,100% { transform: scaleY(.94) skewX(0); } 30% { transform: scaleY(1.06) skewX(2deg); } 65% { transform: scaleY(.97) skewX(-2deg); } }
+/* trois poses dessinées, jouées en boucle sans interpolation : le saut d'une
+   pose à l'autre remplace l'ondulation, qui donnait l'effet feuille de papier. */
+.wtf .pose { animation-duration: calc(var(--cad) * var(--tempo)); animation-timing-function: steps(1, end); animation-iteration-count: infinite; animation-delay: var(--del); }
+.wtf .pose1 { animation-name: wtPose1; }
+.wtf .pose2 { animation-name: wtPose2; }
+.wtf .pose3 { animation-name: wtPose3; }
+@keyframes wtPose1 { 0%,33% { opacity: 1 } 34%,100% { opacity: 0 } }
+@keyframes wtPose2 { 0%,33% { opacity: 0 } 34%,66% { opacity: 1 } 67%,100% { opacity: 0 } }
+@keyframes wtPose3 { 0%,66% { opacity: 0 } 67%,100% { opacity: 1 } }
 body[data-heat="0"] #wt-feu:not(.etouffe), body[data-heat="0"] #wt-lueur, body[data-heat="0"] #wt-sol { display: none; }
 
 /* compteur de série — n'existe qu'en entraînement, apparaît à 3 justes d'affilée */
@@ -1050,23 +1056,42 @@ function wtPalier(s) {
   if (s >= 3) return 1;
   return 0;
 }
-var WT_FEU_PATHS =
-  '<path fill="var(--f-brique)" d="M30 4 C40 20 52 32 52 52 C52 68 42 78 30 78 C18 78 8 68 8 52 C8 38 16 30 20 22 C24 30 28 32 30 26 C31 20 29 12 30 4 Z"/>' +
-  '<path fill="var(--f-orange)" d="M30 20 C37 30 45 38 45 53 C45 65 38 73 30 73 C22 73 15 65 15 53 C15 44 20 39 23 33 C26 39 30 40 31 34 C32 29 29 25 30 20 Z"/>' +
-  '<path fill="var(--f-jaune)" d="M30 38 C34 44 38 48 38 57 C38 65 34 69 30 69 C26 69 22 65 22 57 C22 51 25 48 27 44 C28 48 31 48 30 38 Z"/>' +
-  '<path fill="#FDF0CB" d="M30 50 C32 54 34 56 34 60 C34 64 32 66 30 66 C28 66 26 64 26 60 C26 57 28 55 30 50 Z"/>';
+/* trois silhouettes découpées : élancée, penchée, à double pointe.
+   Chaque flamme joue les trois en boucle décalée. */
+var WT_SIL = [
+  { e:'M30 2 C39 18 51 31 51 51 C51 68 42 78 30 78 C18 78 9 68 9 51 C9 37 17 30 21 21 C25 30 28 31 30 25 C31 18 29 11 30 2 Z',
+    m:'M30 18 C37 29 45 37 45 53 C45 66 38 73 30 73 C22 73 15 66 15 53 C15 44 20 38 23 32 C26 38 30 39 31 33 C32 28 29 24 30 18 Z',
+    c:'M30 36 C35 43 38 48 38 57 C38 66 34 69 30 69 C26 69 22 66 22 57 C22 50 25 47 27 43 C28 48 31 48 30 36 Z',
+    l:'M30 49 C32 53 34 56 34 60 C34 64 32 66 30 66 C28 66 26 64 26 60 C26 57 28 54 30 49 Z' },
+  { e:'M26 3 C38 17 50 29 51 49 C52 67 41 78 29 78 C17 78 8 69 8 53 C8 38 18 32 22 22 C25 31 29 33 30 27 C31 20 26 12 26 3 Z',
+    m:'M27 19 C36 28 45 36 45 52 C45 66 37 73 29 73 C21 73 15 66 15 52 C15 43 21 38 24 32 C26 39 30 40 31 33 C32 28 28 25 27 19 Z',
+    c:'M28 35 C34 42 39 47 39 56 C39 65 34 69 30 69 C25 69 22 65 22 56 C22 50 26 46 28 42 C29 47 31 47 28 35 Z',
+    l:'M29 48 C32 52 34 55 34 60 C34 64 32 66 30 66 C27 66 26 64 26 60 C26 56 28 54 29 48 Z' },
+  { e:'M32 4 C41 19 53 30 52 50 C51 68 41 78 29 78 C17 78 8 68 8 51 C8 36 18 31 21 20 C24 30 27 32 29 26 C31 19 31 12 32 4 Z',
+    m:'M32 20 C39 30 46 37 45 53 C44 66 37 73 29 73 C21 73 15 66 15 52 C15 43 20 39 24 31 C26 39 29 40 30 34 C31 28 31 25 32 20 Z',
+    c:'M31 37 C36 43 39 48 38 57 C37 65 34 69 30 69 C25 69 22 65 22 56 C22 50 26 47 28 42 C29 48 32 48 31 37 Z',
+    l:'M30 49 C33 53 35 56 34 60 C34 64 32 66 30 66 C28 66 26 64 26 60 C26 56 28 54 30 49 Z' }
+];
+function wtPose(s, n) {
+  return '<g class="pose pose' + n + '">' +
+    '<path fill="var(--f-brique)" d="' + s.e + '"/>' +
+    '<path fill="var(--f-orange)" d="' + s.m + '"/>' +
+    '<path fill="var(--f-jaune)" d="' + s.c + '"/>' +
+    '<path fill="#FDF0CB" d="' + s.l + '"/></g>';
+}
 function wtConstruireFeu() {
   var h = document.getElementById('wt-feu'); h.innerHTML = '';
-  [{ x: 4, w: 58 }, { x: 22, w: 84 }, { x: 42, w: 104 }, { x: 64, w: 78 }, { x: 82, w: 54 }].forEach(function (pz) {
+  [{ x: 4, w: 58 }, { x: 22, w: 84 }, { x: 42, w: 104 }, { x: 64, w: 78 }, { x: 82, w: 54 }].forEach(function (pz, i) {
     var d = document.createElement('div');
     d.className = 'wtf';
     d.style.left = pz.x + '%';
     d.style.setProperty('--w', pz.w + 'px');
-    d.style.setProperty('--sx', (0.92 + Math.random() * .16).toFixed(2));
-    d.style.setProperty('--dur', (.45 + Math.random() * .3).toFixed(2) + 's');
-    d.style.setProperty('--del', (-Math.random()).toFixed(2) + 's');
-    d.dataset.base = (.75 + Math.random() * .35).toFixed(2);
-    d.innerHTML = '<svg viewBox="0 0 60 80" preserveAspectRatio="xMidYMax meet"><g class="taille"><g class="vac">' + WT_FEU_PATHS + '</g></g></svg>';
+    d.style.setProperty('--cad', (.38 + Math.random() * .12).toFixed(2) + 's');
+    d.style.setProperty('--del', (-Math.random() * .5).toFixed(2) + 's');
+    d.dataset.base = (.78 + Math.random() * .32).toFixed(2);
+    var g = '', dec = i % 3;
+    for (var k = 0; k < 3; k++) g += wtPose(WT_SIL[(dec + k) % 3], k + 1);
+    d.innerHTML = '<svg viewBox="0 0 60 80" preserveAspectRatio="xMidYMax meet"><g class="taille">' + g + '</g></svg>';
     h.appendChild(d);
   });
   var c = document.getElementById('wt-couronne');
@@ -1082,7 +1107,9 @@ function wtPoserChaleur(silencieux) {
   wtPalierCourant = p;
   document.body.dataset.heat = p;
   document.querySelectorAll('#wt-feu .wtf').forEach(function (d) {
-    d.style.setProperty('--sy', (WT_K[p] * parseFloat(d.dataset.base)).toFixed(2));
+    var sy = WT_K[p] * parseFloat(d.dataset.base);
+    d.style.setProperty('--sy', sy.toFixed(2));
+    d.style.setProperty('--sx', (sy > 0 ? Math.pow(sy, .55) : 0).toFixed(2));
   });
   wtReglerFlocons(p);
   var el = document.getElementById('wt-serie');
