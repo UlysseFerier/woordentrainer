@@ -475,6 +475,16 @@ body[data-heat="6"] .wt-serie { box-shadow: 0 0 26px rgba(255,255,255,.8), 0 0 1
   justify-content: center; padding: 14px 0 10px;
 }
 #v-train .sticky { position: static; flex: none; margin: 0; padding: 0; }
+/* Réserve de feu sous la barre d'actions. En QCM la scène est centrée et
+   laissait déjà une trentaine de pixels libres en bas, d'où des flammes
+   visibles ; en cartes et en vrai/faux la barre de boutons se posait au ras
+   du foyer et le masquait. On lui interdit d'atteindre le bas de l'app, avec
+   une bande calibrée sur ce que le QCM laisse naturellement. La marge est
+   portée par les deux blocs d'actions et non par .sticky : en QCM ils sont en
+   display:none, donc la mise en page du mode déjà correct ne bouge pas d'un
+   pixel. */
+#v-train #t-actions-flash,
+#v-train #t-actions-vf { margin-bottom: clamp(48px, calc(var(--vh) * .10), 88px); }
 #v-train .opts { gap: 10px; }
 #v-train .opt {
   min-height: clamp(52px, calc(var(--vh) * .085), 68px); font-size: 1.02rem;
@@ -964,7 +974,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'u';
+var WT_BUILD = 'w';
 
 function charger() {
   var e = null;
@@ -1587,6 +1597,19 @@ function sw() {
   }).catch(function () {});
 }
 window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); });
+
+/* Ceinture et bretelles pour la sélection de texte. user-select:none suffit
+   en principe, mais selon la version de Chrome et la surcouche du constructeur
+   la sélection repart quand même, et avec elle la feuille « rechercher avec
+   Google » par-dessus l'app. On coupe donc aussi les évènements à la source.
+   Les champs de saisie restent épargnés : « Copier ma progression » fait un
+   select() sur son textarea et « Restaurer depuis un texte » doit accepter
+   un collage. */
+function wtSaisie(el) { return !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA'); }
+document.addEventListener('selectstart', function (e) { if (!wtSaisie(e.target)) e.preventDefault(); });
+/* en phase de bulle : le gestionnaire des listes, posé sur l'élément, a déjà
+   tourné et déclenché son appui long quand celui-ci arrive ici. */
+document.addEventListener('contextmenu', function (e) { if (!wtSaisie(e.target)) e.preventDefault(); });
 
 /* ═══════════ Série enflammée ═══════════ */
 /* -1 et non 0 : le tout premier appel doit poser data-heat sur le corps de page */
