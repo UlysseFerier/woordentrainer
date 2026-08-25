@@ -1,7 +1,7 @@
 /* Woordentrainer — service worker
    Change VERSION à chaque mise à jour du code : ça force le rafraîchissement
    sur les téléphones au lancement suivant. */
-const VERSION = 'wt-2026-08-25-t';
+const VERSION = 'wt-2026-08-25-u';
 const SHELL = VERSION + '-shell';
 const DATA = VERSION + '-data';
 

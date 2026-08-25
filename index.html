@@ -962,6 +962,9 @@ var etat, listes = [], liste = null, session = null, cur = null, recents = [];
 var DISTRACTEURS = {};
 var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
+/* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
+   de vérifier depuis le téléphone quelle version a réellement pris la main. */
+var WT_BUILD = 'u';
 
 function charger() {
   var e = null;
@@ -1158,11 +1161,27 @@ function rendreListes() {
   h.innerHTML = s;
   Array.prototype.forEach.call(h.querySelectorAll('.item'), function (el) {
     var id = el.getAttribute('data-id'), t;
+    /* Chrome émet contextmenu vers 500 ms ET notre minuterie tombait à 550 ms :
+       l'appui long ouvrait donc DEUX confirmations. On garde la première des
+       deux voies qui se présente et on neutralise l'autre. appuiLong, qui sert
+       à avaler le clic qui suit un appui long, se désarme tout seul : il ne
+       peut plus rester coincé quand aucun clic ne vient (sélection de texte,
+       confirmation annulée), ce qui faisait ignorer le tap suivant. */
+    var armer = function () { appuiLong = true; setTimeout(function () { appuiLong = false; }, 700); };
+    var fin = function () { clearTimeout(t); t = null; };
     el.onclick = function () { if (appuiLong) { appuiLong = false; return; } ouvrirListe(id); };
-    el.oncontextmenu = function (e) { e.preventDefault(); designer(id); };
-    el.addEventListener('touchstart', function () { appuiLong = false; t = setTimeout(function () { appuiLong = true; designer(id); }, 550); }, { passive: true });
-    el.addEventListener('touchend', function () { clearTimeout(t); });
-    el.addEventListener('touchmove', function () { clearTimeout(t); });
+    el.oncontextmenu = function (e) {
+      e.preventDefault();
+      if (!t) return;
+      fin(); armer(); designer(id);
+    };
+    el.addEventListener('touchstart', function () {
+      appuiLong = false; clearTimeout(t);
+      t = setTimeout(function () { t = null; armer(); designer(id); }, 550);
+    }, { passive: true });
+    el.addEventListener('touchend', fin);
+    el.addEventListener('touchmove', fin);
+    el.addEventListener('touchcancel', fin);
   });
 }
 function designer(id) {
@@ -1500,7 +1519,7 @@ function rendreReglages() {
   document.getElementById('g-moi').value = moi() || 'ulysse';
   document.getElementById('g-copie').value = JSON.stringify(etat);
   document.getElementById('g-reset').innerHTML = listes.map(function (l) { return '<option value="' + l.id + '">' + ech(l.titre) + '</option>'; }).join('');
-  document.getElementById('g-version').textContent = tr('versions', listes.length, listes.length * 40);
+  document.getElementById('g-version').textContent = tr('versions', listes.length, listes.length * 40) + ' · build ' + WT_BUILD;
   brancherSonde();
   document.getElementById('g-lang').value = lg();
   document.getElementById('g-son').value = String(etat.reglages.son || 0);
