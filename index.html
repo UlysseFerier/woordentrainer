@@ -1011,7 +1011,13 @@ function api(chemin, opts) {
   var c = cfg();
   if (!c) return Promise.reject('inactif');
   opts = opts || {};
-  var h = { 'apikey': c.cle, 'Authorization': 'Bearer ' + c.cle, 'Content-Type': 'application/json' };
+  /* Les clés Supabase récentes (sb_publishable_...) DOIVENT voyager dans le
+     seul en-tête apikey : envoyées en Authorization Bearer, elles sont
+     rejetées. Les anciennes clés anon sont des JWT (préfixe « ey ») et
+     réclament toujours les deux en-têtes. On choisit d'après la forme. */
+  var neuve = c.cle.indexOf('sb_') === 0;
+  var h = { 'apikey': c.cle, 'Content-Type': 'application/json' };
+  if (!neuve) h['Authorization'] = 'Bearer ' + c.cle;
   for (var k in (opts.headers || {})) h[k] = opts.headers[k];
   opts.headers = h;
   return fetch(c.url.replace(/\/+$/, '') + '/rest/v1/' + chemin, opts);
