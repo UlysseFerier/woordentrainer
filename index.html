@@ -556,10 +556,155 @@ body:not([data-heat="0"]) #t-actions-vf .b, body:not([data-heat="0"]) #t-juge .b
 #v-accueil.bas { padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px)); }
 #v-train .opt .txt { text-align: center; }
 
+/* ═══════════ ajouts du 26/08 : paliers hauts, chrono, objectif, cadeaux ═══════════ */
+
+/* Paliers 7, 8 et 9. À partir du 6 (25 d'affilée) ce n'est plus le feu qui
+   grandit — il sature — mais l'app entière qui prend la chaleur : elle tremble,
+   sa palette bascule, puis s'éteint autour du mot. Tout passe par des
+   variables et des transforms : aucune particule supplémentaire. */
+body[data-heat="7"], body[data-heat="8"], body[data-heat="9"] {
+  --h-lisere:1; --h-roussi:1; --h-mot:1; --h-lueur:1; --tempo:.44;
+  --h-braise:1; --h-plaque:1.7;
+}
+body[data-heat="7"] { --f-jaune:#FFFFFF; --f-ambre:#FFD98A; --f-orange:#FF7A18; --f-brique:#C9410F; }
+body[data-heat="7"]:not(.nuit) { background:#FCE7C8; }
+body.nuit[data-heat="7"] { background:#2A130C; }
+/* 8 — fusion : la flamme passe au bleu-blanc de chalumeau */
+body[data-heat="8"], body[data-heat="9"] {
+  --f-jaune:#FFFFFF; --f-ambre:#D7EAFF; --f-orange:#8FBEF2; --f-brique:#3D6FB8;
+  --h-plaque:1.9;
+}
+body[data-heat="8"]:not(.nuit) { background:#EDF3FC; }
+body.nuit[data-heat="8"] { background:#0E1626; }
+body[data-heat="9"]:not(.nuit) { background:#E6EEFA; }
+body.nuit[data-heat="9"] { background:#080D16; }
+body[data-heat="7"] #wt-sol, body[data-heat="8"] #wt-sol, body[data-heat="9"] #wt-sol {
+  height:8px;
+  background:linear-gradient(to right, var(--f-brique), var(--f-ambre) 24%, #FFFFFF 50%, var(--f-ambre) 76%, var(--f-brique));
+}
+body[data-heat="8"] #wt-lueur, body[data-heat="9"] #wt-lueur {
+  background:linear-gradient(to top, rgba(215,234,255,.55) 0%, rgba(143,190,242,.18) 45%, transparent 100%);
+}
+body[data-heat="7"] .wt-serie, body[data-heat="8"] .wt-serie, body[data-heat="9"] .wt-serie {
+  box-shadow:0 0 30px rgba(255,255,255,.9), 0 0 14px rgba(143,190,242,.8);
+}
+
+/* Tremblement : deux couches seulement, transform pure, promues en GPU.
+   L'amplitude monte avec le palier. Les boutons bougent parce que leur
+   conteneur bouge — poser l'animation sur .opt aurait écrasé l'inline
+   transform de wtImpact, une animation l'emportant sur le style en ligne. */
+body[data-heat="6"] { --trem:.5px; }
+body[data-heat="7"] { --trem:1.1px; }
+body[data-heat="8"] { --trem:1.8px; }
+body[data-heat="9"] { --trem:2.6px; }
+body[data-vue="train"][data-heat="6"] .scene, body[data-vue="train"][data-heat="6"] .sticky,
+body[data-vue="train"][data-heat="7"] .scene, body[data-vue="train"][data-heat="7"] .sticky,
+body[data-vue="train"][data-heat="8"] .scene, body[data-vue="train"][data-heat="8"] .sticky,
+body[data-vue="train"][data-heat="9"] .scene, body[data-vue="train"][data-heat="9"] .sticky {
+  will-change:transform; animation:wtTrembler .07s steps(2, end) infinite alternate;
+}
+@keyframes wtTrembler {
+  from { transform:translate3d(calc(var(--trem) * -1), calc(var(--trem) * .35), 0); }
+  to   { transform:translate3d(var(--trem), calc(var(--trem) * -.5), 0); }
+}
+
+/* 9 — éclipse : tout s'éteint sauf le mot. Un seul élément, opacité seule. */
+#wt-eclipse {
+  position:absolute; inset:0; z-index:3; pointer-events:none; opacity:0;
+  transition:opacity 1.2s ease;
+  background:radial-gradient(circle at 50% 44%, transparent 0%, transparent 24%,
+             rgba(4,8,16,.5) 60%, rgba(4,8,16,.86) 100%);
+}
+body[data-vue="train"][data-heat="9"] #wt-eclipse { opacity:1; animation:wtEclipseVie 2.6s ease-in-out infinite alternate; }
+@keyframes wtEclipseVie { from { opacity:.88; } to { opacity:1; } }
+
+/* ═ compte à rebours ═ */
+.chrono { height:4px; border-radius:3px; background:var(--empty); overflow:hidden; margin-bottom:12px; display:none; flex:none; }
+.chrono.on { display:block; }
+.chrono > i {
+  display:block; height:100%; width:100%; transform-origin:left center;
+  background:linear-gradient(to right, var(--f-brique), var(--f-orange) 45%, var(--f-jaune));
+}
+.chrono.urgence > i { background:linear-gradient(to right, var(--bad), #FF7A18); animation:wtChronoPouls .32s ease-in-out infinite alternate; }
+@keyframes wtChronoPouls { from { opacity:.55; } to { opacity:1; } }
+.opts.fige { pointer-events:none; }
+
+/* ═ objectif de séance ═ */
+.obj { height:3px; border-radius:2px; background:var(--empty); overflow:hidden; margin-top:6px; flex:none; }
+.obj > i { display:block; height:100%; width:0; background:var(--acc); border-radius:2px; transition:width .5s cubic-bezier(.3,1.3,.5,1); }
+.obj.plein > i { background:linear-gradient(to right, var(--f-orange), var(--f-jaune)); }
+.hebdo { display:flex; align-items:center; gap:8px; margin-top:12px; font-size:.7rem; color:var(--mute); flex:none; }
+.hebdo .pastilles { display:flex; gap:4px; }
+.hebdo .pastilles i { width:9px; height:9px; border-radius:50%; background:var(--empty); border:1px solid var(--line); }
+.hebdo .pastilles i.on { background:var(--acc); border-color:var(--acc); }
+.hebdo .texte { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.puce-cad {
+  font-family:var(--sans); font-size:.68rem; color:var(--acc); background:var(--acc-soft);
+  border:none; border-radius:999px; padding:5px 11px; cursor:pointer; flex-shrink:0;
+}
+.puce-cad.alerte { color:var(--warm); background:transparent; border:1px solid var(--warm); }
+
+/* ═ célébration ═ */
+.fete {
+  position:absolute; inset:0; z-index:8; display:flex; align-items:center; justify-content:center;
+  padding:24px; background:var(--page); text-align:center;
+}
+.fete.cache { display:none !important; }
+.fete .voile { position:absolute; inset:0; opacity:.9;
+  background:radial-gradient(circle at 50% 62%, rgba(255,154,51,.35) 0%, transparent 62%); }
+.fete-in { position:relative; z-index:2; width:100%; animation:wtFeteEntre .5s cubic-bezier(.3,1.5,.5,1) both; }
+@keyframes wtFeteEntre { from { opacity:0; transform:scale(.9) translateY(10px); } to { opacity:1; transform:none; } }
+.fete-t { font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); }
+.fete-n { font-family:var(--serif); font-size:3.4rem; font-weight:500; margin:8px 0 6px; }
+.fete-n.slam { animation:wtSlam .5s cubic-bezier(.25,1.7,.4,1); }
+@keyframes wtSlam { 0% { transform:scale(2.4); opacity:0; } 55% { transform:scale(.92); opacity:1; } 100% { transform:scale(1); } }
+.fete-m { font-size:.88rem; color:var(--mute); line-height:1.6; margin-bottom:26px; }
+.fete-b .b + .b { margin-top:8px; }
+
+/* ═ récompenses ═ */
+#v-cadeaux, #v-choix { flex:1; flex-direction:column; min-height:0; overflow-y:auto; }
+.cad-in {
+  width:100%; margin-top:8px; padding:12px 12px; border-radius:12px;
+  border:1px solid var(--line); background:var(--card); color:var(--ink);
+  font-family:var(--sans); font-size:.88rem;
+}
+.cad-in:focus { outline:none; border-color:var(--acc); }
+.cad-c {
+  display:block; width:100%; text-align:left; margin-top:8px; padding:14px 14px;
+  border-radius:12px; border:1px solid var(--line); background:var(--card); color:var(--ink);
+  font-family:var(--sans); font-size:.92rem; line-height:1.4; cursor:pointer;
+}
+.cad-c.vide { color:var(--faint); font-style:italic; cursor:default; }
+.cad-c:active { border-color:var(--acc); }
+.coupon { display:flex; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid var(--line); }
+.coupon .c-t { flex:1; min-width:0; font-size:.86rem; line-height:1.35; }
+.coupon .c-q { font-size:.68rem; color:var(--mute); margin-top:2px; }
+.coupon.fait .c-t { opacity:.45; text-decoration:line-through; }
+.coupon button { font-family:var(--sans); font-size:.68rem; color:var(--acc); background:var(--acc-soft);
+  border:none; border-radius:999px; padding:7px 11px; cursor:pointer; flex-shrink:0; }
+
+/* ═ mot de motivation ═ */
+.mot-carte {
+  position:relative; margin:16px 0 22px; padding:22px 18px 18px;
+  border:1px solid var(--line); border-radius:14px; background:var(--card);
+  transform-origin:50% 0%; animation:wtDeplier .55s cubic-bezier(.3,1.4,.5,1) both;
+}
+@keyframes wtDeplier { from { transform:scaleY(.08) rotateX(-40deg); opacity:0; } to { transform:none; opacity:1; } }
+.mot-carte::before {
+  content:''; position:absolute; left:50%; top:-9px; width:18px; height:18px; margin-left:-9px;
+  border-radius:50%; background:var(--warm); box-shadow:0 0 0 3px var(--page);
+}
+.mot-txt { font-family:var(--serif); font-size:1.24rem; line-height:1.55; word-break:break-word; }
+.mot-d { font-size:.66rem; color:var(--faint); margin-top:12px; }
+#g-mot { min-height:82px; font-size:.84rem; }
+.mot-etat { font-size:.72rem; color:var(--mute); margin-top:8px; }
+.mot-etat.attente { color:var(--warm); }
+
 </style>
 </head>
 <body>
 <div id="wt-lueur"></div>
+<div id="wt-eclipse"></div>
 <div id="wt-feu"></div>
 <div id="wt-sol"></div>
 <div id="wt-braises"></div>
@@ -591,6 +736,11 @@ body:not([data-heat="0"]) #t-actions-vf .b, body:not([data-heat="0"]) #t-juge .b
   <div class="crans" id="a-crans"></div>
   <div class="sous-crans"><span id="a-compte"></span><span class="d" id="a-points"></span></div>
   <div class="duo" id="a-duo" onclick="rafraichirDuo()"></div>
+  <div class="hebdo" id="a-hebdo">
+    <span class="pastilles" id="a-pastilles"></span>
+    <span class="texte" id="a-hebdo-t"></span>
+    <button class="puce-cad" id="a-cad" onclick="voir('cadeaux')" data-t="cad-t">Récompenses</button>
+  </div>
   <div class="modes">
     <button class="b" onclick="demarrer('flash')" data-t="m-flash">Cartes</button>
     <button class="b" onclick="demarrer('qcm')" data-t="m-qcm">QCM</button>
@@ -627,7 +777,9 @@ body:not([data-heat="0"]) #t-actions-vf .b, body:not([data-heat="0"]) #t-juge .b
   </div>
   <div class="crans" id="t-crans" style="margin-top:6px;height:22px"></div>
   <div class="sous-crans"><span id="t-compte"></span><span class="d" id="t-session"></span></div>
+  <div class="obj" id="t-obj"><i></i></div>
   <div class="scene">
+    <div class="chrono" id="t-chrono"><i></i></div>
     <div id="t-flash" class="cache">
       <div class="carte3d" id="t-carte" onclick="retourner()">
         <div>
@@ -708,6 +860,13 @@ body:not([data-heat="0"]) #t-actions-vf .b, body:not([data-heat="0"]) #t-juge .b
       </select></div>
   </div>
   <div class="bloc">
+    <h3 id="mot-h">Un mot pour l'autre</h3>
+    <p data-t="mot-p">Ce mot reste invisible jusqu'à ce que l'autre ouvre l'app. Il s'affiche alors une seule fois, puis passe en « lu ».</p>
+    <textarea id="g-mot" maxlength="240" placeholder="…"></textarea>
+    <button class="b" style="margin-top:8px" onclick="deposerMot()" data-t="mot-deposer">Déposer le mot</button>
+    <div class="mot-etat" id="g-mot-etat"></div>
+  </div>
+  <div class="bloc">
     <h3 data-t="g-app">Application</h3>
     <p data-t="g-app-p">La langue de l'interface est indépendante des mots à réviser. Les sons sont générés par le téléphone, aucun fichier n'est téléchargé.</p>
     <div class="rangee"><span data-t="g-langue">Langue de l'interface</span>
@@ -745,6 +904,59 @@ body:not([data-heat="0"]) #t-actions-vf .b, body:not([data-heat="0"]) #t-juge .b
     <button class="b non" onclick="effacerListe()" data-t="g-effacer">Effacer ces scores</button>
   </div>
   <div style="font-size:.64rem;color:var(--faint);text-align:center;margin-top:18px" id="g-version"></div>
+</div>
+
+<div id="v-cadeaux" class="pad bas cache">
+  <div class="tete">
+    <div class="h-titre" data-t="cad-t">Récompenses</div>
+    <div class="icones"><button class="ico" onclick="voir('accueil')" aria-label="Fermer">✕</button></div>
+  </div>
+  <p style="font-size:.78rem;color:var(--mute);margin-top:6px;line-height:1.5" data-t="cad-p">Chacun pose trois cadeaux qu'il est prêt à offrir à l'autre. Celui qui boucle les 40 mots de la liste choisit le sien parmi les trois de l'autre.</p>
+  <div class="bloc">
+    <h3 id="cad-h-mes">Ce que je propose</h3>
+    <input class="cad-in" id="cad-0" maxlength="90" onchange="ecrireCadeau(0, this.value)">
+    <input class="cad-in" id="cad-1" maxlength="90" onchange="ecrireCadeau(1, this.value)">
+    <input class="cad-in" id="cad-2" maxlength="90" onchange="ecrireCadeau(2, this.value)">
+  </div>
+  <div class="bloc">
+    <h3 id="cad-h-ses">Ce que l'autre propose</h3>
+    <div id="cad-ses"></div>
+  </div>
+  <div class="bloc" style="border-bottom:none">
+    <h3 data-t="cad-coupons">Récompenses gagnées</h3>
+    <div id="cad-coupons"></div>
+  </div>
+</div>
+
+<div id="v-choix" class="pad bas cache">
+  <div class="tete">
+    <div class="h-titre" data-t="choix-t">Liste terminée</div>
+  </div>
+  <p style="font-size:.78rem;color:var(--mute);margin-top:6px;line-height:1.5" id="choix-p"></p>
+  <div id="choix-items" style="margin-top:6px"></div>
+  <button class="b fin" style="margin-top:14px" onclick="voir('accueil')" data-t="choix-plus-tard">Plus tard</button>
+</div>
+
+<div id="v-mot" class="fete cache">
+  <div class="voile"></div>
+  <div class="fete-in">
+    <div class="fete-t" id="mot-t">—</div>
+    <div class="mot-carte"><div class="mot-txt" id="mot-txt"></div><div class="mot-d" id="mot-d"></div></div>
+    <div class="fete-b"><button class="b plein" onclick="fermerMot()" data-t="mot-ok">Merci</button></div>
+  </div>
+</div>
+
+<div id="v-fete" class="fete cache">
+  <div class="voile"></div>
+  <div class="fete-in">
+    <div class="fete-t" id="fete-t">—</div>
+    <div class="fete-n" id="fete-n">0</div>
+    <div class="fete-m" id="fete-m"></div>
+    <div class="fete-b">
+      <button class="b plein" onclick="fermerFete(true)" data-t="fete-continuer">Continuer</button>
+      <button class="b fin" onclick="fermerFete(false)" data-t="fete-terminer">Terminer la séance</button>
+    </div>
+  </div>
 </div>
 
 </div>
@@ -797,7 +1009,40 @@ var T = {
     'r-reste': 'Il en reste @.', 'r-bouge': 'Rien de nouveau au compteur, mais les scores ont bougé.',
     'r-max': ' Tous les mots ont atteint leur maximum du jour.',
     'sens-nf': 'NL → FR', 'sens-fn': 'FR → NL', 'sens-auto': 'au hasard',
-    'versions': '@ listes · @@ mots', 'q-faites': '@ questions'
+    'versions': '@ listes · @@ mots', 'q-faites': '@ questions',
+    'obj-n': '@ / @@ pts',
+    'seances-n': '@ séances sur 3 cette semaine',
+    'seances-0': 'aucune séance bouclée cette semaine',
+    'trop-tard': 'trop tard — @',
+    'fete-t': 'Objectif de la séance',
+    'fete-m': '@ points marqués, @@ mots acquis en tout.',
+    'fete-continuer': 'Continuer', 'fete-terminer': 'Terminer la séance',
+    'fin-t': 'Liste terminée', 'fin-m': 'Les 40 mots sont acquis.',
+    'fin-choisir': 'Choisir ma récompense', 'fin-rentrer': "Revenir à l'accueil",
+    'cad-t': 'Récompenses',
+    'cad-p': "Chacun pose trois cadeaux qu'il est prêt à offrir à l'autre. Celui qui boucle les 40 mots de la liste choisit le sien parmi les trois de l'autre.",
+    'cad-mes': 'Ce que je propose à @', 'cad-ses': 'Ce que @ me propose',
+    'cad-ph': 'un cadeau à offrir…', 'cad-vide': 'pas encore posé',
+    'cad-coupons': 'Récompenses gagnées', 'cad-aucun': 'aucune pour le moment',
+    'cad-du-moi': 'gagné par moi', 'cad-du-autre': 'je le dois à @',
+    'cad-honorer': 'Honoré', 'cad-fait': 'honoré',
+    'cad-manque': 'Trois cadeaux à poser',
+    'choix-t': 'Liste terminée',
+    'choix-p': 'Les 40 mots sont acquis. Choisis ta récompense parmi les trois propositions de @.',
+    'choix-rien': "Les 40 mots sont acquis, mais @ n'a pas encore posé ses trois cadeaux. Reviens ici quand ce sera fait.",
+    'choix-ok': 'Choisir « @ » ? Ce choix est définitif pour cette liste.',
+    'choix-plus-tard': 'Plus tard', 'choix-deja': 'Tu as déjà choisi pour cette liste : « @ ».',
+    'mot-h': 'Un mot pour @',
+    'mot-p': "Ce mot reste invisible jusqu'à ce que l'autre ouvre l'app. Il s'affiche alors une seule fois, puis passe en « lu ».",
+    'mot-ph': 'quelque chose à lui dire…',
+    'mot-deposer': 'Déposer le mot', 'mot-ok': 'Merci',
+    'mot-t': 'Un mot de @',
+    'mot-rien': 'Aucun mot déposé pour le moment.',
+    'mot-attente': "Déposé @ — pas encore lu.",
+    'mot-lu': 'Déposé @ — lu.',
+    'mot-fait': 'Le mot est déposé. @ le verra en ouvrant l\'app.',
+    'mot-ko': "Le mot n'a pas pu partir. Vérifie la connexion, et que le script SQL a bien été relancé.",
+    'mot-le': 'déposé @' 
   },
   nl: {
     'qui-t': 'Wie gebruikt deze telefoon?',
@@ -841,7 +1086,40 @@ var T = {
     'r-reste': 'Er blijven er @ over.', 'r-bouge': 'Niets nieuws op de teller, maar de scores zijn bewogen.',
     'r-max': ' Alle woorden zitten aan hun maximum voor vandaag.',
     'sens-nf': 'NL → FR', 'sens-fn': 'FR → NL', 'sens-auto': 'willekeurig',
-    'versions': '@ lijsten · @@ woorden', 'q-faites': '@ vragen'
+    'versions': '@ lijsten · @@ woorden', 'q-faites': '@ vragen',
+    'obj-n': '@ / @@ ptn',
+    'seances-n': '@ van de 3 sessies deze week',
+    'seances-0': 'nog geen sessie afgerond deze week',
+    'trop-tard': 'te laat — @',
+    'fete-t': 'Doel van de sessie',
+    'fete-m': '@ punten gescoord, @@ woorden gekend in totaal.',
+    'fete-continuer': 'Doorgaan', 'fete-terminer': 'Sessie beëindigen',
+    'fin-t': 'Lijst afgewerkt', 'fin-m': 'Alle 40 woorden zijn gekend.',
+    'fin-choisir': 'Mijn beloning kiezen', 'fin-rentrer': 'Terug naar het beginscherm',
+    'cad-t': 'Beloningen',
+    'cad-p': 'Ieder legt drie cadeaus vast die hij aan de ander wil geven. Wie de 40 woorden van de lijst afwerkt, kiest er één uit de drie van de ander.',
+    'cad-mes': 'Wat ik aan @ aanbied', 'cad-ses': 'Wat @ mij aanbiedt',
+    'cad-ph': 'een cadeau om te geven…', 'cad-vide': 'nog niet ingevuld',
+    'cad-coupons': 'Verdiende beloningen', 'cad-aucun': 'voorlopig geen',
+    'cad-du-moi': 'door mij verdiend', 'cad-du-autre': 'ik ben dit @ verschuldigd',
+    'cad-honorer': 'Ingelost', 'cad-fait': 'ingelost',
+    'cad-manque': 'Drie cadeaus in te vullen',
+    'choix-t': 'Lijst afgewerkt',
+    'choix-p': 'Alle 40 woorden zijn gekend. Kies je beloning uit de drie voorstellen van @.',
+    'choix-rien': 'Alle 40 woorden zijn gekend, maar @ heeft nog geen drie cadeaus vastgelegd. Kom hier terug wanneer dat gebeurd is.',
+    'choix-ok': '« @ » kiezen? Deze keuze is definitief voor deze lijst.',
+    'choix-plus-tard': 'Later', 'choix-deja': 'Je hebt voor deze lijst al gekozen: « @ ».',
+    'mot-h': 'Een woordje voor @',
+    'mot-p': 'Dit berichtje blijft onzichtbaar tot de ander de app opent. Het verschijnt dan één keer en gaat daarna op « gelezen ».',
+    'mot-ph': 'iets wat je wil zeggen…',
+    'mot-deposer': 'Berichtje achterlaten', 'mot-ok': 'Dank je',
+    'mot-t': 'Een woordje van @',
+    'mot-rien': 'Voorlopig geen berichtje achtergelaten.',
+    'mot-attente': 'Achtergelaten @ — nog niet gelezen.',
+    'mot-lu': 'Achtergelaten @ — gelezen.',
+    'mot-fait': 'Het berichtje staat klaar. @ ziet het bij het openen van de app.',
+    'mot-ko': 'Het berichtje kon niet verstuurd worden. Kijk de verbinding na, en of het SQL-script opnieuw is uitgevoerd.',
+    'mot-le': 'achtergelaten @' 
   }
 };
 /* ═══════════ hauteur gelée ═══════════
@@ -956,6 +1234,20 @@ function son(quoi, p) {
     var g2 = c.createGain();
     g2.gain.setValueAtTime(.09, t0); g2.gain.exponentialRampToValueAtTime(.0006, t0 + .35);
     n1.connect(f); f.connect(g2); g2.connect(c.destination); n1.start(t0);
+  } else if (quoi === 'fete') {
+    [392, 523.25, 659.25, 783.99, 1046.5].forEach(function (f, k) {
+      var o3 = c.createOscillator(), g3 = c.createGain(), t = t0 + k * .12;
+      o3.type = 'triangle'; o3.frequency.setValueAtTime(f, t);
+      g3.gain.setValueAtTime(.0001, t);
+      g3.gain.exponentialRampToValueAtTime(.14, t + .02);
+      g3.gain.exponentialRampToValueAtTime(.0006, t + .5);
+      o3.connect(g3); g3.connect(c.destination); o3.start(t); o3.stop(t + .55);
+    });
+    var nf = bruit(c, .9), ff = c.createBiquadFilter();
+    ff.type = 'bandpass'; ff.frequency.value = 900; ff.Q.value = .6;
+    var gf = c.createGain();
+    gf.gain.setValueAtTime(.07, t0); gf.gain.exponentialRampToValueAtTime(.0005, t0 + .9);
+    nf.connect(ff); ff.connect(gf); gf.connect(c.destination); nf.start(t0);
   } else if (quoi === 'eteint') {
     var n2 = bruit(c, .6), f2 = c.createBiquadFilter(); f2.type = 'lowpass';
     f2.frequency.setValueAtTime(3200, t0);
@@ -964,11 +1256,47 @@ function son(quoi, p) {
     n2.connect(f2); f2.connect(g); n2.start(t0);
   }
 }
-var VIBRE = [[10], [12], [14], [10, 40, 14], [12, 40, 18], [14, 45, 22, 45, 26], [16, 40, 20, 40, 24, 40, 30]];
+/* bourdon du palier 8 : une nappe très grave qui ne s'arrête que quand la
+   série casse. Un son continu tient la tension mieux que n'importe quelle
+   particule, et ne coûte rien au rendu. */
+var wtBourdon = null;
+function bourdonOn() {
+  if (!sonActif() || wtBourdon) return;
+  var c = ac(); if (!c) return;
+  var o = c.createOscillator(), o2 = c.createOscillator();
+  var f = c.createBiquadFilter(), g = c.createGain();
+  o.type = 'sawtooth'; o.frequency.value = 41;
+  o2.type = 'sine'; o2.frequency.value = 82;
+  f.type = 'lowpass'; f.frequency.value = 250;
+  g.gain.setValueAtTime(.0001, c.currentTime);
+  g.gain.exponentialRampToValueAtTime(.055, c.currentTime + 1.1);
+  o.connect(f); o2.connect(f); f.connect(g); g.connect(c.destination);
+  o.start(); o2.start();
+  wtBourdon = { o: o, o2: o2, g: g };
+}
+function bourdonOff() {
+  if (!wtBourdon) return;
+  var b = wtBourdon; wtBourdon = null;
+  var c = ac(); if (!c) return;
+  try {
+    b.g.gain.cancelScheduledValues(c.currentTime);
+    b.g.gain.setValueAtTime(b.g.gain.value || .05, c.currentTime);
+    b.g.gain.exponentialRampToValueAtTime(.0001, c.currentTime + .5);
+    b.o.stop(c.currentTime + .6); b.o2.stop(c.currentTime + .6);
+  } catch (e) {}
+}
+
+var VIBRE = [[10], [12], [14], [10, 40, 14], [12, 40, 18], [14, 45, 22, 45, 26], [16, 40, 20, 40, 24, 40, 30],
+             [18, 35, 22, 35, 26, 35, 34], [20, 30, 24, 30, 30, 30, 38], [24, 28, 28, 28, 34, 28, 44]];
 
 
 var PTS = { vf: 1, flash: 2, qcm: 3 };
 var CIBLE = 10;
+/* un mot vaut 10 points, la liste en vaut 400 : l'objectif d'une séance est le
+   tiers, pour boucler une liste en trois séances par semaine.
+   Déclaré APRÈS CIBLE : var hisse le nom mais pas la valeur, et le calculer
+   plus haut donnait NaN. */
+var OBJ = Math.round(CIBLE * 40 / 3);
 var NOMS = { ulysse: 'Ulysse', jasmien: 'Jasmien' };
 
 var etat, listes = [], liste = null, session = null, cur = null, recents = [];
@@ -977,7 +1305,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'y';
+var WT_BUILD = 'aa';
 
 function charger() {
   var e = null;
@@ -985,6 +1313,8 @@ function charger() {
   if (!e || !e.semaines) e = { semaines: {}, reglages: {}, jours: [] };
   if (!e.reglages) e.reglages = {};
   if (!e.jours) e.jours = [];
+  if (!e.seances) e.seances = [];
+  if (!e.cadeaux) e.cadeaux = {};
   var r = e.reglages;
   if (!r.dir) r.dir = 'auto';
   if (!r.theme) r.theme = 'delft';
@@ -1027,6 +1357,19 @@ function serie() {
   return n;
 }
 
+/* lundi de la semaine en cours, au format trié de jour() : trois séances
+   bouclées entre ce lundi et aujourd'hui suffisent à finir une liste. */
+function lundi() { var d = new Date(); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return jour(d); }
+function seancesSemaine() { var l = lundi(); return (etat.seances || []).filter(function (x) { return x >= l; }).length; }
+function majObj() {
+  var e = document.getElementById('t-obj');
+  if (!e || !session) return;
+  var r = Math.min(1, session.gagnes / OBJ);
+  e.querySelector('i').style.width = (r * 100) + '%';
+  e.classList.toggle('plein', r >= 1);
+  document.getElementById('t-session').textContent = tr('obj-n', session.gagnes, OBJ);
+}
+
 function cfg() { var c = window.WT_CONFIG || {}; return (c.url && c.cle) ? c : null; }
 function moi() { return etat.reglages.moi || null; }
 function autre() { return moi() === 'ulysse' ? 'jasmien' : 'ulysse'; }
@@ -1048,15 +1391,22 @@ function api(chemin, opts) {
 /* select explicite, SANS la colonne etat : elle pèse une vingtaine de ko par
    personne et n'est utile qu'à la restauration, qui va la chercher elle-même.
    La rapatrier à chaque rafraîchissement du duo ne servait à rien. */
-var WT_COLS = 'id,liste,acquis,points,serie,maj';
+/* Colonnes demandées, du jeu le plus complet au plus ancien. Si une colonne
+   n'existe pas encore dans Supabase (script SQL pas relancé), PostgREST répond
+   une erreur au lieu d'un tableau : on redescend d'un cran et on réessaie, si
+   bien qu'une base en retard continue d'afficher ce qu'elle sait. */
+var WT_JEUX = [
+  'id,liste,acquis,points,serie,mot,mot_maj,mot_lu,maj',
+  'id,liste,acquis,points,serie,maj',
+  'id,liste,acquis,points,maj'
+];
+var WT_COLS = WT_JEUX[0];
 function tirer() {
   return api('duo?select=' + WT_COLS).then(function (r) { return r.json(); }).then(function (l) {
-    /* si la colonne serie n'a pas encore été ajoutée dans Supabase, PostgREST
-       répond une erreur au lieu d'un tableau : on retombe une fois sur les
-       colonnes d'origine pour que le duo continue de s'afficher. */
     if (!Array.isArray(l)) {
-      if (WT_COLS.indexOf(',serie') === -1) throw new Error('duo');
-      WT_COLS = 'id,liste,acquis,points,maj';
+      var i = WT_JEUX.indexOf(WT_COLS);
+      if (i < 0 || i >= WT_JEUX.length - 1) throw new Error('duo');
+      WT_COLS = WT_JEUX[i + 1];
       return tirer();
     }
     l.forEach(function (x) { distant[x.id] = x; });
@@ -1082,7 +1432,7 @@ function poserSemaine(idl) {
 function rafraichirDuo(bavard) {
   if (!cfg()) { if (bavard) alert('Le partage n\'est pas configuré : config.js est vide.'); return; }
   tirer().then(function () {
-    rendreDuo('a-duo'); rendreDuo('r-duo'); majSync();
+    rendreDuo('a-duo'); rendreDuo('r-duo'); majSync(); majMot(); verifierMot();
     if (bavard) alert('Connexion établie.');
   }).catch(function () { if (bavard) alert('Connexion impossible. Vérifie config.js, et que le projet Supabase est actif.'); });
 }
@@ -1104,7 +1454,7 @@ function restaurerNuage() {
 }
 
 function voir(n) {
-  ['qui', 'accueil', 'listes', 'train', 'recap', 'reglages'].forEach(function (v) {
+  ['qui', 'accueil', 'listes', 'train', 'recap', 'reglages', 'cadeaux', 'choix'].forEach(function (v) {
     var e = document.getElementById('v-' + v);
     e.classList.add('cache'); e.style.display = '';
   });
@@ -1112,11 +1462,13 @@ function voir(n) {
   c.classList.remove('cache');
   c.style.display = 'flex';
   document.body.dataset.vue = n;
-  if (n !== 'train') { wtStreak = 0; wtPoserChaleur(true); }
+  if (n !== 'train') { wtStreak = 0; wtPoserChaleur(true); wtChronoStop(); bourdonOff(); }
   wtLancerPoses(n === 'train' && wtPalier(wtStreak) >= 1, wtPalier(wtStreak));
   if (n === 'accueil') rendreAccueil();
   if (n === 'listes') rendreListes();
   if (n === 'reglages') rendreReglages();
+  if (n === 'cadeaux') { rendreCadeaux(); rafraichirCadeaux(); }
+  if (n === 'choix') { rendreChoix(); rafraichirCadeaux(); }
   window.scrollTo(0, 0);
 }
 function choisirQui(q) { etat.reglages.moi = q; sauver(); voir('accueil'); rafraichirDuo(); }
@@ -1141,6 +1493,7 @@ function rendreAccueil() {
   document.getElementById('a-compte').textContent = tr('acquis-n', acquisDe(liste));
   document.getElementById('a-points').textContent = tr('points-n', pointsDe(liste));
   rendreDuo('a-duo');
+  rendreHebdo();
 }
 function rendreDuo(hote) {
   var h = document.getElementById(hote);
@@ -1208,7 +1561,9 @@ function designer(id) {
 function ouvrirListe(id) {
   var l = listes.filter(function (x) { return x.id === id; })[0];
   if (!l) return;
-  liste = l; etat.reglages.liste = id; sauver(); voir('accueil');
+  liste = l; etat.reglages.liste = id; sauver();
+  chargerCadeauxLocaux(); rafraichirCadeaux();
+  voir('accueil');
 }
 
 function dispo() {
@@ -1242,14 +1597,20 @@ function modeDe(s) {
 }
 function demarrer(mode) {
   if (sonActif()) ac();
-  session = { mode: mode, n: 0, justes: 0, gain: 0, avant: acquisDe(liste) };
+  session = { mode: mode, n: 0, justes: 0, gain: 0, gagnes: 0, avant: acquisDe(liste), fete: false, fini: false };
   recents = [];
+  wtPause = false;
   wtStreak = 0; wtPoserChaleur(true);
   voir('train');
   crans('t-crans', liste);
+  majObj();
   suite();
 }
 function suite() {
+  /* une célébration est à l'écran : la question suivante attend que le voile
+     soit refermé, sinon elle se jouerait derrière lui. */
+  if (wtPause) return;
+  wtChronoStop();
   document.getElementById('t-retour').textContent = '';
   ['t-flash', 't-qcm', 't-vf'].forEach(function (i) { document.getElementById(i).classList.add('cache'); });
   document.getElementById('t-actions-flash').style.display = 'none';
@@ -1258,7 +1619,7 @@ function suite() {
   document.getElementById('t-carte').classList.remove('tourne');
   if (!session) return;
   document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste));
-  document.getElementById('t-session').textContent = tr('q-faites', session.n);
+  majObj();
   /* aucune limite : on continue tant qu'il reste un mot à monter, puis en
      révision libre sans points une fois la liste entièrement acquise */
   var t = tirerMot();
@@ -1272,6 +1633,7 @@ function suite() {
   if (cur.mode === 'flash') montrerFlash();
   else if (cur.mode === 'qcm') montrerQCM();
   else montrerVF();
+  wtChronoLancer();
 }
 function montrerFlash() {
   var m = cur.mot, nl = cur.sens === 'nl-fr';
@@ -1294,6 +1656,7 @@ function retourner() {
 }
 function repFlash(su) {
   if (!cur || cur.fait) return; cur.fait = true;
+  wtChronoStop();
   document.getElementById('t-carte').classList.add('tourne');
   document.getElementById('t-juge').style.display = 'none';
   appliquer(su, 'flash');
@@ -1316,7 +1679,7 @@ function montrerQCM() {
   var choisis = frais.concat(reste).slice(0, 3);
   DISTRACTEURS[m.nl] = choisis;
   var opts = mel([r].concat(choisis));
-  var c = document.getElementById('q-opts'); c.innerHTML = '';
+  var c = document.getElementById('q-opts'); c.innerHTML = ''; c.classList.remove('fige');
   opts.forEach(function (o) {
     var b = document.createElement('button');
     b.className = 'opt';
@@ -1338,6 +1701,7 @@ function mesurer(els) {
 }
 function repQCM(b, juste, r) {
   if (!cur || cur.fait) return; cur.fait = true;
+  wtChronoStop();
   var tous = document.querySelectorAll('#q-opts .opt');
   if (juste) {
     b.classList.add('juste');
@@ -1372,6 +1736,7 @@ function montrerVF() {
   document.getElementById('v-faux').disabled = false;
 }
 function repVF(r) {
+  wtChronoStop();
   if (!cur || cur.fait) return; cur.fait = true;
   document.getElementById('v-vrai').disabled = true;
   document.getElementById('v-faux').disabled = true;
@@ -1398,12 +1763,14 @@ function appliquer(juste, mode) {
          jour est toujours respecté, seul le message était en trop. */
     } else {
       var g = Math.min(val, CIBLE - p.s);
-      p.s += g; session.gain += g;
+      p.s += g; session.gain += g; session.gagnes += g;
       if (p.s >= CIBLE) document.getElementById('t-retour').textContent = tr('acquis-1');
     }
   } else {
     p.ko++;
-    cur.perte = cur.sansPts ? 0 : Math.min(val, p.s);
+    /* une expiration du chrono casse la série mais ne retire pas de points :
+       la sanction est la flamme perdue, pas la progression. */
+    cur.perte = (cur.sansPts || cur.horsTemps) ? 0 : Math.min(val, p.s);
     p.s -= cur.perte; session.gain -= cur.perte;
     vibrer([26, 30, 26]);
     son('eteint');
@@ -1421,6 +1788,11 @@ function appliquer(juste, mode) {
   wtPoserChaleur();
   sauverPlusTard();
   majCran();
+  majObj();
+  if (juste && session) {
+    if (!session.fini && acquisDe(liste) >= liste.mots.length) { session.fini = true; wtPause = true; setTimeout(wtFinDeListe, 900); }
+    else if (!session.fete && session.gagnes >= OBJ) { session.fete = true; wtPause = true; setTimeout(wtFeteSeance, 800); }
+  }
 }
 function majCran() {
   var e = document.getElementById('t-crans-' + cur.idx);
@@ -1438,7 +1810,6 @@ function majCran() {
     if (neuf) { e.classList.add('eclat'); setTimeout(function () { e.classList.remove('eclat'); }, 620); }
   }
   document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste));
-  document.getElementById('t-session').textContent = tr('q-faites', session.n);
 }
 function onde(bouton, ev, juste) {
   var r = bouton.getBoundingClientRect();
@@ -1456,6 +1827,8 @@ function onde(bouton, ev, juste) {
 function vibrer(m) { try { if (navigator.vibrate) navigator.vibrate(m); } catch (e) {} }
 
 function finSession() {
+  wtChronoStop(); bourdonOff(); wtPause = false;
+  document.getElementById('v-fete').classList.add('cache');
   if (!session) { voir('accueil'); return; }
   var a = acquisDe(liste), nouveaux = a - session.avant;
   document.getElementById('r-gain').textContent = (session.gain >= 0 ? '+' : '') + session.gain;
@@ -1474,7 +1847,8 @@ function finSession() {
   viderSauvegarde();
   wtStreak = 0; wtPoserChaleur(true);
   voir('recap');
-  pousser().then(function () { return tirer(); }).then(function () { rendreDuo('r-duo'); }).catch(function () {});
+  pousser().then(function () { return tirer(); })
+    .then(function () { rendreDuo('r-duo'); verifierMot(); }).catch(function () {});
 }
 
 /* ═══════════ sonde de débordement ═══════════
@@ -1540,6 +1914,7 @@ function rendreReglages() {
   brancherSonde();
   document.getElementById('g-lang').value = lg();
   document.getElementById('g-son').value = String(etat.reglages.son || 0);
+  majMot();
   majSync();
 }
 function regler(k, v) {
@@ -1621,11 +1996,22 @@ document.addEventListener('contextmenu', function (e) { if (!wtSaisie(e.target))
 /* ═══════════ Série enflammée ═══════════ */
 /* -1 et non 0 : le tout premier appel doit poser data-heat sur le corps de page */
 var wtStreak = 0, wtPalierCourant = -1, wtTimerFlocons = null;
-var WT_K = [0, .35, .55, .8, 1, 1.15, 1.3];
-var WT_DELAI_QCM = [650, 620, 580, 540, 500, 460, 430];
+var WT_K = [0, .35, .55, .8, 1, 1.15, 1.3, 1.36, 1.42, 1.46];
+var WT_DELAI_QCM = [650, 620, 580, 540, 500, 460, 430, 430, 430, 430];
+/* durée du compte à rebours par palier, en ms — 0 = pas de chrono.
+   Il n'apparaît qu'à partir de 25 d'affilée, et jamais en mode cartes,
+   qui est auto-rythmé par le retournement. */
+var WT_CHRONO = [0, 0, 0, 0, 0, 0, 9000, 7000, 5500, 4500];
 
-/* 0-2 rien | 3-5 allumage | 6-9 flammèches | 10-14 brasier | 15-20 fournaise | 21-24 incandescence | 25+ coeur blanc */
+/* 0-2 rien | 3-5 allumage | 6-9 flammèches | 10-14 brasier | 15-20 fournaise
+   21-24 incandescence | 25+ coeur blanc | 32+ surchauffe | 45+ fusion | 60+ éclipse
+   Au-delà de 25 le feu ne grandit plus — il sature et coûte cher. Ce qui monte,
+   c'est l'app : elle tremble, sa palette bascule au bleu de chalumeau, puis
+   tout s'éteint autour du mot. */
 function wtPalier(s) {
+  if (s >= 60) return 9;
+  if (s >= 45) return 8;
+  if (s >= 32) return 7;
   if (s >= 25) return 6;
   if (s >= 21) return 5;
   if (s >= 15) return 4;
@@ -1689,7 +2075,7 @@ function wtConstruireFeu() {
    Vitesse : 1x au premier palier où les flammes apparaissent (p=1), puis
    +1x par palier franchi, plafonnée à 3x (donc dès p=3). */
 var wtHorloges = [];
-var WT_TEMPO = [1, 1, .5, 1 / 3, 1 / 3, 1 / 3, 1 / 3];
+var WT_TEMPO = [1, 1, .5, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3];
 function wtLancerPoses(actif, p) {
   wtHorloges.forEach(function (t) { clearInterval(t); });
   wtHorloges = [];
@@ -1719,6 +2105,7 @@ function wtPoserChaleur(silencieux) {
     });
     wtReglerFlocons(p);
     wtLancerPoses(p >= 1 && document.body.dataset.vue === 'train', p);
+    if (p >= 8 && document.body.dataset.vue === 'train') bourdonOn(); else bourdonOff();
   }
   var el = document.getElementById('wt-serie');
   document.getElementById('wt-serie-n').textContent = wtStreak;
@@ -1863,6 +2250,344 @@ function wtEteindre() {
   }, 380);
 }
 
+/* ═══════════ compte à rebours des paliers hauts ═══════════
+   Une seule barre, animée par une transition de transform : rien à repeindre
+   pendant qu'elle descend. La minuterie JS ne sert qu'à l'expiration. */
+var wtChronoT = null, wtChronoU = null;
+function wtChronoStop() {
+  if (wtChronoT) { clearTimeout(wtChronoT); wtChronoT = null; }
+  if (wtChronoU) { clearTimeout(wtChronoU); wtChronoU = null; }
+  var e = document.getElementById('t-chrono');
+  if (!e) return;
+  e.classList.remove('on', 'urgence');
+  var i = e.querySelector('i');
+  i.style.transition = 'none';
+  i.style.transform = 'scaleX(1)';
+}
+function wtChronoLancer() {
+  wtChronoStop();
+  if (!cur || !session || cur.mode === 'flash') return;
+  var d = WT_CHRONO[wtPalier(wtStreak)] || 0;
+  if (!d) return;
+  var e = document.getElementById('t-chrono'), i = e.querySelector('i');
+  e.classList.add('on');
+  requestAnimationFrame(function () {
+    /* lecture forcée : sans elle, le retour à scaleX(1) sans transition et le
+       départ à scaleX(0) sont recalculés dans la même passe de style, et la
+       barre saute directement à zéro au lieu de descendre. */
+    void i.offsetWidth;
+    i.style.transition = 'transform ' + d + 'ms linear';
+    i.style.transform = 'scaleX(0)';
+  });
+  wtChronoU = setTimeout(function () { e.classList.add('urgence'); vibrer([8]); }, Math.round(d * .68));
+  wtChronoT = setTimeout(wtExpirer, d);
+}
+function wtExpirer() {
+  if (!cur || cur.fait) return;
+  cur.fait = true; cur.horsTemps = true;
+  wtChronoStop();
+  document.getElementById('q-opts').classList.add('fige');
+  document.getElementById('t-actions-vf').style.display = 'none';
+  document.getElementById('t-juge').style.display = 'none';
+  document.getElementById('t-retour').textContent = tr('trop-tard', cur.mot.nl + ' = ' + cur.mot.fr);
+  appliquer(false, cur.mode);
+  setTimeout(suite, 1500);
+}
+
+/* ═══════════ célébrations ═══════════ */
+var wtPause = false;
+/* embrasement : le feu monte au maximum sans toucher à la série, puis on
+   redemande à wtPoserChaleur de reposer l'état réel. */
+function wtEmbrasement(ms) {
+  document.body.dataset.heat = 9;
+  document.body.style.setProperty('--f-tempo', WT_TEMPO[9]);
+  Array.prototype.forEach.call(document.querySelectorAll('#wt-feu .wtf'), function (d) {
+    var sy = WT_K[9] * parseFloat(d.dataset.base);
+    d.style.setProperty('--sy', sy.toFixed(2));
+    d.style.setProperty('--sx', Math.pow(sy, .55).toFixed(2));
+  });
+  wtLancerPoses(document.body.dataset.vue === 'train', 9);
+  setTimeout(function () { wtPalierCourant = -1; wtPoserChaleur(true); }, ms);
+}
+function wtVague(hote) {
+  var els = document.getElementById(hote).children;
+  for (var i = 0; i < els.length; i++) {
+    (function (e, k) {
+      setTimeout(function () {
+        e.classList.add('eclat');
+        setTimeout(function () { e.classList.remove('eclat'); }, 600);
+      }, k * 20);
+    })(els[i], i);
+  }
+}
+function feteBoutons(h) { document.querySelector('#v-fete .fete-b').innerHTML = h; }
+function ouvrirFete(titre, chiffre, message, boutons) {
+  wtPause = true;
+  wtChronoStop();
+  wtEmbrasement(5600); wtVague('t-crans'); wtSecouer(3);
+  son('fete');
+  document.getElementById('fete-t').textContent = titre;
+  document.getElementById('fete-m').textContent = message;
+  feteBoutons(boutons);
+  var n = document.getElementById('fete-n');
+  n.textContent = chiffre;
+  document.getElementById('v-fete').classList.remove('cache');
+  n.classList.remove('slam'); void n.offsetWidth; n.classList.add('slam');
+}
+function wtFeteSeance() {
+  if (!session) return;
+  var j = jour();
+  etat.seances = (etat.seances || []);
+  etat.seances.push(j);
+  etat.seances = etat.seances.slice(-30);
+  sauver();
+  vibrer([40, 60, 40, 60, 140]);
+  ouvrirFete(tr('fete-t'), session.gagnes, tr('fete-m', session.gagnes, acquisDe(liste)),
+    '<button class="b plein" onclick="fermerFete(true)">' + ech(tr('fete-continuer')) + '</button>' +
+    '<button class="b fin" onclick="fermerFete(false)">' + ech(tr('fete-terminer')) + '</button>');
+}
+function wtFinDeListe() {
+  vibrer([60, 80, 60, 80, 200]);
+  ouvrirFete(tr('fin-t'), liste.mots.length + ' / ' + liste.mots.length, tr('fin-m'),
+    '<button class="b plein" onclick="allerChoix()">' + ech(tr('fin-choisir')) + '</button>' +
+    '<button class="b fin" onclick="fermerFete(false)">' + ech(tr('fin-rentrer')) + '</button>');
+}
+function fermerFete(continuer) {
+  document.getElementById('v-fete').classList.add('cache');
+  wtPause = false;
+  if (continuer) suite(); else finSession();
+}
+function allerChoix() {
+  document.getElementById('v-fete').classList.add('cache');
+  wtPause = false;
+  finSession();
+  voir('choix');
+}
+
+/* ═══════════ mot de motivation ═══════════
+   Le mot vit sur la ligne de celui qui l'écrit, dans la table duo. Personne
+   d'autre n'écrit cette ligne — pousser() n'envoie que ses propres colonnes et
+   l'upsert ne touche pas à celles qu'il ne cite pas — donc le mot survit à
+   toutes les synchronisations de progression.
+   mot_lu passe à vrai quand le destinataire l'a réellement ouvert : c'est lui
+   qui écrit ce drapeau sur la ligne de l'autre. */
+var wtMotMontre = null;
+function motRecu() {
+  var d = distant[autre()];
+  if (!d || !d.mot || !String(d.mot).trim()) return null;
+  if (d.mot_lu) return null;
+  return d;
+}
+function verifierMot() {
+  var d = motRecu();
+  if (!d) return;
+  var cle = String(d.mot_maj || d.mot);
+  if (wtMotMontre === cle) return;
+  var v = document.body.dataset.vue;
+  if (v !== 'accueil' && v !== 'recap') return;
+  wtMotMontre = cle;
+  ouvrirMot(d);
+}
+function ouvrirMot(d) {
+  document.getElementById('mot-t').textContent = tr('mot-t', NOMS[autre()]);
+  document.getElementById('mot-txt').textContent = d.mot;
+  document.getElementById('mot-d').textContent = d.mot_maj
+    ? tr('mot-le', new Date(d.mot_maj).toLocaleDateString(lg() === 'nl' ? 'nl-BE' : 'fr-BE'))
+    : '';
+  var c = document.querySelector('#v-mot .mot-carte');
+  c.style.animation = 'none'; void c.offsetWidth; c.style.animation = '';
+  document.getElementById('v-mot').classList.remove('cache');
+  son('juste', 3); vibrer([18, 40, 18]);
+}
+function fermerMot() {
+  document.getElementById('v-mot').classList.add('cache');
+  var d = distant[autre()];
+  if (d) d.mot_lu = true;
+  if (!cfg()) return;
+  api('duo', {
+    method: 'POST',
+    headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+    body: JSON.stringify([{ id: autre(), mot_lu: true }])
+  }).catch(function () {});
+}
+function deposerMot() {
+  var e = document.getElementById('g-mot');
+  var t = String(e.value || '').trim().slice(0, 240);
+  if (!cfg() || !moi()) { alert(tr('mot-ko')); return; }
+  /* upsert et non PATCH : un PATCH sur une ligne absente réussit sans rien
+     écrire, et le mot serait perdu en silence. L'upsert ne cite que ses trois
+     colonnes, la progression n'est pas touchée. */
+  api('duo', {
+    method: 'POST',
+    headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+    body: JSON.stringify([{ id: moi(), mot: t || null, mot_maj: new Date().toISOString(), mot_lu: false }])
+  }).then(function (r) {
+    if (!r.ok) throw new Error('mot');
+    return tirer();
+  }).then(function () {
+    majMot();
+    alert(t ? tr('mot-fait', NOMS[autre()]) : tr('mot-rien'));
+  }).catch(function () { alert(tr('mot-ko')); });
+}
+function majMot() {
+  var e = document.getElementById('g-mot');
+  if (!e) return;
+  document.getElementById('mot-h').textContent = tr('mot-h', NOMS[autre()]);
+  e.placeholder = tr('mot-ph');
+  var d = distant[moi()];
+  if (document.activeElement !== e) e.value = (d && d.mot) || '';
+  var s = document.getElementById('g-mot-etat');
+  if (!d || !d.mot || !String(d.mot).trim()) { s.textContent = tr('mot-rien'); s.classList.remove('attente'); return; }
+  var q = d.mot_maj ? new Date(d.mot_maj).toLocaleDateString(lg() === 'nl' ? 'nl-BE' : 'fr-BE') : '—';
+  s.textContent = d.mot_lu ? tr('mot-lu', q) : tr('mot-attente', q);
+  s.classList.toggle('attente', !d.mot_lu);
+}
+
+/* ═══════════ récompenses ═══════════
+   Deux tables partagées : cadeaux, le catalogue de trois propositions que
+   chacun offre à l'autre pour une liste donnée ; coupons, ce qui a été
+   réellement choisi et reste à honorer. Le catalogue est aussi gardé en local
+   pour rester consultable hors ligne. */
+var cadeaux = { ulysse: [], jasmien: [] }, coupons = [];
+function chargerCadeauxLocaux() {
+  var c = (liste && etat.cadeaux[liste.id]) || {};
+  cadeaux = { ulysse: (c.ulysse || []).slice(), jasmien: (c.jasmien || []).slice() };
+}
+function cadeauxPrets(l) {
+  l = l || [];
+  var n = 0;
+  for (var i = 0; i < 3; i++) if (l[i] && String(l[i]).trim()) n++;
+  return n >= 3;
+}
+function tirerCadeaux() {
+  if (!cfg() || !liste) return Promise.resolve();
+  return api('cadeaux?liste=eq.' + encodeURIComponent(liste.id) + '&select=de,i,texte')
+    .then(function (r) { return r.json(); })
+    .then(function (l) {
+      if (!Array.isArray(l)) return;
+      var n = { ulysse: [], jasmien: [] };
+      l.forEach(function (x) { if (n[x.de]) n[x.de][x.i] = x.texte; });
+      cadeaux = n;
+      etat.cadeaux[liste.id] = { ulysse: n.ulysse.slice(), jasmien: n.jasmien.slice() };
+      sauverPlusTard();
+    });
+}
+function tirerCoupons() {
+  if (!cfg()) return Promise.resolve();
+  return api('coupons?select=id,liste,de,pour,texte,etat,cree&order=cree.desc')
+    .then(function (r) { return r.json(); })
+    .then(function (l) { if (Array.isArray(l)) coupons = l; });
+}
+function rafraichirCadeaux() {
+  if (!cfg()) return;
+  tirerCadeaux()
+    .then(tirerCoupons)
+    .then(function () {
+      if (document.body.dataset.vue === 'cadeaux') rendreCadeaux();
+      if (document.body.dataset.vue === 'choix') rendreChoix();
+      if (document.body.dataset.vue === 'accueil') rendreHebdo();
+    })
+    .catch(function () {});
+}
+function ecrireCadeau(i, texte) {
+  texte = String(texte || '').trim().slice(0, 90);
+  if (!moi()) return;
+  cadeaux[moi()][i] = texte;
+  if (!etat.cadeaux[liste.id]) etat.cadeaux[liste.id] = {};
+  etat.cadeaux[liste.id][moi()] = cadeaux[moi()].slice();
+  sauver();
+  rendreHebdo();
+  if (!cfg()) return;
+  api('cadeaux', {
+    method: 'POST',
+    headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+    body: JSON.stringify([{ liste: liste.id, de: moi(), i: i, texte: texte, maj: new Date().toISOString() }])
+  }).catch(function () {});
+}
+function couponDeLaListe() {
+  for (var i = 0; i < coupons.length; i++)
+    if (coupons[i].liste === liste.id && coupons[i].pour === moi()) return coupons[i];
+  return null;
+}
+function rendreCadeaux() {
+  if (!liste) return;
+  document.getElementById('cad-h-mes').textContent = tr('cad-mes', NOMS[autre()]);
+  document.getElementById('cad-h-ses').textContent = tr('cad-ses', NOMS[autre()]);
+  var m = cadeaux[moi()] || [];
+  for (var i = 0; i < 3; i++) {
+    var e = document.getElementById('cad-' + i);
+    if (document.activeElement !== e) e.value = m[i] || '';
+    e.placeholder = tr('cad-ph');
+  }
+  var ses = cadeaux[autre()] || [], h = '';
+  for (var j = 0; j < 3; j++) {
+    h += (ses[j] && String(ses[j]).trim())
+      ? '<div class="cad-c">' + ech(ses[j]) + '</div>'
+      : '<div class="cad-c vide">' + ech(tr('cad-vide')) + '</div>';
+  }
+  document.getElementById('cad-ses').innerHTML = h;
+  var c = '';
+  coupons.forEach(function (x) {
+    var l = (listes.filter(function (y) { return y.id === x.liste; })[0] || {}).titre || x.liste;
+    var pourMoi = x.pour === moi();
+    c += '<div class="coupon' + (x.etat === 'fait' ? ' fait' : '') + '">' +
+      '<div style="flex:1;min-width:0"><div class="c-t">' + ech(x.texte) + '</div>' +
+      '<div class="c-q">' + ech(l) + ' · ' +
+      ech(x.etat === 'fait' ? tr('cad-fait') : (pourMoi ? tr('cad-du-moi') : tr('cad-du-autre', NOMS[x.pour]))) +
+      '</div></div>' +
+      ((!pourMoi && x.etat !== 'fait') ? '<button onclick="honorer(' + x.id + ')">' + ech(tr('cad-honorer')) + '</button>' : '') +
+      '</div>';
+  });
+  document.getElementById('cad-coupons').innerHTML = c ||
+    '<div style="font-size:.78rem;color:var(--faint);padding:8px 0">' + ech(tr('cad-aucun')) + '</div>';
+}
+function honorer(id) {
+  if (!cfg()) { alert('Partage non configuré.'); return; }
+  if (!confirm('Marquer cette récompense comme honorée ?')) return;
+  api('coupons?id=eq.' + id, {
+    method: 'PATCH',
+    headers: { 'Prefer': 'return=minimal' },
+    body: JSON.stringify({ etat: 'fait', maj: new Date().toISOString() })
+  }).then(tirerCoupons).then(rendreCadeaux).catch(function () { alert('Connexion impossible.'); });
+}
+function rendreChoix() {
+  if (!liste) return;
+  var p = document.getElementById('choix-p'), h = document.getElementById('choix-items');
+  var deja = couponDeLaListe();
+  if (deja) { p.textContent = tr('choix-deja', deja.texte); h.innerHTML = ''; return; }
+  var ses = cadeaux[autre()] || [];
+  if (!cadeauxPrets(ses)) { p.textContent = tr('choix-rien', NOMS[autre()]); h.innerHTML = ''; return; }
+  p.textContent = tr('choix-p', NOMS[autre()]);
+  h.innerHTML = ses.slice(0, 3).map(function (t, i) {
+    return '<button class="cad-c" onclick="choisirCadeau(' + i + ')">' + ech(t) + '</button>';
+  }).join('');
+}
+function choisirCadeau(i) {
+  var t = (cadeaux[autre()] || [])[i];
+  if (!t) return;
+  if (!cfg()) { alert('Le partage n\'est pas configuré : la récompense ne pourrait pas être transmise.'); return; }
+  if (couponDeLaListe()) { rendreChoix(); return; }
+  if (!confirm(tr('choix-ok', t))) return;
+  api('coupons', {
+    method: 'POST',
+    headers: { 'Prefer': 'return=minimal' },
+    body: JSON.stringify([{ liste: liste.id, de: autre(), pour: moi(), texte: t, etat: 'du', cree: new Date().toISOString() }])
+  }).then(tirerCoupons).then(function () {
+    son('fete'); vibrer([30, 50, 30]);
+    voir('cadeaux');
+  }).catch(function () { alert('Connexion impossible.'); });
+}
+function rendreHebdo() {
+  var n = seancesSemaine(), h = '';
+  for (var i = 0; i < 3; i++) h += '<i class="' + (i < n ? 'on' : '') + '"></i>';
+  document.getElementById('a-pastilles').innerHTML = h;
+  document.getElementById('a-hebdo-t').textContent = n ? tr('seances-n', Math.min(n, 3)) : tr('seances-0');
+  var b = document.getElementById('a-cad');
+  var pret = cadeauxPrets(cadeaux[moi()]);
+  b.classList.toggle('alerte', !pret);
+  b.textContent = pret ? tr('cad-t') : tr('cad-manque');
+}
+
 wtConstruireFeu();
 wtPoserChaleur(true);
 etat = charger();
@@ -1882,7 +2607,10 @@ fetch('data/index.json', { cache: 'no-cache' })
   .then(function () {
     var voulu = etat.reglages.liste || (distant.semaine && distant.semaine.liste) || (listes[0] && listes[0].id);
     liste = listes.filter(function (l) { return l.id === voulu; })[0] || listes[0];
+    chargerCadeauxLocaux();
     voir(moi() ? 'accueil' : 'qui');
+    rafraichirCadeaux();
+    verifierMot();
   })
   .catch(function () {
     document.getElementById('v-accueil').innerHTML =
