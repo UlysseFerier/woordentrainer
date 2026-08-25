@@ -475,16 +475,19 @@ body[data-heat="6"] .wt-serie { box-shadow: 0 0 26px rgba(255,255,255,.8), 0 0 1
   justify-content: center; padding: 14px 0 10px;
 }
 #v-train .sticky { position: static; flex: none; margin: 0; padding: 0; }
-/* Réserve de feu sous la barre d'actions : hauteur de la bande laissée libre
-   sous « Je savais / Je ne savais pas » et « Vrai / Faux », pour que le foyer
-   et les flammes restent visibles. La barre est opaque et .app passe devant
-   le feu, donc tout ce qu'elle recouvre est perdu. C'est LA valeur à régler
-   si la bande te paraît trop haute ou trop basse — une seule ligne.
-   La marge est portée par les deux blocs d'actions et non par .sticky : en
-   QCM ils sont en display:none, donc le mode qui te convenait déjà ne bouge
-   pas d'un pixel. */
-#v-train #t-actions-flash,
-#v-train #t-actions-vf { margin-bottom: clamp(120px, calc(var(--vh) * .23), 210px); }
+/* Cartes et vrai/faux : les boutons se posent JUSTE sous la carte, et tout
+   le vide restant part en bas de l'écran, où il découvre le feu. Réserver une
+   bande de hauteur fixe ne suffisait pas — la scène, en flex:1 et centrée,
+   reprenait l'espace et reposait les boutons plus bas. Ici la scène ne grandit
+   plus (flex:0 1 auto, donc elle fait la taille de son contenu et peut
+   seulement rétrécir) et c'est la barre d'actions qui absorbe le vide, par un
+   margin-bottom:auto : en colonne flex, une marge auto mange toute la place
+   libre du côté où elle est posée.
+   Le QCM garde sa scène centrée, il n'est pas concerné par ces règles. */
+#v-train[data-mode="flash"] .scene,
+#v-train[data-mode="vf"] .scene { flex: 0 1 auto; justify-content: flex-start; }
+#v-train[data-mode="flash"] .sticky,
+#v-train[data-mode="vf"] .sticky { margin-bottom: auto; }
 #v-train .opts { gap: 10px; }
 #v-train .opt {
   min-height: clamp(52px, calc(var(--vh) * .085), 68px); font-size: 1.02rem;
@@ -974,7 +977,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'x';
+var WT_BUILD = 'y';
 
 function charger() {
   var e = null;
@@ -1262,6 +1265,10 @@ function suite() {
   if (!t) { finSession(); return; }
   var p = prog(liste.id, t.mot);
   cur = { mot: t.mot, sansPts: t.sansPts, sens: sens(), mode: modeDe(p.s), fait: false, perte: 0, idx: liste.mots.indexOf(t.mot) };
+  /* le CSS a besoin de savoir quel mode est à l'écran : en cartes et en
+     vrai/faux les boutons se collent sous l'énoncé, en QCM la scène reste
+     centrée comme avant. */
+  document.getElementById('v-train').dataset.mode = cur.mode;
   if (cur.mode === 'flash') montrerFlash();
   else if (cur.mode === 'qcm') montrerQCM();
   else montrerVF();
