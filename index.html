@@ -9,7 +9,14 @@
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+/* Aucun texte n'est sélectionnable : un appui long sur le téléphone
+   sélectionnait un mot et déclenchait la feuille « rechercher avec Google »
+   de Chrome par-dessus l'app. C'est en plus le geste qui sert à désigner la
+   liste de la semaine. Seul le champ de sauvegarde reste sélectionnable,
+   « Copier ma progression » en dépend. */
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+textarea, input { -webkit-user-select: text; user-select: text; }
 :root {
   --paper:#FFFFFF; --page:#F5F8FC; --card:#FFFFFF;
   --ink:#0B2545; --mute:#5B6B80; --faint:#93A2B4;
