@@ -1,15 +1,22 @@
 -- Woordentrainer — à coller dans Supabase, onglet « SQL Editor », puis « Run ».
--- Crée la table partagée, l'ouvre en lecture et écriture pour l'app,
--- et prépare les trois lignes utilisées : toi, Jasmien, et la liste de la semaine.
+-- Ce script est ré-exécutable sans risque : il crée ce qui manque et ne
+-- touche pas à ce qui existe déjà. À relancer après chaque mise à jour de
+-- l'app qui ajoute une colonne.
 
 create table if not exists duo (
   id      text primary key,
   liste   text,
   acquis  integer default 0,
   points  integer default 0,
+  serie   integer default 0,
   maj     timestamptz default now(),
   etat    jsonb
 );
+
+-- meilleure série de bonnes réponses d'affilée sur la liste en cours.
+-- Colonne ajoutée après la première version : cette ligne la rattrape sur
+-- une table déjà créée.
+alter table duo add column if not exists serie integer default 0;
 
 alter table duo enable row level security;
 
