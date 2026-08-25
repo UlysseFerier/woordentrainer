@@ -1325,7 +1325,8 @@ function appliquer(juste, mode) {
   if (juste) {
     session.justes++; p.ok++;
     if (cur.sansPts) {
-      document.getElementById('t-retour').textContent = tr('libre');
+      /* le texte "révision libre" ne doit plus s'afficher : le plafond du
+         jour est toujours respecté, seul le message était en trop. */
     } else {
       var g = Math.min(val, Math.max(0, cap - p.gj), CIBLE - p.s);
       p.s += g; p.gj += g; session.gain += g;
@@ -1603,9 +1604,11 @@ function wtConstruireFeu() {
   }
 }
 /* une horloge par foyer, arrêtée dès que le feu n'est pas à l'écran.
-   Changer de palier ne relance rien d'autre que la cadence. */
+   Changer de palier ne relance rien d'autre que la cadence.
+   Vitesse : 1x au premier palier où les flammes apparaissent (p=1), puis
+   +1x par palier franchi, plafonnée à 3x (donc dès p=3). */
 var wtHorloges = [];
-var WT_TEMPO = [1, 1, .9, .78, .65, .52, .44];
+var WT_TEMPO = [1, 1, .5, 1 / 3, 1 / 3, 1 / 3, 1 / 3];
 function wtLancerPoses(actif, p) {
   wtHorloges.forEach(function (t) { clearInterval(t); });
   wtHorloges = [];
