@@ -16,6 +16,7 @@
   --line:#DDE5EF; --empty:#E9EFF6;
   --b1:#DCE8F7; --b2:#7FA8DC; --b3:#3D6FB8; --acc:#12408C; --acc-on:#FFFFFF; --acc-soft:#EAF1FB;
   --bad:#C0392B; --bad-soft:#FBEBE9; --bad-line:#E8B4AE;
+  --warm:#D9821E;
   --serif:Verdana,Geneva,sans-serif; --sans:Arial,Helvetica,sans-serif;
   --vh:100svh;
 }
@@ -25,13 +26,19 @@ body.nuit {
   --line:#1E2C40; --empty:#182437;
   --b1:#1B2C45; --b2:#3D6FB8; --b3:#5D95DD; --acc:#7FB3F0; --acc-on:#0C1420; --acc-soft:#152238;
   --bad:#E0705F; --bad-soft:#2A1714; --bad-line:#5A2A22;
+  --warm:#E8A96B;
 }
 /* --vh est la hauteur de l'app, mesurée une fois et gelée. 100dvh est une
    unité DYNAMIQUE : elle grandit quand la barre d'URL d'Android se rétracte,
    ce qui faisait glisser tout ce qui est ancré au viewport (le feu) sans
    bouger ce qui est ancré à .app (les boutons). 100svh sert de repli avant
    que le JS ait mesuré : c'est la variante stable, elle ne bouge jamais. */
-html { background: var(--page); height: 100%; overflow: hidden; }
+/* html ne porte AUCUN fond : quand le fond de la racine est transparent,
+   celui du <body> est propagé au canevas et couvre tout le viewport, y
+   compris la bande que --vh (hauteur gelée) laisse découverte quand la barre
+   d'adresse d'Android se rétracte. Un fond posé ici resterait figé sur la
+   valeur claire de :root, --page n'étant redéfini que sur body.nuit. */
+html { height: 100%; overflow: hidden; }
 body {
   font-family: var(--sans); background: var(--page); color: var(--ink);
   height: var(--vh); overflow: hidden; position: relative;
@@ -672,11 +679,7 @@ body:not([data-heat="0"]) #t-actions-vf .b, body:not([data-heat="0"]) #t-juge .b
   </div>
   <div class="bloc">
     <h3 data-t="g-rythme">Rythme</h3>
-    <p data-t="g-rythme-p">Un mot ne peut gagner qu'un nombre limité de points par jour. C'est ce qui empêche de boucler une liste en une soirée, et c'est là que se joue la mémorisation.</p>
-    <div class="rangee"><span data-t="g-cap">Points par mot et par jour</span>
-      <select id="g-cap" onchange="regler('cap', this.value)">
-        <option value="3">3</option><option value="5">5</option><option value="10">10</option><option value="99" data-t="g-illim">sans limite</option>
-      </select></div>
+    <p data-t="g-rythme-p">Un mot vaut 10 points. Vrai ou faux en rapporte 1, une carte 2, un QCM 3, et une erreur en reprend autant. Aucune limite par jour : une liste peut se boucler d'une traite.</p>
     <div class="rangee"><span data-t="g-dir">Sens des questions</span>
       <select id="g-dir" onchange="regler('dir', this.value)">
         <option value="auto" data-t="g-dir-auto">les deux</option><option value="fr-nl" data-t="g-dir-fn">français vers NL</option><option value="nl-fr" data-t="g-dir-nf">NL vers français</option>
@@ -746,8 +749,7 @@ var T = {
     'encore': 'Encore une série', 'retour-accueil': "Revenir à l'accueil",
     'g-t': 'Réglages',
     'g-rythme': 'Rythme',
-    'g-rythme-p': "Un mot ne peut gagner qu'un nombre limité de points par jour. C'est ce qui empêche de boucler une liste en une soirée, et c'est là que se joue la mémorisation.",
-    'g-cap': 'Points par mot et par jour', 'g-illim': 'sans limite',
+    'g-rythme-p': "Un mot vaut 10 points. Vrai ou faux en rapporte 1, une carte 2, un QCM 3, et une erreur en reprend autant. Aucune limite par jour : une liste peut se boucler d'une traite.",
     'g-dir': 'Sens des questions', 'g-dir-auto': 'les deux', 'g-dir-fn': 'français vers NL', 'g-dir-nf': 'NL vers français',
     'g-app': 'Application',
     'g-app-p': "La langue de l'interface est indépendante des mots à réviser. Les sons sont générés par le téléphone, aucun fichier n'est téléchargé.",
@@ -763,7 +765,7 @@ var T = {
     'acquis-n': '@ sur 40 acquis', 'points-n': '@ points', 'jours': '@ jours',
     'pas-partage': 'partage non configuré', 'autre-liste': '@ travaille une autre liste',
     'partage-off': 'Partage inactif, config.js vide', 'partage-on': 'Partage actif', 'vu-le': 'Vu @',
-    'max-jour': 'ce mot a atteint son maximum du jour', 'acquis-1': 'mot acquis',
+    'acquis-1': 'mot acquis',
     'cetait': "c'était « @ » — touche-le pour continuer",
     'listes-ko': 'Listes introuvables',
     'listes-ko-p': "Connecte-toi une fois à Internet pour la première ouverture.",
@@ -790,8 +792,7 @@ var T = {
     'encore': 'Nog een reeks', 'retour-accueil': 'Terug naar het beginscherm',
     'g-t': 'Instellingen',
     'g-rythme': 'Tempo',
-    'g-rythme-p': 'Een woord kan maar een beperkt aantal punten per dag krijgen. Dat verhindert dat je een lijst op één avond afwerkt, en juist daar zit het onthouden.',
-    'g-cap': 'Punten per woord per dag', 'g-illim': 'geen limiet',
+    'g-rythme-p': 'Een woord is 10 punten waard. Waar of niet waar levert er 1 op, een kaart 2, een meerkeuzevraag 3, en een fout neemt er evenveel af. Geen daglimiet: een lijst kan in één keer af.',
     'g-dir': 'Richting van de vragen', 'g-dir-auto': 'allebei', 'g-dir-fn': 'Frans naar NL', 'g-dir-nf': 'NL naar Frans',
     'g-app': 'App',
     'g-app-p': 'De taal van de app staat los van de woorden die je oefent. De geluiden worden door de telefoon zelf gemaakt, er wordt geen bestand gedownload.',
@@ -807,7 +808,7 @@ var T = {
     'acquis-n': '@ van 40 gekend', 'points-n': '@ punten', 'jours': '@ dagen',
     'pas-partage': 'delen is niet ingesteld', 'autre-liste': '@ werkt aan een andere lijst',
     'partage-off': 'Delen staat uit, config.js is leeg', 'partage-on': 'Delen staat aan', 'vu-le': 'Gezien @',
-    'max-jour': 'dit woord zit aan zijn maximum voor vandaag', 'acquis-1': 'woord gekend',
+    'acquis-1': 'woord gekend',
     'cetait': 'het was « @ » — tik erop om verder te gaan',
     'listes-ko': 'Lijsten niet gevonden',
     'listes-ko-p': 'Ga één keer online bij de eerste keer openen.',
@@ -958,7 +959,6 @@ function charger() {
   if (!e.reglages) e.reglages = {};
   if (!e.jours) e.jours = [];
   var r = e.reglages;
-  if (r.cap === undefined) r.cap = 5;
   if (!r.dir) r.dir = 'auto';
   if (!r.theme) r.theme = 'delft';
   if (!r.langue) r.langue = 'fr';
@@ -984,8 +984,7 @@ function jour(d) { d = d || new Date(); return d.getFullYear() + '-' + ('0' + (d
 
 function prog(idl, m) {
   var s = etat.semaines[idl] || (etat.semaines[idl] = { mots: {} });
-  var p = s.mots[m.nl] || (s.mots[m.nl] = { s: 0, j: '', gj: 0, ok: 0, ko: 0, vu: 0 });
-  if (p.j !== jour()) { p.j = jour(); p.gj = 0; }
+  var p = s.mots[m.nl] || (s.mots[m.nl] = { s: 0, ok: 0, ko: 0, vu: 0 });
   return p;
 }
 function acquisDe(l) { var n = 0; l.mots.forEach(function (m) { if (prog(l.id, m).s >= CIBLE) n++; }); return n; }
@@ -1083,7 +1082,7 @@ function crans(hote, l) {
   });
   document.getElementById(hote).innerHTML = s;
 }
-function classeCran(v) { return v >= CIBLE ? ' fini' : v >= 5 ? ' demi' : ''; }
+function classeCran(v) { return v >= CIBLE ? ' fini' : v >= CIBLE / 2 ? ' demi' : ''; }
 function rendreAccueil() {
   if (!liste) return;
   document.getElementById('a-titre').textContent = liste.titre;
@@ -1146,16 +1145,15 @@ function ouvrirListe(id) {
 }
 
 function dispo() {
-  var cap = parseInt(etat.reglages.cap, 10), libres = [], captes = [], finis = [];
+  var libres = [], finis = [];
   liste.mots.forEach(function (m) {
-    var p = prog(liste.id, m);
-    if (p.s >= CIBLE) finis.push(m); else if (p.gj >= cap) captes.push(m); else libres.push(m);
+    if (prog(liste.id, m).s >= CIBLE) finis.push(m); else libres.push(m);
   });
-  return { libres: libres, captes: captes, finis: finis };
+  return { libres: libres, finis: finis };
 }
 function tirerMot() {
   var d = dispo(), pool = d.libres, sansPts = false;
-  if (!pool.length) { pool = d.captes.concat(d.finis); sansPts = true; }
+  if (!pool.length) { pool = d.finis; sansPts = true; }
   if (!pool.length) return null;
   pool = pool.slice().sort(function (a, b) { return prog(liste.id, a).s - prog(liste.id, b).s; });
   var f = pool.slice(0, Math.max(6, Math.ceil(pool.length * .3)));
@@ -1194,8 +1192,8 @@ function suite() {
   if (!session) return;
   document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste));
   document.getElementById('t-session').textContent = tr('q-faites', session.n);
-  /* aucune limite de session : on continue tant qu'il reste un mot à poser,
-     en révision libre une fois le plafond du jour atteint partout */
+  /* aucune limite : on continue tant qu'il reste un mot à monter, puis en
+     révision libre sans points une fois la liste entièrement acquise */
   var t = tirerMot();
   if (!t) { finSession(); return; }
   var p = prog(liste.id, t.mot);
@@ -1317,7 +1315,7 @@ function appliquer(juste, mode) {
      son + animations) : c'est ce court instant, pas l'animation elle-même,
      qui pouvait faire « grandir » l'app si la barre d'adresse Android bouge. */
   wtBloquerRedim(2000);
-  var p = prog(liste.id, cur.mot), val = PTS[mode], cap = parseInt(etat.reglages.cap, 10);
+  var p = prog(liste.id, cur.mot), val = PTS[mode];
   var avantPalier = wtPalier(wtStreak);
   session.n++;
   marquerJour();
@@ -1328,9 +1326,8 @@ function appliquer(juste, mode) {
       /* le texte "révision libre" ne doit plus s'afficher : le plafond du
          jour est toujours respecté, seul le message était en trop. */
     } else {
-      var g = Math.min(val, Math.max(0, cap - p.gj), CIBLE - p.s);
-      p.s += g; p.gj += g; session.gain += g;
-      if (g === 0) document.getElementById('t-retour').textContent = tr('max-jour');
+      var g = Math.min(val, CIBLE - p.s);
+      p.s += g; session.gain += g;
       if (p.s >= CIBLE) document.getElementById('t-retour').textContent = tr('acquis-1');
     }
   } else {
@@ -1462,7 +1459,6 @@ function brancherSonde() {
 }
 
 function rendreReglages() {
-  document.getElementById('g-cap').value = String(etat.reglages.cap);
   document.getElementById('g-dir').value = etat.reglages.dir;
   document.getElementById('g-moi').value = moi() || 'ulysse';
   document.getElementById('g-copie').value = JSON.stringify(etat);
@@ -1474,7 +1470,6 @@ function rendreReglages() {
   majSync();
 }
 function regler(k, v) {
-  if (k === 'cap') etat.reglages.cap = parseInt(v, 10);
   if (k === 'dir') etat.reglages.dir = v;
   if (k === 'moi') etat.reglages.moi = v;
   if (k === 'langue') { etat.reglages.langue = v; sauver(); appliquerLangue(); rendreAccueil(); }
