@@ -700,6 +700,18 @@ body[data-vue="train"][data-heat="9"] #wt-eclipse { opacity:1; animation:wtEclip
 .mot-etat { font-size:.72rem; color:var(--mute); margin-top:8px; }
 .mot-etat.attente { color:var(--warm); }
 
+/* ═ enveloppe du mot, dans la rangée d'icônes ═ */
+.ico.lettre { position:relative; color:var(--acc); }
+.ico.lettre svg { width:21px; height:21px; }
+.ico.lettre.attente { color:var(--warm); }
+/* point d'attente : le mot est déposé et pas encore lu par l'autre */
+.ico.lettre.attente::after {
+  content:''; position:absolute; top:5px; right:5px; width:7px; height:7px;
+  border-radius:50%; background:var(--warm); box-shadow:0 0 0 2px var(--page);
+  animation:wtPointe 1.6s ease-in-out infinite alternate;
+}
+@keyframes wtPointe { from { opacity:.55; } to { opacity:1; } }
+
 </style>
 </head>
 <body>
@@ -728,6 +740,11 @@ body[data-vue="train"][data-heat="9"] #wt-eclipse { opacity:1; animation:wtEclip
       <div class="h-serie" id="a-serie"></div>
       <div class="icones">
         <button class="ico lang" id="a-lang" onclick="basculerLangue()" aria-label="Taal / Langue">FR</button>
+        <button class="ico lettre" id="a-mot" onclick="voir('motecrire')" aria-label="Un mot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2.5" y="5" width="19" height="14" rx="2.2"/><path d="M3 6.5 12 13l9-6.5"/>
+          </svg>
+        </button>
         <button class="ico" onclick="basculerTheme()" aria-label="Thème">◐</button>
         <button class="ico" onclick="voir('reglages')" aria-label="Réglages">≡</button>
       </div>
@@ -740,7 +757,6 @@ body[data-vue="train"][data-heat="9"] #wt-eclipse { opacity:1; animation:wtEclip
     <span class="pastilles" id="a-pastilles"></span>
     <span class="texte" id="a-hebdo-t"></span>
     <button class="puce-cad" id="a-cad" onclick="voir('cadeaux')">Cadeaux</button>
-    <button class="puce-cad" id="a-mot" onclick="voir('motecrire')">Un mot</button>
   </div>
   <div class="modes">
     <button class="b" onclick="demarrer('flash')" data-t="m-flash">Cartes</button>
@@ -1320,7 +1336,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'ab';
+var WT_BUILD = 'ac';
 
 function charger() {
   var e = null;
@@ -2653,9 +2669,10 @@ function rendreHebdo() {
   b.textContent = pret ? tr('cad-puce') : tr('cad-manque');
   var d = distant[moi()];
   var m = document.getElementById('a-mot');
-  m.textContent = tr('mot-puce');
-  /* pastille soulignée tant que le mot déposé n'a pas été lu */
-  m.classList.toggle('alerte', !!(d && d.mot && String(d.mot).trim() && !d.mot_lu));
+  /* surtout pas de textContent ici : l'enveloppe est un SVG, l'écrire
+     l'effacerait. Seule la classe change. */
+  m.setAttribute('aria-label', tr('mot-h', NOMS[autre()]));
+  m.classList.toggle('attente', !!(d && d.mot && String(d.mot).trim() && !d.mot_lu));
 }
 
 wtConstruireFeu();
