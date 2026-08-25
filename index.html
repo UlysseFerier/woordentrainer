@@ -17,6 +17,7 @@
   --b1:#DCE8F7; --b2:#7FA8DC; --b3:#3D6FB8; --acc:#12408C; --acc-on:#FFFFFF; --acc-soft:#EAF1FB;
   --bad:#C0392B; --bad-soft:#FBEBE9; --bad-line:#E8B4AE;
   --serif:Verdana,Geneva,sans-serif; --sans:Arial,Helvetica,sans-serif;
+  --vh:100svh;
 }
 body.nuit {
   --paper:#0C1420; --page:#0C1420; --card:#131E2E;
@@ -25,10 +26,16 @@ body.nuit {
   --b1:#1B2C45; --b2:#3D6FB8; --b3:#5D95DD; --acc:#7FB3F0; --acc-on:#0C1420; --acc-soft:#152238;
   --bad:#E0705F; --bad-soft:#2A1714; --bad-line:#5A2A22;
 }
-html { background: var(--page); }
+/* --vh est la hauteur de l'app, mesurée une fois et gelée. 100dvh est une
+   unité DYNAMIQUE : elle grandit quand la barre d'URL d'Android se rétracte,
+   ce qui faisait glisser tout ce qui est ancré au viewport (le feu) sans
+   bouger ce qui est ancré à .app (les boutons). 100svh sert de repli avant
+   que le JS ait mesuré : c'est la variante stable, elle ne bouge jamais. */
+html { background: var(--page); height: 100%; }
 body {
   font-family: var(--sans); background: var(--page); color: var(--ink);
-  height: 100dvh; overflow: hidden; display: flex; flex-direction: column; align-items: center;
+  height: var(--vh); overflow: hidden; position: relative;
+  display: flex; flex-direction: column; align-items: center;
   padding: max(12px, env(safe-area-inset-top)) 0 0;
   transition: background .25s, color .25s; overscroll-behavior-y: contain;
 }
@@ -166,7 +173,7 @@ body.nuit[data-heat="5"] { background: #1E1211; }
 @keyframes secousse3 { 0%,100%{transform:translate(0,0) rotate(0)} 12%{transform:translate(-6px,3px) rotate(-.4deg)} 26%{transform:translate(6px,-3px) rotate(.4deg)} 40%{transform:translate(-4px,2px)} 55%{transform:translate(4px,-2px) rotate(-.2deg)} 72%{transform:translate(-2px,1px)} 88%{transform:translate(1px,0)} }
 
 #wt-lueur {
-  position: fixed; left: 0; right: 0; bottom: 0; height: 24dvh; z-index: 0;
+  position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--vh) * .24); z-index: 0;
   background: linear-gradient(to top, rgba(232,137,28,.28) 0%, rgba(217,83,30,.10) 45%, transparent 100%);
   opacity: var(--h-lueur); transition: opacity 1s ease; pointer-events: none;
   animation: wtLueurVie calc(2.8s * var(--tempo)) ease-in-out infinite;
@@ -174,7 +181,7 @@ body.nuit[data-heat="5"] { background: #1E1211; }
 body[data-heat="5"] #wt-lueur { background: linear-gradient(to top, rgba(255,194,77,.4) 0%, rgba(240,114,38,.14) 45%, transparent 100%); }
 @keyframes wtLueurVie { 0%,100%{opacity:calc(var(--h-lueur))} 35%{opacity:calc(var(--h-lueur) * 1.15)} 60%{opacity:calc(var(--h-lueur) * .85)} }
 #wt-sol {
-  position: fixed; left: 0; right: 0; bottom: 0; height: 5px; z-index: 1; pointer-events: none;
+  position: absolute; left: 0; right: 0; bottom: 0; height: 5px; z-index: 1; pointer-events: none;
   background: linear-gradient(to right, var(--f-brique), var(--f-ambre) 30%, var(--f-orange) 55%, var(--f-ambre) 80%, var(--f-brique));
   opacity: 0; transition: opacity .8s;
   animation: wtSolFlick calc(.9s * var(--tempo)) ease-in-out infinite alternate;
@@ -186,7 +193,7 @@ body:not([data-heat="0"]) #wt-sol { opacity: .9; }
 #wt-feu {
   /* 300px et non 160 : contain:paint découpe au ras de la boîte, or au palier
      le plus haut une flamme monte à ~200px. Les foyers restent calés en bas. */
-  position: fixed; left: 0; right: 0; bottom: -4px; height: 300px; z-index: 1;
+  position: absolute; left: 0; right: 0; bottom: -4px; height: 300px; z-index: 1;
   pointer-events: none; transform: translateZ(0); contain: paint;
 }
 .wtf-boite {
@@ -337,7 +344,7 @@ body.nuit .opt.roussi { border-color: #5A4028; }
 .carte3d { position: relative; }
 
 
-#wt-braises { position: fixed; inset: 0; pointer-events: none; z-index: 5; overflow: hidden; }
+#wt-braises { position: absolute; inset: 0; pointer-events: none; z-index: 5; overflow: hidden; }
 .wt-flocon {
   position: absolute; top: -20px;
   width: var(--t); height: calc(var(--t) * 1.3); border-radius: 40% 60% 50% 50%;
@@ -349,27 +356,27 @@ body.nuit .opt.roussi { border-color: #5A4028; }
   0% { transform: translate(0,0) rotate(0deg); opacity: 0; }
   8% { opacity: .9; }
   80% { opacity: .8; }
-  100% { transform: translate(var(--dx), 108dvh) rotate(260deg); opacity: 0; }
+  100% { transform: translate(var(--dx), calc(var(--vh) * 1.08)) rotate(260deg); opacity: 0; }
 }
 
 .wt-goutte {
-  position: fixed; width: 14px; height: 18px; z-index: 6; pointer-events: none;
+  position: absolute; width: 14px; height: 18px; z-index: 6; pointer-events: none;
   background: var(--acc); border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
   animation: wtTomber .38s cubic-bezier(.5,0,.9,.4) forwards;
 }
 @keyframes wtTomber { from { transform: translateY(-90px) scaleY(1.15); opacity: 0; } 25% { opacity: 1; } to { transform: translateY(0) scaleY(1); opacity: 1; } }
 .wt-eclabousse {
-  position: fixed; border: 2.5px solid var(--acc); border-radius: 50%; z-index: 6; pointer-events: none;
+  position: absolute; border: 2.5px solid var(--acc); border-radius: 50%; z-index: 6; pointer-events: none;
   width: 10px; height: 10px; animation: wtEclab .55s ease-out forwards;
 }
 @keyframes wtEclab { from { transform: scale(.4); opacity: .95; } to { transform: scale(5); opacity: 0; } }
 .wt-gouttelette {
-  position: fixed; width: 5px; height: 5px; border-radius: 50%; background: var(--acc); z-index: 6; pointer-events: none;
+  position: absolute; width: 5px; height: 5px; border-radius: 50%; background: var(--acc); z-index: 6; pointer-events: none;
   animation: wtGicler .5s ease-out forwards;
 }
 @keyframes wtGicler { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) scale(.5); opacity: 0; } }
 .wt-vapeur {
-  position: fixed; border-radius: 50%; z-index: 5; pointer-events: none;
+  position: absolute; border-radius: 50%; z-index: 5; pointer-events: none;
   width: var(--t); height: var(--t);
   background: radial-gradient(circle, rgba(140,155,175,.35) 0%, transparent 70%);
   animation: wtFumer 1.4s ease-out forwards;
@@ -384,7 +391,7 @@ body.nuit .opt.roussi { border-color: #5A4028; }
 /* le vide de l'accueil part dans les boutons, il ne s'accumule plus dans un
    trou entre la barre duo et eux */
 .modes {
-  margin-top: 18px; flex: 1 1 auto; min-height: 0; max-height: 46dvh;
+  margin-top: 18px; flex: 1 1 auto; min-height: 0; max-height: calc(var(--vh) * .46);
   display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px;
 }
 .modes .b {
@@ -439,13 +446,13 @@ body[data-heat="6"] .wt-serie { box-shadow: 0 0 26px rgba(255,255,255,.8), 0 0 1
 #v-train .sticky { position: static; flex: none; margin: 0; padding: 0; }
 #v-train .opts { gap: 10px; }
 #v-train .opt {
-  min-height: clamp(52px, 8.5dvh, 68px); font-size: 1.02rem;
+  min-height: clamp(52px, calc(var(--vh) * .085), 68px); font-size: 1.02rem;
   display: flex; align-items: center; justify-content: center;
 }
 /* un item flex ne descend jamais sous sa largeur min-content sans min-width:0 :
    « Je ne savais pas » débordait face à « Je savais » sur écran étroit */
 .paire-btn .b { flex: 1 1 0; width: auto; min-width: 0; }
-.carte3d { height: clamp(150px, 26dvh, 230px); }
+.carte3d { height: clamp(150px, calc(var(--vh) * .26), 230px); }
 
 /* en-tête de l'entraînement : sortie à gauche, sens au centre, série à droite */
 .tete-t { display: flex; align-items: center; gap: 10px; min-height: 40px; margin-top: 2px; }
@@ -796,6 +803,26 @@ var T = {
     'versions': '@ lijsten · @@ woorden', 'q-faites': '@ vragen'
   }
 };
+/* ═══════════ hauteur gelée ═══════════
+   On mesure la hauteur une fois et on ne la rebouge que pour une vraie
+   raison : rotation, ou changement de plus de 120 px. Le va-et-vient de la
+   barre d'URL d'Android fait 50 à 80 px et doit être ignoré, sinon la boîte
+   de l'app grandit sous les éléments qui y sont ancrés. */
+function wtGelerHauteur(force) {
+  var h = window.innerHeight;
+  if (!h) return;
+  if (!force) {
+    var a = parseInt(document.documentElement.style.getPropertyValue('--vh'), 10);
+    if (a && Math.abs(h - a) < 120) return;
+  }
+  document.documentElement.style.setProperty('--vh', h + 'px');
+}
+wtGelerHauteur(true);
+window.addEventListener('resize', function () { wtGelerHauteur(false); });
+window.addEventListener('orientationchange', function () {
+  setTimeout(function () { wtGelerHauteur(true); }, 250);
+});
+
 function lg() { return etat && etat.reglages && etat.reglages.langue === 'nl' ? 'nl' : 'fr'; }
 function tr(k, a, b) {
   var v = (T[lg()] && T[lg()][k]) || T.fr[k] || k;
@@ -1652,7 +1679,7 @@ function wtEteindre() {
       var v = document.createElement('div');
       v.className = 'wt-vapeur';
       v.style.left = (10 + Math.random() * 80) + 'vw';
-      v.style.top = '88dvh';
+      v.style.top = 'calc(var(--vh) * .88)';
       v.style.setProperty('--t', (30 + Math.random() * 36) + 'px');
       v.style.setProperty('--dx', ((Math.random() - .5) * 40).toFixed(0) + 'px');
       document.body.appendChild(v);
