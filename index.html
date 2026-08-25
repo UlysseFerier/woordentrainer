@@ -86,6 +86,8 @@ body {
 .duo-b > i { display: block; height: 5px; width: 0; background: var(--warm); border-radius: 3px; transition: width .5s ease; }
 .duo-l.moi .duo-b > i { background: var(--acc); }
 .duo-c { font-size: .74rem; width: 46px; text-align: right; flex-shrink: 0; }
+.duo-f { font-size: .7rem; color: var(--warm); width: 34px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.duo-f.zero { opacity: .35; }
 .duo-etat { font-size: .68rem; color: var(--faint); text-align: center; margin-top: 2px; }
 
 .b { display: block; width: 100%; padding: 17px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-family: var(--sans); font-size: .95rem; font-weight: 500; cursor: pointer; text-align: center; min-height: 56px; }
@@ -764,6 +766,7 @@ var T = {
     'g-liste': 'Liste', 'g-effacer': 'Effacer ces scores',
     'acquis-n': '@ sur 40 acquis', 'points-n': '@ points', 'jours': '@ jours',
     'pas-partage': 'partage non configuré', 'autre-liste': '@ travaille une autre liste',
+    'record-n': '\u25B2@', 'record-t': "meilleure série de la liste",
     'partage-off': 'Partage inactif, config.js vide', 'partage-on': 'Partage actif', 'vu-le': 'Vu @',
     'acquis-1': 'mot acquis',
     'cetait': "c'était « @ » — touche-le pour continuer",
@@ -807,6 +810,7 @@ var T = {
     'g-liste': 'Lijst', 'g-effacer': 'Deze scores wissen',
     'acquis-n': '@ van 40 gekend', 'points-n': '@ punten', 'jours': '@ dagen',
     'pas-partage': 'delen is niet ingesteld', 'autre-liste': '@ werkt aan een andere lijst',
+    'record-n': '\u25B2@', 'record-t': 'beste reeks van de lijst',
     'partage-off': 'Delen staat uit, config.js is leeg', 'partage-on': 'Delen staat aan', 'vu-le': 'Gezien @',
     'acquis-1': 'woord gekend',
     'cetait': 'het was « @ » — tik erop om verder te gaan',
@@ -987,6 +991,9 @@ function prog(idl, m) {
   var p = s.mots[m.nl] || (s.mots[m.nl] = { s: 0, ok: 0, ko: 0, vu: 0 });
   return p;
 }
+/* meilleure série de bonnes réponses d'affilée sur CETTE liste, gardée
+   avec la liste et non avec l'app : elle se remet à zéro à chaque semaine. */
+function recordDe(l) { var x = etat.semaines[l.id]; return (x && x.record) || 0; }
 function acquisDe(l) { var n = 0; l.mots.forEach(function (m) { if (prog(l.id, m).s >= CIBLE) n++; }); return n; }
 function pointsDe(l) { var t = 0; l.mots.forEach(function (m) { t += prog(l.id, m).s; }); return t; }
 function marquerJour() { var j = jour(); if (etat.jours.indexOf(j) === -1) { etat.jours.push(j); etat.jours = etat.jours.slice(-40); } }
@@ -1009,9 +1016,21 @@ function api(chemin, opts) {
   opts.headers = h;
   return fetch(c.url.replace(/\/+$/, '') + '/rest/v1/' + chemin, opts);
 }
+/* select explicite, SANS la colonne etat : elle pèse une vingtaine de ko par
+   personne et n'est utile qu'à la restauration, qui va la chercher elle-même.
+   La rapatrier à chaque rafraîchissement du duo ne servait à rien. */
+var WT_COLS = 'id,liste,acquis,points,serie,maj';
 function tirer() {
-  return api('duo?select=*').then(function (r) { return r.json(); }).then(function (l) {
-    (l || []).forEach(function (x) { distant[x.id] = x; });
+  return api('duo?select=' + WT_COLS).then(function (r) { return r.json(); }).then(function (l) {
+    /* si la colonne serie n'a pas encore été ajoutée dans Supabase, PostgREST
+       répond une erreur au lieu d'un tableau : on retombe une fois sur les
+       colonnes d'origine pour que le duo continue de s'afficher. */
+    if (!Array.isArray(l)) {
+      if (WT_COLS.indexOf(',serie') === -1) throw new Error('duo');
+      WT_COLS = 'id,liste,acquis,points,maj';
+      return tirer();
+    }
+    l.forEach(function (x) { distant[x.id] = x; });
     return distant;
   });
 }
@@ -1020,7 +1039,7 @@ function pousser() {
   return api('duo', {
     method: 'POST',
     headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
-    body: JSON.stringify([{ id: moi(), liste: liste.id, acquis: acquisDe(liste), points: pointsDe(liste), maj: new Date().toISOString(), etat: etat }])
+    body: JSON.stringify([{ id: moi(), liste: liste.id, acquis: acquisDe(liste), points: pointsDe(liste), serie: recordDe(liste), maj: new Date().toISOString(), etat: etat }])
   }).catch(function () {});
 }
 function poserSemaine(idl) {
@@ -1047,8 +1066,8 @@ function majSync() {
 }
 function restaurerNuage() {
   if (!cfg() || !moi()) { alert('Partage non configuré.'); return; }
-  tirer().then(function () {
-    var d = distant[moi()];
+  api('duo?id=eq.' + moi() + '&select=etat').then(function (r) { return r.json(); }).then(function (l) {
+    var d = (l || [])[0];
     if (!d || !d.etat || !d.etat.semaines) { alert('Rien à restaurer dans la base.'); return; }
     if (!confirm('Remplacer la progression de ce téléphone par celle de la base ?')) return;
     etat = d.etat; sauver(); location.reload();
@@ -1099,16 +1118,19 @@ function rendreDuo(hote) {
   if (!h || !liste) return;
   var qui = moi() || 'ulysse';
   var d = distant[autre()];
-  var sien = (d && d.liste === liste.id) ? (d.acquis || 0) : null;
-  var s = ligneDuo(NOMS[qui], acquisDe(liste), true) + ligneDuo(NOMS[autre()], sien === null ? 0 : sien, false);
+  var meme = !!(d && d.liste === liste.id);
+  var sien = meme ? (d.acquis || 0) : null;
+  var s = ligneDuo(NOMS[qui], acquisDe(liste), recordDe(liste), true) +
+          ligneDuo(NOMS[autre()], sien === null ? 0 : sien, meme ? (d.serie || 0) : 0, false);
   if (!cfg()) s += '<div class="duo-etat">' + tr('pas-partage') + '</div>';
   else if (sien === null) s += '<div class="duo-etat">' + tr('autre-liste', NOMS[autre()]) + '</div>';
   h.innerHTML = s;
 }
-function ligneDuo(nom, n, estMoi) {
+function ligneDuo(nom, n, rec, estMoi) {
   return '<div class="duo-l' + (estMoi ? ' moi' : '') + '"><span class="duo-n">' + nom + '</span>' +
     '<span class="duo-b"><i style="width:' + (n / 40 * 100) + '%"></i></span>' +
-    '<span class="duo-c">' + n + ' / 40</span></div>';
+    '<span class="duo-c">' + n + ' / 40</span>' +
+    '<span class="duo-f' + (rec ? '' : ' zero') + '" title="' + tr('record-t') + '">' + tr('record-n', rec) + '</span></div>';
 }
 function rendreListes() {
   var h = document.getElementById('l-items'), s = '';
@@ -1339,6 +1361,8 @@ function appliquer(juste, mode) {
   }
   if (juste) {
     wtStreak++;
+    var sem = etat.semaines[liste.id];
+    if (sem && wtStreak > (sem.record || 0)) sem.record = wtStreak;
   } else {
     wtStreak = 0;
     if (avantPalier >= 1) wtEteindre();
