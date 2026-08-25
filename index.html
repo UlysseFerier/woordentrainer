@@ -184,7 +184,7 @@ body.nuit[data-heat="5"] { background: #1E1211; }
   position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--vh) * .24); z-index: 0;
   background: linear-gradient(to top, rgba(232,137,28,.28) 0%, rgba(217,83,30,.10) 45%, transparent 100%);
   opacity: var(--h-lueur); transition: opacity 1s ease; pointer-events: none;
-  animation: wtLueurVie calc(2.8s * var(--tempo)) ease-in-out infinite;
+  animation: wtLueurVie calc(2.8s * var(--f-tempo, 1)) ease-in-out infinite;
 }
 body[data-heat="5"] #wt-lueur { background: linear-gradient(to top, rgba(255,194,77,.4) 0%, rgba(240,114,38,.14) 45%, transparent 100%); }
 @keyframes wtLueurVie { 0%,100%{opacity:calc(var(--h-lueur))} 35%{opacity:calc(var(--h-lueur) * 1.15)} 60%{opacity:calc(var(--h-lueur) * .85)} }
@@ -192,7 +192,7 @@ body[data-heat="5"] #wt-lueur { background: linear-gradient(to top, rgba(255,194
   position: absolute; left: 0; right: 0; bottom: 0; height: 5px; z-index: 1; pointer-events: none;
   background: linear-gradient(to right, var(--f-brique), var(--f-ambre) 30%, var(--f-orange) 55%, var(--f-ambre) 80%, var(--f-brique));
   opacity: 0; transition: opacity .8s;
-  animation: wtSolFlick calc(.9s * var(--tempo)) ease-in-out infinite alternate;
+  animation: wtSolFlick calc(.9s * var(--f-tempo, 1)) ease-in-out infinite alternate;
 }
 body:not([data-heat="0"]) #wt-sol { opacity: .9; }
 @keyframes wtSolFlick { from{opacity:.75} to{opacity:1} }
@@ -763,7 +763,7 @@ var T = {
     'acquis-n': '@ sur 40 acquis', 'points-n': '@ points', 'jours': '@ jours',
     'pas-partage': 'partage non configuré', 'autre-liste': '@ travaille une autre liste',
     'partage-off': 'Partage inactif, config.js vide', 'partage-on': 'Partage actif', 'vu-le': 'Vu @',
-    'libre': 'révision libre', 'max-jour': 'ce mot a atteint son maximum du jour', 'acquis-1': 'mot acquis',
+    'max-jour': 'ce mot a atteint son maximum du jour', 'acquis-1': 'mot acquis',
     'cetait': "c'était « @ » — touche-le pour continuer",
     'listes-ko': 'Listes introuvables',
     'listes-ko-p': "Connecte-toi une fois à Internet pour la première ouverture.",
@@ -807,7 +807,7 @@ var T = {
     'acquis-n': '@ van 40 gekend', 'points-n': '@ punten', 'jours': '@ dagen',
     'pas-partage': 'delen is niet ingesteld', 'autre-liste': '@ werkt aan een andere lijst',
     'partage-off': 'Delen staat uit, config.js is leeg', 'partage-on': 'Delen staat aan', 'vu-le': 'Gezien @',
-    'libre': 'vrije herhaling', 'max-jour': 'dit woord zit aan zijn maximum voor vandaag', 'acquis-1': 'woord gekend',
+    'max-jour': 'dit woord zit aan zijn maximum voor vandaag', 'acquis-1': 'woord gekend',
     'cetait': 'het was « @ » — tik erop om verder te gaan',
     'listes-ko': 'Lijsten niet gevonden',
     'listes-ko-p': 'Ga één keer online bij de eerste keer openen.',
@@ -1628,6 +1628,9 @@ function wtPoserChaleur(silencieux) {
      feu que lorsque le palier change réellement. */
   if (p !== avant) {
     document.body.dataset.heat = p;
+    /* --f-tempo pilote uniquement l'animation du foyer (halo + sol), avec la
+       même échelle que la cadence des poses : 1x/2x/3x plafonné. */
+    document.body.style.setProperty('--f-tempo', WT_TEMPO[p] || 1);
     document.querySelectorAll('#wt-feu .wtf').forEach(function (d) {
       var sy = WT_K[p] * parseFloat(d.dataset.base);
       d.style.setProperty('--sy', sy.toFixed(2));
