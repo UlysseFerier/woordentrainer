@@ -1,7 +1,7 @@
 /* Woordentrainer — service worker
    Change VERSION à chaque mise à jour du code : ça force le rafraîchissement
    sur les téléphones au lancement suivant. */
-const VERSION = 'wt-2026-08-27-as';
+const VERSION = 'wt-2026-08-27-at';
 const SHELL = VERSION + '-shell';
 const DATA = VERSION + '-data';
 
@@ -90,8 +90,17 @@ self.addEventListener('fetch', function (e) {
     url.pathname.indexOf('config.js') !== -1 ||
     url.pathname.indexOf('manifest.webmanifest') !== -1;
   if (estCoquille) {
+    /* cache:'reload' contourne la réserve HTTP du navigateur. GitHub Pages
+       sert index.html avec dix minutes de conservation : sans cela, un simple
+       fetch pouvait resservir l'ancienne page pendant tout ce temps, et le
+       téléphone affichait un build périmé alors que le nouveau était en ligne.
+       On ne peut pas modifier le mode d'une requête existante, d'où la
+       reconstruction à partir de son adresse. */
+    var frais;
+    try { frais = new Request(req.url, { cache: 'reload', credentials: 'same-origin' }); }
+    catch (x) { frais = req; }
     e.respondWith(
-      fetch(req).then(function (res) {
+      fetch(frais).then(function (res) {
         const copy = res.clone();
         caches.open(SHELL).then(function (c) { c.put(req, copy); });
         return res;

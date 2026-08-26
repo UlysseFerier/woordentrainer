@@ -1613,7 +1613,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'as';
+var WT_BUILD = 'at';
 
 function charger() {
   var e = null;
@@ -2433,6 +2433,7 @@ function ech(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function 
 
 function sw() {
   if (!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker.addEventListener('controllerchange', recharger);
   navigator.serviceWorker.register('sw.js').then(function (reg) {
     /* une PWA lancée depuis l'écran d'accueil ne revérifie pas toujours d'elle-même :
        on force le contrôle à l'ouverture et à chaque retour au premier plan */
@@ -2469,8 +2470,18 @@ function proposerMaj(nv) {
   swAttente = nv;
   if (confirm('Une nouvelle version est prête. Recharger ?')) {
     swAttente.postMessage('skip-waiting');
-    setTimeout(function () { location.reload(); }, 300);
+    /* On attend que le nouveau service worker prenne RÉELLEMENT la main avant
+       de recharger : à 300 ms fixes, c'était encore l'ancien qui servait la
+       page, et le téléphone rechargeait donc la version périmée. Le délai de
+       secours couvre le cas où l'évènement ne vient pas. */
+    setTimeout(recharger, 2500);
   }
+}
+var wtRecharge = false;
+function recharger() {
+  if (wtRecharge) return;
+  wtRecharge = true;
+  location.reload();
 }
 
 window.addEventListener('beforeinstallprompt', function (e) {
