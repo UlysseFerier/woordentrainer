@@ -1611,7 +1611,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'ao';
+var WT_BUILD = 'ap';
 
 function charger() {
   var e = null;
@@ -1747,6 +1747,16 @@ function poserSemaine(idl) {
     body: JSON.stringify([{ id: 'semaine', liste: idl, maj: new Date().toISOString() }])
   }).catch(function () {});
 }
+/* Un nouveau record ne transitait qu'à la fin de la séance : l'autre voyait
+   donc une valeur périmée tant qu'on jouait encore. On l'envoie maintenant en
+   cours de partie, mais espacé de six secondes pour ne pas écrire à la base à
+   chaque bonne réponse d'une longue série. */
+var wtPoussePlusTard = null;
+function pousserPlusTard() {
+  if (wtPoussePlusTard) return;
+  wtPoussePlusTard = setTimeout(function () { wtPoussePlusTard = null; pousser(); }, 6000);
+}
+
 function rafraichirDuo(bavard) {
   if (!cfg()) { if (bavard) alert('Le partage n\'est pas configuré : config.js est vide.'); return; }
   tirer().then(function () {
@@ -2127,7 +2137,7 @@ function appliquer(juste, mode) {
   if (juste) {
     wtStreak++;
     var sem = etat.semaines[liste.id];
-    if (sem && wtStreak > (sem.record || 0)) sem.record = wtStreak;
+    if (sem && wtStreak > (sem.record || 0)) { sem.record = wtStreak; pousserPlusTard(); }
   } else {
     wtStreak = 0;
     if (avantPalier >= 1) wtEteindre();
@@ -2322,6 +2332,9 @@ function sw() {
          la proposition ne tombait qu'au moment exact de la fin d'installation,
          donc la refuser ou quitter l'app la faisait disparaître pour de bon. */
       if (!document.hidden) proposerMaj(reg.waiting);
+      /* revenir sur l'app depuis l'accueil relit la progression de l'autre :
+         c'est le moment naturel où l'on veut voir où elle en est. */
+      if (!document.hidden && document.body.dataset.vue === 'accueil') rafraichirDuo();
     });
     proposerMaj(reg.waiting);
     reg.addEventListener('updatefound', function () {
