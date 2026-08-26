@@ -1272,6 +1272,7 @@ var T = {
     'pas-partage': 'partage non configuré', 'autre-liste': '@ travaille une autre liste',
     'record-n': '\u25B2@', 'record-t': "meilleure série de la liste",
     'partage-off': 'Partage inactif, config.js vide', 'partage-on': 'Partage actif', 'vu-le': 'Vu @',
+    'en-attente': '@ envoi(s) en attente', 'file-vide': 'Tout est parti.',
     'acquis-1': 'mot acquis',
     'cetait': "c'était « @ » — touche-le pour continuer",
     'listes-ko': 'Listes introuvables',
@@ -1358,6 +1359,7 @@ var T = {
     'pas-partage': 'delen is niet ingesteld', 'autre-liste': '@ werkt aan een andere lijst',
     'record-n': '\u25B2@', 'record-t': 'beste reeks van de lijst',
     'partage-off': 'Delen staat uit, config.js is leeg', 'partage-on': 'Delen staat aan', 'vu-le': 'Gezien @',
+    'en-attente': '@ verzending(en) in wachtrij', 'file-vide': 'Alles is vertrokken.',
     'acquis-1': 'woord gekend',
     'cetait': 'het was « @ » — tik erop om verder te gaan',
     'listes-ko': 'Lijsten niet gevonden',
@@ -1611,7 +1613,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'aq';
+var WT_BUILD = 'ar';
 
 function charger() {
   var e = null;
@@ -1621,6 +1623,7 @@ function charger() {
   if (!e.jours) e.jours = [];
   if (!e.seances) e.seances = [];
   if (!e.cadeaux) e.cadeaux = {};
+  if (!e.file) e.file = [];
   var r = e.reglages;
   if (!r.dir) r.dir = 'auto';
   if (!r.theme) r.theme = 'delft';
@@ -1641,7 +1644,9 @@ function viderSauvegarde() {
   if (!wtSauveDiffere) return;
   clearTimeout(wtSauveDiffere); wtSauveDiffere = null; sauver();
 }
-document.addEventListener('visibilitychange', function () { if (document.hidden) viderSauvegarde(); });
+document.addEventListener('visibilitychange', function () {
+  if (document.hidden) { viderSauvegarde(); reglerBattement(); }
+});
 window.addEventListener('pagehide', viderSauvegarde);
 function jour(d) { d = d || new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
 
@@ -1729,6 +1734,68 @@ function tirer() {
    de l'app et au changement de liste.
    L'envoi léger omet la colonne etat, qui pèse une vingtaine de ko : elle ne
    sert qu'à la restauration et n'a besoin de partir qu'en fin de séance. */
+/* ═══════════ file d'attente des écritures ═══════════
+   Toute écriture passe par ici. Si elle échoue — réseau coupé, téléphone qui
+   s'endort, requête partie au moment où l'app passe en arrière-plan — elle est
+   déposée dans une file gardée avec l'état, donc elle survit à la fermeture de
+   l'app, et elle est rejouée à la prochaine occasion. Auparavant chaque échec
+   était avalé en silence et l'écriture perdue définitivement : c'est ce qui
+   faisait « disparaître » un cadeau ou un accusé de lecture sans laisser la
+   moindre trace.
+   La clé sert à dédoublonner : une progression rejouée trois fois ne sert à
+   rien, seule la dernière compte. */
+var wtDernierEnvoi = null, wtFileEnCours = false;
+function enFile() { return (etat.file || []).length; }
+function mettreEnFile(cle, chemin, opts) {
+  etat.file = (etat.file || []).filter(function (x) { return x.cle !== cle; });
+  etat.file.push({
+    cle: cle, chemin: chemin, methode: opts.method,
+    prefer: (opts.headers || {}).Prefer, corps: opts.body, t: Date.now()
+  });
+  etat.file = etat.file.slice(-40);
+  sauver();
+}
+function retirerFile(cle) {
+  if (!etat.file || !etat.file.length) return;
+  var n = etat.file.filter(function (x) { return x.cle !== cle; });
+  if (n.length !== etat.file.length) { etat.file = n; sauver(); }
+}
+function envoyer(cle, chemin, opts) {
+  if (!cfg()) return Promise.reject(new Error('partage inactif'));
+  return api(chemin, opts).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    retirerFile(cle);
+    wtDernierEnvoi = Date.now();
+    return r;
+  }).catch(function (e) {
+    wtErr = cle + ' : ' + ((e && e.message) || 'réseau');
+    mettreEnFile(cle, chemin, opts);
+    majSync();
+    throw e;
+  });
+}
+/* Rejoue la file, une écriture après l'autre pour ne pas les faire courir les
+   unes contre les autres. Ce qui passe sort de la file ; ce qui échoue y reste
+   et sera retenté à la prochaine ouverture. */
+function viderFile() {
+  if (wtFileEnCours || !cfg() || !enFile()) return Promise.resolve();
+  wtFileEnCours = true;
+  return (etat.file || []).slice().reduce(function (p, x) {
+    return p.then(function () {
+      return api(x.chemin, {
+        method: x.methode,
+        headers: x.prefer ? { 'Prefer': x.prefer } : {},
+        body: x.corps
+      }).then(function (r) {
+        if (r.ok) { retirerFile(x.cle); wtDernierEnvoi = Date.now(); }
+      });
+    }).catch(function () {});
+  }, Promise.resolve()).then(function () {
+    wtFileEnCours = false;
+    majSync();
+  });
+}
+
 function pousser(complet) {
   if (!cfg() || !moi() || !liste) return Promise.resolve();
   var ligne = {
@@ -1736,7 +1803,7 @@ function pousser(complet) {
     serie: recordDe(liste), maj: new Date().toISOString()
   };
   if (complet) ligne.etat = etat;
-  return api('duo', {
+  return envoyer('duo:' + moi(), 'duo', {
     method: 'POST',
     headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
     body: JSON.stringify([ligne])
@@ -1744,7 +1811,7 @@ function pousser(complet) {
 }
 function poserSemaine(idl) {
   if (!cfg()) return Promise.resolve();
-  return api('duo', {
+  return envoyer('semaine', 'duo', {
     method: 'POST',
     headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
     body: JSON.stringify([{ id: 'semaine', liste: idl, maj: new Date().toISOString() }])
@@ -1762,7 +1829,7 @@ function pousserPlusTard() {
 
 function rafraichirDuo(bavard) {
   if (!cfg()) { if (bavard) alert('Le partage n\'est pas configuré : config.js est vide.'); return; }
-  tirer().then(function () {
+  viderFile().then(function () { return tirer(); }).then(function () {
     rendreDuo('a-duo'); majSync(); majMot(); rendreHebdo(); verifierMot();
     if (bavard) alert(diagnostic());
   }).catch(function () { if (bavard) alert('Connexion impossible. Vérifie config.js, et que le projet Supabase est actif.'); });
@@ -1791,15 +1858,55 @@ function diagnostic() {
   });
   t += '\nRécompenses gagnées : ' + coupons.length;
   if (WT_COLS !== WT_JEUX[0]) t += '\n\nColonnes du mot absentes de la base : relance le script SQL.';
+  t += '\n\nEnvois en attente : ' + (enFile() || 'aucun');
+  if (enFile()) {
+    t += '\n' + (etat.file || []).map(function (x) { return '· ' + x.cle; }).join('\n');
+  }
+  if (wtDernierEnvoi) t += '\nDernier envoi réussi : ' + new Date(wtDernierEnvoi).toLocaleTimeString('fr-BE');
   if (wtErr) t += '\n\nDernier échec : ' + wtErr;
   return t;
 }
+/* Relecture périodique. L'app n'interrogeait la base qu'à trois ou quatre
+   moments précis : ce que l'autre venait de faire pouvait donc rester invisible
+   indéfiniment. Elle tourne uniquement quand l'app est au premier plan ET sur
+   un écran qui en dépend — jamais pendant un exercice, jamais en arrière-plan,
+   donc sans coût de batterie notable. */
+var wtBattement = null;
+function reglerBattement() {
+  if (wtBattement) { clearInterval(wtBattement); wtBattement = null; }
+  if (document.hidden || !cfg()) return;
+  var v = document.body.dataset.vue;
+  if (v !== 'accueil' && v !== 'cadeaux') return;
+  wtBattement = setInterval(synchroniser, 20000);
+}
+function synchroniser() {
+  if (!cfg()) return Promise.resolve();
+  return viderFile()
+    .then(function () { return tirer(); })
+    .then(function () {
+      var v = document.body.dataset.vue;
+      rendreDuo('a-duo'); majSync();
+      if (v === 'accueil') { rendreHebdo(); majMot(); verifierMot(); }
+      if (v === 'cadeaux' || v === 'choix') {
+        return tirerCadeaux().then(tirerCoupons).then(function () {
+          if (document.body.dataset.vue === 'cadeaux') rendreCadeaux();
+          if (document.body.dataset.vue === 'choix') rendreChoix();
+        });
+      }
+    })
+    .catch(function () {});
+}
+
 function majSync() {
   var e = document.getElementById('g-sync');
   if (!e) return;
   if (!cfg()) { e.textContent = tr('partage-off'); return; }
   var d = distant[autre()];
-  e.textContent = (d && d.maj) ? tr('vu-le', new Date(d.maj).toLocaleString(lg() === 'nl' ? 'nl-BE' : 'fr-BE')) : tr('partage-on');
+  var t = (d && d.maj) ? tr('vu-le', new Date(d.maj).toLocaleString(lg() === 'nl' ? 'nl-BE' : 'fr-BE')) : tr('partage-on');
+  var n = enFile();
+  if (n) t += ' — ' + tr('en-attente', n);
+  e.textContent = t;
+  e.style.color = n ? 'var(--warm)' : '';
 }
 function restaurerNuage() {
   if (!cfg() || !moi()) { alert('Partage non configuré.'); return; }
@@ -1828,6 +1935,7 @@ function voir(n) {
   if (n === 'cadeaux') { rendreCadeaux(); rafraichirCadeaux(); }
   if (n === 'motecrire') { majMot(); if (cfg()) tirer().then(majMot).catch(function () {}); }
   if (n === 'choix') { rendreChoix(); rafraichirCadeaux(); }
+  reglerBattement();
   window.scrollTo(0, 0);
 }
 function choisirQui(q) { etat.reglages.moi = q; sauver(); voir('accueil'); pousser(); rafraichirDuo(); }
@@ -2337,7 +2445,7 @@ function sw() {
       if (!document.hidden) proposerMaj(reg.waiting);
       /* revenir sur l'app depuis l'accueil relit la progression de l'autre :
          c'est le moment naturel où l'on veut voir où elle en est. */
-      if (!document.hidden && document.body.dataset.vue === 'accueil') rafraichirDuo();
+      if (!document.hidden) { synchroniser(); reglerBattement(); }
     });
     proposerMaj(reg.waiting);
     reg.addEventListener('updatefound', function () {
@@ -2984,11 +3092,11 @@ function fermerMot() {
   }
   if (!cfg()) return;
   /* l'écriture distante ne sert plus qu'à afficher « lu » chez l'expéditrice */
-  api('duo', {
+  envoyer('motlu:' + autre(), 'duo', {
     method: 'POST',
     headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
     body: JSON.stringify([{ id: autre(), mot_lu: true }])
-  }).then(function (r) { if (!r.ok) wtErr = 'mot lu ' + r.status; }).catch(function () {});
+  }).catch(function () {});
 }
 function deposerMot() {
   var e = document.getElementById('g-mot');
@@ -2997,12 +3105,11 @@ function deposerMot() {
   /* upsert et non PATCH : un PATCH sur une ligne absente réussit sans rien
      écrire, et le mot serait perdu en silence. L'upsert ne cite que ses trois
      colonnes, la progression n'est pas touchée. */
-  api('duo', {
+  envoyer('mot:' + moi(), 'duo', {
     method: 'POST',
     headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
     body: JSON.stringify([{ id: moi(), mot: t || null, mot_maj: new Date().toISOString(), mot_lu: false }])
-  }).then(function (r) {
-    if (!r.ok) throw new Error('mot');
+  }).then(function () {
     return tirer();
   }).then(function () {
     majMot();
@@ -3116,13 +3223,10 @@ function ecrireCadeau(i, texte) {
 }
 function pousserCadeau(i, texte) {
   if (!cfg() || !moi() || !liste) return Promise.reject(new Error('inactif'));
-  return api('cadeaux', {
+  return envoyer('cadeau:' + liste.id + ':' + i, 'cadeaux', {
     method: 'POST',
     headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
     body: JSON.stringify([{ liste: liste.id, de: moi(), i: i, texte: texte, maj: new Date().toISOString() }])
-  }).then(function (r) {
-    if (!r.ok) { wtErr = 'écriture cadeaux : HTTP ' + r.status; throw new Error('cadeaux ' + r.status); }
-    return r;
   });
 }
 /* Le bouton d'enregistrement : il relit les trois champs à l'écran, ce qui
@@ -3195,7 +3299,7 @@ function rendreCadeaux() {
 function honorer(id) {
   if (!cfg()) { alert('Partage non configuré.'); return; }
   if (!confirm('Marquer cette récompense comme honorée ?')) return;
-  api('coupons?id=eq.' + id, {
+  envoyer('honore:' + id, 'coupons?id=eq.' + id, {
     method: 'PATCH',
     headers: { 'Prefer': 'return=minimal' },
     body: JSON.stringify({ etat: 'fait', maj: new Date().toISOString() })
@@ -3219,7 +3323,7 @@ function choisirCadeau(i) {
   if (!cfg()) { alert('Le partage n\'est pas configuré : la récompense ne pourrait pas être transmise.'); return; }
   if (couponDeLaListe()) { rendreChoix(); return; }
   if (!confirm(tr('choix-ok', t))) return;
-  api('coupons', {
+  envoyer('coupon:' + liste.id + ':' + moi(), 'coupons', {
     method: 'POST',
     headers: { 'Prefer': 'return=minimal' },
     body: JSON.stringify([{ liste: liste.id, de: autre(), pour: moi(), texte: t, etat: 'du', cree: new Date().toISOString() }])
@@ -3269,9 +3373,13 @@ fetch('data/index.json', { cache: 'no-cache' })
     rafraichirCadeaux();
     verifierMot();
     /* signaler tout de suite sur quelle liste on est, sans attendre qu'une
-       séance se termine */
-    pousser().then(function () { return tirer(); })
-      .then(function () { rendreDuo('a-duo'); majSync(); }).catch(function () {});
+       séance se termine, et rejouer ce qui n'était pas passé la fois d'avant */
+    viderFile()
+      .then(function () { return pousser(); })
+      .then(function () { return tirer(); })
+      .then(function () { rendreDuo('a-duo'); majSync(); rendreHebdo(); verifierMot(); })
+      .catch(function () {});
+    reglerBattement();
   })
   .catch(function () {
     document.getElementById('v-accueil').innerHTML =
