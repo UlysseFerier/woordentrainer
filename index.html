@@ -1017,6 +1017,7 @@ body[data-heat="14"] .wt-serie .couronne { display:none; }
     <span class="pastilles" id="a-pastilles"></span>
     <span class="texte" id="a-hebdo-t"></span>
     <button class="puce-cad" id="a-cad" onclick="voir('cadeaux')">Cadeaux</button>
+    <button class="puce-cad alerte cache" id="a-install" onclick="installer()" data-t="inst">Installer</button>
   </div>
   <div class="modes">
     <button class="b" onclick="demarrer('flash')" data-t="m-flash">Cartes</button>
@@ -1263,6 +1264,8 @@ var T = {
     'g-zero': 'Repartir de zéro', 'g-zero-p': 'Efface les scores de la liste choisie. Les mots ne bougent pas.',
     'g-liste': 'Liste', 'g-effacer': 'Effacer ces scores',
     'g-seances': 'Remettre les séances de la semaine à zéro',
+    'inst': 'Installer',
+    'inst-menu': "Passe par le menu du navigateur : les trois points en haut à droite, puis « Installer l'application » ou « Ajouter à l'écran d'accueil ». Sur iPhone, c'est le bouton Partager de Safari, puis « Sur l'écran d'accueil ».",
     'g-seances-q': 'Remettre le compteur de séances de la semaine à zéro ? Les points et les mots acquis ne bougent pas.',
     'g-seances-ok': 'Compteur de séances remis à zéro.',
     'acquis-n': '@ sur 40 acquis', 'points-n': '@ points', 'jours': '@ jours',
@@ -1347,6 +1350,8 @@ var T = {
     'g-zero': 'Opnieuw beginnen', 'g-zero-p': 'Wist de scores van de gekozen lijst. De woorden zelf blijven staan.',
     'g-liste': 'Lijst', 'g-effacer': 'Deze scores wissen',
     'g-seances': 'De sessies van deze week op nul zetten',
+    'inst': 'Installeren',
+    'inst-menu': 'Ga via het menu van de browser: de drie puntjes rechtsboven, dan « App installeren » of « Toevoegen aan startscherm ». Op iPhone is het de deelknop van Safari, dan « Zet op beginscherm ».',
     'g-seances-q': 'De sessieteller van deze week op nul zetten? De punten en de gekende woorden blijven staan.',
     'g-seances-ok': 'Sessieteller op nul gezet.',
     'acquis-n': '@ van 40 gekend', 'points-n': '@ punten', 'jours': '@ dagen',
@@ -1606,7 +1611,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'ak';
+var WT_BUILD = 'al';
 
 function charger() {
   var e = null;
@@ -1796,6 +1801,7 @@ function rendreAccueil() {
   document.getElementById('a-points').textContent = tr('points-n', pointsDe(liste));
   rendreDuo('a-duo');
   rendreHebdo();
+  majInstall();
 }
 function rendreDuo(hote) {
   var h = document.getElementById(hote);
@@ -2286,7 +2292,26 @@ function sw() {
     });
   }).catch(function () {});
 }
-window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); });
+/* Chrome propose l'installation via cet évènement. L'app l'annulait purement
+   et simplement, si bien qu'aucune bannière n'apparaissait JAMAIS et qu'il
+   fallait connaître le menu du navigateur pour poser l'icône. On le retient
+   maintenant pour le rejouer sur demande, au moment choisi par la personne. */
+var wtInstall = null;
+window.addEventListener('beforeinstallprompt', function (e) {
+  e.preventDefault();
+  wtInstall = e;
+  majInstall();
+});
+window.addEventListener('appinstalled', function () { wtInstall = null; majInstall(); });
+function majInstall() {
+  var b = document.getElementById('a-install');
+  if (b) b.classList.toggle('cache', !wtInstall);
+}
+function installer() {
+  if (!wtInstall) { alert(tr('inst-menu')); return; }
+  wtInstall.prompt();
+  wtInstall.userChoice.then(function () { wtInstall = null; majInstall(); }).catch(function () {});
+}
 
 /* Ceinture et bretelles pour la sélection de texte. user-select:none suffit
    en principe, mais selon la version de Chrome et la surcouche du constructeur
