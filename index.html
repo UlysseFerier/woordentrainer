@@ -146,14 +146,6 @@ body {
 .retour { text-align: center; font-size: .78rem; color: var(--mute); min-height: 20px; margin-top: 12px; line-height: 1.4; }
 
 
-.recap { text-align: center; }
-.recap-n { font-family: var(--serif); font-size: 3rem; font-weight: 500; margin: 10px 0 4px; }
-.recap-m { font-size: .88rem; color: var(--mute); line-height: 1.6; }
-.trio { display: flex; justify-content: center; gap: 30px; margin: 20px 0 0; }
-.trio div { text-align: center; }
-.trio b { display: block; font-size: 1.25rem; font-weight: 500; }
-.trio span { font-size: .62rem; text-transform: uppercase; letter-spacing: .09em; color: var(--faint); }
-
 .bloc { border-bottom: 1px solid var(--line); padding: 16px 0; }
 .bloc h3 { font-size: .92rem; font-weight: 500; margin-bottom: 4px; }
 .bloc p { font-size: .78rem; color: var(--mute); line-height: 1.5; }
@@ -408,7 +400,7 @@ body.nuit .opt.roussi { border-color: #5A4028; }
 @keyframes wtFumer { 0% { transform: translate(0,0) scale(.6); opacity: .9; } 100% { transform: translate(var(--dx), -110px) scale(2); opacity: 0; } }
 
 /* ═ plein écran, jamais de défilement de page ═ */
-#v-accueil, #v-recap, #v-listes { flex: 1; flex-direction: column; min-height: 0; }
+#v-accueil, #v-listes { flex: 1; flex-direction: column; min-height: 0; }
 #v-reglages { flex: 1; flex-direction: column; min-height: 0; overflow-y: auto; }
 #l-items { flex: 1; min-height: 0; overflow-y: auto; }
 .duo { flex: none; }
@@ -423,7 +415,6 @@ body.nuit .opt.roussi { border-color: #5A4028; }
   font-size: 1.06rem; line-height: 1.2;
   display: flex; align-items: center; justify-content: center;
 }
-#v-recap > div:last-child { margin-top: auto; }
 
 
 #wt-sonde {
@@ -959,24 +950,6 @@ body.wt-pret .wt-serie b { color:var(--f-orange); }
   </div>
 </div>
 
-<div id="v-recap" class="pad bas cache">
-  <div class="recap">
-    <div class="titre-section" data-t="r-t">Session terminée</div>
-    <div class="recap-n" id="r-gain">+0</div>
-    <div class="recap-m" id="r-msg"></div>
-    <div class="trio">
-      <div><b id="r-q">0</b><span data-t="r-q">questions</span></div>
-      <div><b id="r-j">0</b><span data-t="r-j">justes</span></div>
-      <div><b id="r-a">0</b><span data-t="r-a">acquis</span></div>
-    </div>
-  </div>
-  <div id="r-duo" class="duo"></div>
-  <div style="margin-top:20px">
-    <button class="b plein" onclick="demarrer('mix')" data-t="encore">Encore une série</button>
-    <button class="b fin" onclick="voir('accueil')" data-t="retour-accueil">Revenir à l'accueil</button>
-  </div>
-</div>
-
 <div id="v-reglages" class="pad bas cache">
   <div class="tete">
     <div class="h-titre" data-t="g-t">Réglages</div>
@@ -1467,7 +1440,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'af';
+var WT_BUILD = 'ag';
 
 function charger() {
   var e = null;
@@ -1594,7 +1567,7 @@ function poserSemaine(idl) {
 function rafraichirDuo(bavard) {
   if (!cfg()) { if (bavard) alert('Le partage n\'est pas configuré : config.js est vide.'); return; }
   tirer().then(function () {
-    rendreDuo('a-duo'); rendreDuo('r-duo'); majSync(); majMot(); verifierMot();
+    rendreDuo('a-duo'); majSync(); majMot(); rendreHebdo(); verifierMot();
     if (bavard) alert('Connexion établie.');
   }).catch(function () { if (bavard) alert('Connexion impossible. Vérifie config.js, et que le projet Supabase est actif.'); });
 }
@@ -1616,7 +1589,7 @@ function restaurerNuage() {
 }
 
 function voir(n) {
-  ['qui', 'accueil', 'listes', 'train', 'recap', 'reglages', 'cadeaux', 'choix', 'motecrire'].forEach(function (v) {
+  ['qui', 'accueil', 'listes', 'train', 'reglages', 'cadeaux', 'choix', 'motecrire'].forEach(function (v) {
     var e = document.getElementById('v-' + v);
     e.classList.add('cache'); e.style.display = '';
   });
@@ -1992,29 +1965,20 @@ function onde(bouton, ev, juste) {
 }
 function vibrer(m) { try { if (navigator.vibrate) navigator.vibrate(m); } catch (e) {} }
 
+/* Quitter une séance ramène droit à l'accueil : le bilan chiffré n'apprenait
+   rien que la barre de crans et la ligne de points ne montrent déjà. La
+   synchronisation, elle, reste — c'est la seule chose que faisait vraiment
+   cet écran. */
 function finSession() {
   wtChronoStop(); bourdonOff(); wtPause = false;
+  wtNettoyerHaut();
   document.getElementById('v-fete').classList.add('cache');
-  if (!session) { voir('accueil'); return; }
-  var a = acquisDe(liste), nouveaux = a - session.avant;
-  document.getElementById('r-gain').textContent = (session.gain >= 0 ? '+' : '') + session.gain;
-  document.getElementById('r-q').textContent = session.n;
-  document.getElementById('r-j').textContent = session.justes;
-  document.getElementById('r-a').textContent = nouveaux;
-  var msg;
-  if (!session.n) msg = tr('r-rien');
-  else if (a === 40) msg = tr('r-fin');
-  else if (nouveaux > 0) msg = tr(nouveaux > 1 ? 'r-plus-n' : 'r-plus', nouveaux) + tr('r-reste', 40 - a);
-  else msg = tr('r-bouge');
-  if (!dispo().libres.length && a < 40) msg += tr('r-max');
-  document.getElementById('r-msg').textContent = msg;
-  rendreDuo('r-duo');
   session = null; cur = null;
   viderSauvegarde();
   wtStreak = 0; wtPoserChaleur(true);
-  voir('recap');
+  voir('accueil');
   pousser().then(function () { return tirer(); })
-    .then(function () { rendreDuo('r-duo'); verifierMot(); }).catch(function () {});
+    .then(function () { rendreDuo('a-duo'); rendreHebdo(); verifierMot(); }).catch(function () {});
 }
 
 /* ═══════════ sonde de débordement ═══════════
@@ -2657,8 +2621,7 @@ function verifierMot() {
   if (!d) return;
   var cle = String(d.mot_maj || d.mot);
   if (wtMotMontre === cle) return;
-  var v = document.body.dataset.vue;
-  if (v !== 'accueil' && v !== 'recap') return;
+  if (document.body.dataset.vue !== 'accueil') return;
   wtMotMontre = cle;
   ouvrirMot(d);
 }
