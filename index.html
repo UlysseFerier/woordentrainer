@@ -1154,6 +1154,7 @@ body[data-heat="14"] .wt-serie .couronne { display:none; }
     <p data-t="g-zero-p">Efface les scores de la liste choisie. Les mots ne bougent pas.</p>
     <div class="rangee"><span data-t="g-liste">Liste</span><select id="g-reset"></select></div>
     <button class="b non" onclick="effacerListe()" data-t="g-effacer">Effacer ces scores</button>
+    <button class="b" style="margin-top:8px" onclick="effacerSeances()" data-t="g-seances">Remettre les séances de la semaine à zéro</button>
   </div>
   <div style="font-size:.64rem;color:var(--faint);text-align:center;margin-top:18px" id="g-version"></div>
 </div>
@@ -1261,6 +1262,9 @@ var T = {
     'g-copier': 'Copier ma progression', 'g-coller': 'Restaurer depuis un texte',
     'g-zero': 'Repartir de zéro', 'g-zero-p': 'Efface les scores de la liste choisie. Les mots ne bougent pas.',
     'g-liste': 'Liste', 'g-effacer': 'Effacer ces scores',
+    'g-seances': 'Remettre les séances de la semaine à zéro',
+    'g-seances-q': 'Remettre le compteur de séances de la semaine à zéro ? Les points et les mots acquis ne bougent pas.',
+    'g-seances-ok': 'Compteur de séances remis à zéro.',
     'acquis-n': '@ sur 40 acquis', 'points-n': '@ points', 'jours': '@ jours',
     'pas-partage': 'partage non configuré', 'autre-liste': '@ travaille une autre liste',
     'record-n': '\u25B2@', 'record-t': "meilleure série de la liste",
@@ -1342,6 +1346,9 @@ var T = {
     'g-copier': 'Mijn voortgang kopiëren', 'g-coller': 'Terugzetten uit tekst',
     'g-zero': 'Opnieuw beginnen', 'g-zero-p': 'Wist de scores van de gekozen lijst. De woorden zelf blijven staan.',
     'g-liste': 'Lijst', 'g-effacer': 'Deze scores wissen',
+    'g-seances': 'De sessies van deze week op nul zetten',
+    'g-seances-q': 'De sessieteller van deze week op nul zetten? De punten en de gekende woorden blijven staan.',
+    'g-seances-ok': 'Sessieteller op nul gezet.',
     'acquis-n': '@ van 40 gekend', 'points-n': '@ punten', 'jours': '@ dagen',
     'pas-partage': 'delen is niet ingesteld', 'autre-liste': '@ werkt aan een andere lijst',
     'record-n': '\u25B2@', 'record-t': 'beste reeks van de lijst',
@@ -1599,7 +1606,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'aj';
+var WT_BUILD = 'ak';
 
 function charger() {
   var e = null;
@@ -2237,6 +2244,15 @@ function coller() {
   if (!v) return;
   try { var o = JSON.parse(v); if (!o.semaines) throw 0; etat = o; sauver(); location.reload(); }
   catch (e) { alert('Ce texte n\'est pas une sauvegarde valide.'); }
+}
+/* Les séances bouclées sont gardées à part des scores : les effacer ne touche
+   ni aux points ni aux mots acquis, seulement aux trois pastilles de l'accueil. */
+function effacerSeances() {
+  if (!confirm(tr('g-seances-q'))) return;
+  etat.seances = [];
+  sauver();
+  rendreHebdo();
+  alert(tr('g-seances-ok'));
 }
 function effacerListe() {
   var id = document.getElementById('g-reset').value;
