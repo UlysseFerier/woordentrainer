@@ -1611,7 +1611,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'am';
+var WT_BUILD = 'an';
 
 function charger() {
   var e = null;
@@ -1770,7 +1770,15 @@ function diagnostic() {
          ', vu ' + (d.maj ? new Date(d.maj).toLocaleString('fr-BE') : '—') +
          (d.mot ? ', un mot déposé' + (d.mot_lu ? ' (lu)' : ' (non lu)') : ', aucun mot');
   });
+  t += '\n\nCadeaux dans la base pour cette liste :';
+  ['ulysse', 'jasmien'].forEach(function (q) {
+    var l = cadeaux[q] || [], n = 0;
+    for (var i = 0; i < 3; i++) if (l[i] && String(l[i]).trim()) n++;
+    t += '\n' + NOMS[q] + ' : ' + n + ' sur 3';
+  });
+  t += '\nRécompenses gagnées : ' + coupons.length;
   if (WT_COLS !== WT_JEUX[0]) t += '\n\nColonnes du mot absentes de la base : relance le script SQL.';
+  if (wtErr) t += '\n\nDernier échec : ' + wtErr;
   return t;
 }
 function majSync() {
@@ -2902,11 +2910,21 @@ function allerChoix() {
    toutes les synchronisations de progression.
    mot_lu passe à vrai quand le destinataire l'a réellement ouvert : c'est lui
    qui écrit ce drapeau sur la ligne de l'autre. */
+/* dernier échec réseau rencontré, affiché par le diagnostic des réglages :
+   sans lui, une écriture refusée par la base ne laissait aucune trace. */
+var wtErr = null;
 var wtMotMontre = null;
+function cleMot(d) { return String(d.mot_maj || d.mot || ''); }
+/* Un mot est « déjà vu » dès que CE téléphone l'a ouvert, indépendamment de ce
+   que la base a pu enregistrer. Faire dépendre l'affichage du seul drapeau
+   mot_lu écrit sur la ligne de l'AUTRE était fragile : si cette écriture
+   échouait — droits, réseau, colonne absente — le même mot revenait à chaque
+   ouverture. La marque locale, elle, ne peut pas échouer. */
 function motRecu() {
   var d = distant[autre()];
   if (!d || !d.mot || !String(d.mot).trim()) return null;
   if (d.mot_lu) return null;
+  if (etat.motLu === cleMot(d)) return null;
   return d;
 }
 function verifierMot() {
@@ -2932,13 +2950,18 @@ function ouvrirMot(d) {
 function fermerMot() {
   document.getElementById('v-mot').classList.add('cache');
   var d = distant[autre()];
-  if (d) d.mot_lu = true;
+  if (d) {
+    d.mot_lu = true;
+    etat.motLu = cleMot(d);   /* la marque qui compte pour l'affichage */
+    sauver();
+  }
   if (!cfg()) return;
+  /* l'écriture distante ne sert plus qu'à afficher « lu » chez l'expéditrice */
   api('duo', {
     method: 'POST',
     headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
     body: JSON.stringify([{ id: autre(), mot_lu: true }])
-  }).catch(function () {});
+  }).then(function (r) { if (!r.ok) wtErr = 'mot lu ' + r.status; }).catch(function () {});
 }
 function deposerMot() {
   var e = document.getElementById('g-mot');
@@ -3001,7 +3024,10 @@ function tirerCadeaux() {
   return api('cadeaux?liste=eq.' + encodeURIComponent(liste.id) + '&select=de,i,texte')
     .then(function (r) { return r.json(); })
     .then(function (l) {
-      if (!Array.isArray(l)) return;
+      if (!Array.isArray(l)) {
+        wtErr = 'lecture cadeaux : ' + ((l && (l.message || l.code)) || 'réponse inattendue');
+        return;
+      }
       var n = { ulysse: [], jasmien: [] };
       l.forEach(function (x) { if (n[x.de]) n[x.de][x.i] = x.texte; });
       var m = moi();
@@ -3024,7 +3050,10 @@ function tirerCoupons() {
   if (!cfg()) return Promise.resolve();
   return api('coupons?select=id,liste,de,pour,texte,etat,cree&order=cree.desc')
     .then(function (r) { return r.json(); })
-    .then(function (l) { if (Array.isArray(l)) coupons = l; });
+    .then(function (l) {
+      if (Array.isArray(l)) coupons = l;
+      else wtErr = 'lecture coupons : ' + ((l && (l.message || l.code)) || 'réponse inattendue');
+    });
 }
 function rafraichirCadeaux() {
   if (!cfg()) return;
@@ -3056,7 +3085,7 @@ function pousserCadeau(i, texte) {
     headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
     body: JSON.stringify([{ liste: liste.id, de: moi(), i: i, texte: texte, maj: new Date().toISOString() }])
   }).then(function (r) {
-    if (!r.ok) throw new Error('cadeaux ' + r.status);
+    if (!r.ok) { wtErr = 'écriture cadeaux : HTTP ' + r.status; throw new Error('cadeaux ' + r.status); }
     return r;
   });
 }
@@ -3082,7 +3111,10 @@ function enregistrerCadeaux() {
       return tirerCadeaux();
     })
     .then(function () { rendreCadeaux(); })
-    .catch(function () { e.textContent = tr('cad-ko'); e.classList.add('attente'); });
+    .catch(function () {
+      e.textContent = tr('cad-ko') + (wtErr ? ' (' + wtErr + ')' : '');
+      e.classList.add('attente');
+    });
 }
 function couponDeLaListe() {
   for (var i = 0; i < coupons.length; i++)
