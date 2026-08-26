@@ -1611,7 +1611,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'ap';
+var WT_BUILD = 'aq';
 
 function charger() {
   var e = null;
@@ -1692,6 +1692,9 @@ function api(chemin, opts) {
   if (!neuve) h['Authorization'] = 'Bearer ' + c.cle;
   for (var k in (opts.headers || {})) h[k] = opts.headers[k];
   opts.headers = h;
+  /* Sans cela, la lecture qui suit immédiatement une écriture pouvait être
+     servie par le cache du navigateur et renvoyer l'état d'AVANT. */
+  opts.cache = 'no-store';
   return fetch(c.url.replace(/\/+$/, '') + '/rest/v1/' + chemin, opts);
 }
 /* select explicite, SANS la colonne etat : elle pèse une vingtaine de ko par
@@ -3056,12 +3059,21 @@ function tirerCadeaux() {
       l.forEach(function (x) { if (n[x.de]) n[x.de][x.i] = x.texte; });
       var m = moi();
       if (m) {
+        /* Mes trois cadeaux, c'est MOI qui les écris : le texte présent sur ce
+           téléphone gagne toujours sur celui de la base, et la différence est
+           renvoyée. L'ancienne règle ne protégeait le local que si la base
+           était vide, si bien qu'une valeur périmée côté serveur écrasait ce
+           que je venais de taper. La base ne sert plus qu'à remplir les cases
+           encore vides ici — le cas d'une réinstallation. */
         var loc = (etat.cadeaux[liste.id] || {})[m] || [];
         var aRenvoyer = [];
         for (var i = 0; i < 3; i++) {
           var vl = loc[i] && String(loc[i]).trim();
           var vd = n[m][i] && String(n[m][i]).trim();
-          if (vl && !vd) { n[m][i] = loc[i]; aRenvoyer.push(i); }
+          if (vl) {
+            n[m][i] = loc[i];
+            if (vl !== vd) aRenvoyer.push(i);
+          }
         }
         aRenvoyer.forEach(function (i) { pousserCadeau(i, n[m][i]); });
       }
@@ -3128,11 +3140,14 @@ function enregistrerCadeaux() {
   sauver();
   rendreHebdo();
   if (!cfg()) { e.textContent = tr('cad-local'); e.classList.add('attente'); return; }
+  /* On ne relit PAS la base derrière l'enregistrement : ce qui est à l'écran
+     vient d'être saisi et fait foi. Seules les récompenses gagnées, qui
+     dépendent de l'autre, méritent une relecture. */
   Promise.all(vals.map(function (v, k) { return pousserCadeau(k, v); }))
     .then(function () {
       e.textContent = tr('cad-ok');
       e.classList.remove('attente');
-      return tirerCadeaux();
+      return tirerCoupons();
     })
     .then(function () { rendreCadeaux(); })
     .catch(function () {
