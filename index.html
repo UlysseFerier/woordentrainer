@@ -1611,7 +1611,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'al';
+var WT_BUILD = 'am';
 
 function charger() {
   var e = null;
@@ -1719,12 +1719,24 @@ function tirer() {
     return distant;
   });
 }
-function pousser() {
+/* Jusqu'ici la ligne n'était envoyée qu'à la FIN d'une séance. Tant que
+   l'autre n'en avait pas terminé une, sa ligne restait vide côté base : on
+   lisait donc « travaille une autre liste » alors que la liste était la même,
+   et aucun mot ne pouvait circuler. On envoie maintenant aussi à l'ouverture
+   de l'app et au changement de liste.
+   L'envoi léger omet la colonne etat, qui pèse une vingtaine de ko : elle ne
+   sert qu'à la restauration et n'a besoin de partir qu'en fin de séance. */
+function pousser(complet) {
   if (!cfg() || !moi() || !liste) return Promise.resolve();
+  var ligne = {
+    id: moi(), liste: liste.id, acquis: acquisDe(liste), points: pointsDe(liste),
+    serie: recordDe(liste), maj: new Date().toISOString()
+  };
+  if (complet) ligne.etat = etat;
   return api('duo', {
     method: 'POST',
     headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
-    body: JSON.stringify([{ id: moi(), liste: liste.id, acquis: acquisDe(liste), points: pointsDe(liste), serie: recordDe(liste), maj: new Date().toISOString(), etat: etat }])
+    body: JSON.stringify([ligne])
   }).catch(function () {});
 }
 function poserSemaine(idl) {
@@ -1739,8 +1751,27 @@ function rafraichirDuo(bavard) {
   if (!cfg()) { if (bavard) alert('Le partage n\'est pas configuré : config.js est vide.'); return; }
   tirer().then(function () {
     rendreDuo('a-duo'); majSync(); majMot(); rendreHebdo(); verifierMot();
-    if (bavard) alert('Connexion établie.');
+    if (bavard) alert(diagnostic());
   }).catch(function () { if (bavard) alert('Connexion impossible. Vérifie config.js, et que le projet Supabase est actif.'); });
+}
+/* Ce que la base contient réellement pour chacun : c'est le seul moyen, depuis
+   le téléphone, de voir si la ligne de l'autre existe et sur quelle liste elle
+   pointe. Sans ça, « travaille une autre liste » ne dit pas si le problème
+   vient de la liste, de l'identité, ou de l'envoi. */
+function diagnostic() {
+  var t = 'Connexion établie.\n\nCe téléphone est celui de : ' + (NOMS[moi()] || '—') +
+          '\nListe ouverte ici : ' + (liste ? liste.id : '—') + '\n';
+  ['ulysse', 'jasmien'].forEach(function (q) {
+    var d = distant[q];
+    t += '\n' + NOMS[q] + ' — ';
+    if (!d) { t += 'aucune ligne dans la base'; return; }
+    t += 'liste ' + (d.liste || '(vide)') +
+         ', ' + (d.acquis || 0) + ' acquis' +
+         ', vu ' + (d.maj ? new Date(d.maj).toLocaleString('fr-BE') : '—') +
+         (d.mot ? ', un mot déposé' + (d.mot_lu ? ' (lu)' : ' (non lu)') : ', aucun mot');
+  });
+  if (WT_COLS !== WT_JEUX[0]) t += '\n\nColonnes du mot absentes de la base : relance le script SQL.';
+  return t;
 }
 function majSync() {
   var e = document.getElementById('g-sync');
@@ -1778,7 +1809,7 @@ function voir(n) {
   if (n === 'choix') { rendreChoix(); rafraichirCadeaux(); }
   window.scrollTo(0, 0);
 }
-function choisirQui(q) { etat.reglages.moi = q; sauver(); voir('accueil'); rafraichirDuo(); }
+function choisirQui(q) { etat.reglages.moi = q; sauver(); voir('accueil'); pousser(); rafraichirDuo(); }
 
 function crans(hote, l) {
   var s = '';
@@ -1872,6 +1903,8 @@ function ouvrirListe(id) {
   liste = l; etat.reglages.liste = id; sauver();
   chargerCadeauxLocaux(); rafraichirCadeaux();
   voir('accueil');
+  pousser().then(function () { return tirer(); })
+    .then(function () { rendreDuo('a-duo'); }).catch(function () {});
 }
 
 function dispo() {
@@ -2153,7 +2186,7 @@ function finSession() {
   viderSauvegarde();
   wtStreak = 0; wtPoserChaleur(true);
   voir('accueil');
-  pousser().then(function () { return tirer(); })
+  pousser(true).then(function () { return tirer(); })
     .then(function () { rendreDuo('a-duo'); rendreHebdo(); verifierMot(); }).catch(function () {});
 }
 
@@ -3164,6 +3197,10 @@ fetch('data/index.json', { cache: 'no-cache' })
     voir(moi() ? 'accueil' : 'qui');
     rafraichirCadeaux();
     verifierMot();
+    /* signaler tout de suite sur quelle liste on est, sans attendre qu'une
+       séance se termine */
+    pousser().then(function () { return tirer(); })
+      .then(function () { rendreDuo('a-duo'); majSync(); }).catch(function () {});
   })
   .catch(function () {
     document.getElementById('v-accueil').innerHTML =
