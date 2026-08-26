@@ -1611,7 +1611,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'an';
+var WT_BUILD = 'ao';
 
 function charger() {
   var e = null;
@@ -2318,17 +2318,16 @@ function sw() {
     try { reg.update(); } catch (e) {}
     document.addEventListener('visibilitychange', function () {
       if (!document.hidden) { try { reg.update(); } catch (e) {} }
+      /* une version déjà installée mais jamais activée doit se re-signaler :
+         la proposition ne tombait qu'au moment exact de la fin d'installation,
+         donc la refuser ou quitter l'app la faisait disparaître pour de bon. */
+      if (!document.hidden) proposerMaj(reg.waiting);
     });
+    proposerMaj(reg.waiting);
     reg.addEventListener('updatefound', function () {
       var nv = reg.installing; if (!nv) return;
       nv.addEventListener('statechange', function () {
-        if (nv.state === 'installed' && navigator.serviceWorker.controller) {
-          swAttente = nv;
-          if (confirm('Une nouvelle version est prête. Recharger ?')) {
-            swAttente.postMessage('skip-waiting');
-            setTimeout(function () { location.reload(); }, 300);
-          }
-        }
+        if (nv.state === 'installed' && navigator.serviceWorker.controller) proposerMaj(nv);
       });
     });
   }).catch(function () {});
@@ -2338,6 +2337,18 @@ function sw() {
    fallait connaître le menu du navigateur pour poser l'icône. On le retient
    maintenant pour le rejouer sur demande, au moment choisi par la personne. */
 var wtInstall = null;
+var wtMajDemandee = false;
+function proposerMaj(nv) {
+  if (!nv || !navigator.serviceWorker.controller) return;
+  if (wtMajDemandee) return;          /* une seule question par ouverture */
+  wtMajDemandee = true;
+  swAttente = nv;
+  if (confirm('Une nouvelle version est prête. Recharger ?')) {
+    swAttente.postMessage('skip-waiting');
+    setTimeout(function () { location.reload(); }, 300);
+  }
+}
+
 window.addEventListener('beforeinstallprompt', function (e) {
   e.preventDefault();
   wtInstall = e;
