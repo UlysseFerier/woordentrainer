@@ -1,7 +1,7 @@
 /* Woordentrainer — service worker
    Change VERSION à chaque mise à jour du code : ça force le rafraîchissement
    sur les téléphones au lancement suivant. */
-const VERSION = 'wt-2026-08-27-ar';
+const VERSION = 'wt-2026-08-27-as';
 const SHELL = VERSION + '-shell';
 const DATA = VERSION + '-data';
 
@@ -50,6 +50,21 @@ self.addEventListener('fetch', function (e) {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
 
+  /* ══════════════════════════════════════════════════════════════════
+     RIEN de ce qui sort de ce domaine ne doit passer par un cache.
+     La règle « cache d'abord » de fin de fichier, prévue pour les icônes,
+     attrapait en réalité TOUT le reste — y compris les lectures de la base
+     Supabase. La première réponse était mise en cache sous son adresse
+     exacte, et comme l'app relit toujours la même adresse, elle recevait
+     éternellement la même réponse : cadeaux figés, série de l'autre figée,
+     accusé de lecture jamais mis à jour. Le cache ne se vidait qu'au
+     changement de version, d'où l'illusion qu'un déploiement « réparait »
+     la synchronisation pendant quelques minutes.
+     Le cache:'no-store' posé côté app ne pouvait rien y faire : il gouverne
+     le cache HTTP du navigateur, alors que le service worker est en amont.
+     ══════════════════════════════════════════════════════════════════ */
+  if (url.origin !== self.location.origin) return;
+
   // Listes de vocabulaire : réseau d'abord (pour attraper les nouvelles semaines),
   // cache en secours quand le téléphone est hors ligne.
   if (url.pathname.indexOf('/data/') !== -1) {
@@ -60,21 +75,6 @@ self.addEventListener('fetch', function (e) {
         return res;
       }).catch(function () {
         return caches.match(req);
-      })
-    );
-    return;
-  }
-
-  // Polices Google : cache d'abord, mise à jour en arrière-plan.
-  if (url.origin.indexOf('gstatic') !== -1 || url.origin.indexOf('googleapis') !== -1) {
-    e.respondWith(
-      caches.match(req).then(function (hit) {
-        const net = fetch(req).then(function (res) {
-          const copy = res.clone();
-          caches.open(SHELL).then(function (c) { c.put(req, copy); });
-          return res;
-        }).catch(function () { return hit; });
-        return hit || net;
       })
     );
     return;
@@ -102,14 +102,19 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // Icônes et fichiers immuables : cache d'abord.
-  e.respondWith(
-    caches.match(req).then(function (hit) {
-      return hit || fetch(req).then(function (res) {
-        const copy = res.clone();
-        caches.open(SHELL).then(function (c) { c.put(req, copy); });
-        return res;
-      });
-    })
-  );
+  // Icônes : cache d'abord, ce sont les seuls fichiers réellement immuables.
+  if (url.pathname.indexOf('/icons/') !== -1) {
+    e.respondWith(
+      caches.match(req).then(function (hit) {
+        return hit || fetch(req).then(function (res) {
+          const copy = res.clone();
+          caches.open(SHELL).then(function (c) { c.put(req, copy); });
+          return res;
+        });
+      })
+    );
+    return;
+  }
+
+  // Tout le reste passe au réseau sans être mis en cache.
 });
