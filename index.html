@@ -943,19 +943,36 @@ body[data-heat="14"] .wt-serie {
 body[data-heat="14"] .wt-serie b { color:#FFFFFF; background:none; -webkit-text-fill-color:#FFFFFF; }
 body[data-heat="14"] .wt-serie .couronne { display:none; }
 
-/* ═ liste des mots, avec mise en priorité ═ */
+/* ═ liste des mots ═
+   Une vraie grille : quatre colonnes de largeur fixée une fois pour toutes,
+   donc les deux langues s'alignent d'une ligne à l'autre. Même police et même
+   corps des deux côtés — le néerlandais était auparavant en serif et plus gros
+   que le français, ce qui donnait deux colonnes qui ne se répondaient pas. */
 #v-mots { flex:1; flex-direction:column; min-height:0; }
-#mots-items { flex:1; min-height:0; overflow-y:auto; margin-top:10px; }
-.mot-l { display:flex; align-items:center; gap:10px; padding:11px 0; border-bottom:1px solid var(--line); cursor:pointer; }
-.mot-l .n { flex:1; min-width:0; }
-.mot-l .nl { font-family:var(--serif); font-size:.98rem; }
-.mot-l .fr { font-size:.76rem; color:var(--mute); margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.mot-l .j { width:46px; height:5px; border-radius:3px; background:var(--empty); overflow:hidden; flex-shrink:0; }
-.mot-l .j > i { display:block; height:5px; background:var(--acc); }
-.mot-l .e { width:22px; text-align:center; flex-shrink:0; font-size:1rem; color:var(--line); }
+#mots-items { flex:1; min-height:0; overflow-y:auto; }
+.mots-tete, .mot-l {
+  display:grid; grid-template-columns:20px 1fr 1fr 40px;
+  align-items:center; gap:10px;
+}
+.mots-tete {
+  padding:10px 0 7px; border-bottom:1px solid var(--line);
+  font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; color:var(--faint);
+  position:sticky; top:0; background:var(--page); z-index:2;
+}
+.mots-tete .d { text-align:right; }
+.mot-l { padding:11px 0; border-bottom:1px solid var(--line); cursor:pointer; }
+.mot-l .w {
+  font-family:var(--sans); font-size:.86rem; line-height:1.35;
+  overflow-wrap:anywhere; min-width:0;
+}
+.mot-l .w.tr { color:var(--mute); }
+.mot-l .e { text-align:center; font-size:.95rem; color:var(--line); }
+.mot-l .p { text-align:right; font-size:.72rem; color:var(--mute); font-variant-numeric:tabular-nums; }
 .mot-l.prio .e { color:var(--warm); }
-.mot-l.prio .nl { color:var(--warm); }
-.mot-l.fini .nl { opacity:.55; }
+.mot-l.prio .w { color:var(--warm); }
+.mot-l.prio .w.tr { color:var(--warm); opacity:.75; }
+.mot-l.fini .w { opacity:.5; }
+.mot-l.fini .p { color:var(--acc); }
 
 /* ═ souffle blanc du palier 60 ═ */
 .wt-souffle {
@@ -1158,10 +1175,11 @@ body[data-heat="14"] .wt-serie .couronne { display:none; }
   <div class="tete">
     <div style="min-width:0">
       <div class="h-titre" data-t="mots-t">Les mots de la liste</div>
-      <div class="h-theme" data-t="mots-p">Touche un mot pour le mettre en priorité : il reviendra plus souvent en révision libre.</div>
+      <div class="h-theme" data-t="mots-p">Touche un mot pour le marquer : il reviendra deux fois plus souvent que les autres.</div>
     </div>
     <div class="icones"><button class="ico" onclick="voir('accueil')" aria-label="Fermer">✕</button></div>
   </div>
+  <div class="mots-tete"><span></span><span>nederlands</span><span>français</span><span class="d">acquis</span></div>
   <div id="mots-items"></div>
 </div>
 
@@ -1291,7 +1309,7 @@ var T = {
     'obj-n': '@ / @@ pts', 'obj-plein': 'objectif du jour atteint',
     'plafond': "objectif du jour atteint — révision libre, plus de points jusqu'à demain",
     'mots-t': 'Les mots de la liste',
-    'mots-p': 'Touche un mot pour le mettre en priorité : il reviendra plus souvent en révision libre.',
+    'mots-p': 'Touche un mot pour le marquer : il reviendra deux fois plus souvent que les autres.',
     'seances-n': '@ séances sur 3 cette semaine',
     'seances-0': 'aucune séance bouclée cette semaine',
     'trop-tard': 'trop tard — @',
@@ -1381,7 +1399,7 @@ var T = {
     'obj-n': '@ / @@ ptn', 'obj-plein': 'dagdoel bereikt',
     'plafond': 'dagdoel bereikt — vrij oefenen, geen punten meer tot morgen',
     'mots-t': 'De woorden van de lijst',
-    'mots-p': 'Tik op een woord om het voorrang te geven: het komt vaker terug bij vrij oefenen.',
+    'mots-p': 'Tik op een woord om het te markeren: het komt dubbel zo vaak terug als de andere.',
     'seances-n': '@ van de 3 sessies deze week',
     'seances-0': 'nog geen sessie afgerond deze week',
     'trop-tard': 'te laat — @',
@@ -1629,7 +1647,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'au';
+var WT_BUILD = 'av';
 
 function charger() {
   var e = null;
@@ -2048,10 +2066,9 @@ function rendreMots() {
     h += '<div class="mot-l' + (p[m.nl] ? ' prio' : '') + (g.s >= CIBLE ? ' fini' : '') +
       '" data-nl="' + ech(m.nl) + '">' +
       '<span class="e">' + (p[m.nl] ? '\u2605' : '\u2606') + '</span>' +
-      '<span class="n"><span class="nl">' + ech(m.nl) + '</span>' +
-      '<span class="fr">' + ech(m.fr) + '</span></span>' +
-      '<span class="j"><i style="width:' + r + '%"></i></span>' +
-      '<span class="e" style="width:34px;font-size:.72rem;color:var(--mute)">' + r + '%</span></div>';
+      '<span class="w">' + ech(m.nl) + '</span>' +
+      '<span class="w tr">' + ech(m.fr) + '</span>' +
+      '<span class="p">' + r + '%</span></div>';
   });
   var hote = document.getElementById('mots-items');
   hote.innerHTML = h;
@@ -2125,10 +2142,12 @@ function tirerMot() {
   var d = dispo(), pool = d.libres, sansPts = false;
   if (!pool.length) { pool = d.finis; sansPts = true; }
   if (!pool.length) return null;
-  /* les mots marqués passent devant, s'il y en a dans le vivier */
+  /* Les mots marqués passent devant deux fois sur trois. Les réserver
+     entièrement revenait à ne plus jamais revoir les autres, ce qui n'est pas
+     de la priorité mais de l'exclusivité. */
   var pr = prioDe(liste);
   var marques = pool.filter(function (m) { return pr[m.nl]; });
-  if (marques.length) pool = marques;
+  if (marques.length && Math.random() < .67) pool = marques;
   pool = pool.slice().sort(function (a, b) { return prog(liste.id, a).s - prog(liste.id, b).s; });
   var f = pool.slice(0, Math.max(6, Math.ceil(pool.length * .3)));
   /* 38 : à score comparable, le mot vu il y a le plus longtemps passe devant */
