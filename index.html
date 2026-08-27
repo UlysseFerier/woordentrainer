@@ -1141,6 +1141,8 @@ body[data-heat="14"] .wt-serie .couronne { display:none; }
       <select id="g-son" onchange="regler('son', this.value)">
         <option value="0" data-t="g-son-off">coupés</option><option value="1" data-t="g-son-on">actifs</option>
       </select></div>
+    <button class="b" style="margin-top:8px" onclick="chercherMaj()" data-t="g-maj">Chercher une mise à jour</button>
+    <div class="mot-etat" id="g-maj-etat"></div>
   </div>
   <div class="bloc">
     <h3 data-t="g-ident">Identité</h3>
@@ -1278,6 +1280,10 @@ var T = {
     'g-app': 'Application',
     'g-app-p': "La langue de l'interface est indépendante des mots à réviser. Les sons sont générés par le téléphone, aucun fichier n'est téléchargé.",
     'g-langue': "Langue de l'interface", 'g-son': 'Sons', 'g-son-off': 'coupés', 'g-son-on': 'actifs',
+    'g-maj': 'Chercher une mise à jour',
+    'maj-cherche': 'Recherche en cours…',
+    'maj-prete': 'Nouvelle version trouvée, rechargement…',
+    'maj-vide': 'Aucune version en attente — on repart du réseau, rechargement…',
     'g-ident': 'Identité', 'g-ident-p': 'Détermine quelle ligne de progression est la tienne dans le partage.',
     'g-tel': 'Ce téléphone est celui de', 'g-test': 'Tester',
     'g-save': 'Sauvegarde',
@@ -1368,6 +1374,10 @@ var T = {
     'g-app': 'App',
     'g-app-p': 'De taal van de app staat los van de woorden die je oefent. De geluiden worden door de telefoon zelf gemaakt, er wordt geen bestand gedownload.',
     'g-langue': 'Taal van de app', 'g-son': 'Geluid', 'g-son-off': 'uit', 'g-son-on': 'aan',
+    'g-maj': 'Zoeken naar een update',
+    'maj-cherche': 'Bezig met zoeken…',
+    'maj-prete': 'Nieuwe versie gevonden, herladen…',
+    'maj-vide': 'Geen versie in wachtrij — opnieuw van het netwerk, herladen…',
     'g-ident': 'Wie ben je', 'g-ident-p': 'Bepaalt welke voortgangslijn bij het delen van jou is.',
     'g-tel': 'Deze telefoon is van', 'g-test': 'Testen',
     'g-save': 'Back-up',
@@ -1647,7 +1657,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'av';
+var WT_BUILD = 'aw';
 
 function charger() {
   var e = null;
@@ -2588,6 +2598,36 @@ function proposerMaj(nv) {
     setTimeout(recharger, 2500);
   }
 }
+/* Mise à jour à la demande. La proposition automatique ne tombe qu'à un
+   instant précis : la manquer — écran verrouillé, bouton home, appel qui
+   arrive — la faisait disparaître jusqu'à la version suivante. Ce bouton
+   rejoue le même chemin quand on veut, et à défaut de version en attente il
+   vide les caches et recharge, ce qui rattrape aussi une coquille périmée. */
+function chercherMaj() {
+  var e = document.getElementById('g-maj-etat');
+  if (e) { e.textContent = tr('maj-cherche'); e.classList.add('attente'); }
+  if (!('serviceWorker' in navigator)) { recharger(); return; }
+  navigator.serviceWorker.getRegistration().then(function (reg) {
+    if (!reg) { recharger(); return; }
+    return reg.update().then(function () {
+      if (reg.waiting) {
+        if (e) e.textContent = tr('maj-prete');
+        wtMajDemandee = false;
+        reg.waiting.postMessage('skip-waiting');
+        setTimeout(recharger, 2000);
+        return;
+      }
+      if (e) e.textContent = tr('maj-vide');
+      if (window.caches && caches.keys) {
+        return caches.keys()
+          .then(function (l) { return Promise.all(l.map(function (k) { return caches.delete(k); })); })
+          .then(function () { setTimeout(recharger, 400); });
+      }
+      setTimeout(recharger, 400);
+    });
+  }).catch(function () { recharger(); });
+}
+
 var wtRecharge = false;
 function recharger() {
   if (wtRecharge) return;
