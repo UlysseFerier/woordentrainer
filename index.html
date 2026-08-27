@@ -918,33 +918,6 @@ body.wt-pret .wt-serie b { color:var(--f-orange); }
   100% { transform:translate(var(--dx), calc(var(--vh) * -1.05)); opacity:0; }
 }
 
-/* ═ 52 — déchirure ═ une entaille lumineuse qui se décale trois fois en 130 ms,
-   avec une secousse latérale de l'app. La première version inversait les
-   couleurs de la bande : sur fond clair, ça donnait des barres noires franches. */
-.wt-tear {
-  position:absolute; left:-10%; right:-10%; height:var(--h); pointer-events:none;
-  background:linear-gradient(to bottom,
-    transparent 0%, var(--f-jaune) 22%, #FFFFFF 50%, var(--f-orange) 78%, transparent 100%);
-  opacity:.85; will-change:transform, opacity;
-  animation:wtTear .13s steps(1, end) forwards;
-}
-@keyframes wtTear {
-  0%   { transform:translateX(0) scaleY(1); opacity:.9; }
-  33%  { transform:translateX(var(--dx)) scaleY(1.6); opacity:.75; }
-  66%  { transform:translateX(calc(var(--dx) * -.55)) scaleY(.7); opacity:.5; }
-  100% { transform:translateX(0) scaleY(1); opacity:0; }
-}
-/* la secousse latérale brève qui accompagne l'entaille */
-.app.fendu { animation:wtFendu .13s steps(1, end); }
-@keyframes wtFendu {
-  0% { transform:translateX(0); } 33% { transform:translateX(7px); }
-  66% { transform:translateX(-4px); } 100% { transform:translateX(0); }
-}
-
-/* ═ 60 — négatif ═ 70 ms d'inversion à l'impact. Le feu est hors de .app,
-   il garde donc ses couleurs : seule l'interface bascule. */
-.app.negatif { filter:invert(1) hue-rotate(180deg); }
-
 /* ═ 75 — ralenti ═ le mot suivant entre au tiers de sa vitesse */
 body[data-heat="13"] .e-mot.entre,
 body[data-heat="14"] .e-mot.entre { animation-duration:1.05s; }
@@ -970,6 +943,27 @@ body[data-heat="14"] .wt-serie {
 body[data-heat="14"] .wt-serie b { color:#FFFFFF; background:none; -webkit-text-fill-color:#FFFFFF; }
 body[data-heat="14"] .wt-serie .couronne { display:none; }
 
+/* ═ liste des mots, avec mise en priorité ═ */
+#v-mots { flex:1; flex-direction:column; min-height:0; }
+#mots-items { flex:1; min-height:0; overflow-y:auto; margin-top:10px; }
+.mot-l { display:flex; align-items:center; gap:10px; padding:11px 0; border-bottom:1px solid var(--line); cursor:pointer; }
+.mot-l .n { flex:1; min-width:0; }
+.mot-l .nl { font-family:var(--serif); font-size:.98rem; }
+.mot-l .fr { font-size:.76rem; color:var(--mute); margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.mot-l .j { width:46px; height:5px; border-radius:3px; background:var(--empty); overflow:hidden; flex-shrink:0; }
+.mot-l .j > i { display:block; height:5px; background:var(--acc); }
+.mot-l .e { width:22px; text-align:center; flex-shrink:0; font-size:1rem; color:var(--line); }
+.mot-l.prio .e { color:var(--warm); }
+.mot-l.prio .nl { color:var(--warm); }
+.mot-l.fini .nl { opacity:.55; }
+
+/* ═ souffle blanc du palier 60 ═ */
+.wt-souffle {
+  position:absolute; inset:0; background:#FFFFFF; pointer-events:none;
+  animation:wtSouffler .16s ease-out forwards;
+}
+@keyframes wtSouffler { from { opacity:.32; } to { opacity:0; } }
+
 </style>
 </head>
 <body>
@@ -992,7 +986,7 @@ body[data-heat="14"] .wt-serie .couronne { display:none; }
 
 <div id="v-accueil" class="pad bas cache">
   <div class="tete">
-    <div style="min-width:0">
+    <div style="min-width:0;cursor:pointer" onclick="voir('mots')">
       <div class="h-titre" id="a-titre">—</div>
       <div class="h-theme" id="a-theme"></div>
     </div>
@@ -1160,6 +1154,17 @@ body[data-heat="14"] .wt-serie .couronne { display:none; }
   <div style="font-size:.64rem;color:var(--faint);text-align:center;margin-top:18px" id="g-version"></div>
 </div>
 
+<div id="v-mots" class="pad bas cache">
+  <div class="tete">
+    <div style="min-width:0">
+      <div class="h-titre" data-t="mots-t">Les mots de la liste</div>
+      <div class="h-theme" data-t="mots-p">Touche un mot pour le mettre en priorité : il reviendra plus souvent en révision libre.</div>
+    </div>
+    <div class="icones"><button class="ico" onclick="voir('accueil')" aria-label="Fermer">✕</button></div>
+  </div>
+  <div id="mots-items"></div>
+</div>
+
 <div id="v-motecrire" class="pad bas cache">
   <div class="tete">
     <div class="h-titre" id="mot-h">Un mot</div>
@@ -1250,7 +1255,7 @@ var T = {
     'encore': 'Encore une série', 'retour-accueil': "Revenir à l'accueil",
     'g-t': 'Réglages',
     'g-rythme': 'Rythme',
-    'g-rythme-p': "Un mot vaut 10 points. Vrai ou faux en rapporte 1, une carte 2, un QCM 3, et une erreur en reprend autant. Aucune limite par jour : une liste peut se boucler d'une traite.",
+    'g-rythme-p': "Un mot est acquis à 100 points. Vrai ou faux en rapporte 7, une carte 14, un QCM 21, et une erreur en reprend autant. Une fois l'objectif du jour atteint, on peut continuer à jouer mais plus rien ne s'ajoute jusqu'au lendemain.",
     'g-dir': 'Sens des questions', 'g-dir-auto': 'les deux', 'g-dir-fn': 'français vers NL', 'g-dir-nf': 'NL vers français',
     'g-app': 'Application',
     'g-app-p': "La langue de l'interface est indépendante des mots à réviser. Les sons sont générés par le téléphone, aucun fichier n'est téléchargé.",
@@ -1283,7 +1288,10 @@ var T = {
     'r-max': ' Tous les mots ont atteint leur maximum du jour.',
     'sens-nf': 'NL → FR', 'sens-fn': 'FR → NL', 'sens-auto': 'au hasard',
     'versions': '@ listes · @@ mots', 'q-faites': '@ questions',
-    'obj-n': '@ / @@ pts',
+    'obj-n': '@ / @@ pts', 'obj-plein': 'objectif du jour atteint',
+    'plafond': "objectif du jour atteint — révision libre, plus de points jusqu'à demain",
+    'mots-t': 'Les mots de la liste',
+    'mots-p': 'Touche un mot pour le mettre en priorité : il reviendra plus souvent en révision libre.',
     'seances-n': '@ séances sur 3 cette semaine',
     'seances-0': 'aucune séance bouclée cette semaine',
     'trop-tard': 'trop tard — @',
@@ -1337,7 +1345,7 @@ var T = {
     'encore': 'Nog een reeks', 'retour-accueil': 'Terug naar het beginscherm',
     'g-t': 'Instellingen',
     'g-rythme': 'Tempo',
-    'g-rythme-p': 'Een woord is 10 punten waard. Waar of niet waar levert er 1 op, een kaart 2, een meerkeuzevraag 3, en een fout neemt er evenveel af. Geen daglimiet: een lijst kan in één keer af.',
+    'g-rythme-p': 'Een woord is gekend bij 100 punten. Waar of niet waar levert er 7 op, een kaart 14, een meerkeuzevraag 21, en een fout neemt er evenveel af. Zodra het dagdoel bereikt is, kun je blijven spelen maar komt er niets meer bij tot morgen.',
     'g-dir': 'Richting van de vragen', 'g-dir-auto': 'allebei', 'g-dir-fn': 'Frans naar NL', 'g-dir-nf': 'NL naar Frans',
     'g-app': 'App',
     'g-app-p': 'De taal van de app staat los van de woorden die je oefent. De geluiden worden door de telefoon zelf gemaakt, er wordt geen bestand gedownload.',
@@ -1370,7 +1378,10 @@ var T = {
     'r-max': ' Alle woorden zitten aan hun maximum voor vandaag.',
     'sens-nf': 'NL → FR', 'sens-fn': 'FR → NL', 'sens-auto': 'willekeurig',
     'versions': '@ lijsten · @@ woorden', 'q-faites': '@ vragen',
-    'obj-n': '@ / @@ ptn',
+    'obj-n': '@ / @@ ptn', 'obj-plein': 'dagdoel bereikt',
+    'plafond': 'dagdoel bereikt — vrij oefenen, geen punten meer tot morgen',
+    'mots-t': 'De woorden van de lijst',
+    'mots-p': 'Tik op een woord om het voorrang te geven: het komt vaker terug bij vrij oefenen.',
     'seances-n': '@ van de 3 sessies deze week',
     'seances-0': 'nog geen sessie afgerond deze week',
     'trop-tard': 'te laat — @',
@@ -1598,8 +1609,13 @@ var VIBRE = [[10], [12], [14], [10, 40, 14], [12, 40, 18], [14, 45, 22, 45, 26],
    la vibration est le seul retour qui subsiste. */
 
 
-var PTS = { vf: 1, flash: 2, qcm: 3 };
-var CIBLE = 10;
+/* Barème réduit de 30 % le 27/08. Plutôt que de descendre les valeurs sous
+   l'unité, on multiplie toute l'échelle par dix : un mot vaut 100 au lieu de
+   10, et une question rapporte 7, 14 ou 21 au lieu de 10, 20 ou 30 sur cette
+   échelle. La progression déjà acquise est convertie une fois au chargement,
+   donc personne ne perd un seul mot. */
+var PTS = { vf: 7, flash: 14, qcm: 21 };
+var CIBLE = 100;
 /* un mot vaut 10 points, la liste en vaut 400 : l'objectif d'une séance est le
    tiers, pour boucler une liste en trois séances par semaine.
    Déclaré APRÈS CIBLE : var hisse le nom mais pas la valeur, et le calculer
@@ -1613,7 +1629,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'at';
+var WT_BUILD = 'au';
 
 function charger() {
   var e = null;
@@ -1624,6 +1640,17 @@ function charger() {
   if (!e.seances) e.seances = [];
   if (!e.cadeaux) e.cadeaux = {};
   if (!e.file) e.file = [];
+  if (!e.finies) e.finies = {};
+  if (!e.jourPts) e.jourPts = { j: '', p: 0 };
+  /* conversion vers l'échelle centésimale, faite une seule fois et sans perte :
+     un mot acquis à 10 reste acquis à 100. */
+  if (e.echelle !== 100) {
+    Object.keys(e.semaines || {}).forEach(function (id) {
+      var m = (e.semaines[id] || {}).mots || {};
+      Object.keys(m).forEach(function (k) { m[k].s = Math.round((m[k].s || 0) * 10); });
+    });
+    e.echelle = 100;
+  }
   var r = e.reglages;
   if (!r.dir) r.dir = 'auto';
   if (!r.theme) r.theme = 'delft';
@@ -1672,13 +1699,30 @@ function serie() {
    bouclées entre ce lundi et aujourd'hui suffisent à finir une liste. */
 function lundi() { var d = new Date(); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return jour(d); }
 function seancesSemaine() { var l = lundi(); return (etat.seances || []).filter(function (x) { return x >= l; }).length; }
+/* Points marqués aujourd'hui, tous exercices confondus. Une fois l'objectif du
+   jour atteint, on peut continuer à jouer autant qu'on veut — série, feu,
+   animations, tout continue — mais plus rien ne s'ajoute au score jusqu'au
+   lendemain. */
+function ptsDuJour() {
+  if (!etat.jourPts || etat.jourPts.j !== jour()) etat.jourPts = { j: jour(), p: 0 };
+  return etat.jourPts.p;
+}
+function ajouterJour(n) {
+  ptsDuJour();
+  etat.jourPts.p += n;
+}
+function plafondJour() { return ptsDuJour() >= OBJ; }
+
 function majObj() {
   var e = document.getElementById('t-obj');
   if (!e || !session) return;
-  var r = Math.min(1, session.gagnes / OBJ);
+  /* la barre suit le compteur DU JOUR, pas celui de la séance : c'est lui qui
+     décide quand les points s'arrêtent. */
+  var f = ptsDuJour(), r = Math.min(1, f / OBJ);
   e.querySelector('i').style.width = (r * 100) + '%';
   e.classList.toggle('plein', r >= 1);
-  document.getElementById('t-session').textContent = tr('obj-n', session.gagnes, OBJ);
+  document.getElementById('t-session').textContent =
+    plafondJour() ? tr('obj-plein') : tr('obj-n', f, OBJ);
 }
 
 function cfg() { var c = window.WT_CONFIG || {}; return (c.url && c.cle) ? c : null; }
@@ -1919,7 +1963,7 @@ function restaurerNuage() {
 }
 
 function voir(n) {
-  ['qui', 'accueil', 'listes', 'train', 'reglages', 'cadeaux', 'choix', 'motecrire'].forEach(function (v) {
+  ['qui', 'accueil', 'listes', 'train', 'reglages', 'cadeaux', 'choix', 'motecrire', 'mots'].forEach(function (v) {
     var e = document.getElementById('v-' + v);
     e.classList.add('cache'); e.style.display = '';
   });
@@ -1934,6 +1978,7 @@ function voir(n) {
   if (n === 'reglages') rendreReglages();
   if (n === 'cadeaux') { rendreCadeaux(); rafraichirCadeaux(); }
   if (n === 'motecrire') { majMot(); if (cfg()) tirer().then(majMot).catch(function () {}); }
+  if (n === 'mots') rendreMots();
   if (n === 'choix') { rendreChoix(); rafraichirCadeaux(); }
   reglerBattement();
   window.scrollTo(0, 0);
@@ -1982,6 +2027,39 @@ function ligneDuo(nom, n, rec, estMoi) {
     '<span class="duo-c">' + n + ' / 40</span>' +
     '<span class="duo-f' + (rec ? '' : ' zero') + '" title="' + tr('record-t') + '">' + tr('record-n', rec) + '</span></div>';
 }
+/* Priorité : les mots marqués passent devant tous les autres au tirage. Le
+   marquage vit avec la liste, il se remet donc à zéro en même temps que ses
+   scores. */
+function prioDe(l) {
+  var x = etat.semaines[l.id] || (etat.semaines[l.id] = { mots: {} });
+  return x.prio || (x.prio = {});
+}
+function basculerPrio(nl) {
+  var p = prioDe(liste);
+  if (p[nl]) delete p[nl]; else p[nl] = 1;
+  sauver();
+  rendreMots();
+}
+function rendreMots() {
+  if (!liste) return;
+  var p = prioDe(liste), h = '';
+  liste.mots.forEach(function (m) {
+    var g = prog(liste.id, m), r = Math.round(g.s / CIBLE * 100);
+    h += '<div class="mot-l' + (p[m.nl] ? ' prio' : '') + (g.s >= CIBLE ? ' fini' : '') +
+      '" data-nl="' + ech(m.nl) + '">' +
+      '<span class="e">' + (p[m.nl] ? '\u2605' : '\u2606') + '</span>' +
+      '<span class="n"><span class="nl">' + ech(m.nl) + '</span>' +
+      '<span class="fr">' + ech(m.fr) + '</span></span>' +
+      '<span class="j"><i style="width:' + r + '%"></i></span>' +
+      '<span class="e" style="width:34px;font-size:.72rem;color:var(--mute)">' + r + '%</span></div>';
+  });
+  var hote = document.getElementById('mots-items');
+  hote.innerHTML = h;
+  Array.prototype.forEach.call(hote.querySelectorAll('.mot-l'), function (el) {
+    el.onclick = function () { basculerPrio(el.getAttribute('data-nl')); };
+  });
+}
+
 function rendreListes() {
   var h = document.getElementById('l-items'), s = '';
   listes.forEach(function (l) {
@@ -2047,6 +2125,10 @@ function tirerMot() {
   var d = dispo(), pool = d.libres, sansPts = false;
   if (!pool.length) { pool = d.finis; sansPts = true; }
   if (!pool.length) return null;
+  /* les mots marqués passent devant, s'il y en a dans le vivier */
+  var pr = prioDe(liste);
+  var marques = pool.filter(function (m) { return pr[m.nl]; });
+  if (marques.length) pool = marques;
   pool = pool.slice().sort(function (a, b) { return prog(liste.id, a).s - prog(liste.id, b).s; });
   var f = pool.slice(0, Math.max(6, Math.ceil(pool.length * .3)));
   /* 38 : à score comparable, le mot vu il y a le plus longtemps passe devant */
@@ -2228,12 +2310,13 @@ function appliquer(juste, mode) {
   p.vu = Date.now();
   if (juste) {
     session.justes++; p.ok++;
-    if (cur.sansPts) {
-      /* le texte "révision libre" ne doit plus s'afficher : le plafond du
-         jour est toujours respecté, seul le message était en trop. */
+    if (cur.sansPts || plafondJour()) {
+      /* révision libre : plus aucun point, mais la série et le feu continuent */
+      if (!cur.sansPts) document.getElementById('t-retour').textContent = tr('plafond');
     } else {
       var g = Math.min(val, CIBLE - p.s);
       p.s += g; session.gain += g; session.gagnes += g;
+      ajouterJour(g);
       if (p.s >= CIBLE) document.getElementById('t-retour').textContent = tr('acquis-1');
     }
   } else {
@@ -2265,8 +2348,17 @@ function appliquer(juste, mode) {
   majCran();
   majObj();
   if (juste && session) {
-    if (!session.fini && acquisDe(liste) >= liste.mots.length) { session.fini = true; wtPause = true; setTimeout(wtFinDeListe, 900); }
-    else if (!session.fete && session.gagnes >= OBJ) { session.fete = true; wtPause = true; setTimeout(wtFeteSeance, 800); }
+    /* La fin de liste ne se fête qu'une seule fois, et la marque vit avec
+       l'état : sans cela, chaque nouvelle séance sur une liste complète
+       rouvrait l'écran de fin dès la première bonne réponse, ce qui rendait
+       impossible de continuer à s'entraîner. */
+    if (!session.fini && !etat.finies[liste.id] && acquisDe(liste) >= liste.mots.length) {
+      session.fini = true; etat.finies[liste.id] = true; sauver();
+      wtPause = true; setTimeout(wtFinDeListe, 900);
+    } else if (!session.fete && etat.jourPts.j === jour() && !etat.jourPts.fete && plafondJour()) {
+      session.fete = true; etat.jourPts.fete = true; sauver();
+      wtPause = true; setTimeout(wtFeteSeance, 800);
+    }
   }
 }
 function majCran() {
@@ -2757,8 +2849,13 @@ function wtImpact(b, p) {
       var pt = wtDernierTouche || { x: rb.left + rb.width / 2, y: rb.top + rb.height / 2 };
       wtEtincelles(pt.x, pt.y, 2 + Math.round(wtAvance(wtStreak) * 8));
       if (p >= 7) wtOndeChoc(pt.x, pt.y);
-      if (p >= 11) wtDechirure();
-      if (p >= 12) wtNegatif();
+      /* 52 : une seconde onde décalée, plutôt que la bande horizontale qui
+         ressemblait à un défaut d'affichage. */
+      if (p >= 11) setTimeout(function () { wtOndeChoc(pt.x, pt.y); }, 90);
+      /* 60 : un souffle blanc très bref. L'inversion des couleurs faisait
+         virer l'écran bleu à l'orange à chaque bonne réponse, ce qui donnait
+         l'impression que le palier reculait puis revenait. */
+      if (p >= 12) wtSouffle();
       wtDernierTouche = null;
     }
     b.classList.add('roussi');
@@ -2817,24 +2914,12 @@ function wtOndeChoc(x, y) {
   document.getElementById('wt-braises').appendChild(d);
   setTimeout(function () { d.remove(); }, 700);
 }
-/* 52 — déchirure : une bande qui inverse et se décale */
-function wtDechirure() {
+/* 60 — souffle : un voile blanc de 130 ms, sans inversion ni bande */
+function wtSouffle() {
   var d = document.createElement('i');
-  d.className = 'wt-tear';
-  d.style.top = (14 + Math.random() * 62) + '%';
-  d.style.setProperty('--h', (6 + Math.random() * 15).toFixed(0) + 'px');
-  d.style.setProperty('--dx', ((Math.random() < .5 ? -1 : 1) * (9 + Math.random() * 17)).toFixed(0) + 'px');
+  d.className = 'wt-souffle';
   document.getElementById('wt-braises').appendChild(d);
-  var a = document.querySelector('.app');
-  a.classList.remove('fendu'); void a.offsetWidth; a.classList.add('fendu');
-  setTimeout(function () { a.classList.remove('fendu'); }, 150);
-  setTimeout(function () { d.remove(); }, 170);
-}
-/* 60 — négatif : 70 ms d'inversion de toute l'interface */
-function wtNegatif() {
-  var a = document.querySelector('.app');
-  a.classList.add('negatif');
-  setTimeout(function () { a.classList.remove('negatif'); }, 50);
+  setTimeout(function () { d.remove(); }, 200);
 }
 
 /* Vibration graduée : le motif du palier est étiré au fil de celui-ci. Les
@@ -3027,7 +3112,7 @@ function wtFeteSeance() {
   etat.seances = etat.seances.slice(-30);
   sauver();
   vibrer([40, 60, 40, 60, 140]);
-  ouvrirFete(tr('fete-t'), session.gagnes, tr('fete-m', session.gagnes, acquisDe(liste)),
+  ouvrirFete(tr('fete-t'), ptsDuJour(), tr('fete-m', ptsDuJour(), acquisDe(liste)),
     '<button class="b plein" onclick="fermerFete(true)">' + ech(tr('fete-continuer')) + '</button>' +
     '<button class="b fin" onclick="fermerFete(false)">' + ech(tr('fete-terminer')) + '</button>');
 }
