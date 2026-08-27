@@ -729,6 +729,8 @@ body[data-vue="train"][data-heat="14"] .sticky {
   font-family:var(--sans); font-size:.92rem; line-height:1.4; cursor:pointer;
 }
 .cad-c.vide { color:var(--faint); font-style:italic; cursor:default; }
+.cad-c.choisir { border-color:var(--warm); color:var(--ink); }
+.cad-c.choisir::after { content:' \2192'; color:var(--warm); }
 .cad-c:active { border-color:var(--acc); }
 .coupon { display:flex; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid var(--line); }
 .coupon .c-t { flex:1; min-width:0; font-size:.86rem; line-height:1.35; }
@@ -1212,6 +1214,7 @@ body[data-heat="14"] .wt-serie .couronne { display:none; }
   </div>
   <div class="bloc">
     <h3 id="cad-h-ses">Ce que l'autre propose</h3>
+    <div class="mot-etat" id="cad-droit"></div>
     <div id="cad-ses"></div>
   </div>
   <div class="bloc" style="border-bottom:none">
@@ -1329,6 +1332,10 @@ var T = {
     'cad-mes': 'Ce que je propose à @', 'cad-ses': 'Ce que @ me propose',
     'cad-ph': 'un cadeau à offrir…', 'cad-vide': 'pas encore posé',
     'cad-coupons': 'Récompenses gagnées', 'cad-aucun': 'aucune pour le moment',
+    'cad-droit-ok': 'Les 40 mots sont acquis : touche un cadeau pour le choisir.',
+    'cad-droit-non': 'Encore @ mot(s) à acquérir avant de pouvoir choisir.',
+    'cad-droit-vide': "@ n'a pas encore posé ses trois cadeaux.",
+    'cad-droit-deja': 'Déjà choisi pour cette liste : « @ ».',
     'cad-du-moi': 'gagné par moi', 'cad-du-autre': 'je le dois à @',
     'cad-honorer': 'Honoré', 'cad-fait': 'honoré',
     'cad-manque': '3 à poser', 'cad-puce': 'Cadeaux', 'mot-puce': 'Un mot',
@@ -1423,6 +1430,10 @@ var T = {
     'cad-mes': 'Wat ik aan @ aanbied', 'cad-ses': 'Wat @ mij aanbiedt',
     'cad-ph': 'een cadeau om te geven…', 'cad-vide': 'nog niet ingevuld',
     'cad-coupons': 'Verdiende beloningen', 'cad-aucun': 'voorlopig geen',
+    'cad-droit-ok': 'Alle 40 woorden zijn gekend: tik op een cadeau om het te kiezen.',
+    'cad-droit-non': 'Nog @ woord(en) te leren voor je mag kiezen.',
+    'cad-droit-vide': '@ heeft nog geen drie cadeaus vastgelegd.',
+    'cad-droit-deja': 'Al gekozen voor deze lijst: « @ ».',
     'cad-du-moi': 'door mij verdiend', 'cad-du-autre': 'ik ben dit @ verschuldigd',
     'cad-honorer': 'Ingelost', 'cad-fait': 'ingelost',
     'cad-manque': '3 in te vullen', 'cad-puce': 'Cadeaus', 'mot-puce': 'Woordje',
@@ -1474,7 +1485,24 @@ function wtBloquerRedim(duree) {
   setTimeout(function () { wtRedimGele = false; }, duree);
 }
 wtGelerHauteur(true);
-window.addEventListener('resize', function () { wtGelerHauteur(false); });
+/* La toute première mesure peut tomber avant que la fenêtre ait sa taille
+   définitive — écran de lancement d'une app installée, barres système qui se
+   posent. Comme le seuil de 120 px empêche ensuite toute correction, l'app
+   restait plus courte que l'écran pour toujours : d'où la bande vide en bas et
+   le feu qui ne touchait plus le bord. On remesure donc deux fois au démarrage,
+   puis à chaque retour au premier plan. */
+window.addEventListener('load', function () { wtGelerHauteur(true); });
+setTimeout(function () { wtGelerHauteur(true); }, 1200);
+window.addEventListener('resize', function () {
+  /* hors exercice, le feu n'est pas à l'écran : on peut recaler finement sans
+     risquer de le décrocher en pleine partie. */
+  var libre = document.body.dataset.vue !== 'train';
+  if (libre) {
+    var a = parseInt(document.documentElement.style.getPropertyValue('--vh'), 10);
+    if (!wtRedimGele && a && Math.abs(window.innerHeight - a) > 8) { wtGelerHauteur(true); return; }
+  }
+  wtGelerHauteur(false);
+});
 window.addEventListener('orientationchange', function () {
   setTimeout(function () { wtGelerHauteur(true); }, 250);
 });
@@ -1657,7 +1685,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'aw';
+var WT_BUILD = 'ax';
 
 function charger() {
   var e = null;
@@ -1701,6 +1729,7 @@ function viderSauvegarde() {
 }
 document.addEventListener('visibilitychange', function () {
   if (document.hidden) { viderSauvegarde(); reglerBattement(); }
+  else if (document.body.dataset.vue !== 'train') setTimeout(function () { wtGelerHauteur(true); }, 150);
 });
 window.addEventListener('pagehide', viderSauvegarde);
 function jour(d) { d = d || new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
@@ -3429,11 +3458,24 @@ function rendreCadeaux() {
     if (document.activeElement !== e) e.value = m[i] || '';
     e.placeholder = tr('cad-ph');
   }
+  /* Le choix se fait directement ici dès que la liste est bouclée : il n'y a
+     aucune raison d'obliger à repasser par l'écran de célébration, que ceux
+     qui ont fini avant cette version n'ont jamais vu. */
   var ses = cadeaux[autre()] || [], h = '';
+  var deja = couponDeLaListe();
+  var reste = liste.mots.length - acquisDe(liste);
+  var droit = !deja && reste <= 0 && cadeauxPrets(ses);
+  var dl = document.getElementById('cad-droit');
+  dl.textContent = deja ? tr('cad-droit-deja', deja.texte)
+    : (reste > 0 ? tr('cad-droit-non', reste)
+    : (cadeauxPrets(ses) ? tr('cad-droit-ok') : tr('cad-droit-vide', NOMS[autre()])));
+  dl.classList.toggle('attente', droit);
   for (var j = 0; j < 3; j++) {
-    h += (ses[j] && String(ses[j]).trim())
-      ? '<div class="cad-c">' + ech(ses[j]) + '</div>'
-      : '<div class="cad-c vide">' + ech(tr('cad-vide')) + '</div>';
+    var v = ses[j] && String(ses[j]).trim();
+    if (!v) { h += '<div class="cad-c vide">' + ech(tr('cad-vide')) + '</div>'; continue; }
+    h += droit
+      ? '<button class="cad-c choisir" onclick="choisirCadeau(' + j + ')">' + ech(ses[j]) + '</button>'
+      : '<div class="cad-c">' + ech(ses[j]) + '</div>';
   }
   document.getElementById('cad-ses').innerHTML = h;
   var c = '';
@@ -3484,7 +3526,7 @@ function choisirCadeau(i) {
     body: JSON.stringify([{ liste: liste.id, de: autre(), pour: moi(), texte: t, etat: 'du', cree: new Date().toISOString() }])
   }).then(tirerCoupons).then(function () {
     son('fete'); vibrer([30, 50, 30]);
-    voir('cadeaux');
+    if (document.body.dataset.vue === 'cadeaux') rendreCadeaux(); else voir('cadeaux');
   }).catch(function () { alert('Connexion impossible.'); });
 }
 function rendreHebdo() {
