@@ -140,6 +140,8 @@ body {
 .carte3d { perspective: 1200px; height: 180px; cursor: pointer; }
 .carte3d > div { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .45s cubic-bezier(.2,.8,.3,1); }
 .carte3d.tourne > div { transform: rotateY(180deg); }
+/* le temps d'un redressement silencieux : voir redresserCarte() */
+.carte3d.fige > div { transition: none; }
 .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 16px; border: 1px solid var(--line); background: var(--card); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
 .face.dos { transform: rotateY(180deg); background: var(--acc-soft); }
 .astuce { font-size: .66rem; color: var(--faint); margin-top: 14px; }
@@ -1767,7 +1769,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'ay';
+var WT_BUILD = 'az';
 
 function charger() {
   var e = null;
@@ -2444,7 +2446,8 @@ function suite() {
   document.getElementById('t-actions-flash').style.display = 'none';
   document.getElementById('t-actions-vf').style.display = 'none';
   document.getElementById('t-juge').style.display = 'none';
-  document.getElementById('t-carte').classList.remove('tourne');
+  /* la carte n'est PAS redressée ici : c'est montrerFlash qui s'en charge,
+     juste avant d'écrire le mot suivant. */
   if (!session) return;
   document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste), TAILLE_DECK);
   majObj();
@@ -2463,14 +2466,36 @@ function suite() {
   else montrerVF();
   wtChronoLancer();
 }
+/* Redresser la carte sans jouer le retournement.
+   La carte restait retournée après le jugement, et la question suivante se
+   contentait de retirer « tourne » : la transition de 450 ms se jouait donc
+   AVEC le mot suivant déjà écrit sur les deux faces, et le dos — c'est-à-dire
+   la réponse à venir — passait devant les yeux pendant tout le pivot. On coupe
+   la transition le temps du retour, puis on la rend au retournement volontaire.
+   Le passage par display:none entre deux questions ne suffisait pas : les deux
+   états se calculent dans la même tâche, donc le navigateur ne voyait qu'un
+   changement de transform et l'animait. */
+function redresserCarte() {
+  var c = document.getElementById('t-carte');
+  if (!c.classList.contains('tourne')) return;
+  c.classList.add('fige');
+  c.classList.remove('tourne');
+  /* lecture forcée : le transform à zéro est adopté maintenant, sans
+     transition, et non à la fin de la tâche quand elle sera revenue. */
+  void c.offsetWidth;
+  c.classList.remove('fige');
+}
 function montrerFlash() {
   var m = cur.mot, nl = cur.sens === 'nl-fr';
-  document.getElementById('t-carte').classList.remove('tourne');
+  /* la carte reparaît avant d'être redressée, sinon la lecture forcée porte
+     sur un élément en display:none et le navigateur n'en tient pas compte.
+     Rien n'est peint entre les deux : tout tient dans la même tâche. */
+  document.getElementById('t-flash').classList.remove('cache');
+  redresserCarte();
   document.getElementById('f-lang-a').textContent = nl ? 'nederlands' : 'français';
   document.getElementById('f-mot-a').textContent = nl ? m.nl : m.fr;
   document.getElementById('f-lang-b').textContent = nl ? 'français' : 'nederlands';
   document.getElementById('f-mot-b').textContent = nl ? m.fr : m.nl;
-  document.getElementById('t-flash').classList.remove('cache');
   mesurer([document.getElementById('t-carte')]);
   document.getElementById('t-actions-flash').style.display = 'block';
   document.getElementById('t-flip').style.display = 'block';
