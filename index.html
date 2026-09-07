@@ -976,6 +976,47 @@ body[data-heat="14"] .wt-serie .couronne { display:none; }
 .mot-l.fini .w { opacity:.5; }
 .mot-l.fini .p { color:var(--acc); }
 
+/* ═ boutons vrai/faux et jugement des cartes ═
+   Ils n'avaient ni peau ni onde, et le disabled posé dans la foulée du clic
+   coupait net le :active : appuyer ne produisait donc strictement rien à
+   l'écran. Ils prennent maintenant la même matière que les options du QCM. */
+.paire-btn .b { position:relative; overflow:visible; transition:color .25s ease .1s, border-color .5s ease, opacity .3s ease, transform .06s ease; }
+.paire-btn .b .peau { position:absolute; inset:0; border-radius:inherit; overflow:hidden; pointer-events:none; }
+.paire-btn .b .txt { position:relative; z-index:2; display:inline-block; }
+.paire-btn .b:active { transform:scale(.965); }
+.paire-btn .b.juste { color:var(--acc-on); border-color:var(--acc); }
+.paire-btn .b.faux { color:#fff; border-color:var(--bad); }
+.paire-btn .b.pale { opacity:.35; }
+.paire-btn .b.juste .txt { animation:wtTxtClaque calc(.4s * var(--tempo)) cubic-bezier(.3,1.7,.5,1); }
+.paire-btn .b.punch1 { animation:wtPunch1 calc(.32s * var(--tempo)) cubic-bezier(.3,1.6,.5,1); }
+.paire-btn .b.punch2 { animation:wtPunch2 calc(.36s * var(--tempo)) cubic-bezier(.3,1.7,.5,1); }
+.paire-btn .b.punch3 { animation:wtPunch3 calc(.42s * var(--tempo)) cubic-bezier(.3,1.8,.5,1); }
+.paire-btn .b.punch4 { animation:wtPunch4 calc(.5s * var(--tempo)) cubic-bezier(.3,1.9,.5,1); }
+.paire-btn .b.roussi { border-color:#E0BE97; }
+body.nuit .paire-btn .b.roussi { border-color:#5A4028; }
+
+/* ═ composition du deck ═
+   Même grille que la liste des mots, avec une pastille pleine pour les mots
+   retenus et un séparateur entre les noms et les verbes. */
+#v-deck { flex:1; flex-direction:column; min-height:0; }
+#deck-items { flex:1; min-height:0; overflow-y:auto; }
+.deck-jauge { height:6px; border-radius:3px; background:var(--empty); overflow:hidden; margin-top:14px; }
+.deck-jauge i { display:block; height:100%; width:0; background:var(--acc); border-radius:3px; transition:width .25s ease; }
+.deck-jauge.plein i { background:var(--warm); }
+.deck-sep {
+  padding:16px 0 6px; font-size:.6rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--faint); border-bottom:1px solid var(--line);
+}
+.deck-l .e { color:var(--line); }
+.deck-l.pris .e { color:var(--acc); }
+.deck-l.pris .w { color:var(--acc); font-weight:600; }
+.deck-l.pris .w.tr { color:var(--acc); opacity:.7; font-weight:400; }
+#d-valider { margin-top:10px; }
+#d-valider[disabled] { opacity:.45; }
+.deck-appel { margin-top:18px; }
+.deck-appel p { font-size:.82rem; color:var(--mute); line-height:1.55; margin-bottom:12px; }
+.item-c.attente { color:var(--warm); font-size:.68rem; }
+
 /* ═ souffle blanc du palier 60 ═ */
 .wt-souffle {
   position:absolute; inset:0; background:#FFFFFF; pointer-events:none;
@@ -1024,7 +1065,7 @@ body[data-heat="14"] .wt-serie .couronne { display:none; }
     </div>
   </div>
   <div class="crans" id="a-crans"></div>
-  <div class="sous-crans"><span id="a-compte"></span><span class="d" id="a-points"></span></div>
+  <div class="sous-crans" id="a-sous"><span id="a-compte"></span><span class="d" id="a-points"></span></div>
   <div class="duo" id="a-duo" onclick="rafraichirDuo()"></div>
   <div class="hebdo" id="a-hebdo">
     <span class="pastilles" id="a-pastilles"></span>
@@ -1032,7 +1073,11 @@ body[data-heat="14"] .wt-serie .couronne { display:none; }
     <button class="puce-cad" id="a-cad" onclick="voir('cadeaux')">Cadeaux</button>
     <button class="puce-cad alerte cache" id="a-install" onclick="installer()" data-t="inst">Installer</button>
   </div>
-  <div class="modes">
+  <div class="deck-appel cache" id="a-deck">
+    <p data-t="deck-appel">Le deck de la semaine n'est pas encore composé.</p>
+    <button class="b plein" onclick="ouvrirDeck()" data-t="deck-composer">Composer mon deck</button>
+  </div>
+  <div class="modes" id="a-modes">
     <button class="b" onclick="demarrer('flash')" data-t="m-flash">Cartes</button>
     <button class="b" onclick="demarrer('qcm')" data-t="m-qcm">QCM</button>
     <button class="b" onclick="demarrer('vf')" data-t="m-vf">Vrai ou faux</button>
@@ -1108,13 +1153,13 @@ body[data-heat="14"] .wt-serie .couronne { display:none; }
     <div id="t-actions-flash" style="display:none">
       <button class="b plein" id="t-flip" onclick="retourner()" data-t="flip">Retourner la carte</button>
       <div id="t-juge" class="paire-btn" style="display:none">
-        <button class="b non" onclick="repFlash(false)" data-t="pas-su">Je ne savais pas</button>
-        <button class="b oui" onclick="repFlash(true)" data-t="su">Je savais</button>
+        <button class="b non" id="j-non" onclick="repFlash(false)"><span class="peau"></span><span class="txt" data-t="pas-su">Je ne savais pas</span></button>
+        <button class="b oui" id="j-oui" onclick="repFlash(true)"><span class="peau"></span><span class="txt" data-t="su">Je savais</span></button>
       </div>
     </div>
     <div id="t-actions-vf" class="paire-btn" style="display:none">
-      <button class="b non" id="v-faux" onclick="repVF(false)" data-t="faux">Faux</button>
-      <button class="b oui" id="v-vrai" onclick="repVF(true)" data-t="vrai">Vrai</button>
+      <button class="b non" id="v-faux" onclick="repVF(false, this, event)"><span class="peau"></span><span class="txt" data-t="faux">Faux</span></button>
+      <button class="b oui" id="v-vrai" onclick="repVF(true, this, event)"><span class="peau"></span><span class="txt" data-t="vrai">Vrai</span></button>
     </div>
   </div>
 </div>
@@ -1185,6 +1230,22 @@ body[data-heat="14"] .wt-serie .couronne { display:none; }
   </div>
   <div class="mots-tete"><span></span><span>nederlands</span><span>français</span><span class="d">acquis</span></div>
   <div id="mots-items"></div>
+  <button class="b fin" onclick="ouvrirDeck()" data-t="deck-modifier">Modifier mon deck</button>
+</div>
+
+<div id="v-deck" class="pad bas cache">
+  <div class="tete">
+    <div style="min-width:0">
+      <div class="h-titre" id="d-titre">—</div>
+      <div class="h-theme" data-t="deck-p">Choisis les mots que tu ne connais pas : ce seront les seuls posés cette semaine.</div>
+    </div>
+    <div class="icones"><button class="ico" onclick="voir('accueil')" aria-label="Fermer">✕</button></div>
+  </div>
+  <div class="deck-jauge" id="d-jauge"><i></i></div>
+  <div class="sous-crans"><span id="d-compte"></span><span class="d" id="d-detail"></span></div>
+  <div class="mots-tete"><span></span><span>nederlands</span><span>français</span><span class="d"></span></div>
+  <div id="deck-items"></div>
+  <button class="b plein" id="d-valider" onclick="validerDeck()">—</button>
 </div>
 
 <div id="v-motecrire" class="pad bas cache">
@@ -1300,7 +1361,15 @@ var T = {
     'inst-menu': "Passe par le menu du navigateur : les trois points en haut à droite, puis « Installer l'application » ou « Ajouter à l'écran d'accueil ». Sur iPhone, c'est le bouton Partager de Safari, puis « Sur l'écran d'accueil ».",
     'g-seances-q': 'Remettre le compteur de séances de la semaine à zéro ? Les points et les mots acquis ne bougent pas.',
     'g-seances-ok': 'Compteur de séances remis à zéro.',
-    'acquis-n': '@ sur 40 acquis', 'points-n': '@ points', 'jours': '@ jours',
+    'acquis-n': '@ sur @@ acquis', 'points-n': '@ points', 'jours': '@ jours',
+    'deck-p': "Choisis les mots que tu ne connais pas : ce seront les seuls posés cette semaine.",
+    'deck-appel': "Le deck de la semaine n'est pas encore composé. Tant qu'il ne l'est pas, aucune question ne peut partir.",
+    'deck-composer': 'Composer mon deck', 'deck-modifier': 'Modifier mon deck',
+    'deck-noms': '@ mots', 'deck-verbes': '@ verbes',
+    'deck-compte': '@ sur @@ choisis', 'deck-reste': 'il en manque @', 'deck-plein': 'deck complet',
+    'deck-valider': 'Valider mon deck', 'deck-encore': 'Encore @ à choisir',
+    'deck-refaire': 'Refaire le deck ? Les mots que tu retires sortent des questions, mais leur progression est gardée.',
+    'deck-afaire': 'deck à faire',
     'pas-partage': 'partage non configuré', 'autre-liste': '@ travaille une autre liste',
     'record-n': '\u25B2@', 'record-t': "meilleure série de la liste",
     'partage-off': 'Partage inactif, config.js vide', 'partage-on': 'Partage actif', 'vu-le': 'Vu @',
@@ -1398,7 +1467,15 @@ var T = {
     'inst-menu': 'Ga via het menu van de browser: de drie puntjes rechtsboven, dan « App installeren » of « Toevoegen aan startscherm ». Op iPhone is het de deelknop van Safari, dan « Zet op beginscherm ».',
     'g-seances-q': 'De sessieteller van deze week op nul zetten? De punten en de gekende woorden blijven staan.',
     'g-seances-ok': 'Sessieteller op nul gezet.',
-    'acquis-n': '@ van 40 gekend', 'points-n': '@ punten', 'jours': '@ dagen',
+    'acquis-n': '@ van @@ gekend', 'points-n': '@ punten', 'jours': '@ dagen',
+    'deck-p': 'Kies de woorden die je nog niet kent: alleen die komen deze week aan bod.',
+    'deck-appel': 'Het deck van de week is nog niet samengesteld. Zolang dat niet gebeurd is, kan er geen vraag vertrekken.',
+    'deck-composer': 'Mijn deck samenstellen', 'deck-modifier': 'Mijn deck aanpassen',
+    'deck-noms': '@ woorden', 'deck-verbes': '@ werkwoorden',
+    'deck-compte': '@ van @@ gekozen', 'deck-reste': 'er ontbreken er @', 'deck-plein': 'deck volledig',
+    'deck-valider': 'Mijn deck bevestigen', 'deck-encore': 'Nog @ te kiezen',
+    'deck-refaire': 'Deck opnieuw samenstellen? Wat je weghaalt komt niet meer aan bod, maar de vooruitgang blijft bewaard.',
+    'deck-afaire': 'deck te maken',
     'pas-partage': 'delen is niet ingesteld', 'autre-liste': '@ werkt aan een andere lijst',
     'record-n': '\u25B2@', 'record-t': 'beste reeks van de lijst',
     'partage-off': 'Delen staat uit, config.js is leeg', 'partage-on': 'Delen staat aan', 'vu-le': 'Gezien @',
@@ -1672,11 +1749,16 @@ var VIBRE = [[10], [12], [14], [10, 40, 14], [12, 40, 18], [14, 45, 22, 45, 26],
    donc personne ne perd un seul mot. */
 var PTS = { vf: 7, flash: 14, qcm: 21 };
 var CIBLE = 100;
+/* Une liste compte cent entrées — quatre-vingts mots et vingt verbes. Chacun y
+   pioche son propre deck de TAILLE_DECK mots, ceux qu'il ne connaît pas, et
+   c'est le seul matériau des questions de la semaine : tirage, leurres du QCM
+   et paires du vrai/faux ne sortent jamais du deck. */
+var TAILLE_DECK = 40;
 /* un mot vaut 10 points, la liste en vaut 400 : l'objectif d'une séance est le
    tiers, pour boucler une liste en trois séances par semaine.
    Déclaré APRÈS CIBLE : var hisse le nom mais pas la valeur, et le calculer
    plus haut donnait NaN. */
-var OBJ = Math.round(CIBLE * 40 / 3);
+var OBJ = Math.round(CIBLE * TAILLE_DECK / 3);
 var NOMS = { ulysse: 'Ulysse', jasmien: 'Jasmien' };
 
 var etat, listes = [], liste = null, session = null, cur = null, recents = [];
@@ -1685,7 +1767,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'ax';
+var WT_BUILD = 'ay';
 
 function charger() {
   var e = null;
@@ -1698,6 +1780,10 @@ function charger() {
   if (!e.file) e.file = [];
   if (!e.finies) e.finies = {};
   if (!e.jourPts) e.jourPts = { j: '', p: 0 };
+  /* la série de bonnes réponses ne vit plus le temps d'une séance : elle est
+     gardée avec l'état, traverse les fermetures de l'app et les semaines, et
+     ne retombe que sur une mauvaise réponse. */
+  if (typeof e.streak !== 'number') e.streak = 0;
   /* conversion vers l'échelle centésimale, faite une seule fois et sans perte :
      un mot acquis à 10 reste acquis à 100. */
   if (e.echelle !== 100) {
@@ -1734,6 +1820,25 @@ document.addEventListener('visibilitychange', function () {
 window.addEventListener('pagehide', viderSauvegarde);
 function jour(d) { d = d || new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
 
+/* ═══════════ le deck de la semaine ═══════════
+   sel  : la sélection en cours de composition (peut être incomplète)
+   deck : la sélection validée, seule à compter pour les questions.
+   Les deux vivent avec la liste, donc chacun garde son propre deck sur son
+   propre téléphone : le lot de cent est commun, les quarante ne le sont pas. */
+function fiche(idl) { return etat.semaines[idl] || (etat.semaines[idl] = { mots: {} }); }
+function selDe(l) { var x = fiche(l.id); return x.sel || (x.sel = []); }
+function deckDe(l) { var x = fiche(l.id); return x.deck || null; }
+function deckPret(l) { var d = deckDe(l); return !!(d && d.length >= TAILLE_DECK); }
+/* les mots réellement en jeu. Sans deck validé, il n'y en a aucun : c'est ce
+   qui interdit de commencer et vide les barres. */
+function motsDe(l) {
+  var d = deckDe(l);
+  if (!d) return [];
+  var i = {};
+  l.mots.forEach(function (m) { i[m.nl] = m; });
+  return d.map(function (k) { return i[k]; }).filter(Boolean);
+}
+
 function prog(idl, m) {
   var s = etat.semaines[idl] || (etat.semaines[idl] = { mots: {} });
   var p = s.mots[m.nl] || (s.mots[m.nl] = { s: 0, ok: 0, ko: 0, vu: 0 });
@@ -1742,8 +1847,8 @@ function prog(idl, m) {
 /* meilleure série de bonnes réponses d'affilée sur CETTE liste, gardée
    avec la liste et non avec l'app : elle se remet à zéro à chaque semaine. */
 function recordDe(l) { var x = etat.semaines[l.id]; return (x && x.record) || 0; }
-function acquisDe(l) { var n = 0; l.mots.forEach(function (m) { if (prog(l.id, m).s >= CIBLE) n++; }); return n; }
-function pointsDe(l) { var t = 0; l.mots.forEach(function (m) { t += prog(l.id, m).s; }); return t; }
+function acquisDe(l) { var n = 0; motsDe(l).forEach(function (m) { if (prog(l.id, m).s >= CIBLE) n++; }); return n; }
+function pointsDe(l) { var t = 0; motsDe(l).forEach(function (m) { t += prog(l.id, m).s; }); return t; }
 function marquerJour() { var j = jour(); if (etat.jours.indexOf(j) === -1) { etat.jours.push(j); etat.jours = etat.jours.slice(-40); } }
 function serie() {
   var n = 0, d = new Date();
@@ -2020,7 +2125,7 @@ function restaurerNuage() {
 }
 
 function voir(n) {
-  ['qui', 'accueil', 'listes', 'train', 'reglages', 'cadeaux', 'choix', 'motecrire', 'mots'].forEach(function (v) {
+  ['qui', 'accueil', 'listes', 'train', 'reglages', 'cadeaux', 'choix', 'motecrire', 'mots', 'deck'].forEach(function (v) {
     var e = document.getElementById('v-' + v);
     e.classList.add('cache'); e.style.display = '';
   });
@@ -2028,6 +2133,8 @@ function voir(n) {
   c.classList.remove('cache');
   c.style.display = 'flex';
   document.body.dataset.vue = n;
+  /* seul l'AFFICHAGE du feu retombe en quittant l'entraînement : la série
+     elle-même est dans etat.streak et repart telle quelle à la séance suivante. */
   if (n !== 'train') { wtStreak = 0; wtPoserChaleur(true); wtChronoStop(); bourdonOff(); wtNettoyerHaut(); }
   wtLancerPoses(n === 'train' && wtPalier(wtStreak) >= 1, wtPalier(wtStreak));
   if (n === 'accueil') rendreAccueil();
@@ -2036,6 +2143,7 @@ function voir(n) {
   if (n === 'cadeaux') { rendreCadeaux(); rafraichirCadeaux(); }
   if (n === 'motecrire') { majMot(); if (cfg()) tirer().then(majMot).catch(function () {}); }
   if (n === 'mots') rendreMots();
+  if (n === 'deck') rendreDeck();
   if (n === 'choix') { rendreChoix(); rafraichirCadeaux(); }
   reglerBattement();
   window.scrollTo(0, 0);
@@ -2044,7 +2152,7 @@ function choisirQui(q) { etat.reglages.moi = q; sauver(); voir('accueil'); pouss
 
 function crans(hote, l) {
   var s = '';
-  l.mots.forEach(function (m, i) {
+  motsDe(l).forEach(function (m, i) {
     var p = prog(l.id, m);
     var pur = (p.ko === 0 && p.s > 0) ? ' pur' : '';
     s += '<span class="cran' + classeCran(p.s) + pur + '" id="' + hote + '-' + i + '"><em></em><i style="height:' + Math.round(p.s / CIBLE * 100) + '%"></i></span>';
@@ -2058,8 +2166,15 @@ function rendreAccueil() {
   document.getElementById('a-theme').textContent = liste.theme;
   var n = serie();
   document.getElementById('a-serie').textContent = n > 1 ? tr('jours', n) : '';
+  /* tant que le deck n'est pas composé, il n'y a rien à montrer et rien à
+     lancer : les quatre modes cèdent la place à l'appel à composer. */
+  var pret = deckPret(liste);
+  document.getElementById('a-modes').classList.toggle('cache', !pret);
+  document.getElementById('a-deck').classList.toggle('cache', pret);
+  document.getElementById('a-crans').classList.toggle('cache', !pret);
+  document.getElementById('a-sous').classList.toggle('cache', !pret);
   crans('a-crans', liste);
-  document.getElementById('a-compte').textContent = tr('acquis-n', acquisDe(liste));
+  document.getElementById('a-compte').textContent = tr('acquis-n', acquisDe(liste), TAILLE_DECK);
   document.getElementById('a-points').textContent = tr('points-n', pointsDe(liste));
   rendreDuo('a-duo');
   rendreHebdo();
@@ -2080,8 +2195,8 @@ function rendreDuo(hote) {
 }
 function ligneDuo(nom, n, rec, estMoi) {
   return '<div class="duo-l' + (estMoi ? ' moi' : '') + '"><span class="duo-n">' + nom + '</span>' +
-    '<span class="duo-b"><i style="width:' + (n / 40 * 100) + '%"></i></span>' +
-    '<span class="duo-c">' + n + ' / 40</span>' +
+    '<span class="duo-b"><i style="width:' + (n / TAILLE_DECK * 100) + '%"></i></span>' +
+    '<span class="duo-c">' + n + ' / ' + TAILLE_DECK + '</span>' +
     '<span class="duo-f' + (rec ? '' : ' zero') + '" title="' + tr('record-t') + '">' + tr('record-n', rec) + '</span></div>';
 }
 /* Priorité : les mots marqués passent devant tous les autres au tirage. Le
@@ -2100,7 +2215,7 @@ function basculerPrio(nl) {
 function rendreMots() {
   if (!liste) return;
   var p = prioDe(liste), h = '';
-  liste.mots.forEach(function (m) {
+  motsDe(liste).forEach(function (m) {
     var g = prog(liste.id, m), r = Math.round(g.s / CIBLE * 100);
     h += '<div class="mot-l' + (p[m.nl] ? ' prio' : '') + (g.s >= CIBLE ? ' fini' : '') +
       '" data-nl="' + ech(m.nl) + '">' +
@@ -2119,12 +2234,13 @@ function rendreMots() {
 function rendreListes() {
   var h = document.getElementById('l-items'), s = '';
   listes.forEach(function (l) {
-    var a = acquisDe(l), sem = distant.semaine && distant.semaine.liste === l.id;
+    var pret = deckPret(l), a = acquisDe(l), sem = distant.semaine && distant.semaine.liste === l.id;
     s += '<div class="item" data-id="' + l.id + '">' +
       '<div class="item-t"><div class="item-n">' + ech(l.titre) + (sem ? '<span class="etiq">' + tr('semaine') + '</span>' : '') + '</div>' +
       '<div class="item-s">' + ech(l.theme) + '</div></div>' +
-      '<div class="item-j"><i style="width:' + (a / 40 * 100) + '%"></i></div>' +
-      '<div class="item-c">' + a + '/40</div></div>';
+      '<div class="item-j"><i style="width:' + (pret ? a / TAILLE_DECK * 100 : 0) + '%"></i></div>' +
+      (pret ? '<div class="item-c">' + a + '/' + TAILLE_DECK + '</div>'
+            : '<div class="item-c attente">' + tr('deck-afaire') + '</div>') + '</div>';
   });
   h.innerHTML = s;
   Array.prototype.forEach.call(h.querySelectorAll('.item'), function (el) {
@@ -2170,9 +2286,87 @@ function ouvrirListe(id) {
     .then(function () { rendreDuo('a-duo'); }).catch(function () {});
 }
 
+/* ═══════════ composer son deck ═══════════ */
+function ouvrirDeck() {
+  if (!liste) return;
+  if (deckPret(liste) && !confirm(tr('deck-refaire'))) return;
+  /* on repart de ce qui est déjà validé : retoucher un deck ne veut pas dire
+     tout recocher. */
+  var x = fiche(liste.id);
+  if (!x.sel || !x.sel.length) x.sel = (x.deck || []).slice();
+  voir('deck');
+}
+function rendreDeck() {
+  if (!liste) return;
+  document.getElementById('d-titre').textContent = liste.titre;
+  var sel = selDe(liste), pris = {};
+  sel.forEach(function (k) { pris[k] = 1; });
+  var noms = liste.mots.filter(function (m) { return !m.v; });
+  var verbes = liste.mots.filter(function (m) { return !!m.v; });
+  var h = '';
+  function bloc(titre, tab) {
+    if (!tab.length) return;
+    h += '<div class="deck-sep">' + titre + '</div>';
+    tab.forEach(function (m) {
+      h += '<div class="mot-l deck-l' + (pris[m.nl] ? ' pris' : '') + '" data-nl="' + ech(m.nl) + '">' +
+        '<span class="e">' + (pris[m.nl] ? '\u25CF' : '\u25CB') + '</span>' +
+        '<span class="w">' + ech(m.nl) + '</span>' +
+        '<span class="w tr">' + ech(m.fr) + '</span>' +
+        '<span class="p"></span></div>';
+    });
+  }
+  bloc(tr('deck-noms', noms.length), noms);
+  bloc(tr('deck-verbes', verbes.length), verbes);
+  var hote = document.getElementById('deck-items');
+  hote.innerHTML = h;
+  Array.prototype.forEach.call(hote.querySelectorAll('.deck-l'), function (el) {
+    el.onclick = function () { basculerDeck(el); };
+  });
+  majDeck();
+}
+/* on ne redessine pas les cent lignes à chaque tap : seule la ligne touchée
+   et le compteur bougent. */
+function basculerDeck(el) {
+  var nl = el.getAttribute('data-nl'), sel = selDe(liste), i = sel.indexOf(nl);
+  if (i !== -1) sel.splice(i, 1);
+  else {
+    if (sel.length >= TAILLE_DECK) { vibrer([18, 40, 18]); wtSecouer(1); return; }
+    sel.push(nl);
+  }
+  var dedans = i === -1;
+  el.classList.toggle('pris', dedans);
+  el.querySelector('.e').textContent = dedans ? '\u25CF' : '\u25CB';
+  majDeck();
+  sauverPlusTard();
+}
+function majDeck() {
+  var k = selDe(liste).length, plein = k >= TAILLE_DECK;
+  var j = document.getElementById('d-jauge');
+  j.querySelector('i').style.width = Math.min(100, k / TAILLE_DECK * 100) + '%';
+  j.classList.toggle('plein', plein);
+  document.getElementById('d-compte').textContent = tr('deck-compte', k, TAILLE_DECK);
+  document.getElementById('d-detail').textContent = plein ? tr('deck-plein') : tr('deck-reste', TAILLE_DECK - k);
+  var b = document.getElementById('d-valider');
+  b.textContent = plein ? tr('deck-valider') : tr('deck-encore', TAILLE_DECK - k);
+  b.disabled = !plein;
+}
+function validerDeck() {
+  var sel = selDe(liste);
+  if (sel.length !== TAILLE_DECK) return;
+  var x = fiche(liste.id);
+  x.deck = sel.slice();
+  /* changer de deck rouvre le droit à la célébration de fin de liste */
+  delete etat.finies[liste.id];
+  sauver();
+  son('fete'); vibrer([20, 40, 30]);
+  voir('accueil');
+  pousser().then(function () { return tirer(); })
+    .then(function () { rendreDuo('a-duo'); }).catch(function () {});
+}
+
 function dispo() {
   var libres = [], finis = [];
-  liste.mots.forEach(function (m) {
+  motsDe(liste).forEach(function (m) {
     if (prog(liste.id, m).s >= CIBLE) finis.push(m); else libres.push(m);
   });
   return { libres: libres, finis: finis };
@@ -2199,18 +2393,42 @@ function tirerMot() {
   return { mot: m, sansPts: sansPts };
 }
 function sens() { var d = etat.reglages.dir; return d === 'auto' ? (Math.random() < .5 ? 'fr-nl' : 'nl-fr') : d; }
+/* Jamais plus de trois questions de suite du même style : au quatrième tirage,
+   le style sortant est retiré du chapeau. */
+var WT_SUITE_MAX = 3;
 function modeDe(s) {
   if (session.mode !== 'mix') return session.mode;
-  if (s < 3) return Math.random() < .7 ? 'flash' : 'vf';
-  if (s < 7) return Math.random() < .55 ? 'qcm' : 'flash';
-  return Math.random() < .8 ? 'qcm' : 'flash';
+  /* Les seuils dataient de l'échelle sur dix et n'avaient pas suivi le passage
+     à cent : dès la première bonne réponse un mot valait 7 ou plus, donc tout
+     retombait sur la dernière ligne et le vrai/faux ne sortait pour ainsi dire
+     jamais. Les voici sur la bonne échelle, et chaque style garde une part à
+     tous les niveaux. */
+  var poids = s < 30 ? { flash: 55, vf: 30, qcm: 15 }
+            : s < 70 ? { flash: 30, vf: 25, qcm: 45 }
+                     : { flash: 25, vf: 20, qcm: 55 };
+  var d = session.derniers || (session.derniers = []);
+  if (d.length >= WT_SUITE_MAX) {
+    var dernier = d[d.length - 1], memes = true;
+    for (var i = d.length - WT_SUITE_MAX; i < d.length; i++) if (d[i] !== dernier) memes = false;
+    if (memes) delete poids[dernier];
+  }
+  var noms = Object.keys(poids), total = 0, k;
+  for (k = 0; k < noms.length; k++) total += poids[noms[k]];
+  var t = Math.random() * total, m = noms[noms.length - 1];
+  for (k = 0; k < noms.length; k++) { t -= poids[noms[k]]; if (t < 0) { m = noms[k]; break; } }
+  d.push(m); if (d.length > WT_SUITE_MAX) d.shift();
+  return m;
 }
 function demarrer(mode) {
+  /* aucune question tant que les quarante mots ne sont pas choisis */
+  if (!deckPret(liste)) { ouvrirDeck(); return; }
   if (sonActif()) ac();
-  session = { mode: mode, n: 0, justes: 0, gain: 0, gagnes: 0, avant: acquisDe(liste), fete: false, fini: false };
+  session = { mode: mode, n: 0, justes: 0, gain: 0, gagnes: 0, avant: acquisDe(liste), fete: false, fini: false, derniers: [] };
   recents = [];
   wtPause = false;
-  wtStreak = 0; wtPoserChaleur(true);
+  /* la série reprend là où elle s'était arrêtée, même après une fermeture de
+     l'app : seule une mauvaise réponse la remet à zéro. */
+  wtStreak = etat.streak || 0; wtPoserChaleur(true);
   voir('train');
   crans('t-crans', liste);
   majObj();
@@ -2228,14 +2446,14 @@ function suite() {
   document.getElementById('t-juge').style.display = 'none';
   document.getElementById('t-carte').classList.remove('tourne');
   if (!session) return;
-  document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste));
+  document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste), TAILLE_DECK);
   majObj();
   /* aucune limite : on continue tant qu'il reste un mot à monter, puis en
      révision libre sans points une fois la liste entièrement acquise */
   var t = tirerMot();
   if (!t) { finSession(); return; }
   var p = prog(liste.id, t.mot);
-  cur = { mot: t.mot, sansPts: t.sansPts, sens: sens(), mode: modeDe(p.s), fait: false, perte: 0, idx: liste.mots.indexOf(t.mot) };
+  cur = { mot: t.mot, sansPts: t.sansPts, sens: sens(), mode: modeDe(p.s), fait: false, perte: 0, idx: motsDe(liste).indexOf(t.mot) };
   /* le CSS a besoin de savoir quel mode est à l'écran : en cartes et en
      vrai/faux les boutons se collent sous l'énoncé, en QCM la scène reste
      centrée comme avant. */
@@ -2281,7 +2499,7 @@ function montrerQCM() {
   wtMot.textContent = q;
   wtMot.classList.remove('entre'); void wtMot.offsetWidth; wtMot.classList.add('entre');
   document.getElementById('q-score').textContent = prog(liste.id, m).s + ' / ' + CIBLE;
-  var autres = liste.mots.map(function (x) { return nl ? x.fr : x.nl; }).filter(function (x) { return x !== r; });
+  var autres = motsDe(liste).map(function (x) { return nl ? x.fr : x.nl; }).filter(function (x) { return x !== r; });
   /* 21 : on écarte d'abord les leurres déjà servis la fois précédente */
   var vus = DISTRACTEURS[m.nl] || [];
   var frais = mel(autres.filter(function (x) { return vus.indexOf(x) === -1; }));
@@ -2334,25 +2552,41 @@ function montrerVF() {
   cur.vrai = Math.random() < .5;
   var aff = m.fr;
   if (!cur.vrai) {
-    var a = liste.mots.filter(function (x) { return x.fr !== m.fr; });
+    var a = motsDe(liste).filter(function (x) { return x.fr !== m.fr; });
     if (a.length) aff = a[Math.floor(Math.random() * a.length)].fr; else cur.vrai = true;
   }
   document.getElementById('v-nl').textContent = m.nl;
   document.getElementById('v-fr').textContent = aff;
   document.getElementById('v-score').textContent = prog(liste.id, m).s + ' / ' + CIBLE;
   document.getElementById('t-vf').classList.remove('cache');
-  document.getElementById('t-actions-vf').style.display = 'flex';
-  document.getElementById('v-vrai').disabled = false;
-  document.getElementById('v-faux').disabled = false;
+  var acts = document.getElementById('t-actions-vf');
+  acts.style.display = 'flex';
+  /* remise à neuf des deux boutons : classes d'état, animations et ondes de la
+     question précédente. */
+  Array.prototype.forEach.call(acts.querySelectorAll('.b'), function (b) {
+    b.disabled = false;
+    ['juste', 'faux', 'pale', 'roussi', 'punch1', 'punch2', 'punch3', 'punch4'].forEach(function (c) { b.classList.remove(c); });
+    b.style.transform = '';
+    b.querySelector('.peau').innerHTML = '';
+  });
+  mesurer(acts.querySelectorAll('.b'));
 }
-function repVF(r) {
+function repVF(r, b, ev) {
   wtChronoStop();
   if (!cur || cur.fait) return; cur.fait = true;
-  document.getElementById('v-vrai').disabled = true;
-  document.getElementById('v-faux').disabled = true;
+  b = b || document.getElementById(r ? 'v-vrai' : 'v-faux');
+  var voisin = document.getElementById(r ? 'v-faux' : 'v-vrai');
   var juste = (r === cur.vrai);
+  /* Le bouton n'est plus passé en disabled : sur Android, cela coupait le
+     :active dans la frame même du clic, et comme rien d'autre ne se jouait
+     ici, appuyer semblait n'avoir aucun effet. cur.fait suffit à interdire une
+     seconde réponse ; l'onde, la couleur et l'impact font le reste. */
+  onde(b, ev, juste);
+  b.classList.add(juste ? 'juste' : 'faux');
+  voisin.classList.add('pale');
   appliquer(juste, 'vf');
-  if (!juste) document.getElementById('t-retour').textContent = cur.mot.nl + ' = ' + cur.mot.fr;
+  if (juste) wtImpact(b, wtPalier(wtStreak));
+  else document.getElementById('t-retour').textContent = cur.mot.nl + ' = ' + cur.mot.fr;
   setTimeout(suite, juste ? 620 : 1700);
 }
 
@@ -2394,6 +2628,9 @@ function appliquer(juste, mode) {
     wtStreak = 0;
     if (avantPalier >= 1) wtEteindre();
   }
+  /* écrite à chaque réponse, donc jamais perdue : fermer l'app, changer de
+     liste ou de semaine ne casse pas la série, seule une erreur la casse. */
+  etat.streak = wtStreak;
   var apresPalier = wtPalier(wtStreak);
   /* palier 14, le silence : la vibration reste, tout le reste se tait. */
   if (juste) {
@@ -2410,7 +2647,7 @@ function appliquer(juste, mode) {
        l'état : sans cela, chaque nouvelle séance sur une liste complète
        rouvrait l'écran de fin dès la première bonne réponse, ce qui rendait
        impossible de continuer à s'entraîner. */
-    if (!session.fini && !etat.finies[liste.id] && acquisDe(liste) >= liste.mots.length) {
+    if (!session.fini && !etat.finies[liste.id] && acquisDe(liste) >= motsDe(liste).length) {
       session.fini = true; etat.finies[liste.id] = true; sauver();
       wtPause = true; setTimeout(wtFinDeListe, 900);
     } else if (!session.fete && etat.jourPts.j === jour() && !etat.jourPts.fete && plafondJour()) {
@@ -2434,7 +2671,7 @@ function majCran() {
     }
     if (neuf) { e.classList.add('eclat'); setTimeout(function () { e.classList.remove('eclat'); }, 620); }
   }
-  document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste));
+  document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste), TAILLE_DECK);
 }
 function onde(bouton, ev, juste) {
   var r = bouton.getBoundingClientRect();
@@ -3206,7 +3443,7 @@ function wtFeteSeance() {
 }
 function wtFinDeListe() {
   vibrer([60, 80, 60, 80, 200]);
-  ouvrirFete(tr('fin-t'), liste.mots.length + ' / ' + liste.mots.length, tr('fin-m'),
+  ouvrirFete(tr('fin-t'), TAILLE_DECK + ' / ' + TAILLE_DECK, tr('fin-m'),
     '<button class="b plein" onclick="allerChoix()">' + ech(tr('fin-choisir')) + '</button>' +
     '<button class="b fin" onclick="fermerFete(false)">' + ech(tr('fin-rentrer')) + '</button>');
 }
@@ -3463,7 +3700,9 @@ function rendreCadeaux() {
      qui ont fini avant cette version n'ont jamais vu. */
   var ses = cadeaux[autre()] || [], h = '';
   var deja = couponDeLaListe();
-  var reste = liste.mots.length - acquisDe(liste);
+  /* sans deck validé il n'y a pas de liste bouclée : motsDe rendrait zéro mot
+     et zéro acquis, ce qui aurait ouvert le droit au cadeau d'emblée. */
+  var reste = deckPret(liste) ? motsDe(liste).length - acquisDe(liste) : TAILLE_DECK;
   var droit = !deja && reste <= 0 && cadeauxPrets(ses);
   var dl = document.getElementById('cad-droit');
   dl.textContent = deja ? tr('cad-droit-deja', deja.texte)
