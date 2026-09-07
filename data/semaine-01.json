@@ -162,6 +162,266 @@
   {
    "nl": "de kelder",
    "fr": "la cave"
+  },
+  {
+   "nl": "de gang",
+   "fr": "le couloir"
+  },
+  {
+   "nl": "de woonkamer",
+   "fr": "le salon"
+  },
+  {
+   "nl": "de slaapkamer",
+   "fr": "la chambre à coucher"
+  },
+  {
+   "nl": "de badkamer",
+   "fr": "la salle de bain"
+  },
+  {
+   "nl": "het toilet",
+   "fr": "les toilettes"
+  },
+  {
+   "nl": "de garage",
+   "fr": "le garage"
+  },
+  {
+   "nl": "het balkon",
+   "fr": "le balcon"
+  },
+  {
+   "nl": "de schuur",
+   "fr": "la remise"
+  },
+  {
+   "nl": "de brievenbus",
+   "fr": "la boîte aux lettres"
+  },
+  {
+   "nl": "de bel",
+   "fr": "la sonnette"
+  },
+  {
+   "nl": "het slot",
+   "fr": "la serrure"
+  },
+  {
+   "nl": "de vuilnisbak",
+   "fr": "la poubelle"
+  },
+  {
+   "nl": "de gootsteen",
+   "fr": "l'évier"
+  },
+  {
+   "nl": "de kraan",
+   "fr": "le robinet"
+  },
+  {
+   "nl": "de spons",
+   "fr": "l'éponge"
+  },
+  {
+   "nl": "de vaatwasser",
+   "fr": "le lave-vaisselle"
+  },
+  {
+   "nl": "de droogkast",
+   "fr": "le sèche-linge"
+  },
+  {
+   "nl": "het strijkijzer",
+   "fr": "le fer à repasser"
+  },
+  {
+   "nl": "de stofzuiger",
+   "fr": "l'aspirateur"
+  },
+  {
+   "nl": "de plank",
+   "fr": "l'étagère, la planche"
+  },
+  {
+   "nl": "de la",
+   "fr": "le tiroir"
+  },
+  {
+   "nl": "de klok",
+   "fr": "l'horloge"
+  },
+  {
+   "nl": "de wekker",
+   "fr": "le réveil"
+  },
+  {
+   "nl": "het tapijt",
+   "fr": "le tapis"
+  },
+  {
+   "nl": "de vaas",
+   "fr": "le vase"
+  },
+  {
+   "nl": "de kaars",
+   "fr": "la bougie"
+  },
+  {
+   "nl": "de schakelaar",
+   "fr": "l'interrupteur"
+  },
+  {
+   "nl": "de verwarming",
+   "fr": "le chauffage"
+  },
+  {
+   "nl": "de haard",
+   "fr": "la cheminée"
+  },
+  {
+   "nl": "de ladder",
+   "fr": "l'échelle"
+  },
+  {
+   "nl": "de hamer",
+   "fr": "le marteau"
+  },
+  {
+   "nl": "de schroef",
+   "fr": "la vis"
+  },
+  {
+   "nl": "de spijker",
+   "fr": "le clou"
+  },
+  {
+   "nl": "de verf",
+   "fr": "la peinture"
+  },
+  {
+   "nl": "het gereedschap",
+   "fr": "les outils"
+  },
+  {
+   "nl": "de mat",
+   "fr": "le paillasson"
+  },
+  {
+   "nl": "het meubel",
+   "fr": "le meuble"
+  },
+  {
+   "nl": "de rommel",
+   "fr": "le désordre"
+  },
+  {
+   "nl": "de was",
+   "fr": "la lessive"
+  },
+  {
+   "nl": "het afval",
+   "fr": "les déchets"
+  },
+  {
+   "nl": "zijn",
+   "fr": "être",
+   "v": 1
+  },
+  {
+   "nl": "hebben",
+   "fr": "avoir",
+   "v": 1
+  },
+  {
+   "nl": "blijven",
+   "fr": "rester",
+   "v": 1
+  },
+  {
+   "nl": "wonen",
+   "fr": "habiter",
+   "v": 1
+  },
+  {
+   "nl": "opruimen",
+   "fr": "ranger",
+   "v": 1
+  },
+  {
+   "nl": "schoonmaken",
+   "fr": "nettoyer",
+   "v": 1
+  },
+  {
+   "nl": "afwassen",
+   "fr": "faire la vaisselle",
+   "v": 1
+  },
+  {
+   "nl": "poetsen",
+   "fr": "astiquer, nettoyer",
+   "v": 1
+  },
+  {
+   "nl": "stofzuigen",
+   "fr": "passer l'aspirateur",
+   "v": 1
+  },
+  {
+   "nl": "verhuizen",
+   "fr": "déménager",
+   "v": 1
+  },
+  {
+   "nl": "openen",
+   "fr": "ouvrir",
+   "v": 1
+  },
+  {
+   "nl": "sluiten",
+   "fr": "fermer",
+   "v": 1
+  },
+  {
+   "nl": "zitten",
+   "fr": "être assis",
+   "v": 1
+  },
+  {
+   "nl": "staan",
+   "fr": "être debout",
+   "v": 1
+  },
+  {
+   "nl": "liggen",
+   "fr": "être couché",
+   "v": 1
+  },
+  {
+   "nl": "hangen",
+   "fr": "pendre, accrocher",
+   "v": 1
+  },
+  {
+   "nl": "leggen",
+   "fr": "poser (à plat)",
+   "v": 1
+  },
+  {
+   "nl": "zetten",
+   "fr": "poser (debout)",
+   "v": 1
+  },
+  {
+   "nl": "aansteken",
+   "fr": "allumer",
+   "v": 1
+  },
+  {
+   "nl": "repareren",
+   "fr": "réparer",
+   "v": 1
   }
  ]
 }

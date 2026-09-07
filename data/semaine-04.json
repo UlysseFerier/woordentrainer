@@ -69,7 +69,7 @@
   },
   {
    "nl": "de man",
-   "fr": "l'homme"
+   "fr": "l'homme, le mari"
   },
   {
    "nl": "de vrouw",
@@ -109,7 +109,7 @@
   },
   {
    "nl": "het gezin",
-   "fr": "le foyer"
+   "fr": "le foyer, la famille proche"
   },
   {
    "nl": "de naam",
@@ -162,6 +162,266 @@
   {
    "nl": "de buurvrouw",
    "fr": "la voisine"
+  },
+  {
+   "nl": "de echtgenoot",
+   "fr": "l'époux"
+  },
+  {
+   "nl": "de echtgenote",
+   "fr": "l'épouse"
+  },
+  {
+   "nl": "de partner",
+   "fr": "le partenaire"
+  },
+  {
+   "nl": "de verloofde",
+   "fr": "le fiancé, la fiancée"
+  },
+  {
+   "nl": "het kleinkind",
+   "fr": "le petit-enfant"
+  },
+  {
+   "nl": "de kleinzoon",
+   "fr": "le petit-fils"
+  },
+  {
+   "nl": "de kleindochter",
+   "fr": "la petite-fille"
+  },
+  {
+   "nl": "de schoonmoeder",
+   "fr": "la belle-mère"
+  },
+  {
+   "nl": "de schoonvader",
+   "fr": "le beau-père"
+  },
+  {
+   "nl": "de schoonzus",
+   "fr": "la belle-sœur"
+  },
+  {
+   "nl": "de zwager",
+   "fr": "le beau-frère"
+  },
+  {
+   "nl": "de stiefvader",
+   "fr": "le beau-père (remarié)"
+  },
+  {
+   "nl": "de tweeling",
+   "fr": "les jumeaux"
+  },
+  {
+   "nl": "de weduwe",
+   "fr": "la veuve"
+  },
+  {
+   "nl": "de vreemdeling",
+   "fr": "l'étranger"
+  },
+  {
+   "nl": "de vriendschap",
+   "fr": "l'amitié"
+  },
+  {
+   "nl": "de generatie",
+   "fr": "la génération"
+  },
+  {
+   "nl": "de bevolking",
+   "fr": "la population"
+  },
+  {
+   "nl": "de groep",
+   "fr": "le groupe"
+  },
+  {
+   "nl": "de vereniging",
+   "fr": "l'association"
+  },
+  {
+   "nl": "het feest",
+   "fr": "la fête"
+  },
+  {
+   "nl": "het cadeau",
+   "fr": "le cadeau"
+  },
+  {
+   "nl": "de begrafenis",
+   "fr": "l'enterrement"
+  },
+  {
+   "nl": "de doop",
+   "fr": "le baptême"
+  },
+  {
+   "nl": "de ruzie",
+   "fr": "la dispute"
+  },
+  {
+   "nl": "de afkomst",
+   "fr": "l'origine"
+  },
+  {
+   "nl": "de volwassene",
+   "fr": "l'adulte"
+  },
+  {
+   "nl": "de tiener",
+   "fr": "l'adolescent"
+  },
+  {
+   "nl": "de bejaarde",
+   "fr": "la personne âgée"
+  },
+  {
+   "nl": "de heer",
+   "fr": "le monsieur"
+  },
+  {
+   "nl": "de dame",
+   "fr": "la dame"
+  },
+  {
+   "nl": "de gewoonte",
+   "fr": "l'habitude"
+  },
+  {
+   "nl": "het gesprek",
+   "fr": "la conversation"
+  },
+  {
+   "nl": "de groet",
+   "fr": "le salut"
+  },
+  {
+   "nl": "de knuffel",
+   "fr": "le câlin"
+  },
+  {
+   "nl": "de kus",
+   "fr": "le baiser"
+  },
+  {
+   "nl": "het geheim",
+   "fr": "le secret"
+  },
+  {
+   "nl": "de belofte",
+   "fr": "la promesse"
+  },
+  {
+   "nl": "het vertrouwen",
+   "fr": "la confiance"
+  },
+  {
+   "nl": "de hulp",
+   "fr": "l'aide"
+  },
+  {
+   "nl": "zeggen",
+   "fr": "dire",
+   "v": 1
+  },
+  {
+   "nl": "trouwen",
+   "fr": "se marier",
+   "v": 1
+  },
+  {
+   "nl": "scheiden",
+   "fr": "divorcer",
+   "v": 1
+  },
+  {
+   "nl": "ontmoeten",
+   "fr": "rencontrer",
+   "v": 1
+  },
+  {
+   "nl": "bezoeken",
+   "fr": "rendre visite",
+   "v": 1
+  },
+  {
+   "nl": "groeten",
+   "fr": "saluer",
+   "v": 1
+  },
+  {
+   "nl": "kussen",
+   "fr": "embrasser",
+   "v": 1
+  },
+  {
+   "nl": "knuffelen",
+   "fr": "faire un câlin",
+   "v": 1
+  },
+  {
+   "nl": "opvoeden",
+   "fr": "élever (un enfant)",
+   "v": 1
+  },
+  {
+   "nl": "zorgen",
+   "fr": "s'occuper de",
+   "v": 1
+  },
+  {
+   "nl": "missen",
+   "fr": "manquer, rater",
+   "v": 1
+  },
+  {
+   "nl": "verwachten",
+   "fr": "attendre, s'attendre à",
+   "v": 1
+  },
+  {
+   "nl": "uitnodigen",
+   "fr": "inviter",
+   "v": 1
+  },
+  {
+   "nl": "beloven",
+   "fr": "promettre",
+   "v": 1
+  },
+  {
+   "nl": "vergeven",
+   "fr": "pardonner",
+   "v": 1
+  },
+  {
+   "nl": "steunen",
+   "fr": "soutenir",
+   "v": 1
+  },
+  {
+   "nl": "delen",
+   "fr": "partager",
+   "v": 1
+  },
+  {
+   "nl": "vertellen",
+   "fr": "raconter",
+   "v": 1
+  },
+  {
+   "nl": "roepen",
+   "fr": "appeler, crier",
+   "v": 1
+  },
+  {
+   "nl": "praten",
+   "fr": "bavarder, parler",
+   "v": 1
   }
  ]
 }

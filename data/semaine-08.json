@@ -1,167 +1,427 @@
 {
  "id": "semaine-08",
  "titre": "Liste 8",
- "theme": "Les verbes de tous les jours",
+ "theme": "Les sentiments et le caractère",
  "mots": [
   {
-   "nl": "zijn",
-   "fr": "être"
+   "nl": "het gevoel",
+   "fr": "le sentiment"
   },
   {
-   "nl": "hebben",
-   "fr": "avoir"
+   "nl": "de emotie",
+   "fr": "l'émotion"
   },
   {
-   "nl": "gaan",
-   "fr": "aller"
+   "nl": "de vreugde",
+   "fr": "la joie"
   },
   {
-   "nl": "komen",
-   "fr": "venir"
+   "nl": "het geluk",
+   "fr": "le bonheur"
   },
   {
-   "nl": "doen",
-   "fr": "faire"
+   "nl": "het verdriet",
+   "fr": "le chagrin"
   },
   {
-   "nl": "maken",
-   "fr": "fabriquer"
+   "nl": "de angst",
+   "fr": "la peur"
   },
   {
-   "nl": "zeggen",
-   "fr": "dire"
+   "nl": "de woede",
+   "fr": "la colère"
   },
   {
-   "nl": "zien",
-   "fr": "voir"
+   "nl": "de haat",
+   "fr": "la haine"
   },
   {
-   "nl": "kijken",
-   "fr": "regarder"
+   "nl": "de jaloezie",
+   "fr": "la jalousie"
   },
   {
-   "nl": "horen",
-   "fr": "entendre"
+   "nl": "de trots",
+   "fr": "la fierté"
   },
   {
-   "nl": "luisteren",
-   "fr": "écouter"
+   "nl": "de schaamte",
+   "fr": "la honte"
   },
   {
-   "nl": "weten",
-   "fr": "savoir"
+   "nl": "de hoop",
+   "fr": "l'espoir"
   },
   {
-   "nl": "kennen",
-   "fr": "connaître"
+   "nl": "de wens",
+   "fr": "le souhait"
+  },
+  {
+   "nl": "de droom",
+   "fr": "le rêve"
+  },
+  {
+   "nl": "de twijfel",
+   "fr": "le doute"
+  },
+  {
+   "nl": "de moed",
+   "fr": "le courage"
+  },
+  {
+   "nl": "de zorg",
+   "fr": "le souci"
+  },
+  {
+   "nl": "de stress",
+   "fr": "le stress"
+  },
+  {
+   "nl": "de rust",
+   "fr": "le calme"
+  },
+  {
+   "nl": "het geduld",
+   "fr": "la patience"
+  },
+  {
+   "nl": "de eenzaamheid",
+   "fr": "la solitude"
+  },
+  {
+   "nl": "het humeur",
+   "fr": "l'humeur"
+  },
+  {
+   "nl": "de stemming",
+   "fr": "l'ambiance"
+  },
+  {
+   "nl": "het karakter",
+   "fr": "le caractère"
+  },
+  {
+   "nl": "de eigenschap",
+   "fr": "la qualité, le trait"
+  },
+  {
+   "nl": "het gebrek",
+   "fr": "le défaut, le manque"
+  },
+  {
+   "nl": "de glimlach",
+   "fr": "le sourire"
+  },
+  {
+   "nl": "de traan",
+   "fr": "la larme"
+  },
+  {
+   "nl": "de spanning",
+   "fr": "la tension"
+  },
+  {
+   "nl": "de opluchting",
+   "fr": "le soulagement"
+  },
+  {
+   "nl": "de spijt",
+   "fr": "le regret"
+  },
+  {
+   "nl": "de dankbaarheid",
+   "fr": "la gratitude"
+  },
+  {
+   "nl": "blij",
+   "fr": "content"
+  },
+  {
+   "nl": "verdrietig",
+   "fr": "triste"
+  },
+  {
+   "nl": "boos",
+   "fr": "fâché"
+  },
+  {
+   "nl": "bang",
+   "fr": "effrayé"
+  },
+  {
+   "nl": "rustig",
+   "fr": "calme"
+  },
+  {
+   "nl": "zenuwachtig",
+   "fr": "nerveux"
+  },
+  {
+   "nl": "vrolijk",
+   "fr": "joyeux"
+  },
+  {
+   "nl": "somber",
+   "fr": "sombre"
+  },
+  {
+   "nl": "tevreden",
+   "fr": "satisfait"
+  },
+  {
+   "nl": "teleurgesteld",
+   "fr": "déçu"
+  },
+  {
+   "nl": "verbaasd",
+   "fr": "étonné"
+  },
+  {
+   "nl": "jaloers",
+   "fr": "jaloux"
+  },
+  {
+   "nl": "eerlijk",
+   "fr": "honnête"
+  },
+  {
+   "nl": "oneerlijk",
+   "fr": "malhonnête"
+  },
+  {
+   "nl": "vriendelijk",
+   "fr": "aimable"
+  },
+  {
+   "nl": "aardig",
+   "fr": "sympathique"
+  },
+  {
+   "nl": "lief",
+   "fr": "gentil, doux"
+  },
+  {
+   "nl": "streng",
+   "fr": "sévère"
+  },
+  {
+   "nl": "geduldig",
+   "fr": "patient"
+  },
+  {
+   "nl": "ongeduldig",
+   "fr": "impatient"
+  },
+  {
+   "nl": "lui",
+   "fr": "paresseux"
+  },
+  {
+   "nl": "ijverig",
+   "fr": "travailleur"
+  },
+  {
+   "nl": "verlegen",
+   "fr": "timide"
+  },
+  {
+   "nl": "brutaal",
+   "fr": "effronté"
+  },
+  {
+   "nl": "grappig",
+   "fr": "drôle"
+  },
+  {
+   "nl": "serieus",
+   "fr": "sérieux"
+  },
+  {
+   "nl": "slim",
+   "fr": "intelligent"
+  },
+  {
+   "nl": "dom",
+   "fr": "bête"
+  },
+  {
+   "nl": "sterk",
+   "fr": "fort"
+  },
+  {
+   "nl": "zwak",
+   "fr": "faible"
+  },
+  {
+   "nl": "dapper",
+   "fr": "courageux"
+  },
+  {
+   "nl": "laf",
+   "fr": "lâche"
+  },
+  {
+   "nl": "gierig",
+   "fr": "avare"
+  },
+  {
+   "nl": "gul",
+   "fr": "généreux"
+  },
+  {
+   "nl": "koppig",
+   "fr": "têtu"
+  },
+  {
+   "nl": "nieuwsgierig",
+   "fr": "curieux"
+  },
+  {
+   "nl": "zelfverzekerd",
+   "fr": "sûr de soi"
+  },
+  {
+   "nl": "gevoelig",
+   "fr": "sensible"
+  },
+  {
+   "nl": "onzeker",
+   "fr": "peu sûr"
+  },
+  {
+   "nl": "beleefd",
+   "fr": "poli"
+  },
+  {
+   "nl": "onbeleefd",
+   "fr": "impoli"
+  },
+  {
+   "nl": "betrouwbaar",
+   "fr": "fiable"
+  },
+  {
+   "nl": "egoïstisch",
+   "fr": "égoïste"
+  },
+  {
+   "nl": "behulpzaam",
+   "fr": "serviable"
+  },
+  {
+   "nl": "enthousiast",
+   "fr": "enthousiaste"
+  },
+  {
+   "nl": "eenzaam",
+   "fr": "seul, solitaire"
+  },
+  {
+   "nl": "gelukkig",
+   "fr": "heureux"
+  },
+  {
+   "nl": "ongelukkig",
+   "fr": "malheureux"
   },
   {
    "nl": "denken",
-   "fr": "penser"
+   "fr": "penser",
+   "v": 1
   },
   {
    "nl": "willen",
-   "fr": "vouloir"
-  },
-  {
-   "nl": "kunnen",
-   "fr": "pouvoir"
-  },
-  {
-   "nl": "moeten",
-   "fr": "devoir"
+   "fr": "vouloir",
+   "v": 1
   },
   {
    "nl": "mogen",
-   "fr": "avoir le droit de"
+   "fr": "avoir le droit",
+   "v": 1
   },
   {
-   "nl": "eten",
-   "fr": "manger"
+   "nl": "houden van",
+   "fr": "aimer",
+   "v": 1
   },
   {
-   "nl": "drinken",
-   "fr": "boire"
+   "nl": "haten",
+   "fr": "haïr",
+   "v": 1
   },
   {
-   "nl": "slapen",
-   "fr": "dormir"
+   "nl": "hopen",
+   "fr": "espérer",
+   "v": 1
   },
   {
-   "nl": "werken",
-   "fr": "travailler"
+   "nl": "wensen",
+   "fr": "souhaiter",
+   "v": 1
   },
   {
-   "nl": "wonen",
-   "fr": "habiter"
+   "nl": "dromen",
+   "fr": "rêver",
+   "v": 1
   },
   {
-   "nl": "lopen",
-   "fr": "marcher"
+   "nl": "twijfelen",
+   "fr": "douter",
+   "v": 1
   },
   {
-   "nl": "rijden",
-   "fr": "conduire"
+   "nl": "durven",
+   "fr": "oser",
+   "v": 1
   },
   {
-   "nl": "nemen",
-   "fr": "prendre"
+   "nl": "aarzelen",
+   "fr": "hésiter",
+   "v": 1
   },
   {
-   "nl": "geven",
-   "fr": "donner"
+   "nl": "schamen",
+   "fr": "avoir honte",
+   "v": 1
   },
   {
-   "nl": "vragen",
-   "fr": "demander"
+   "nl": "bewonderen",
+   "fr": "admirer",
+   "v": 1
   },
   {
-   "nl": "antwoorden",
-   "fr": "répondre"
+   "nl": "genieten",
+   "fr": "profiter",
+   "v": 1
   },
   {
-   "nl": "lezen",
-   "fr": "lire"
+   "nl": "ontspannen",
+   "fr": "se détendre",
+   "v": 1
   },
   {
-   "nl": "schrijven",
-   "fr": "écrire"
+   "nl": "verrassen",
+   "fr": "surprendre",
+   "v": 1
   },
   {
-   "nl": "spreken",
-   "fr": "parler"
+   "nl": "troosten",
+   "fr": "consoler",
+   "v": 1
   },
   {
-   "nl": "begrijpen",
-   "fr": "comprendre"
+   "nl": "waarderen",
+   "fr": "apprécier",
+   "v": 1
   },
   {
-   "nl": "leren",
-   "fr": "apprendre"
+   "nl": "vertrouwen",
+   "fr": "faire confiance",
+   "v": 1
   },
   {
-   "nl": "helpen",
-   "fr": "aider"
-  },
-  {
-   "nl": "kopen",
-   "fr": "acheter"
-  },
-  {
-   "nl": "betalen",
-   "fr": "payer"
-  },
-  {
-   "nl": "zoeken",
-   "fr": "chercher"
-  },
-  {
-   "nl": "vinden",
-   "fr": "trouver"
-  },
-  {
-   "nl": "blijven",
-   "fr": "rester"
+   "nl": "glimlachen",
+   "fr": "sourire",
+   "v": 1
   }
  ]
 }

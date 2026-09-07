@@ -37,7 +37,7 @@
   },
   {
    "nl": "de nek",
-   "fr": "le cou"
+   "fr": "la nuque"
   },
   {
    "nl": "de schouder",
@@ -162,6 +162,266 @@
   {
    "nl": "het lichaam",
    "fr": "le corps"
+  },
+  {
+   "nl": "het gezicht",
+   "fr": "le visage"
+  },
+  {
+   "nl": "het voorhoofd",
+   "fr": "le front"
+  },
+  {
+   "nl": "de wang",
+   "fr": "la joue"
+  },
+  {
+   "nl": "de kin",
+   "fr": "le menton"
+  },
+  {
+   "nl": "de lip",
+   "fr": "la lèvre"
+  },
+  {
+   "nl": "de wenkbrauw",
+   "fr": "le sourcil"
+  },
+  {
+   "nl": "de wimper",
+   "fr": "le cil"
+  },
+  {
+   "nl": "de keel",
+   "fr": "la gorge"
+  },
+  {
+   "nl": "de borst",
+   "fr": "la poitrine"
+  },
+  {
+   "nl": "de heup",
+   "fr": "la hanche"
+  },
+  {
+   "nl": "de elleboog",
+   "fr": "le coude"
+  },
+  {
+   "nl": "de pols",
+   "fr": "le poignet"
+  },
+  {
+   "nl": "de duim",
+   "fr": "le pouce"
+  },
+  {
+   "nl": "de nagel",
+   "fr": "l'ongle"
+  },
+  {
+   "nl": "de enkel",
+   "fr": "la cheville"
+  },
+  {
+   "nl": "de teen",
+   "fr": "l'orteil"
+  },
+  {
+   "nl": "de hiel",
+   "fr": "le talon"
+  },
+  {
+   "nl": "de kuit",
+   "fr": "le mollet"
+  },
+  {
+   "nl": "de dij",
+   "fr": "la cuisse"
+  },
+  {
+   "nl": "de long",
+   "fr": "le poumon"
+  },
+  {
+   "nl": "de maag",
+   "fr": "l'estomac"
+  },
+  {
+   "nl": "de lever",
+   "fr": "le foie"
+  },
+  {
+   "nl": "de nier",
+   "fr": "le rein"
+  },
+  {
+   "nl": "de hersenen",
+   "fr": "le cerveau"
+  },
+  {
+   "nl": "de zenuw",
+   "fr": "le nerf"
+  },
+  {
+   "nl": "de ader",
+   "fr": "la veine"
+  },
+  {
+   "nl": "het gewricht",
+   "fr": "l'articulation"
+  },
+  {
+   "nl": "de kramp",
+   "fr": "la crampe"
+  },
+  {
+   "nl": "de verkoudheid",
+   "fr": "le rhume"
+  },
+  {
+   "nl": "de griep",
+   "fr": "la grippe"
+  },
+  {
+   "nl": "de allergie",
+   "fr": "l'allergie"
+  },
+  {
+   "nl": "de zalf",
+   "fr": "la pommade"
+  },
+  {
+   "nl": "de pil",
+   "fr": "le comprimé"
+  },
+  {
+   "nl": "het verband",
+   "fr": "le bandage"
+  },
+  {
+   "nl": "de pleister",
+   "fr": "le sparadrap"
+  },
+  {
+   "nl": "de spuit",
+   "fr": "la piqûre"
+  },
+  {
+   "nl": "de operatie",
+   "fr": "l'opération"
+  },
+  {
+   "nl": "de verpleegster",
+   "fr": "l'infirmière"
+  },
+  {
+   "nl": "de patiënt",
+   "fr": "le patient"
+  },
+  {
+   "nl": "de behandeling",
+   "fr": "le traitement"
+  },
+  {
+   "nl": "slapen",
+   "fr": "dormir",
+   "v": 1
+  },
+  {
+   "nl": "zien",
+   "fr": "voir",
+   "v": 1
+  },
+  {
+   "nl": "horen",
+   "fr": "entendre",
+   "v": 1
+  },
+  {
+   "nl": "voelen",
+   "fr": "sentir, ressentir",
+   "v": 1
+  },
+  {
+   "nl": "ademen",
+   "fr": "respirer",
+   "v": 1
+  },
+  {
+   "nl": "hoesten",
+   "fr": "tousser",
+   "v": 1
+  },
+  {
+   "nl": "niezen",
+   "fr": "éternuer",
+   "v": 1
+  },
+  {
+   "nl": "bloeden",
+   "fr": "saigner",
+   "v": 1
+  },
+  {
+   "nl": "genezen",
+   "fr": "guérir",
+   "v": 1
+  },
+  {
+   "nl": "rusten",
+   "fr": "se reposer",
+   "v": 1
+  },
+  {
+   "nl": "groeien",
+   "fr": "grandir, pousser",
+   "v": 1
+  },
+  {
+   "nl": "vallen",
+   "fr": "tomber",
+   "v": 1
+  },
+  {
+   "nl": "breken",
+   "fr": "casser",
+   "v": 1
+  },
+  {
+   "nl": "zweten",
+   "fr": "transpirer",
+   "v": 1
+  },
+  {
+   "nl": "huilen",
+   "fr": "pleurer",
+   "v": 1
+  },
+  {
+   "nl": "lachen",
+   "fr": "rire",
+   "v": 1
+  },
+  {
+   "nl": "opstaan",
+   "fr": "se lever",
+   "v": 1
+  },
+  {
+   "nl": "wassen",
+   "fr": "laver",
+   "v": 1
+  },
+  {
+   "nl": "verzorgen",
+   "fr": "soigner",
+   "v": 1
+  },
+  {
+   "nl": "bewegen",
+   "fr": "bouger",
+   "v": 1
   }
  ]
 }

@@ -162,6 +162,266 @@
   {
    "nl": "het bord (verkeer)",
    "fr": "le panneau"
+  },
+  {
+   "nl": "de gemeente",
+   "fr": "la commune"
+  },
+  {
+   "nl": "de voorstad",
+   "fr": "la banlieue"
+  },
+  {
+   "nl": "de voetganger",
+   "fr": "le piéton"
+  },
+  {
+   "nl": "het voetpad",
+   "fr": "le trottoir"
+  },
+  {
+   "nl": "het fietspad",
+   "fr": "la piste cyclable"
+  },
+  {
+   "nl": "het verkeerslicht",
+   "fr": "le feu de signalisation"
+  },
+  {
+   "nl": "het zebrapad",
+   "fr": "le passage piéton"
+  },
+  {
+   "nl": "de rotonde",
+   "fr": "le rond-point"
+  },
+  {
+   "nl": "de snelweg",
+   "fr": "l'autoroute"
+  },
+  {
+   "nl": "de tunnel",
+   "fr": "le tunnel"
+  },
+  {
+   "nl": "het rijbewijs",
+   "fr": "le permis de conduire"
+  },
+  {
+   "nl": "de benzine",
+   "fr": "l'essence"
+  },
+  {
+   "nl": "het tankstation",
+   "fr": "la station-service"
+  },
+  {
+   "nl": "de band",
+   "fr": "le pneu"
+  },
+  {
+   "nl": "het stuur",
+   "fr": "le volant"
+  },
+  {
+   "nl": "de motor",
+   "fr": "le moteur, la moto"
+  },
+  {
+   "nl": "de rem",
+   "fr": "le frein"
+  },
+  {
+   "nl": "de metro",
+   "fr": "le métro"
+  },
+  {
+   "nl": "het perron",
+   "fr": "le quai"
+  },
+  {
+   "nl": "het spoor",
+   "fr": "la voie ferrée"
+  },
+  {
+   "nl": "het kaartje",
+   "fr": "le ticket"
+  },
+  {
+   "nl": "de reiziger",
+   "fr": "le voyageur"
+  },
+  {
+   "nl": "de koffer",
+   "fr": "la valise"
+  },
+  {
+   "nl": "de rugzak",
+   "fr": "le sac à dos"
+  },
+  {
+   "nl": "de vertraging",
+   "fr": "le retard"
+  },
+  {
+   "nl": "de dienstregeling",
+   "fr": "les horaires"
+  },
+  {
+   "nl": "de bestemming",
+   "fr": "la destination"
+  },
+  {
+   "nl": "de afstand",
+   "fr": "la distance"
+  },
+  {
+   "nl": "de richting",
+   "fr": "la direction"
+  },
+  {
+   "nl": "de omweg",
+   "fr": "le détour"
+  },
+  {
+   "nl": "het café",
+   "fr": "le café (lieu)"
+  },
+  {
+   "nl": "de bioscoop",
+   "fr": "le cinéma"
+  },
+  {
+   "nl": "het theater",
+   "fr": "le théâtre"
+  },
+  {
+   "nl": "het hotel",
+   "fr": "l'hôtel"
+  },
+  {
+   "nl": "de school",
+   "fr": "l'école"
+  },
+  {
+   "nl": "de toren",
+   "fr": "la tour"
+  },
+  {
+   "nl": "het gebouw",
+   "fr": "le bâtiment"
+  },
+  {
+   "nl": "de fontein",
+   "fr": "la fontaine"
+  },
+  {
+   "nl": "het standbeeld",
+   "fr": "la statue"
+  },
+  {
+   "nl": "de ingang",
+   "fr": "l'entrée (le seuil)"
+  },
+  {
+   "nl": "lopen",
+   "fr": "marcher",
+   "v": 1
+  },
+  {
+   "nl": "rijden",
+   "fr": "rouler, conduire",
+   "v": 1
+  },
+  {
+   "nl": "doen",
+   "fr": "faire",
+   "v": 1
+  },
+  {
+   "nl": "fietsen",
+   "fr": "faire du vélo",
+   "v": 1
+  },
+  {
+   "nl": "wandelen",
+   "fr": "se promener",
+   "v": 1
+  },
+  {
+   "nl": "reizen",
+   "fr": "voyager",
+   "v": 1
+  },
+  {
+   "nl": "vertrekken",
+   "fr": "partir",
+   "v": 1
+  },
+  {
+   "nl": "aankomen",
+   "fr": "arriver",
+   "v": 1
+  },
+  {
+   "nl": "oversteken",
+   "fr": "traverser",
+   "v": 1
+  },
+  {
+   "nl": "parkeren",
+   "fr": "se garer",
+   "v": 1
+  },
+  {
+   "nl": "stoppen",
+   "fr": "s'arrêter",
+   "v": 1
+  },
+  {
+   "nl": "afslaan",
+   "fr": "tourner",
+   "v": 1
+  },
+  {
+   "nl": "volgen",
+   "fr": "suivre",
+   "v": 1
+  },
+  {
+   "nl": "verdwalen",
+   "fr": "se perdre",
+   "v": 1
+  },
+  {
+   "nl": "instappen",
+   "fr": "monter (dans un véhicule)",
+   "v": 1
+  },
+  {
+   "nl": "uitstappen",
+   "fr": "descendre (d'un véhicule)",
+   "v": 1
+  },
+  {
+   "nl": "winkelen",
+   "fr": "faire les magasins",
+   "v": 1
+  },
+  {
+   "nl": "bezorgen",
+   "fr": "livrer",
+   "v": 1
+  },
+  {
+   "nl": "vliegen",
+   "fr": "voler",
+   "v": 1
+  },
+  {
+   "nl": "varen",
+   "fr": "naviguer",
+   "v": 1
   }
  ]
 }

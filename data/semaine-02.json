@@ -97,7 +97,7 @@
   },
   {
    "nl": "het snoep",
-   "fr": "le bonbon"
+   "fr": "les bonbons"
   },
   {
    "nl": "de chocolade",
@@ -162,6 +162,266 @@
   {
    "nl": "het recept",
    "fr": "la recette"
+  },
+  {
+   "nl": "het meel",
+   "fr": "la farine"
+  },
+  {
+   "nl": "het deeg",
+   "fr": "la pâte"
+  },
+  {
+   "nl": "de pasta",
+   "fr": "les pâtes"
+  },
+  {
+   "nl": "de pannenkoek",
+   "fr": "la crêpe"
+  },
+  {
+   "nl": "de boterham",
+   "fr": "la tartine"
+  },
+  {
+   "nl": "het broodje",
+   "fr": "le petit pain"
+  },
+  {
+   "nl": "de korst",
+   "fr": "la croûte"
+  },
+  {
+   "nl": "de honing",
+   "fr": "le miel"
+  },
+  {
+   "nl": "de jam",
+   "fr": "la confiture"
+  },
+  {
+   "nl": "de room",
+   "fr": "la crème"
+  },
+  {
+   "nl": "de yoghurt",
+   "fr": "le yaourt"
+  },
+  {
+   "nl": "het ijsje",
+   "fr": "la glace"
+  },
+  {
+   "nl": "het toetje",
+   "fr": "le dessert"
+  },
+  {
+   "nl": "het voorgerecht",
+   "fr": "l'entrée"
+  },
+  {
+   "nl": "het hoofdgerecht",
+   "fr": "le plat principal"
+  },
+  {
+   "nl": "de schotel",
+   "fr": "le plat"
+  },
+  {
+   "nl": "de kom",
+   "fr": "le bol"
+  },
+  {
+   "nl": "de beker",
+   "fr": "le gobelet"
+  },
+  {
+   "nl": "de fles",
+   "fr": "la bouteille"
+  },
+  {
+   "nl": "het blik",
+   "fr": "la boîte de conserve"
+  },
+  {
+   "nl": "de doos",
+   "fr": "la boîte"
+  },
+  {
+   "nl": "de kurk",
+   "fr": "le bouchon"
+  },
+  {
+   "nl": "de olie",
+   "fr": "l'huile"
+  },
+  {
+   "nl": "de azijn",
+   "fr": "le vinaigre"
+  },
+  {
+   "nl": "het kruid",
+   "fr": "l'herbe aromatique"
+  },
+  {
+   "nl": "de specerij",
+   "fr": "l'épice"
+  },
+  {
+   "nl": "de knoflook",
+   "fr": "l'ail"
+  },
+  {
+   "nl": "de peterselie",
+   "fr": "le persil"
+  },
+  {
+   "nl": "de champignon",
+   "fr": "le champignon"
+  },
+  {
+   "nl": "de komkommer",
+   "fr": "le concombre"
+  },
+  {
+   "nl": "de paprika",
+   "fr": "le poivron"
+  },
+  {
+   "nl": "de erwt",
+   "fr": "le petit pois"
+  },
+  {
+   "nl": "de boon",
+   "fr": "le haricot"
+  },
+  {
+   "nl": "de kool",
+   "fr": "le chou"
+  },
+  {
+   "nl": "de spinazie",
+   "fr": "les épinards"
+  },
+  {
+   "nl": "de banaan",
+   "fr": "la banane"
+  },
+  {
+   "nl": "de peer",
+   "fr": "la poire"
+  },
+  {
+   "nl": "de druif",
+   "fr": "le raisin"
+  },
+  {
+   "nl": "de aardbei",
+   "fr": "la fraise"
+  },
+  {
+   "nl": "de kers",
+   "fr": "la cerise"
+  },
+  {
+   "nl": "eten",
+   "fr": "manger",
+   "v": 1
+  },
+  {
+   "nl": "drinken",
+   "fr": "boire",
+   "v": 1
+  },
+  {
+   "nl": "nemen",
+   "fr": "prendre",
+   "v": 1
+  },
+  {
+   "nl": "geven",
+   "fr": "donner",
+   "v": 1
+  },
+  {
+   "nl": "maken",
+   "fr": "faire, fabriquer",
+   "v": 1
+  },
+  {
+   "nl": "koken",
+   "fr": "cuisiner, bouillir",
+   "v": 1
+  },
+  {
+   "nl": "bakken",
+   "fr": "cuire au four, frire",
+   "v": 1
+  },
+  {
+   "nl": "proeven",
+   "fr": "goûter",
+   "v": 1
+  },
+  {
+   "nl": "snijden",
+   "fr": "couper",
+   "v": 1
+  },
+  {
+   "nl": "roeren",
+   "fr": "remuer",
+   "v": 1
+  },
+  {
+   "nl": "schenken",
+   "fr": "verser",
+   "v": 1
+  },
+  {
+   "nl": "bestellen",
+   "fr": "commander",
+   "v": 1
+  },
+  {
+   "nl": "ruiken",
+   "fr": "sentir (une odeur)",
+   "v": 1
+  },
+  {
+   "nl": "mengen",
+   "fr": "mélanger",
+   "v": 1
+  },
+  {
+   "nl": "schillen",
+   "fr": "éplucher",
+   "v": 1
+  },
+  {
+   "nl": "opwarmen",
+   "fr": "réchauffer",
+   "v": 1
+  },
+  {
+   "nl": "vullen",
+   "fr": "remplir",
+   "v": 1
+  },
+  {
+   "nl": "kauwen",
+   "fr": "mâcher",
+   "v": 1
+  },
+  {
+   "nl": "slikken",
+   "fr": "avaler",
+   "v": 1
+  },
+  {
+   "nl": "smaken",
+   "fr": "avoir bon goût",
+   "v": 1
   }
  ]
 }

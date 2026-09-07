@@ -33,7 +33,7 @@
   },
   {
    "nl": "de wei",
-   "fr": "le pré"
+   "fr": "la prairie"
   },
   {
    "nl": "de berg",
@@ -162,6 +162,266 @@
   {
    "nl": "de vleugel",
    "fr": "l'aile"
+  },
+  {
+   "nl": "de tak",
+   "fr": "la branche"
+  },
+  {
+   "nl": "de stam",
+   "fr": "le tronc"
+  },
+  {
+   "nl": "het zaad",
+   "fr": "la graine"
+  },
+  {
+   "nl": "de knop",
+   "fr": "le bourgeon"
+  },
+  {
+   "nl": "de struik",
+   "fr": "le buisson"
+  },
+  {
+   "nl": "het onkruid",
+   "fr": "la mauvaise herbe"
+  },
+  {
+   "nl": "de modder",
+   "fr": "la boue"
+  },
+  {
+   "nl": "de klei",
+   "fr": "l'argile"
+  },
+  {
+   "nl": "de rots",
+   "fr": "le rocher"
+  },
+  {
+   "nl": "de grot",
+   "fr": "la grotte"
+  },
+  {
+   "nl": "de vallei",
+   "fr": "la vallée"
+  },
+  {
+   "nl": "de kust",
+   "fr": "la côte"
+  },
+  {
+   "nl": "de golf",
+   "fr": "la vague"
+  },
+  {
+   "nl": "de bron",
+   "fr": "la source"
+  },
+  {
+   "nl": "de beek",
+   "fr": "le ruisseau"
+  },
+  {
+   "nl": "het moeras",
+   "fr": "le marais"
+  },
+  {
+   "nl": "de woestijn",
+   "fr": "le désert"
+  },
+  {
+   "nl": "de horizon",
+   "fr": "l'horizon"
+  },
+  {
+   "nl": "de leeuw",
+   "fr": "le lion"
+  },
+  {
+   "nl": "de tijger",
+   "fr": "le tigre"
+  },
+  {
+   "nl": "de beer",
+   "fr": "l'ours"
+  },
+  {
+   "nl": "de olifant",
+   "fr": "l'éléphant"
+  },
+  {
+   "nl": "de aap",
+   "fr": "le singe"
+  },
+  {
+   "nl": "de giraf",
+   "fr": "la girafe"
+  },
+  {
+   "nl": "het hert",
+   "fr": "le cerf"
+  },
+  {
+   "nl": "de egel",
+   "fr": "le hérisson"
+  },
+  {
+   "nl": "de eekhoorn",
+   "fr": "l'écureuil"
+  },
+  {
+   "nl": "de rat",
+   "fr": "le rat"
+  },
+  {
+   "nl": "de mol",
+   "fr": "la taupe"
+  },
+  {
+   "nl": "de vleermuis",
+   "fr": "la chauve-souris"
+  },
+  {
+   "nl": "de uil",
+   "fr": "le hibou"
+  },
+  {
+   "nl": "de duif",
+   "fr": "le pigeon"
+  },
+  {
+   "nl": "de zwaan",
+   "fr": "le cygne"
+  },
+  {
+   "nl": "de meeuw",
+   "fr": "la mouette"
+  },
+  {
+   "nl": "de wesp",
+   "fr": "la guêpe"
+  },
+  {
+   "nl": "de mug",
+   "fr": "le moustique"
+  },
+  {
+   "nl": "de vlieg",
+   "fr": "la mouche"
+  },
+  {
+   "nl": "de staart",
+   "fr": "la queue"
+  },
+  {
+   "nl": "de poot",
+   "fr": "la patte"
+  },
+  {
+   "nl": "de veer",
+   "fr": "la plume"
+  },
+  {
+   "nl": "kijken",
+   "fr": "regarder",
+   "v": 1
+  },
+  {
+   "nl": "luisteren",
+   "fr": "écouter",
+   "v": 1
+  },
+  {
+   "nl": "bloeien",
+   "fr": "fleurir",
+   "v": 1
+  },
+  {
+   "nl": "planten",
+   "fr": "planter",
+   "v": 1
+  },
+  {
+   "nl": "zaaien",
+   "fr": "semer",
+   "v": 1
+  },
+  {
+   "nl": "oogsten",
+   "fr": "récolter",
+   "v": 1
+  },
+  {
+   "nl": "blaffen",
+   "fr": "aboyer",
+   "v": 1
+  },
+  {
+   "nl": "miauwen",
+   "fr": "miauler",
+   "v": 1
+  },
+  {
+   "nl": "bijten",
+   "fr": "mordre",
+   "v": 1
+  },
+  {
+   "nl": "krabben",
+   "fr": "griffer",
+   "v": 1
+  },
+  {
+   "nl": "zwemmen",
+   "fr": "nager",
+   "v": 1
+  },
+  {
+   "nl": "springen",
+   "fr": "sauter",
+   "v": 1
+  },
+  {
+   "nl": "kruipen",
+   "fr": "ramper",
+   "v": 1
+  },
+  {
+   "nl": "jagen",
+   "fr": "chasser",
+   "v": 1
+  },
+  {
+   "nl": "voeren",
+   "fr": "nourrir",
+   "v": 1
+  },
+  {
+   "nl": "snoeien",
+   "fr": "tailler",
+   "v": 1
+  },
+  {
+   "nl": "klimmen",
+   "fr": "grimper",
+   "v": 1
+  },
+  {
+   "nl": "graven",
+   "fr": "creuser",
+   "v": 1
+  },
+  {
+   "nl": "vissen",
+   "fr": "pêcher",
+   "v": 1
+  },
+  {
+   "nl": "zingen",
+   "fr": "chanter",
+   "v": 1
   }
  ]
 }

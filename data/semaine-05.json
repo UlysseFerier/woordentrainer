@@ -5,7 +5,7 @@
  "mots": [
   {
    "nl": "het weer",
-   "fr": "le temps qu'il fait"
+   "fr": "le temps (météo)"
   },
   {
    "nl": "de zon",
@@ -29,7 +29,7 @@
   },
   {
    "nl": "het ijs",
-   "fr": "la glace"
+   "fr": "la glace, le verglas"
   },
   {
    "nl": "de mist",
@@ -57,7 +57,7 @@
   },
   {
    "nl": "de lucht",
-   "fr": "l'air"
+   "fr": "l'air, le ciel"
   },
   {
    "nl": "de temperatuur",
@@ -162,6 +162,266 @@
   {
    "nl": "gisteren",
    "fr": "hier"
+  },
+  {
+   "nl": "januari",
+   "fr": "janvier"
+  },
+  {
+   "nl": "februari",
+   "fr": "février"
+  },
+  {
+   "nl": "maart",
+   "fr": "mars"
+  },
+  {
+   "nl": "april",
+   "fr": "avril"
+  },
+  {
+   "nl": "mei",
+   "fr": "mai"
+  },
+  {
+   "nl": "juni",
+   "fr": "juin"
+  },
+  {
+   "nl": "juli",
+   "fr": "juillet"
+  },
+  {
+   "nl": "augustus",
+   "fr": "août"
+  },
+  {
+   "nl": "september",
+   "fr": "septembre"
+  },
+  {
+   "nl": "oktober",
+   "fr": "octobre"
+  },
+  {
+   "nl": "november",
+   "fr": "novembre"
+  },
+  {
+   "nl": "december",
+   "fr": "décembre"
+  },
+  {
+   "nl": "het weekend",
+   "fr": "le week-end"
+  },
+  {
+   "nl": "de feestdag",
+   "fr": "le jour férié"
+  },
+  {
+   "nl": "de datum",
+   "fr": "la date"
+  },
+  {
+   "nl": "de eeuw",
+   "fr": "le siècle"
+  },
+  {
+   "nl": "de minuut",
+   "fr": "la minute"
+  },
+  {
+   "nl": "de seconde",
+   "fr": "la seconde"
+  },
+  {
+   "nl": "de tijd",
+   "fr": "le temps"
+  },
+  {
+   "nl": "de duur",
+   "fr": "la durée"
+  },
+  {
+   "nl": "het begin",
+   "fr": "le début"
+  },
+  {
+   "nl": "het einde",
+   "fr": "la fin"
+  },
+  {
+   "nl": "de toekomst",
+   "fr": "l'avenir"
+  },
+  {
+   "nl": "het verleden",
+   "fr": "le passé"
+  },
+  {
+   "nl": "de vorst",
+   "fr": "le gel"
+  },
+  {
+   "nl": "de hagel",
+   "fr": "la grêle"
+  },
+  {
+   "nl": "de bui",
+   "fr": "l'averse"
+  },
+  {
+   "nl": "de druppel",
+   "fr": "la goutte"
+  },
+  {
+   "nl": "de schaduw",
+   "fr": "l'ombre"
+  },
+  {
+   "nl": "de regenboog",
+   "fr": "l'arc-en-ciel"
+  },
+  {
+   "nl": "de maan",
+   "fr": "la lune"
+  },
+  {
+   "nl": "de ster",
+   "fr": "l'étoile"
+  },
+  {
+   "nl": "de zonsopgang",
+   "fr": "le lever du soleil"
+  },
+  {
+   "nl": "de zonsondergang",
+   "fr": "le coucher du soleil"
+  },
+  {
+   "nl": "het klimaat",
+   "fr": "le climat"
+  },
+  {
+   "nl": "het weerbericht",
+   "fr": "le bulletin météo"
+  },
+  {
+   "nl": "de kalender",
+   "fr": "le calendrier"
+  },
+  {
+   "nl": "vroeg",
+   "fr": "tôt"
+  },
+  {
+   "nl": "laat",
+   "fr": "tard"
+  },
+  {
+   "nl": "nooit",
+   "fr": "jamais"
+  },
+  {
+   "nl": "gaan",
+   "fr": "aller",
+   "v": 1
+  },
+  {
+   "nl": "komen",
+   "fr": "venir",
+   "v": 1
+  },
+  {
+   "nl": "regenen",
+   "fr": "pleuvoir",
+   "v": 1
+  },
+  {
+   "nl": "sneeuwen",
+   "fr": "neiger",
+   "v": 1
+  },
+  {
+   "nl": "waaien",
+   "fr": "venter",
+   "v": 1
+  },
+  {
+   "nl": "vriezen",
+   "fr": "geler",
+   "v": 1
+  },
+  {
+   "nl": "dooien",
+   "fr": "dégeler",
+   "v": 1
+  },
+  {
+   "nl": "schijnen",
+   "fr": "briller",
+   "v": 1
+  },
+  {
+   "nl": "beginnen",
+   "fr": "commencer",
+   "v": 1
+  },
+  {
+   "nl": "eindigen",
+   "fr": "finir",
+   "v": 1
+  },
+  {
+   "nl": "duren",
+   "fr": "durer",
+   "v": 1
+  },
+  {
+   "nl": "wachten",
+   "fr": "attendre",
+   "v": 1
+  },
+  {
+   "nl": "gebeuren",
+   "fr": "se passer",
+   "v": 1
+  },
+  {
+   "nl": "veranderen",
+   "fr": "changer",
+   "v": 1
+  },
+  {
+   "nl": "herhalen",
+   "fr": "répéter",
+   "v": 1
+  },
+  {
+   "nl": "uitstellen",
+   "fr": "reporter",
+   "v": 1
+  },
+  {
+   "nl": "opschieten",
+   "fr": "se dépêcher",
+   "v": 1
+  },
+  {
+   "nl": "voorspellen",
+   "fr": "prévoir",
+   "v": 1
+  },
+  {
+   "nl": "verdwijnen",
+   "fr": "disparaître",
+   "v": 1
+  },
+  {
+   "nl": "verschijnen",
+   "fr": "apparaître",
+   "v": 1
   }
  ]
 }

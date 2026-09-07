@@ -141,7 +141,7 @@
   },
   {
    "nl": "de maat",
-   "fr": "la taille (mesure)"
+   "fr": "la taille"
   },
   {
    "nl": "de stof",
@@ -162,6 +162,266 @@
   {
    "nl": "nieuw",
    "fr": "neuf"
+  },
+  {
+   "nl": "de blouse",
+   "fr": "le chemisier"
+  },
+  {
+   "nl": "het vest",
+   "fr": "le gilet"
+  },
+  {
+   "nl": "het pak",
+   "fr": "le costume"
+  },
+  {
+   "nl": "de mantel",
+   "fr": "le manteau long"
+  },
+  {
+   "nl": "de spijkerbroek",
+   "fr": "le jean"
+  },
+  {
+   "nl": "het ondergoed",
+   "fr": "les sous-vêtements"
+  },
+  {
+   "nl": "de onderbroek",
+   "fr": "le slip"
+  },
+  {
+   "nl": "de beha",
+   "fr": "le soutien-gorge"
+  },
+  {
+   "nl": "de panty",
+   "fr": "le collant"
+  },
+  {
+   "nl": "de kous",
+   "fr": "le bas"
+  },
+  {
+   "nl": "de pantoffel",
+   "fr": "la pantoufle"
+  },
+  {
+   "nl": "de sandaal",
+   "fr": "la sandale"
+  },
+  {
+   "nl": "de sportschoen",
+   "fr": "la basket"
+  },
+  {
+   "nl": "de veter",
+   "fr": "le lacet"
+  },
+  {
+   "nl": "de zool",
+   "fr": "la semelle"
+  },
+  {
+   "nl": "de hak",
+   "fr": "le talon (de chaussure)"
+  },
+  {
+   "nl": "de kraag",
+   "fr": "le col"
+  },
+  {
+   "nl": "de mouw",
+   "fr": "la manche"
+  },
+  {
+   "nl": "de rits",
+   "fr": "la fermeture éclair"
+  },
+  {
+   "nl": "de naald",
+   "fr": "l'aiguille"
+  },
+  {
+   "nl": "de draad",
+   "fr": "le fil"
+  },
+  {
+   "nl": "de wol",
+   "fr": "la laine"
+  },
+  {
+   "nl": "het katoen",
+   "fr": "le coton"
+  },
+  {
+   "nl": "de zijde",
+   "fr": "la soie"
+  },
+  {
+   "nl": "het leer",
+   "fr": "le cuir"
+  },
+  {
+   "nl": "het sieraad",
+   "fr": "le bijou"
+  },
+  {
+   "nl": "de ketting",
+   "fr": "le collier"
+  },
+  {
+   "nl": "de armband",
+   "fr": "le bracelet"
+  },
+  {
+   "nl": "de oorbel",
+   "fr": "la boucle d'oreille"
+  },
+  {
+   "nl": "de paraplu",
+   "fr": "le parapluie"
+  },
+  {
+   "nl": "de portemonnee",
+   "fr": "le porte-monnaie"
+  },
+  {
+   "nl": "de kam",
+   "fr": "le peigne"
+  },
+  {
+   "nl": "de borstel",
+   "fr": "la brosse"
+  },
+  {
+   "nl": "het parfum",
+   "fr": "le parfum"
+  },
+  {
+   "nl": "donker",
+   "fr": "foncé"
+  },
+  {
+   "nl": "fel",
+   "fr": "vif"
+  },
+  {
+   "nl": "de streep",
+   "fr": "la rayure"
+  },
+  {
+   "nl": "de stip",
+   "fr": "le pois"
+  },
+  {
+   "nl": "het patroon",
+   "fr": "le motif"
+  },
+  {
+   "nl": "de etalage",
+   "fr": "la vitrine"
+  },
+  {
+   "nl": "kopen",
+   "fr": "acheter",
+   "v": 1
+  },
+  {
+   "nl": "betalen",
+   "fr": "payer",
+   "v": 1
+  },
+  {
+   "nl": "zoeken",
+   "fr": "chercher",
+   "v": 1
+  },
+  {
+   "nl": "vinden",
+   "fr": "trouver",
+   "v": 1
+  },
+  {
+   "nl": "dragen",
+   "fr": "porter",
+   "v": 1
+  },
+  {
+   "nl": "aantrekken",
+   "fr": "enfiler",
+   "v": 1
+  },
+  {
+   "nl": "uittrekken",
+   "fr": "retirer (un vêtement)",
+   "v": 1
+  },
+  {
+   "nl": "passen",
+   "fr": "essayer, aller (taille)",
+   "v": 1
+  },
+  {
+   "nl": "aankleden",
+   "fr": "habiller",
+   "v": 1
+  },
+  {
+   "nl": "uitkleden",
+   "fr": "déshabiller",
+   "v": 1
+  },
+  {
+   "nl": "strijken",
+   "fr": "repasser",
+   "v": 1
+  },
+  {
+   "nl": "naaien",
+   "fr": "coudre",
+   "v": 1
+  },
+  {
+   "nl": "breien",
+   "fr": "tricoter",
+   "v": 1
+  },
+  {
+   "nl": "kiezen",
+   "fr": "choisir",
+   "v": 1
+  },
+  {
+   "nl": "ruilen",
+   "fr": "échanger",
+   "v": 1
+  },
+  {
+   "nl": "kosten",
+   "fr": "coûter",
+   "v": 1
+  },
+  {
+   "nl": "verkopen",
+   "fr": "vendre",
+   "v": 1
+  },
+  {
+   "nl": "knippen",
+   "fr": "couper (aux ciseaux)",
+   "v": 1
+  },
+  {
+   "nl": "scheren",
+   "fr": "raser",
+   "v": 1
+  },
+  {
+   "nl": "vouwen",
+   "fr": "plier",
+   "v": 1
   }
  ]
 }

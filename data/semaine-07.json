@@ -65,7 +65,7 @@
   },
   {
    "nl": "de les",
-   "fr": "la leçon"
+   "fr": "le cours"
   },
   {
    "nl": "het vak",
@@ -81,7 +81,7 @@
   },
   {
    "nl": "het cijfer",
-   "fr": "la note (résultat)"
+   "fr": "la note"
   },
   {
    "nl": "de klas",
@@ -141,7 +141,7 @@
   },
   {
    "nl": "de taal",
-   "fr": "la langue (parlée)"
+   "fr": "la langue"
   },
   {
    "nl": "de regel",
@@ -157,11 +157,271 @@
   },
   {
    "nl": "de kennis",
-   "fr": "la connaissance"
+   "fr": "le savoir"
   },
   {
    "nl": "het diploma",
    "fr": "le diplôme"
+  },
+  {
+   "nl": "de sollicitatie",
+   "fr": "la candidature"
+  },
+  {
+   "nl": "het contract",
+   "fr": "le contrat"
+  },
+  {
+   "nl": "het pensioen",
+   "fr": "la retraite"
+  },
+  {
+   "nl": "de werkgever",
+   "fr": "l'employeur"
+  },
+  {
+   "nl": "de werknemer",
+   "fr": "l'employé"
+  },
+  {
+   "nl": "de werkloosheid",
+   "fr": "le chômage"
+  },
+  {
+   "nl": "de staking",
+   "fr": "la grève"
+  },
+  {
+   "nl": "de ploeg",
+   "fr": "l'équipe"
+  },
+  {
+   "nl": "de dienst",
+   "fr": "le service"
+  },
+  {
+   "nl": "het beroep",
+   "fr": "le métier"
+  },
+  {
+   "nl": "de carrière",
+   "fr": "la carrière"
+  },
+  {
+   "nl": "de opleiding",
+   "fr": "la formation"
+  },
+  {
+   "nl": "de universiteit",
+   "fr": "l'université"
+  },
+  {
+   "nl": "de hogeschool",
+   "fr": "la haute école"
+  },
+  {
+   "nl": "de directeur",
+   "fr": "le directeur"
+  },
+  {
+   "nl": "de secretaresse",
+   "fr": "la secrétaire"
+  },
+  {
+   "nl": "de ingenieur",
+   "fr": "l'ingénieur"
+  },
+  {
+   "nl": "de boer",
+   "fr": "l'agriculteur"
+  },
+  {
+   "nl": "de kok",
+   "fr": "le cuisinier"
+  },
+  {
+   "nl": "de kapper",
+   "fr": "le coiffeur"
+  },
+  {
+   "nl": "de monteur",
+   "fr": "le mécanicien"
+  },
+  {
+   "nl": "de schrijver",
+   "fr": "l'écrivain"
+  },
+  {
+   "nl": "de kunstenaar",
+   "fr": "l'artiste"
+  },
+  {
+   "nl": "het schooljaar",
+   "fr": "l'année scolaire"
+  },
+  {
+   "nl": "het rapport",
+   "fr": "le bulletin"
+  },
+  {
+   "nl": "de toets",
+   "fr": "le contrôle"
+  },
+  {
+   "nl": "het resultaat",
+   "fr": "le résultat"
+  },
+  {
+   "nl": "de pauze",
+   "fr": "la récréation, la pause"
+  },
+  {
+   "nl": "de speelplaats",
+   "fr": "la cour de récréation"
+  },
+  {
+   "nl": "het lokaal",
+   "fr": "la salle de classe"
+  },
+  {
+   "nl": "het schoolbord",
+   "fr": "le tableau"
+  },
+  {
+   "nl": "de gom",
+   "fr": "la gomme"
+  },
+  {
+   "nl": "de liniaal",
+   "fr": "la règle (à mesurer)"
+  },
+  {
+   "nl": "de schaar",
+   "fr": "les ciseaux"
+  },
+  {
+   "nl": "de lijm",
+   "fr": "la colle"
+  },
+  {
+   "nl": "de map",
+   "fr": "le classeur"
+  },
+  {
+   "nl": "de agenda",
+   "fr": "le journal de classe"
+  },
+  {
+   "nl": "het onderwerp",
+   "fr": "le sujet"
+  },
+  {
+   "nl": "de titel",
+   "fr": "le titre"
+  },
+  {
+   "nl": "de bladzijde",
+   "fr": "la page"
+  },
+  {
+   "nl": "werken",
+   "fr": "travailler",
+   "v": 1
+  },
+  {
+   "nl": "leren",
+   "fr": "apprendre",
+   "v": 1
+  },
+  {
+   "nl": "weten",
+   "fr": "savoir",
+   "v": 1
+  },
+  {
+   "nl": "kennen",
+   "fr": "connaître",
+   "v": 1
+  },
+  {
+   "nl": "kunnen",
+   "fr": "pouvoir",
+   "v": 1
+  },
+  {
+   "nl": "moeten",
+   "fr": "devoir",
+   "v": 1
+  },
+  {
+   "nl": "helpen",
+   "fr": "aider",
+   "v": 1
+  },
+  {
+   "nl": "vragen",
+   "fr": "demander",
+   "v": 1
+  },
+  {
+   "nl": "antwoorden",
+   "fr": "répondre",
+   "v": 1
+  },
+  {
+   "nl": "lezen",
+   "fr": "lire",
+   "v": 1
+  },
+  {
+   "nl": "schrijven",
+   "fr": "écrire",
+   "v": 1
+  },
+  {
+   "nl": "spreken",
+   "fr": "parler",
+   "v": 1
+  },
+  {
+   "nl": "begrijpen",
+   "fr": "comprendre",
+   "v": 1
+  },
+  {
+   "nl": "studeren",
+   "fr": "étudier",
+   "v": 1
+  },
+  {
+   "nl": "lesgeven",
+   "fr": "donner cours",
+   "v": 1
+  },
+  {
+   "nl": "uitleggen",
+   "fr": "expliquer",
+   "v": 1
+  },
+  {
+   "nl": "oefenen",
+   "fr": "s'exercer",
+   "v": 1
+  },
+  {
+   "nl": "slagen",
+   "fr": "réussir",
+   "v": 1
+  },
+  {
+   "nl": "zakken",
+   "fr": "rater (un examen)",
+   "v": 1
+  },
+  {
+   "nl": "verdienen",
+   "fr": "gagner (sa vie)",
+   "v": 1
   }
  ]
 }
