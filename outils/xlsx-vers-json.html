@@ -64,20 +64,38 @@ function lire(f) {
     mots = [];
     for (var i = start; i < rows.length; i++) {
       var nl = String(rows[i][0] || '').trim(), fr = String(rows[i][1] || '').trim(), note = String(rows[i][2] || '').trim();
-      if (nl && fr) { var o = { nl: nl, fr: fr }; if (note) o.note = note; mots.push(o); }
+      if (!nl || !fr) continue;
+      var o = { nl: nl, fr: fr };
+      /* troisième colonne : v, ww, verbe ou werkwoord marque un verbe. L'app
+         range les verbes à part dans l'écran de composition du deck. Toute
+         autre valeur reste une note libre. */
+      if (estVerbe(note)) o.v = 1; else if (note) o.note = note;
+      mots.push(o);
     }
     if (!document.getElementById('theme').value) document.getElementById('theme').value = f.name.replace('.xlsx', '');
     rendre();
   };
   r.readAsArrayBuffer(f);
 }
+/* un verbe se marque « = » puis « | v » en fin de ligne, ou par la troisième
+   colonne du xlsx. */
+function estVerbe(x) {
+  x = String(x || '').trim().toLowerCase();
+  return x === 'v' || x === 'ww' || x === 'verbe' || x === 'werkwoord';
+}
 function depuisTexte() {
   mots = [];
   document.getElementById('colle').value.split('\n').forEach(function (l) {
+    var marque = '';
+    var bar = l.lastIndexOf('|');
+    if (bar !== -1 && estVerbe(l.slice(bar + 1))) { marque = 'v'; l = l.slice(0, bar); }
     var p = l.split('=');
     if (p.length < 2) return;
     var nl = p[0].trim(), fr = p.slice(1).join('=').trim();
-    if (nl && fr) mots.push({ nl: nl, fr: fr });
+    if (!nl || !fr) return;
+    var o = { nl: nl, fr: fr };
+    if (marque) o.v = 1;
+    mots.push(o);
   });
   rendre();
 }
