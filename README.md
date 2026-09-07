@@ -4,11 +4,17 @@ Entraîneur de vocabulaire néerlandais / français pour deux personnes, install
 
 ## Ce qui est dedans
 
-Dix listes de 40 mots, aucun doublon d'une liste à l'autre. Un score d'apprentissage de 0 à 10 par mot. Une barre de 40 crans qui sert à la fois de progression et de carte de la liste. Un partage de progression entre les deux téléphones via Supabase, entièrement facultatif.
+Dix listes de 100 entrées : 80 mots et 20 verbes à l'infinitif, aucun doublon d'une liste à l'autre. En début de semaine, chacun compose dans la liste son propre deck de 40 mots — ceux qu'il ne connaît pas — et ce sont les seuls que l'app posera : tirage, leurres du QCM et paires du vrai/faux ne sortent jamais du deck. Un score d'apprentissage de 0 à 100 par mot. Une barre de 40 crans qui sert à la fois de progression et de carte du deck. Un partage de progression entre les deux téléphones via Supabase, entièrement facultatif.
+
+Le lot de 100 est commun aux deux ; les 40 ne le sont pas. Chacun garde son deck sur son propre téléphone, et rien n'oblige à choisir les mêmes mots.
+
+## Composer son deck
+
+À l'ouverture d'une liste sans deck, l'accueil ne propose plus les quatre modes mais un bouton « Composer mon deck ». On touche les mots à retenir, les verbes sont groupés à part, et le bouton du bas se débloque à exactement 40. Ensuite, « Modifier mon deck » est accessible depuis la liste des mots — retirer un mot le sort des questions mais garde sa progression.
 
 ## Mettre à jour le site
 
-Modifier un fichier sur GitHub, attendre la reconstruction de Pages. Pour tout changement de code, **incrémenter la ligne `VERSION` en haut de `sw.js`**, sinon les téléphones gardent l'ancienne version en cache. Les fichiers de `data/` sont rechargés depuis le réseau à chaque ouverture, aucune manipulation nécessaire.
+Modifier un fichier sur GitHub, attendre la reconstruction de Pages. Pour tout changement de code, **incrémenter la ligne `VERSION` en haut de `sw.js`** ET le `WT_BUILD` correspondant dans `index.html`, sinon les téléphones gardent l'ancienne version en cache. Les fichiers de `data/` sont rechargés depuis le réseau à chaque ouverture, aucune manipulation nécessaire.
 
 La progression est stockée sur chaque téléphone et n'est jamais écrasée par une mise à jour.
 
@@ -35,18 +41,28 @@ Ouvrir `outils/xlsx-vers-json.html` sur l'ordinateur, déposer un xlsx ou coller
 ] }
 ```
 
-L'identifiant doit rester stable : c'est la clé sous laquelle la progression est enregistrée.
+Un verbe se marque avec un `v` en troisième colonne du xlsx (ou `ww`, `verbe`, `werkwoord`), ou par un `| v` en fin de ligne collée : `lopen = marcher | v`. Dans le JSON, cela donne `"v": 1`. Sans cette marque, l'écran de composition range tout sous « mots ». Viser 80 mots et 20 verbes par liste.
+
+L'identifiant doit rester stable : c'est la clé sous laquelle la progression et le deck sont enregistrés.
 
 ## Le score d'apprentissage
 
-Chaque mot va de 0 à 10 et devient acquis à 10.
+Chaque mot va de 0 à 100 et devient acquis à 100.
 
 | Exercice | Réussite | Erreur |
 |---|---|---|
-| Vrai ou faux | +1 | −1 |
-| Carte | +2 | −2 |
-| QCM | +3 | −3 |
+| Vrai ou faux | +7 | −7 |
+| Carte | +14 | −14 |
+| QCM | +21 | −21 |
 
-Le score ne descend jamais sous 0. Un mot ne peut gagner que 5 points par jour, réglable dans l'app : une liste demande donc au minimum deux jours. En pratique, à 85 % de bonnes réponses, il faut environ 270 questions pour terminer une liste de 40 mots, soit deux séries de 25 par jour pendant une semaine.
+Le score ne descend jamais sous 0. L'objectif du jour vaut le tiers des points d'un deck, pour le boucler en trois séances par semaine ; une fois atteint, on peut continuer à jouer mais plus rien ne s'ajoute au score jusqu'au lendemain.
 
-En mode mélange, l'app choisit l'exercice selon le score du mot : carte tant qu'il est neuf, QCM à mesure qu'il monte. Elle sert toujours en priorité les mots au score le plus bas.
+En mode « Au hasard », l'app choisit l'exercice selon le score du mot — la carte domine tant qu'il est neuf, le QCM à mesure qu'il monte — mais les trois styles gardent une part à tous les niveaux, et jamais plus de trois questions d'affilée ne partagent le même style. Elle sert toujours en priorité les mots au score le plus bas, et à score égal ceux vus il y a le plus longtemps.
+
+## La série
+
+La série de bonnes réponses est gardée avec l'état de l'app : fermer l'app, changer de liste ou de semaine ne la casse pas. Seule une mauvaise réponse la remet à zéro. Le feu ne s'affiche qu'en cours d'entraînement, mais il repart au palier où il s'était arrêté.
+
+## Taille du deck
+
+Elle tient dans la constante `TAILLE_DECK` en haut du script de `index.html`. La changer déplace la barre de crans, l'objectif du jour et les barres comparées, mais quelques textes d'interface citent encore « les 40 mots » en toutes lettres : ils sont à relire dans le dictionnaire `T` si tu bouges cette valeur.
