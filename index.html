@@ -446,11 +446,29 @@ body.nuit .opt.roussi { border-color: #5A4028; }
 .e-phrase .trou.actif { animation: none; background: transparent; }
 .e-phrase .trou.actif span { opacity: 0; }
 @keyframes wtTrou { 50% { transform: translateY(-2px); box-shadow: 0 3px 8px rgba(0,0,0,.12); } }
-#t-qcm.en-phrase #q-opts { visibility: hidden; opacity: 0; transition: opacity .18s ease; }
-#t-qcm.en-phrase.ouvert #q-opts { visibility: visible; opacity: 1; }
-#t-qcm.en-phrase .e-trad { display: none; }
-#t-qcm.en-phrase.repondu .e-trad { display: block; animation: wtEntrer calc(.34s * var(--tempo)) ease-out; }
+/* 05/10/2026 (2) : plus de QCM sous la phrase. Le choix se fait dans un menu
+   déroulant ouvert à l'endroit du trou, la traduction est visible d'office,
+   et « Question suivante » arrive juste sous la phrase. */
+#t-qcm.en-phrase #q-opts { display: none; }
+#t-qcm.en-phrase .e-trad { display: block; }
+.menu-trou {
+  position: absolute; z-index: 6; min-width: 150px; max-width: calc(100% - 16px);
+  display: flex; flex-direction: column; padding: 5px; gap: 3px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.22); text-align: left;
+  animation: wtMenu .16s ease-out;
+}
+.menu-trou.cache { display: none; }
+@keyframes wtMenu { from { opacity: 0; transform: translateY(-4px); } }
+.menu-trou button {
+  font: inherit; font-family: var(--serif); font-size: 1.12rem; color: inherit; text-align: left;
+  background: transparent; border: 0; border-radius: 8px; padding: 10px 12px; cursor: pointer;
+}
+.menu-trou button:active { background: var(--acc-soft); }
+.e-phrase .barre { text-decoration: line-through; color: var(--bad, #c0392b); opacity: .75; margin-right: .3em; font-weight: 400; }
+.e-phrase.juste .cible { color: var(--ok, var(--acc)); }
 .e-phrase.rate .cible { color: var(--warm); }
+#t-actions-phrase { margin-top: 12px; }
 #t-actions-phrase .b { margin: 0; }
 .e-phrase .cible { color: var(--acc); font-weight: 700; }
 .e-trad { font-size: .86rem; line-height: 1.45; color: var(--mute); margin-top: 10px; }
@@ -1175,6 +1193,10 @@ body.nuit .paire-btn .b.roussi { border-color:#5A4028; }
         <div class="e-mot" id="q-mot">—</div>
         <div class="e-phrase" id="q-phrase"></div>
         <div class="e-trad" id="q-trad"></div>
+        <div class="menu-trou cache" id="q-menu" role="listbox"></div>
+      </div>
+      <div id="t-actions-phrase" style="display:none">
+        <button class="b plein" onclick="phraseSuivante()" data-t="ph-suivante">Question suivante</button>
       </div>
       <div class="opts" id="q-opts"></div>
     </div>
@@ -1195,9 +1217,6 @@ body.nuit .paire-btn .b.roussi { border-color:#5A4028; }
         <button class="b non" id="j-non" onclick="repFlash(false)"><span class="peau"></span><span class="txt" data-t="pas-su">Je ne savais pas</span></button>
         <button class="b oui" id="j-oui" onclick="repFlash(true)"><span class="peau"></span><span class="txt" data-t="su">Je savais</span></button>
       </div>
-    </div>
-    <div id="t-actions-phrase" style="display:none">
-      <button class="b plein" onclick="phraseSuivante()" data-t="ph-suivante">Question suivante</button>
     </div>
     <div id="t-actions-vf" class="paire-btn" style="display:none">
       <button class="b non" id="v-faux" onclick="repVF(false, this, event)"><span class="peau"></span><span class="txt" data-t="faux">Faux</span></button>
@@ -1813,7 +1832,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'bc';
+var WT_BUILD = 'bd';
 
 function charger() {
   var e = null;
@@ -2680,10 +2699,20 @@ function formeLeurre(x, rl, enTete) {
   if (enTete) return majuscule(f);
   return debut ? minuscule(f) : f;
 }
+/* langue de la phrase à trous : celle qu'on apprend, d'après l'identité
+   choisie dans les réglages — néerlandais pour Ulysse, français pour Jasmien,
+   quel que soit le sens réglé pour les autres exercices. Sans identité, on
+   retombe sur ce sens. */
+function languePhrase() {
+  var q = moi();
+  if (q === 'ulysse') return 'nl';
+  if (q === 'jasmien') return 'fr';
+  return cur.sens === 'nl-fr' ? 'fr' : 'nl';
+}
 function montrerPhrase() {
-  var m = cur.mot, nl = cur.sens === 'nl-fr';
+  var m = cur.mot;
   if (!cur.ph) cur.ph = m.ph[Math.floor(Math.random() * m.ph.length)];
-  cur.rl = nl ? 'fr' : 'nl';
+  cur.rl = languePhrase();
   cur.ouvert = false;
   var x = morceaux(cur.ph[cur.rl]), enTete = !x.av.trim();
   var r = x.mot;
@@ -2694,10 +2723,12 @@ function montrerPhrase() {
   document.getElementById('q-lang').textContent = tr('ph-consigne');
   document.getElementById('q-score').textContent = prog(liste.id, m).s + ' / ' + CIBLE;
   var ph = document.getElementById('q-phrase');
-  ph.classList.remove('revele', 'rate');
+  ph.classList.remove('revele', 'rate', 'juste');
   ph.innerHTML = phraseHTML(cur.ph[cur.rl], true);
   ph.classList.remove('entre'); void ph.offsetWidth; ph.classList.add('entre');
-  document.getElementById('q-trad').innerHTML = '';
+  /* la traduction est là d'office, le mot cherché en gras */
+  document.getElementById('q-trad').innerHTML = phraseHTML(cur.ph[cur.rl === 'nl' ? 'fr' : 'nl']);
+  document.getElementById('q-menu').classList.add('cache');
   /* leurres : d'abord de la même nature (verbe pour un verbe, mot pour un
      mot), sinon la grammaire de la phrase désigne la réponse à elle seule. */
   var pool = motsDe(liste).filter(function (y) { return y !== m; });
@@ -2712,50 +2743,63 @@ function montrerPhrase() {
     deja.push(f.toLowerCase()); choisis.push(f); sources.push(ordre[i].nl);
   }
   DISTRACTEURS['ph:' + m.nl] = sources;
-  var opts = mel([r].concat(choisis));
-  var c = document.getElementById('q-opts'); c.innerHTML = ''; c.classList.remove('fige');
-  opts.forEach(function (o) {
-    var b = document.createElement('button');
-    b.className = 'opt';
-    b.innerHTML = '<span class="peau"></span><span class="txt"></span>';
-    b.querySelector('.txt').textContent = o;
-    b.onclick = function (e) { onde(b, e, o === r); repPhrase(b, o === r); };
-    c.appendChild(b);
-  });
+  cur.opts = mel([r].concat(choisis));
+  document.getElementById('t-actions-phrase').style.display = 'none';
   boite.classList.remove('cache');
 }
-/* toucher le trou fait apparaître les quatre propositions */
+/* toucher le trou ouvre le menu déroulant juste sous lui ; le retoucher le
+   referme. Le menu est placé dans l'énoncé, recalé pour ne pas déborder. */
 function ouvrirTrou() {
-  if (!cur || cur.mode !== 'phrase' || cur.fait || cur.ouvert) return;
-  cur.ouvert = true;
-  document.getElementById('t-qcm').classList.add('ouvert');
+  if (!cur || cur.mode !== 'phrase' || cur.fait) return;
+  var menu = document.getElementById('q-menu');
+  if (!menu.classList.contains('cache')) { menu.classList.add('cache'); return; }
   var t = document.querySelector('#q-phrase .trou');
-  if (t) t.classList.add('actif');
-  vibrer([8]);
-  mesurer(document.getElementById('q-opts').children);
-}
-function repPhrase(b, juste) {
-  if (!cur || cur.fait) return; cur.fait = true;
-  var tous = document.querySelectorAll('#q-opts .opt');
-  document.getElementById('q-opts').classList.add('fige');
-  Array.prototype.forEach.call(tous, function (x) {
-    if (x === b) x.classList.add(juste ? 'juste' : 'faux');
-    else if (x.querySelector('.txt').textContent === cur.reponse) x.classList.add('juste');
-    else x.classList.add('pale');
+  var hote = menu.parentNode;
+  menu.innerHTML = '';
+  cur.opts.forEach(function (o) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = o;
+    b.onclick = function (e) {
+      e.stopPropagation();
+      wtDernierTouche = { x: e.clientX, y: e.clientY };
+      repPhrase(o);
+    };
+    menu.appendChild(b);
   });
-  revelerPhrase(juste);
+  menu.classList.remove('cache');
+  var rh = hote.getBoundingClientRect(), rt = t.getBoundingClientRect();
+  var w = menu.offsetWidth;
+  var gauche = rt.left - rh.left + rt.width / 2 - w / 2;
+  gauche = Math.max(8, Math.min(gauche, rh.width - w - 8));
+  menu.style.left = gauche + 'px';
+  /* la scène rogne ce qui dépasse : si la place manque sous le trou, le menu
+     s'ouvre au-dessus, du côté où il y a le plus de place. */
+  var rs = document.querySelector('#v-train .scene').getBoundingClientRect();
+  var h = menu.offsetHeight, dessous = rs.bottom + 40 - rt.bottom, dessus = rt.top - rs.top + 40;
+  var enBas = dessous >= h + 6 || dessous >= dessus;
+  menu.style.top = (enBas ? rt.bottom - rh.top + 6 : rt.top - rh.top - h - 6) + 'px';
+  vibrer([8]);
+}
+function repPhrase(choix) {
+  if (!cur || cur.fait) return; cur.fait = true;
+  var juste = choix === cur.reponse;
+  document.getElementById('q-menu').classList.add('cache');
+  revelerPhrase(juste, choix);
   appliquer(juste, 'phrase');
-  if (juste) wtImpact(b, wtPalier(wtStreak));
+  if (juste) wtImpact(document.querySelector('#t-qcm .enonce'), wtPalier(wtStreak));
   document.getElementById('t-actions-phrase').style.display = 'block';
 }
-/* le trou se remplit de la forme exacte, la traduction entière apparaît */
-function revelerPhrase(juste) {
+/* le trou se remplit de la forme exacte ; en cas d'erreur, le mot choisi
+   reste visible, barré, devant la bonne réponse. */
+function revelerPhrase(juste, choix) {
   if (!cur || cur.mode !== 'phrase' || !cur.ph) return;
   var e = document.getElementById('q-phrase');
-  e.innerHTML = phraseHTML(cur.ph[cur.rl]);
+  var x = morceaux(cur.ph[cur.rl]);
+  var faux = (juste === false && choix) ? '<s class="barre">' + ech(choix) + '</s>' : '';
+  e.innerHTML = ech(x.av) + faux + '<b class="cible">' + ech(x.mot) + '</b>' + ech(x.ap);
   e.classList.add('revele');
   e.classList.toggle('rate', juste === false);
-  document.getElementById('q-trad').innerHTML = phraseHTML(cur.ph[cur.rl === 'nl' ? 'fr' : 'nl']);
+  e.classList.toggle('juste', juste === true);
   document.getElementById('t-qcm').classList.add('repondu');
 }
 function phraseSuivante() {
