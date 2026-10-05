@@ -37,3 +37,9 @@ grant select, insert, update on table duo to anon;
 
 insert into duo (id) values ('ulysse'), ('jasmien'), ('semaine')
 on conflict (id) do nothing;
+
+-- Récompenses (05/10/2026) : un coupon peut maintenant être à l'état
+-- 'reserve' (cadeau visé, pas encore gagné) avant 'du' puis 'fait'. Si la
+-- table coupons a été créée avec une contrainte sur etat, cette ligne la
+-- retire ; sans contrainte, elle ne fait rien.
+alter table if exists coupons drop constraint if exists coupons_etat_check;
