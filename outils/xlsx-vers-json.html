@@ -24,7 +24,7 @@ code { background: #2a2a2a; padding: 1px 5px; border-radius: 4px; font-size: .8r
 <body>
 <div class="wrap">
   <h1>Convertir une liste</h1>
-  <p>À utiliser sur l'ordinateur, pas sur le téléphone. Dépose un xlsx (colonne A en néerlandais, colonne B en français, colonne C facultative pour une note) ou colle directement des lignes au format <code>het huis = la maison</code>. Tu récupères un fichier JSON à déposer dans <code>data/</code> du dépôt, puis tu l'ajoutes à <code>data/index.json</code>.</p>
+  <p>À utiliser sur l'ordinateur, pas sur le téléphone. Dépose un xlsx (colonne A en néerlandais, colonne B en français, colonne C facultative pour une note ou « v » pour un verbe, colonnes D à K facultatives pour quatre phrases d'exemple, par paires néerlandais puis français (D-E, F-G, H-I, J-K), le mot entre accolades dans chacune, par exemple <code>Ik zie {de hond}.</code> / <code>Je vois {le chien}.</code>) ou colle directement des lignes au format <code>het huis = la maison</code>. Tu récupères un fichier JSON à déposer dans <code>data/</code> du dépôt, puis tu l'ajoutes à <code>data/index.json</code>.</p>
 
   <div class="zone" id="zone">Déposer un .xlsx ici, ou cliquer pour choisir</div>
   <input type="file" id="fichier" accept=".xlsx" style="display:none">
@@ -70,6 +70,14 @@ function lire(f) {
          range les verbes à part dans l'écran de composition du deck. Toute
          autre valeur reste une note libre. */
       if (estVerbe(note)) o.v = 1; else if (note) o.note = note;
+      /* colonnes D à K : jusqu'à quatre phrases d'exemple, gardées seulement si le mot
+         y est bien marqué entre accolades dans les deux langues. */
+      var ph = [];
+      [[3, 4], [5, 6], [7, 8], [9, 10]].forEach(function (c) {
+        var a = String(rows[i][c[0]] || '').trim(), b = String(rows[i][c[1]] || '').trim();
+        if (/\{[^{}]+\}/.test(a) && /\{[^{}]+\}/.test(b)) ph.push({ nl: a, fr: b });
+      });
+      if (ph.length) o.ph = ph;
       mots.push(o);
     }
     if (!document.getElementById('theme').value) document.getElementById('theme').value = f.name.replace('.xlsx', '');

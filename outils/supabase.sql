@@ -18,6 +18,10 @@ create table if not exists duo (
 -- une table déjà créée.
 alter table duo add column if not exists serie integer default 0;
 
+-- taille du deck (05/10/2026) : le deck n'a plus 40 mots fixes, l'autre a
+-- besoin de sa taille pour mettre les deux barres de points à la même échelle.
+alter table duo add column if not exists taille integer default 0;
+
 alter table duo enable row level security;
 
 drop policy if exists duo_lecture on duo;
