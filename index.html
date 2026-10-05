@@ -785,6 +785,8 @@ body[data-vue="train"][data-heat="14"] .sticky {
 .cad-c.vide { color:var(--faint); font-style:italic; cursor:default; }
 .cad-c.choisir { border-color:var(--warm); color:var(--ink); }
 .cad-c.choisir::after { content:' \2192'; color:var(--warm); }
+.cad-c.vise { border-color:var(--acc); background:var(--acc-soft); }
+.cad-c.vise::after { content:' \2713'; color:var(--acc); }
 .cad-c:active { border-color:var(--acc); }
 .coupon { display:flex; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid var(--line); }
 .coupon .c-t { flex:1; min-width:0; font-size:.86rem; line-height:1.35; }
@@ -1458,14 +1460,17 @@ var T = {
     'fin-t': 'Liste terminée', 'fin-m': 'Tous les mots du deck sont acquis.',
     'fin-choisir': 'Choisir ma récompense', 'fin-rentrer': "Revenir à l'accueil",
     'cad-t': 'Récompenses',
-    'cad-p': "Chacun pose trois cadeaux qu'il est prêt à offrir à l'autre. Celui qui boucle tout son deck choisit le sien parmi les trois de l'autre.",
+    'cad-p': "Chacun pose trois cadeaux qu'il est prêt à offrir à l'autre. Tu peux choisir à tout moment celui que tu vises parmi ceux de l'autre, et changer d'avis tant qu'il n'est pas gagné. Tu le reçois quand tout ton deck est acquis.",
     'cad-mes': 'Ce que je propose à @', 'cad-ses': 'Ce que @ me propose',
     'cad-ph': 'un cadeau à offrir…', 'cad-vide': 'pas encore posé',
     'cad-coupons': 'Récompenses gagnées', 'cad-aucun': 'aucune pour le moment',
-    'cad-droit-ok': 'Tout ton deck est acquis : touche un cadeau pour le choisir.',
-    'cad-droit-non': 'Encore @ mot(s) à acquérir avant de pouvoir choisir.',
-    'cad-droit-vide': "@ n'a pas encore posé ses trois cadeaux.",
-    'cad-droit-deja': 'Déjà choisi pour cette liste : « @ ».',
+    'cad-droit-ok': 'Tout ton deck est acquis : touche un cadeau pour le recevoir.',
+    'cad-droit-libre': "Touche le cadeau que tu vises. Tu le recevras quand tout ton deck sera acquis.",
+    'cad-droit-vise': "Tu vises « @ ». Encore @@ mot(s) à acquérir pour le recevoir — tu peux encore changer d'avis.",
+    'cad-droit-sansdeck': "Tu vises « @ ». Compose ton deck pour pouvoir le gagner.",
+    'cad-droit-vide': "@ n'a encore posé aucun cadeau.",
+    'cad-droit-deja': 'Gagné pour cette liste : « @ ».',
+    'cad-vise-moi': 'je le vise · pas encore gagné', 'cad-vise-autre': '@ le vise · pas encore gagné',
     'cad-du-moi': 'gagné par moi', 'cad-du-autre': 'je le dois à @',
     'cad-honorer': 'Honoré', 'cad-fait': 'honoré',
     'cad-manque': '3 à poser', 'cad-puce': 'Cadeaux', 'mot-puce': 'Un mot',
@@ -1476,7 +1481,9 @@ var T = {
     'choix-t': 'Liste terminée',
     'choix-p': 'Tout ton deck est acquis. Choisis ta récompense parmi les trois propositions de @.',
     'choix-rien': "Tout ton deck est acquis, mais @ n'a pas encore posé ses trois cadeaux. Reviens ici quand ce sera fait.",
-    'choix-ok': 'Choisir « @ » ? Ce choix est définitif pour cette liste.',
+    'choix-ok': 'Viser « @ » ? Tu pourras changer d\'avis tant que ta liste n\'est pas finie.',
+    'choix-change': 'Viser « @ » à la place ?', 'choix-recevoir': 'Recevoir « @ » ? Ce choix est définitif pour cette liste.',
+    'fin-cadeau': 'Tout ton deck est acquis. Ton cadeau est gagné : « @ ».', 'fin-voir': 'Voir mes récompenses',
     'choix-plus-tard': 'Plus tard', 'choix-deja': 'Tu as déjà choisi pour cette liste : « @ ».',
     'mot-h': 'Un mot pour @',
     'mot-p': "Ce mot reste invisible jusqu'à ce que l'autre ouvre l'app. Il s'affiche alors une seule fois, puis passe en « lu ».",
@@ -1564,14 +1571,17 @@ var T = {
     'fin-t': 'Lijst afgewerkt', 'fin-m': 'Alle woorden van het deck zijn gekend.',
     'fin-choisir': 'Mijn beloning kiezen', 'fin-rentrer': 'Terug naar het beginscherm',
     'cad-t': 'Beloningen',
-    'cad-p': 'Ieder legt drie cadeaus vast die hij aan de ander wil geven. Wie zijn hele deck afwerkt, kiest er één uit de drie van de ander.',
+    'cad-p': 'Ieder legt drie cadeaus vast die hij aan de ander wil geven. Je kiest op elk moment welk cadeau van de ander je wilt, en je mag van gedachten veranderen zolang het niet verdiend is. Je krijgt het zodra je hele deck gekend is.',
     'cad-mes': 'Wat ik aan @ aanbied', 'cad-ses': 'Wat @ mij aanbiedt',
     'cad-ph': 'een cadeau om te geven…', 'cad-vide': 'nog niet ingevuld',
     'cad-coupons': 'Verdiende beloningen', 'cad-aucun': 'voorlopig geen',
-    'cad-droit-ok': 'Je hele deck is gekend: tik op een cadeau om het te kiezen.',
-    'cad-droit-non': 'Nog @ woord(en) te leren voor je mag kiezen.',
-    'cad-droit-vide': '@ heeft nog geen drie cadeaus vastgelegd.',
-    'cad-droit-deja': 'Al gekozen voor deze lijst: « @ ».',
+    'cad-droit-ok': 'Je hele deck is gekend: tik op een cadeau om het te krijgen.',
+    'cad-droit-libre': 'Tik op het cadeau dat je wilt. Je krijgt het zodra je hele deck gekend is.',
+    'cad-droit-vise': 'Je wilt « @ ». Nog @@ woord(en) te leren om het te krijgen — je mag nog van gedachten veranderen.',
+    'cad-droit-sansdeck': 'Je wilt « @ ». Stel je deck samen om het te kunnen verdienen.',
+    'cad-droit-vide': '@ heeft nog geen enkel cadeau vastgelegd.',
+    'cad-droit-deja': 'Verdiend voor deze lijst: « @ ».',
+    'cad-vise-moi': 'ik wil dit · nog niet verdiend', 'cad-vise-autre': '@ wil dit · nog niet verdiend',
     'cad-du-moi': 'door mij verdiend', 'cad-du-autre': 'ik ben dit @ verschuldigd',
     'cad-honorer': 'Ingelost', 'cad-fait': 'ingelost',
     'cad-manque': '3 in te vullen', 'cad-puce': 'Cadeaus', 'mot-puce': 'Woordje',
@@ -1582,7 +1592,9 @@ var T = {
     'choix-t': 'Lijst afgewerkt',
     'choix-p': 'Je hele deck is gekend. Kies je beloning uit de drie voorstellen van @.',
     'choix-rien': 'Je hele deck is gekend, maar @ heeft nog geen drie cadeaus vastgelegd. Kom hier terug wanneer dat gebeurd is.',
-    'choix-ok': '« @ » kiezen? Deze keuze is definitief voor deze lijst.',
+    'choix-ok': '« @ » kiezen? Je mag van gedachten veranderen zolang je lijst niet af is.',
+    'choix-change': 'Liever « @ »?', 'choix-recevoir': '« @ » nemen? Deze keuze is definitief voor deze lijst.',
+    'fin-cadeau': 'Je hele deck is gekend. Je cadeau is verdiend: « @ ».', 'fin-voir': 'Mijn beloningen bekijken',
     'choix-plus-tard': 'Later', 'choix-deja': 'Je hebt voor deze lijst al gekozen: « @ ».',
     'mot-h': 'Een woordje voor @',
     'mot-p': 'Dit berichtje blijft onzichtbaar tot de ander de app opent. Het verschijnt dan één keer en gaat daarna op « gelezen ».',
@@ -1832,7 +1844,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'bd';
+var WT_BUILD = 'be';
 
 function charger() {
   var e = null;
@@ -3707,8 +3719,11 @@ function wtFeteSeance() {
 }
 function wtFinDeListe() {
   vibrer([60, 80, 60, 80, 200]);
-  ouvrirFete(tr('fin-t'), tailleDeck() + " / " + tailleDeck(), tr('fin-m'),
-    '<button class="b plein" onclick="allerChoix()">' + ech(tr('fin-choisir')) + '</button>' +
+  /* le cadeau visé, s'il y en a un, se débloque à cet instant */
+  var c = couponDeLaListe();
+  debloquerSiFini();
+  ouvrirFete(tr('fin-t'), tailleDeck() + " / " + tailleDeck(), c ? tr('fin-cadeau', c.texte) : tr('fin-m'),
+    '<button class="b plein" onclick="allerChoix()">' + ech(tr(c ? 'fin-voir' : 'fin-choisir')) + '</button>' +
     '<button class="b fin" onclick="fermerFete(false)">' + ech(tr('fin-rentrer')) + '</button>');
 }
 function fermerFete(continuer) {
@@ -3723,7 +3738,7 @@ function allerChoix() {
   document.getElementById('v-fete').classList.add('cache');
   wtPause = false;
   finSession();
-  voir('choix');
+  voir('cadeaux');
 }
 
 /* ═══════════ mot de motivation ═══════════
@@ -3882,7 +3897,7 @@ function tirerCoupons() {
   return api('coupons?select=id,liste,de,pour,texte,etat,cree&order=cree.desc')
     .then(function (r) { return r.json(); })
     .then(function (l) {
-      if (Array.isArray(l)) coupons = l;
+      if (Array.isArray(l)) { coupons = l; debloquerSiFini(); }
       else wtErr = 'lecture coupons : ' + ((l && (l.message || l.code)) || 'réponse inattendue');
     });
 }
@@ -3947,10 +3962,36 @@ function enregistrerCadeaux() {
       e.classList.add('attente');
     });
 }
+/* ═ choix du cadeau (refonte du 05/10/2026) ═
+   On vise un cadeau de l'autre À TOUT MOMENT : le coupon est créé tout de
+   suite, à l'état « reserve », et peut encore changer de cadeau. Il passe à
+   « du » — gagné, à honorer — le jour où tout le deck est acquis, et seulement
+   là. Le déblocage est fait par le téléphone de celui qui a visé, à la fin de
+   liste comme à chaque relecture des coupons, ce qui rattrape une fin de liste
+   faite hors ligne. Viser après avoir fini donne directement un coupon gagné. */
 function couponDeLaListe() {
+  if (!liste) return null;
   for (var i = 0; i < coupons.length; i++)
     if (coupons[i].liste === liste.id && coupons[i].pour === moi()) return coupons[i];
   return null;
+}
+function listeFinie() { return !!liste && deckPret(liste) && acquisDe(liste) >= motsDe(liste).length; }
+function majCoupon(c, champs) {
+  champs.maj = new Date().toISOString();
+  for (var k in champs) c[k] = champs[k];
+  /* la clé porte les champs écrits : un déblocage mis en file ne doit pas
+     écraser un changement de cadeau en attente, ni l'inverse. */
+  return envoyer('coupon-maj:' + c.id + ':' + Object.keys(champs).join(','), 'coupons?id=eq.' + c.id, {
+    method: 'PATCH',
+    headers: { 'Prefer': 'return=minimal' },
+    body: JSON.stringify(champs)
+  });
+}
+function debloquerSiFini() {
+  var c = couponDeLaListe();
+  if (!c || c.etat !== 'reserve' || !listeFinie() || !cfg()) return;
+  majCoupon(c, { etat: 'du' }).catch(function () {});
+  if (document.body.dataset.vue === 'cadeaux') rendreCadeaux();
 }
 function rendreCadeaux() {
   if (!liste) return;
@@ -3962,41 +4003,41 @@ function rendreCadeaux() {
     if (document.activeElement !== e) e.value = m[i] || '';
     e.placeholder = tr('cad-ph');
   }
-  /* Le choix se fait directement ici dès que la liste est bouclée : il n'y a
-     aucune raison d'obliger à repasser par l'écran de célébration, que ceux
-     qui ont fini avant cette version n'ont jamais vu. */
   var ses = cadeaux[autre()] || [], h = '';
-  var deja = couponDeLaListe();
-  /* sans deck validé il n'y a pas de liste bouclée : motsDe rendrait zéro mot
-     et zéro acquis, ce qui aurait ouvert le droit au cadeau d'emblée. */
-  var reste = deckPret(liste) ? motsDe(liste).length - acquisDe(liste) : liste.mots.length;
-  var droit = !deja && reste <= 0 && cadeauxPrets(ses);
+  var c = couponDeLaListe();
+  var fige = !!(c && c.etat !== 'reserve');
+  var reste = deckPret(liste) ? motsDe(liste).length - acquisDe(liste) : null;
+  var aucun = !ses.some(function (x) { return x && String(x).trim(); });
   var dl = document.getElementById('cad-droit');
-  dl.textContent = deja ? tr('cad-droit-deja', deja.texte)
-    : (reste > 0 ? tr('cad-droit-non', reste)
-    : (cadeauxPrets(ses) ? tr('cad-droit-ok') : tr('cad-droit-vide', NOMS[autre()])));
-  dl.classList.toggle('attente', droit);
+  dl.textContent = fige ? tr('cad-droit-deja', c.texte)
+    : aucun ? tr('cad-droit-vide', NOMS[autre()])
+    : !c ? (listeFinie() ? tr('cad-droit-ok') : tr('cad-droit-libre'))
+    : reste === null ? tr('cad-droit-sansdeck', c.texte)
+    : tr('cad-droit-vise', c.texte, Math.max(0, reste));
+  dl.classList.toggle('attente', !fige && !aucun && (!c || listeFinie()));
   for (var j = 0; j < 3; j++) {
     var v = ses[j] && String(ses[j]).trim();
     if (!v) { h += '<div class="cad-c vide">' + ech(tr('cad-vide')) + '</div>'; continue; }
-    h += droit
-      ? '<button class="cad-c choisir" onclick="choisirCadeau(' + j + ')">' + ech(ses[j]) + '</button>'
-      : '<div class="cad-c">' + ech(ses[j]) + '</div>';
+    var vise = !!(c && c.texte === ses[j]);
+    h += fige
+      ? '<div class="cad-c' + (vise ? ' vise' : '') + '">' + ech(ses[j]) + '</div>'
+      : '<button class="cad-c ' + (vise ? 'vise' : 'choisir') + '" onclick="choisirCadeau(' + j + ')">' + ech(ses[j]) + '</button>';
   }
   document.getElementById('cad-ses').innerHTML = h;
-  var c = '';
+  var cc = '';
   coupons.forEach(function (x) {
     var l = (listes.filter(function (y) { return y.id === x.liste; })[0] || {}).titre || x.liste;
     var pourMoi = x.pour === moi();
-    c += '<div class="coupon' + (x.etat === 'fait' ? ' fait' : '') + '">' +
+    var q = x.etat === 'fait' ? tr('cad-fait')
+      : x.etat === 'reserve' ? (pourMoi ? tr('cad-vise-moi') : tr('cad-vise-autre', NOMS[x.pour]))
+      : (pourMoi ? tr('cad-du-moi') : tr('cad-du-autre', NOMS[x.pour]));
+    cc += '<div class="coupon' + (x.etat === 'fait' ? ' fait' : '') + (x.etat === 'reserve' ? ' vise' : '') + '">' +
       '<div style="flex:1;min-width:0"><div class="c-t">' + ech(x.texte) + '</div>' +
-      '<div class="c-q">' + ech(l) + ' · ' +
-      ech(x.etat === 'fait' ? tr('cad-fait') : (pourMoi ? tr('cad-du-moi') : tr('cad-du-autre', NOMS[x.pour]))) +
-      '</div></div>' +
-      ((!pourMoi && x.etat !== 'fait') ? '<button onclick="honorer(' + x.id + ')">' + ech(tr('cad-honorer')) + '</button>' : '') +
+      '<div class="c-q">' + ech(l) + ' · ' + ech(q) + '</div></div>' +
+      ((!pourMoi && x.etat === 'du') ? '<button onclick="honorer(' + x.id + ')">' + ech(tr('cad-honorer')) + '</button>' : '') +
       '</div>';
   });
-  document.getElementById('cad-coupons').innerHTML = c ||
+  document.getElementById('cad-coupons').innerHTML = cc ||
     '<div style="font-size:.78rem;color:var(--faint);padding:8px 0">' + ech(tr('cad-aucun')) + '</div>';
 }
 function honorer(id) {
@@ -4008,30 +4049,26 @@ function honorer(id) {
     body: JSON.stringify({ etat: 'fait', maj: new Date().toISOString() })
   }).then(tirerCoupons).then(rendreCadeaux).catch(function () { alert('Connexion impossible.'); });
 }
-function rendreChoix() {
-  if (!liste) return;
-  var p = document.getElementById('choix-p'), h = document.getElementById('choix-items');
-  var deja = couponDeLaListe();
-  if (deja) { p.textContent = tr('choix-deja', deja.texte); h.innerHTML = ''; return; }
-  var ses = cadeaux[autre()] || [];
-  if (!cadeauxPrets(ses)) { p.textContent = tr('choix-rien', NOMS[autre()]); h.innerHTML = ''; return; }
-  p.textContent = tr('choix-p', NOMS[autre()]);
-  h.innerHTML = ses.slice(0, 3).map(function (t, i) {
-    return '<button class="cad-c" onclick="choisirCadeau(' + i + ')">' + ech(t) + '</button>';
-  }).join('');
-}
+/* écran hérité de l'ancien fonctionnement : il renvoie simplement aux récompenses */
+function rendreChoix() { if (document.body.dataset.vue === 'choix') voir('cadeaux'); }
 function choisirCadeau(i) {
   var t = (cadeaux[autre()] || [])[i];
-  if (!t) return;
-  if (!cfg()) { alert('Le partage n\'est pas configuré : la récompense ne pourrait pas être transmise.'); return; }
-  if (couponDeLaListe()) { rendreChoix(); return; }
-  if (!confirm(tr('choix-ok', t))) return;
-  envoyer('coupon:' + liste.id + ':' + moi(), 'coupons', {
-    method: 'POST',
-    headers: { 'Prefer': 'return=minimal' },
-    body: JSON.stringify([{ liste: liste.id, de: autre(), pour: moi(), texte: t, etat: 'du', cree: new Date().toISOString() }])
-  }).then(tirerCoupons).then(function () {
-    son('fete'); vibrer([30, 50, 30]);
+  if (!t || !String(t).trim()) return;
+  if (!cfg()) { alert('Le partage n\'est pas configuré : le choix ne pourrait pas être transmis.'); return; }
+  var c = couponDeLaListe(), fini = listeFinie();
+  if (c && c.etat !== 'reserve') { rendreCadeaux(); return; }
+  if (c && c.texte === t) return;
+  if (!confirm(tr(fini ? 'choix-recevoir' : (c ? 'choix-change' : 'choix-ok'), t))) return;
+  var etatNv = fini ? 'du' : 'reserve';
+  var envoi = c
+    ? majCoupon(c, { texte: t, etat: etatNv })
+    : envoyer('coupon:' + liste.id + ':' + moi(), 'coupons', {
+        method: 'POST',
+        headers: { 'Prefer': 'return=minimal' },
+        body: JSON.stringify([{ liste: liste.id, de: autre(), pour: moi(), texte: t, etat: etatNv, cree: new Date().toISOString() }])
+      });
+  envoi.then(tirerCoupons).then(function () {
+    if (fini) { son('fete'); vibrer([30, 50, 30]); } else vibrer([14]);
     if (document.body.dataset.vue === 'cadeaux') rendreCadeaux(); else voir('cadeaux');
   }).catch(function () { alert('Connexion impossible.'); });
 }
