@@ -92,7 +92,7 @@ body {
 .duo-b { flex: 1; height: 5px; border-radius: 3px; background: var(--empty); overflow: hidden; }
 .duo-b > i { display: block; height: 5px; width: 0; background: var(--warm); border-radius: 3px; transition: width .5s ease; }
 .duo-l.moi .duo-b > i { background: var(--acc); }
-.duo-c { font-size: .74rem; width: 46px; text-align: right; flex-shrink: 0; }
+.duo-c { font-size: .74rem; width: 64px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .duo-f { font-size: .7rem; color: var(--warm); width: 34px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; }
 .duo-f.zero { opacity: .35; }
 .duo-etat { font-size: .68rem; color: var(--faint); text-align: center; margin-top: 2px; }
@@ -427,6 +427,40 @@ body.nuit .opt.roussi { border-color: #5A4028; }
   display: flex; align-items: center; justify-content: center;
 }
 
+
+/* ═ phrases à trous et exemple au dos des cartes (05/10/2026) ═ */
+.e-phrase, .e-trad { display: none; }
+#t-qcm.en-phrase #q-mot { display: none; }
+#t-qcm.en-phrase .e-phrase { display: block; }
+#t-qcm.en-phrase .enonce { padding: 20px 16px; }
+.e-phrase { font-family: var(--serif); font-size: 1.32rem; line-height: 1.4; margin-top: 10px; }
+.e-phrase.entre { animation: wtEntrer calc(.34s * var(--tempo)) cubic-bezier(.3,1.5,.5,1); }
+/* le trou est un bouton : le toucher ouvre les quatre propositions */
+.e-phrase .trou {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 3.6em; height: 1.35em; margin: 0 .2em; padding: 0 .4em; vertical-align: -.2em;
+  font: inherit; font-size: .9em; color: var(--acc); cursor: pointer;
+  background: var(--acc-soft); border: 0; border-bottom: 2px solid var(--acc); border-radius: 6px 6px 2px 2px;
+  animation: wtTrou 1.6s ease-in-out infinite;
+}
+.e-phrase .trou.actif { animation: none; background: transparent; }
+.e-phrase .trou.actif span { opacity: 0; }
+@keyframes wtTrou { 50% { transform: translateY(-2px); box-shadow: 0 3px 8px rgba(0,0,0,.12); } }
+#t-qcm.en-phrase #q-opts { visibility: hidden; opacity: 0; transition: opacity .18s ease; }
+#t-qcm.en-phrase.ouvert #q-opts { visibility: visible; opacity: 1; }
+#t-qcm.en-phrase .e-trad { display: none; }
+#t-qcm.en-phrase.repondu .e-trad { display: block; animation: wtEntrer calc(.34s * var(--tempo)) ease-out; }
+.e-phrase.rate .cible { color: var(--warm); }
+#t-actions-phrase .b { margin: 0; }
+.e-phrase .cible { color: var(--acc); font-weight: 700; }
+.e-trad { font-size: .86rem; line-height: 1.45; color: var(--mute); margin-top: 10px; }
+.e-trad .cible, .f-ex .cible { font-weight: 700; color: inherit; }
+.f-ex { display: flex; flex-direction: column; gap: 3px; margin-top: 10px; max-width: 100%; font-size: .74rem; line-height: 1.35; color: var(--mute); }
+.f-ex span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.f-ex .f-ex-tr { color: var(--faint); }
+/* avec un exemple, le dos se resserre pour tenir dans la carte la plus basse */
+.face.dos:has(.f-ex:not(:empty)) { padding: 12px 16px; }
+.face.dos:has(.f-ex:not(:empty)) .e-mot { font-size: 1.45rem; margin-top: 4px; }
 
 #wt-sonde {
   display: none; position: absolute; left: 0; right: 0; top: 0; z-index: 99;
@@ -1082,7 +1116,7 @@ body.nuit .paire-btn .b.roussi { border-color:#5A4028; }
   <div class="modes" id="a-modes">
     <button class="b" onclick="demarrer('flash')" data-t="m-flash">Cartes</button>
     <button class="b" onclick="demarrer('qcm')" data-t="m-qcm">QCM</button>
-    <button class="b" onclick="demarrer('vf')" data-t="m-vf">Vrai ou faux</button>
+    <button class="b" onclick="demarrer('phrase')" data-t="m-phrase">Phrases à trous</button>
     <button class="b plein" onclick="demarrer('mix')" data-t="m-mix">Au hasard</button>
   </div>
   <button class="b fin" onclick="voir('listes')" data-t="changer">Changer de liste</button>
@@ -1129,6 +1163,7 @@ body.nuit .paire-btn .b.roussi { border-color:#5A4028; }
           <div class="face dos">
             <div class="e-lang" id="f-lang-b">français</div>
             <div class="e-mot" id="f-mot-b">—</div>
+            <div class="f-ex" id="f-ex"></div>
           </div>
         </div>
       </div>
@@ -1138,6 +1173,8 @@ body.nuit .paire-btn .b.roussi { border-color:#5A4028; }
         <div class="e-score" id="q-score"></div>
         <div class="e-lang" id="q-lang">nederlands</div>
         <div class="e-mot" id="q-mot">—</div>
+        <div class="e-phrase" id="q-phrase"></div>
+        <div class="e-trad" id="q-trad"></div>
       </div>
       <div class="opts" id="q-opts"></div>
     </div>
@@ -1159,6 +1196,9 @@ body.nuit .paire-btn .b.roussi { border-color:#5A4028; }
         <button class="b oui" id="j-oui" onclick="repFlash(true)"><span class="peau"></span><span class="txt" data-t="su">Je savais</span></button>
       </div>
     </div>
+    <div id="t-actions-phrase" style="display:none">
+      <button class="b plein" onclick="phraseSuivante()" data-t="ph-suivante">Question suivante</button>
+    </div>
     <div id="t-actions-vf" class="paire-btn" style="display:none">
       <button class="b non" id="v-faux" onclick="repVF(false, this, event)"><span class="peau"></span><span class="txt" data-t="faux">Faux</span></button>
       <button class="b oui" id="v-vrai" onclick="repVF(true, this, event)"><span class="peau"></span><span class="txt" data-t="vrai">Vrai</span></button>
@@ -1173,7 +1213,7 @@ body.nuit .paire-btn .b.roussi { border-color:#5A4028; }
   </div>
   <div class="bloc">
     <h3 data-t="g-rythme">Rythme</h3>
-    <p data-t="g-rythme-p">Un mot vaut 10 points. Vrai ou faux en rapporte 1, une carte 2, un QCM 3, et une erreur en reprend autant. Aucune limite par jour : une liste peut se boucler d'une traite.</p>
+    <p data-t="g-rythme-p"></p>
     <div class="rangee"><span data-t="g-dir">Sens des questions</span>
       <select id="g-dir" onchange="regler('dir', this.value)">
         <option value="auto" data-t="g-dir-auto">les deux</option><option value="fr-nl" data-t="g-dir-fn">français vers NL</option><option value="nl-fr" data-t="g-dir-nf">NL vers français</option>
@@ -1266,7 +1306,7 @@ body.nuit .paire-btn .b.roussi { border-color:#5A4028; }
     <div class="h-titre" data-t="cad-t">Récompenses</div>
     <div class="icones"><button class="ico" onclick="voir('accueil')" aria-label="Fermer">✕</button></div>
   </div>
-  <p style="font-size:.78rem;color:var(--mute);margin-top:6px;line-height:1.5" data-t="cad-p">Chacun pose trois cadeaux qu'il est prêt à offrir à l'autre. Celui qui boucle les 40 mots de la liste choisit le sien parmi les trois de l'autre.</p>
+  <p style="font-size:.78rem;color:var(--mute);margin-top:6px;line-height:1.5" data-t="cad-p">Chacun pose trois cadeaux qu'il est prêt à offrir à l'autre. Celui qui boucle tout son deck choisit le sien parmi les trois de l'autre.</p>
   <div class="bloc">
     <h3 id="cad-h-mes">Ce que je propose</h3>
     <input class="cad-in" id="cad-0" maxlength="90" onchange="ecrireCadeau(0, this.value)">
@@ -1328,7 +1368,7 @@ var T = {
   fr: {
     'qui-t': 'Qui utilise ce téléphone ?',
     'qui-p': 'Ce choix décide de quelle barre de progression est la tienne. Il se change dans les réglages.',
-    'm-flash': 'Cartes', 'm-qcm': 'QCM', 'm-vf': 'Vrai ou faux', 'm-mix': 'Au hasard',
+    'm-flash': 'Cartes', 'm-qcm': 'QCM', 'm-vf': 'Vrai ou faux', 'm-phrase': 'Phrases à trous', 'm-mix': 'Au hasard', 'ph-consigne': 'touche le trou pour choisir le mot', 'ph-suivante': 'Question suivante',
     'changer': 'Changer de liste',
     'l-t': 'Les listes',
     'l-p': 'Touche une liste pour la travailler. Appui long pour la désigner comme liste de la semaine chez vous deux.',
@@ -1341,7 +1381,7 @@ var T = {
     'encore': 'Encore une série', 'retour-accueil': "Revenir à l'accueil",
     'g-t': 'Réglages',
     'g-rythme': 'Rythme',
-    'g-rythme-p': "Un mot est acquis à 100 points. Vrai ou faux en rapporte 7, une carte 14, un QCM 21, et une erreur en reprend autant. Une fois l'objectif du jour atteint, on peut continuer à jouer mais plus rien ne s'ajoute jusqu'au lendemain.",
+    'g-rythme-p': "Un mot est acquis à 100 points. Une carte en rapporte 14, un QCM ou une phrase à trous 21, et une erreur en reprend autant. L'objectif du jour vaut le tiers de ton deck ; une fois atteint, les points continuent de compter.",
     'g-dir': 'Sens des questions', 'g-dir-auto': 'les deux', 'g-dir-fn': 'français vers NL', 'g-dir-nf': 'NL vers français',
     'g-app': 'Application',
     'g-app-p': "La langue de l'interface est indépendante des mots à réviser. Les sons sont générés par le téléphone, aucun fichier n'est téléchargé.",
@@ -1368,8 +1408,8 @@ var T = {
     'deck-appel': "Le deck de la semaine n'est pas encore composé. Tant qu'il ne l'est pas, aucune question ne peut partir.",
     'deck-composer': 'Composer mon deck', 'deck-modifier': 'Modifier mon deck',
     'deck-noms': '@ mots', 'deck-verbes': '@ verbes',
-    'deck-compte': '@ sur @@ choisis', 'deck-reste': 'il en manque @', 'deck-plein': 'deck complet',
-    'deck-valider': 'Valider mon deck', 'deck-encore': 'Encore @ à choisir',
+    'deck-compte': '@ sur @@ choisis', 'deck-reste': 'encore @ au minimum', 'deck-pts': '@ points à gagner',
+    'deck-valider': 'Valider mon deck de @ mots', 'deck-encore': 'Encore @ à choisir',
     'deck-refaire': 'Refaire le deck ? Les mots que tu retires sortent des questions, mais leur progression est gardée.',
     'deck-afaire': 'deck à faire',
     'pas-partage': 'partage non configuré', 'autre-liste': '@ travaille une autre liste',
@@ -1386,7 +1426,7 @@ var T = {
     'r-max': ' Tous les mots ont atteint leur maximum du jour.',
     'sens-nf': 'NL → FR', 'sens-fn': 'FR → NL', 'sens-auto': 'au hasard',
     'versions': '@ listes · @@ mots', 'q-faites': '@ questions',
-    'obj-n': '@ / @@ pts', 'obj-plein': 'objectif du jour atteint',
+    'duo-pts': '@ pts', 'obj-n': '@ / @@ pts', 'obj-plein': 'objectif du jour atteint · @ pts',
     'plafond': "objectif du jour atteint — révision libre, plus de points jusqu'à demain",
     'mots-t': 'Les mots de la liste',
     'mots-p': 'Touche un mot pour le marquer : il reviendra deux fois plus souvent que les autres.',
@@ -1396,14 +1436,14 @@ var T = {
     'fete-t': 'Objectif de la séance',
     'fete-m': '@ points marqués, @@ mots acquis en tout.',
     'fete-continuer': 'Continuer', 'fete-terminer': 'Terminer la séance',
-    'fin-t': 'Liste terminée', 'fin-m': 'Les 40 mots sont acquis.',
+    'fin-t': 'Liste terminée', 'fin-m': 'Tous les mots du deck sont acquis.',
     'fin-choisir': 'Choisir ma récompense', 'fin-rentrer': "Revenir à l'accueil",
     'cad-t': 'Récompenses',
-    'cad-p': "Chacun pose trois cadeaux qu'il est prêt à offrir à l'autre. Celui qui boucle les 40 mots de la liste choisit le sien parmi les trois de l'autre.",
+    'cad-p': "Chacun pose trois cadeaux qu'il est prêt à offrir à l'autre. Celui qui boucle tout son deck choisit le sien parmi les trois de l'autre.",
     'cad-mes': 'Ce que je propose à @', 'cad-ses': 'Ce que @ me propose',
     'cad-ph': 'un cadeau à offrir…', 'cad-vide': 'pas encore posé',
     'cad-coupons': 'Récompenses gagnées', 'cad-aucun': 'aucune pour le moment',
-    'cad-droit-ok': 'Les 40 mots sont acquis : touche un cadeau pour le choisir.',
+    'cad-droit-ok': 'Tout ton deck est acquis : touche un cadeau pour le choisir.',
     'cad-droit-non': 'Encore @ mot(s) à acquérir avant de pouvoir choisir.',
     'cad-droit-vide': "@ n'a pas encore posé ses trois cadeaux.",
     'cad-droit-deja': 'Déjà choisi pour cette liste : « @ ».',
@@ -1415,8 +1455,8 @@ var T = {
     'cad-ko': "Les cadeaux sont gardés sur ce téléphone, mais n'ont pas pu partir vers la base. Vérifie la connexion, et que le script SQL a bien été relancé.",
     'cad-local': 'gardé sur ce téléphone seulement',
     'choix-t': 'Liste terminée',
-    'choix-p': 'Les 40 mots sont acquis. Choisis ta récompense parmi les trois propositions de @.',
-    'choix-rien': "Les 40 mots sont acquis, mais @ n'a pas encore posé ses trois cadeaux. Reviens ici quand ce sera fait.",
+    'choix-p': 'Tout ton deck est acquis. Choisis ta récompense parmi les trois propositions de @.',
+    'choix-rien': "Tout ton deck est acquis, mais @ n'a pas encore posé ses trois cadeaux. Reviens ici quand ce sera fait.",
     'choix-ok': 'Choisir « @ » ? Ce choix est définitif pour cette liste.',
     'choix-plus-tard': 'Plus tard', 'choix-deja': 'Tu as déjà choisi pour cette liste : « @ ».',
     'mot-h': 'Un mot pour @',
@@ -1434,7 +1474,7 @@ var T = {
   nl: {
     'qui-t': 'Wie gebruikt deze telefoon?',
     'qui-p': 'Deze keuze bepaalt welke voortgangsbalk van jou is. Je kunt ze later wijzigen bij de instellingen.',
-    'm-flash': 'Kaarten', 'm-qcm': 'Meerkeuze', 'm-vf': 'Waar of vals', 'm-mix': 'Willekeurig',
+    'm-flash': 'Kaarten', 'm-qcm': 'Meerkeuze', 'm-vf': 'Waar of vals', 'm-phrase': 'Invulzinnen', 'm-mix': 'Willekeurig', 'ph-consigne': 'tik op het gat om het woord te kiezen', 'ph-suivante': 'Volgende vraag',
     'changer': 'Andere lijst kiezen',
     'l-t': 'De lijsten',
     'l-p': 'Tik op een lijst om ermee te oefenen. Houd ingedrukt om ze voor jullie allebei als lijst van de week in te stellen.',
@@ -1447,7 +1487,7 @@ var T = {
     'encore': 'Nog een reeks', 'retour-accueil': 'Terug naar het beginscherm',
     'g-t': 'Instellingen',
     'g-rythme': 'Tempo',
-    'g-rythme-p': 'Een woord is gekend bij 100 punten. Waar of niet waar levert er 7 op, een kaart 14, een meerkeuzevraag 21, en een fout neemt er evenveel af. Zodra het dagdoel bereikt is, kun je blijven spelen maar komt er niets meer bij tot morgen.',
+    'g-rythme-p': 'Een woord is gekend bij 100 punten. Een kaart levert er 14 op, een meerkeuzevraag of een invulzin 21, en een fout neemt er evenveel af. Het dagdoel is een derde van je deck; daarna blijven de punten gewoon tellen.',
     'g-dir': 'Richting van de vragen', 'g-dir-auto': 'allebei', 'g-dir-fn': 'Frans naar NL', 'g-dir-nf': 'NL naar Frans',
     'g-app': 'App',
     'g-app-p': 'De taal van de app staat los van de woorden die je oefent. De geluiden worden door de telefoon zelf gemaakt, er wordt geen bestand gedownload.',
@@ -1474,8 +1514,8 @@ var T = {
     'deck-appel': 'Het deck van de week is nog niet samengesteld. Zolang dat niet gebeurd is, kan er geen vraag vertrekken.',
     'deck-composer': 'Mijn deck samenstellen', 'deck-modifier': 'Mijn deck aanpassen',
     'deck-noms': '@ woorden', 'deck-verbes': '@ werkwoorden',
-    'deck-compte': '@ van @@ gekozen', 'deck-reste': 'er ontbreken er @', 'deck-plein': 'deck volledig',
-    'deck-valider': 'Mijn deck bevestigen', 'deck-encore': 'Nog @ te kiezen',
+    'deck-compte': '@ van @@ gekozen', 'deck-reste': 'nog minstens @', 'deck-pts': '@ punten te verdienen',
+    'deck-valider': 'Mijn deck van @ woorden bevestigen', 'deck-encore': 'Nog @ te kiezen',
     'deck-refaire': 'Deck opnieuw samenstellen? Wat je weghaalt komt niet meer aan bod, maar de vooruitgang blijft bewaard.',
     'deck-afaire': 'deck te maken',
     'pas-partage': 'delen is niet ingesteld', 'autre-liste': '@ werkt aan een andere lijst',
@@ -1492,7 +1532,7 @@ var T = {
     'r-max': ' Alle woorden zitten aan hun maximum voor vandaag.',
     'sens-nf': 'NL → FR', 'sens-fn': 'FR → NL', 'sens-auto': 'willekeurig',
     'versions': '@ lijsten · @@ woorden', 'q-faites': '@ vragen',
-    'obj-n': '@ / @@ ptn', 'obj-plein': 'dagdoel bereikt',
+    'duo-pts': '@ ptn', 'obj-n': '@ / @@ ptn', 'obj-plein': 'dagdoel bereikt · @ ptn',
     'plafond': 'dagdoel bereikt — vrij oefenen, geen punten meer tot morgen',
     'mots-t': 'De woorden van de lijst',
     'mots-p': 'Tik op een woord om het te markeren: het komt dubbel zo vaak terug als de andere.',
@@ -1502,14 +1542,14 @@ var T = {
     'fete-t': 'Doel van de sessie',
     'fete-m': '@ punten gescoord, @@ woorden gekend in totaal.',
     'fete-continuer': 'Doorgaan', 'fete-terminer': 'Sessie beëindigen',
-    'fin-t': 'Lijst afgewerkt', 'fin-m': 'Alle 40 woorden zijn gekend.',
+    'fin-t': 'Lijst afgewerkt', 'fin-m': 'Alle woorden van het deck zijn gekend.',
     'fin-choisir': 'Mijn beloning kiezen', 'fin-rentrer': 'Terug naar het beginscherm',
     'cad-t': 'Beloningen',
-    'cad-p': 'Ieder legt drie cadeaus vast die hij aan de ander wil geven. Wie de 40 woorden van de lijst afwerkt, kiest er één uit de drie van de ander.',
+    'cad-p': 'Ieder legt drie cadeaus vast die hij aan de ander wil geven. Wie zijn hele deck afwerkt, kiest er één uit de drie van de ander.',
     'cad-mes': 'Wat ik aan @ aanbied', 'cad-ses': 'Wat @ mij aanbiedt',
     'cad-ph': 'een cadeau om te geven…', 'cad-vide': 'nog niet ingevuld',
     'cad-coupons': 'Verdiende beloningen', 'cad-aucun': 'voorlopig geen',
-    'cad-droit-ok': 'Alle 40 woorden zijn gekend: tik op een cadeau om het te kiezen.',
+    'cad-droit-ok': 'Je hele deck is gekend: tik op een cadeau om het te kiezen.',
     'cad-droit-non': 'Nog @ woord(en) te leren voor je mag kiezen.',
     'cad-droit-vide': '@ heeft nog geen drie cadeaus vastgelegd.',
     'cad-droit-deja': 'Al gekozen voor deze lijst: « @ ».',
@@ -1521,8 +1561,8 @@ var T = {
     'cad-ko': 'De cadeaus staan op deze telefoon, maar konden niet naar de basis vertrekken. Kijk de verbinding na, en of het SQL-script opnieuw is uitgevoerd.',
     'cad-local': 'enkel op deze telefoon bewaard',
     'choix-t': 'Lijst afgewerkt',
-    'choix-p': 'Alle 40 woorden zijn gekend. Kies je beloning uit de drie voorstellen van @.',
-    'choix-rien': 'Alle 40 woorden zijn gekend, maar @ heeft nog geen drie cadeaus vastgelegd. Kom hier terug wanneer dat gebeurd is.',
+    'choix-p': 'Je hele deck is gekend. Kies je beloning uit de drie voorstellen van @.',
+    'choix-rien': 'Je hele deck is gekend, maar @ heeft nog geen drie cadeaus vastgelegd. Kom hier terug wanneer dat gebeurd is.',
     'choix-ok': '« @ » kiezen? Deze keuze is definitief voor deze lijst.',
     'choix-plus-tard': 'Later', 'choix-deja': 'Je hebt voor deze lijst al gekozen: « @ ».',
     'mot-h': 'Een woordje voor @',
@@ -1627,6 +1667,7 @@ function cyclerSens() {
     cur.sens = sens();
     if (cur.mode === 'flash') montrerFlash();
     else if (cur.mode === 'qcm') montrerQCM();
+    else if (cur.mode === 'phrase') montrerPhrase();
     else montrerVF();
   }
 }
@@ -1749,18 +1790,21 @@ var VIBRE = [[10], [12], [14], [10, 40, 14], [12, 40, 18], [14, 45, 22, 45, 26],
    10, et une question rapporte 7, 14 ou 21 au lieu de 10, 20 ou 30 sur cette
    échelle. La progression déjà acquise est convertie une fois au chargement,
    donc personne ne perd un seul mot. */
-var PTS = { vf: 7, flash: 14, qcm: 21 };
+/* la phrase à trous vaut un QCM : c'est un QCM, mais dans son contexte */
+var PTS = { vf: 7, flash: 14, qcm: 21, phrase: 21 };
 var CIBLE = 100;
 /* Une liste compte cent entrées — quatre-vingts mots et vingt verbes. Chacun y
-   pioche son propre deck de TAILLE_DECK mots, ceux qu'il ne connaît pas, et
-   c'est le seul matériau des questions de la semaine : tirage, leurres du QCM
-   et paires du vrai/faux ne sortent jamais du deck. */
-var TAILLE_DECK = 40;
-/* un mot vaut 10 points, la liste en vaut 400 : l'objectif d'une séance est le
-   tiers, pour boucler une liste en trois séances par semaine.
-   Déclaré APRÈS CIBLE : var hisse le nom mais pas la valeur, et le calculer
-   plus haut donnait NaN. */
-var OBJ = Math.round(CIBLE * TAILLE_DECK / 3);
+   pioche son propre deck, aussi grand qu'il le veut (05/10/2026 : la taille
+   fixe de 40 est abandonnée), et c'est le seul matériau des questions de la
+   semaine : tirage, leurres du QCM et paires du vrai/faux ne sortent jamais du
+   deck. Le plancher de 4 n'est pas un choix pédagogique : en dessous, le QCM
+   n'a plus trois leurres à proposer. */
+var DECK_MIN = 4;
+function tailleDeck(l) { return motsDe(l || liste).length; }
+/* L'objectif du jour vaut le tiers des points du deck, pour le boucler en trois
+   séances par semaine. Ce n'est plus un plafond : une fois atteint, on le fête
+   et les points continuent de compter. */
+function objJour() { return Math.max(1, Math.round(CIBLE * tailleDeck() / 3)); }
 var NOMS = { ulysse: 'Ulysse', jasmien: 'Jasmien' };
 
 var etat, listes = [], liste = null, session = null, cur = null, recents = [];
@@ -1769,7 +1813,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'az';
+var WT_BUILD = 'bc';
 
 function charger() {
   var e = null;
@@ -1830,7 +1874,7 @@ function jour(d) { d = d || new Date(); return d.getFullYear() + '-' + ('0' + (d
 function fiche(idl) { return etat.semaines[idl] || (etat.semaines[idl] = { mots: {} }); }
 function selDe(l) { var x = fiche(l.id); return x.sel || (x.sel = []); }
 function deckDe(l) { var x = fiche(l.id); return x.deck || null; }
-function deckPret(l) { var d = deckDe(l); return !!(d && d.length >= TAILLE_DECK); }
+function deckPret(l) { var d = deckDe(l); return !!(d && d.length >= DECK_MIN); }
 /* les mots réellement en jeu. Sans deck validé, il n'y en a aucun : c'est ce
    qui interdit de commencer et vide les barres. */
 function motsDe(l) {
@@ -1863,10 +1907,9 @@ function serie() {
    bouclées entre ce lundi et aujourd'hui suffisent à finir une liste. */
 function lundi() { var d = new Date(); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return jour(d); }
 function seancesSemaine() { var l = lundi(); return (etat.seances || []).filter(function (x) { return x >= l; }).length; }
-/* Points marqués aujourd'hui, tous exercices confondus. Une fois l'objectif du
-   jour atteint, on peut continuer à jouer autant qu'on veut — série, feu,
-   animations, tout continue — mais plus rien ne s'ajoute au score jusqu'au
-   lendemain. */
+/* Points marqués aujourd'hui, tous exercices confondus. Ils ne servent plus
+   qu'à la barre d'objectif et à sa célébration : le plafond quotidien a été
+   retiré le 05/10/2026, on répartit son travail dans la semaine comme on veut. */
 function ptsDuJour() {
   if (!etat.jourPts || etat.jourPts.j !== jour()) etat.jourPts = { j: jour(), p: 0 };
   return etat.jourPts.p;
@@ -1875,18 +1918,17 @@ function ajouterJour(n) {
   ptsDuJour();
   etat.jourPts.p += n;
 }
-function plafondJour() { return ptsDuJour() >= OBJ; }
+function objAtteint() { return ptsDuJour() >= objJour(); }
 
 function majObj() {
   var e = document.getElementById('t-obj');
   if (!e || !session) return;
-  /* la barre suit le compteur DU JOUR, pas celui de la séance : c'est lui qui
-     décide quand les points s'arrêtent. */
-  var f = ptsDuJour(), r = Math.min(1, f / OBJ);
+  /* la barre suit le compteur DU JOUR, pas celui de la séance */
+  var f = ptsDuJour(), o = objJour(), r = Math.min(1, f / o);
   e.querySelector('i').style.width = (r * 100) + '%';
   e.classList.toggle('plein', r >= 1);
   document.getElementById('t-session').textContent =
-    plafondJour() ? tr('obj-plein') : tr('obj-n', f, OBJ);
+    r >= 1 ? tr('obj-plein', f) : tr('obj-n', f, o);
 }
 
 function cfg() { var c = window.WT_CONFIG || {}; return (c.url && c.cle) ? c : null; }
@@ -1918,11 +1960,16 @@ function api(chemin, opts) {
    une erreur au lieu d'un tableau : on redescend d'un cran et on réessaie, si
    bien qu'une base en retard continue d'afficher ce qu'elle sait. */
 var WT_JEUX = [
+  'id,liste,acquis,points,serie,taille,mot,mot_maj,mot_lu,maj',
   'id,liste,acquis,points,serie,mot,mot_maj,mot_lu,maj',
   'id,liste,acquis,points,serie,maj',
   'id,liste,acquis,points,maj'
 ];
 var WT_COLS = WT_JEUX[0];
+/* La colonne taille (taille du deck, 05/10/2026) n'est envoyée qu'une fois sa
+   présence confirmée par une lecture : écrire une colonne inconnue fait
+   rejeter TOUTE la ligne par PostgREST, et la progression ne partirait plus. */
+var wtTailleOk = false;
 function tirer() {
   return api('duo?select=' + WT_COLS).then(function (r) { return r.json(); }).then(function (l) {
     if (!Array.isArray(l)) {
@@ -1931,6 +1978,7 @@ function tirer() {
       WT_COLS = WT_JEUX[i + 1];
       return tirer();
     }
+    wtTailleOk = WT_COLS.indexOf('taille') !== -1;
     l.forEach(function (x) { distant[x.id] = x; });
     return distant;
   });
@@ -2010,6 +2058,7 @@ function pousser(complet) {
     id: moi(), liste: liste.id, acquis: acquisDe(liste), points: pointsDe(liste),
     serie: recordDe(liste), maj: new Date().toISOString()
   };
+  if (wtTailleOk) ligne.taille = tailleDeck();
   if (complet) ligne.etat = etat;
   return envoyer('duo:' + moi(), 'duo', {
     method: 'POST',
@@ -2054,7 +2103,7 @@ function diagnostic() {
     t += '\n' + NOMS[q] + ' — ';
     if (!d) { t += 'aucune ligne dans la base'; return; }
     t += 'liste ' + (d.liste || '(vide)') +
-         ', ' + (d.acquis || 0) + ' acquis' +
+         ', ' + (d.acquis || 0) + ' acquis, ' + (d.points || 0) + ' pts' + (d.taille ? ' sur ' + d.taille * CIBLE : '') +
          ', vu ' + (d.maj ? new Date(d.maj).toLocaleString('fr-BE') : '—') +
          (d.mot ? ', un mot déposé' + (d.mot_lu ? ' (lu)' : ' (non lu)') : ', aucun mot');
   });
@@ -2065,7 +2114,7 @@ function diagnostic() {
     t += '\n' + NOMS[q] + ' : ' + n + ' sur 3';
   });
   t += '\nRécompenses gagnées : ' + coupons.length;
-  if (WT_COLS !== WT_JEUX[0]) t += '\n\nColonnes du mot absentes de la base : relance le script SQL.';
+  if (WT_COLS !== WT_JEUX[0]) t += '\n\nColonnes absentes de la base (' + (wtTailleOk ? 'mot' : 'taille') + ') : relance le script SQL.';
   t += '\n\nEnvois en attente : ' + (enFile() || 'aucun');
   if (enFile()) {
     t += '\n' + (etat.file || []).map(function (x) { return '· ' + x.cle; }).join('\n');
@@ -2176,7 +2225,7 @@ function rendreAccueil() {
   document.getElementById('a-crans').classList.toggle('cache', !pret);
   document.getElementById('a-sous').classList.toggle('cache', !pret);
   crans('a-crans', liste);
-  document.getElementById('a-compte').textContent = tr('acquis-n', acquisDe(liste), TAILLE_DECK);
+  document.getElementById('a-compte').textContent = tr('acquis-n', acquisDe(liste), tailleDeck());
   document.getElementById('a-points').textContent = tr('points-n', pointsDe(liste));
   rendreDuo('a-duo');
   rendreHebdo();
@@ -2188,17 +2237,21 @@ function rendreDuo(hote) {
   var qui = moi() || 'ulysse';
   var d = distant[autre()];
   var meme = !!(d && d.liste === liste.id);
-  var sien = meme ? (d.acquis || 0) : null;
-  var s = ligneDuo(NOMS[qui], acquisDe(liste), recordDe(liste), true) +
-          ligneDuo(NOMS[autre()], sien === null ? 0 : sien, meme ? (d.serie || 0) : 0, false);
+  /* 05/10/2026 : la comparaison se fait sur les points, plus sur les mots
+     acquis. Les deux barres partagent une même échelle — le plus gros des deux
+     decks — pour que la plus longue soit bien celle qui a le plus de points. */
+  var mes = pointsDe(liste), sien = meme ? (d.points || 0) : null;
+  var echelle = Math.max(1, tailleDeck() * CIBLE, meme && d.taille ? d.taille * CIBLE : 0, mes, sien || 0);
+  var s = ligneDuo(NOMS[qui], mes, echelle, recordDe(liste), true) +
+          ligneDuo(NOMS[autre()], sien === null ? 0 : sien, echelle, meme ? (d.serie || 0) : 0, false);
   if (!cfg()) s += '<div class="duo-etat">' + tr('pas-partage') + '</div>';
   else if (sien === null) s += '<div class="duo-etat">' + tr('autre-liste', NOMS[autre()]) + '</div>';
   h.innerHTML = s;
 }
-function ligneDuo(nom, n, rec, estMoi) {
+function ligneDuo(nom, n, echelle, rec, estMoi) {
   return '<div class="duo-l' + (estMoi ? ' moi' : '') + '"><span class="duo-n">' + nom + '</span>' +
-    '<span class="duo-b"><i style="width:' + (n / TAILLE_DECK * 100) + '%"></i></span>' +
-    '<span class="duo-c">' + n + ' / ' + TAILLE_DECK + '</span>' +
+    '<span class="duo-b"><i style="width:' + Math.min(100, n / echelle * 100) + '%"></i></span>' +
+    '<span class="duo-c">' + tr('duo-pts', n) + '</span>' +
     '<span class="duo-f' + (rec ? '' : ' zero') + '" title="' + tr('record-t') + '">' + tr('record-n', rec) + '</span></div>';
 }
 /* Priorité : les mots marqués passent devant tous les autres au tirage. Le
@@ -2240,8 +2293,8 @@ function rendreListes() {
     s += '<div class="item" data-id="' + l.id + '">' +
       '<div class="item-t"><div class="item-n">' + ech(l.titre) + (sem ? '<span class="etiq">' + tr('semaine') + '</span>' : '') + '</div>' +
       '<div class="item-s">' + ech(l.theme) + '</div></div>' +
-      '<div class="item-j"><i style="width:' + (pret ? a / TAILLE_DECK * 100 : 0) + '%"></i></div>' +
-      (pret ? '<div class="item-c">' + a + '/' + TAILLE_DECK + '</div>'
+      '<div class="item-j"><i style="width:' + (pret ? a / tailleDeck(l) * 100 : 0) + '%"></i></div>' +
+      (pret ? '<div class="item-c">' + a + '/' + tailleDeck(l) + '</div>'
             : '<div class="item-c attente">' + tr('deck-afaire') + '</div>') + '</div>';
   });
   h.innerHTML = s;
@@ -2331,30 +2384,29 @@ function rendreDeck() {
 function basculerDeck(el) {
   var nl = el.getAttribute('data-nl'), sel = selDe(liste), i = sel.indexOf(nl);
   if (i !== -1) sel.splice(i, 1);
-  else {
-    if (sel.length >= TAILLE_DECK) { vibrer([18, 40, 18]); wtSecouer(1); return; }
-    sel.push(nl);
-  }
+  else sel.push(nl);
   var dedans = i === -1;
   el.classList.toggle('pris', dedans);
   el.querySelector('.e').textContent = dedans ? '\u25CF' : '\u25CB';
   majDeck();
   sauverPlusTard();
 }
+/* la taille est libre : la jauge se mesure à la liste entière, et le bouton
+   se débloque dès le plancher atteint. */
 function majDeck() {
-  var k = selDe(liste).length, plein = k >= TAILLE_DECK;
+  var k = selDe(liste).length, n = liste.mots.length, ok = k >= DECK_MIN;
   var j = document.getElementById('d-jauge');
-  j.querySelector('i').style.width = Math.min(100, k / TAILLE_DECK * 100) + '%';
-  j.classList.toggle('plein', plein);
-  document.getElementById('d-compte').textContent = tr('deck-compte', k, TAILLE_DECK);
-  document.getElementById('d-detail').textContent = plein ? tr('deck-plein') : tr('deck-reste', TAILLE_DECK - k);
+  j.querySelector('i').style.width = Math.min(100, k / n * 100) + '%';
+  j.classList.toggle('plein', ok);
+  document.getElementById('d-compte').textContent = tr('deck-compte', k, n);
+  document.getElementById('d-detail').textContent = ok ? tr('deck-pts', k * CIBLE) : tr('deck-reste', DECK_MIN - k);
   var b = document.getElementById('d-valider');
-  b.textContent = plein ? tr('deck-valider') : tr('deck-encore', TAILLE_DECK - k);
-  b.disabled = !plein;
+  b.textContent = ok ? tr('deck-valider', k) : tr('deck-encore', DECK_MIN - k);
+  b.disabled = !ok;
 }
 function validerDeck() {
   var sel = selDe(liste);
-  if (sel.length !== TAILLE_DECK) return;
+  if (sel.length < DECK_MIN) return;
   var x = fiche(liste.id);
   x.deck = sel.slice();
   /* changer de deck rouvre le droit à la célébration de fin de liste */
@@ -2398,16 +2450,20 @@ function sens() { var d = etat.reglages.dir; return d === 'auto' ? (Math.random(
 /* Jamais plus de trois questions de suite du même style : au quatrième tirage,
    le style sortant est retiré du chapeau. */
 var WT_SUITE_MAX = 3;
-function modeDe(s) {
-  if (session.mode !== 'mix') return session.mode;
+function modeDe(s, m) {
+  /* un mot sans phrases (liste ajoutée sans elles) retombe sur le QCM */
+  if (session.mode !== 'mix') return (session.mode === 'phrase' && !aPhrases(m)) ? 'qcm' : session.mode;
   /* Les seuils dataient de l'échelle sur dix et n'avaient pas suivi le passage
      à cent : dès la première bonne réponse un mot valait 7 ou plus, donc tout
      retombait sur la dernière ligne et le vrai/faux ne sortait pour ainsi dire
      jamais. Les voici sur la bonne échelle, et chaque style garde une part à
      tous les niveaux. */
-  var poids = s < 30 ? { flash: 55, vf: 30, qcm: 15 }
-            : s < 70 ? { flash: 30, vf: 25, qcm: 45 }
-                     : { flash: 25, vf: 20, qcm: 55 };
+  /* 05/10/2026 : le vrai/faux est retiré ; la phrase à trous entre dans le
+     tirage, d'autant plus présente que le mot est avancé. */
+  var poids = s < 30 ? { flash: 55, qcm: 15, phrase: 30 }
+            : s < 70 ? { flash: 30, qcm: 35, phrase: 35 }
+                     : { flash: 20, qcm: 40, phrase: 40 };
+  if (!aPhrases(m)) delete poids.phrase;
   var d = session.derniers || (session.derniers = []);
   if (d.length >= WT_SUITE_MAX) {
     var dernier = d[d.length - 1], memes = true;
@@ -2443,26 +2499,29 @@ function suite() {
   wtChronoStop();
   document.getElementById('t-retour').textContent = '';
   ['t-flash', 't-qcm', 't-vf'].forEach(function (i) { document.getElementById(i).classList.add('cache'); });
+  document.getElementById('t-qcm').classList.remove('en-phrase', 'ouvert', 'repondu');
+  document.getElementById('t-actions-phrase').style.display = 'none';
   document.getElementById('t-actions-flash').style.display = 'none';
   document.getElementById('t-actions-vf').style.display = 'none';
   document.getElementById('t-juge').style.display = 'none';
   /* la carte n'est PAS redressée ici : c'est montrerFlash qui s'en charge,
      juste avant d'écrire le mot suivant. */
   if (!session) return;
-  document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste), TAILLE_DECK);
+  document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste), tailleDeck());
   majObj();
   /* aucune limite : on continue tant qu'il reste un mot à monter, puis en
      révision libre sans points une fois la liste entièrement acquise */
   var t = tirerMot();
   if (!t) { finSession(); return; }
   var p = prog(liste.id, t.mot);
-  cur = { mot: t.mot, sansPts: t.sansPts, sens: sens(), mode: modeDe(p.s), fait: false, perte: 0, idx: motsDe(liste).indexOf(t.mot) };
+  cur = { mot: t.mot, sansPts: t.sansPts, sens: sens(), mode: modeDe(p.s, t.mot), fait: false, perte: 0, idx: motsDe(liste).indexOf(t.mot) };
   /* le CSS a besoin de savoir quel mode est à l'écran : en cartes et en
      vrai/faux les boutons se collent sous l'énoncé, en QCM la scène reste
      centrée comme avant. */
   document.getElementById('v-train').dataset.mode = cur.mode;
   if (cur.mode === 'flash') montrerFlash();
   else if (cur.mode === 'qcm') montrerQCM();
+  else if (cur.mode === 'phrase') montrerPhrase();
   else montrerVF();
   wtChronoLancer();
 }
@@ -2496,6 +2555,15 @@ function montrerFlash() {
   document.getElementById('f-mot-a').textContent = nl ? m.nl : m.fr;
   document.getElementById('f-lang-b').textContent = nl ? 'français' : 'nederlands';
   document.getElementById('f-mot-b').textContent = nl ? m.fr : m.nl;
+  /* au dos, une phrase d'exemple : le mot dans son contexte, dans les deux
+     langues. Le recto n'en montre rien, sinon elle soufflerait la réponse. */
+  var ex = document.getElementById('f-ex');
+  if (aPhrases(m)) {
+    if (!cur.ph) cur.ph = m.ph[Math.floor(Math.random() * m.ph.length)];
+    var a = nl ? 'fr' : 'nl', b = nl ? 'nl' : 'fr';
+    ex.innerHTML = '<span>' + phraseHTML(cur.ph[a]) + '</span><span class="f-ex-tr">' + phraseHTML(cur.ph[b]) + '</span>';
+    ex.style.display = '';
+  } else { ex.innerHTML = ''; ex.style.display = 'none'; }
   mesurer([document.getElementById('t-carte')]);
   document.getElementById('t-actions-flash').style.display = 'block';
   document.getElementById('t-flip').style.display = 'block';
@@ -2520,6 +2588,7 @@ function montrerQCM() {
   var m = cur.mot, nl = cur.sens === 'nl-fr';
   var q = nl ? m.nl : m.fr, r = nl ? m.fr : m.nl;
   document.getElementById('q-lang').textContent = nl ? 'nederlands' : 'français';
+  document.getElementById('t-qcm').classList.remove('en-phrase');
   var wtMot = document.getElementById('q-mot');
   wtMot.textContent = q;
   wtMot.classList.remove('entre'); void wtMot.offsetWidth; wtMot.classList.add('entre');
@@ -2559,18 +2628,140 @@ function repQCM(b, juste, r) {
   if (juste) {
     b.classList.add('juste');
     Array.prototype.forEach.call(tous, function (x) { if (x !== b) x.classList.add('pale'); });
-    appliquer(true, 'qcm');
+    revelerPhrase();
+    appliquer(true, cur.mode);
     wtImpact(b, wtPalier(wtStreak));
     setTimeout(suite, WT_DELAI_QCM[wtPalier(wtStreak)]);
   } else {
     b.classList.add('faux');
-    appliquer(false, 'qcm');
+    revelerPhrase();
+    appliquer(false, cur.mode);
     Array.prototype.forEach.call(tous, function (x) {
       if (x.textContent === r) { x.classList.add('attire'); x.onclick = function () { x.classList.remove('attire'); x.classList.add('juste'); setTimeout(suite, 280); }; }
       else if (x !== b) { x.classList.add('pale'); x.onclick = null; }
     });
     document.getElementById('t-retour').textContent = tr('cetait', r);
   }
+}
+/* ═══════════ phrases à trous (05/10/2026) ═══════════
+   Chaque mot porte quatre phrases d'exemple, « ph », où le mot est entre
+   accolades dans chaque langue : « Ik zie {de hond}. » / « Je vois {le chien}. »
+   Déroulé voulu par Ulysse : la phrase s'affiche seule, avec un trou ; on
+   touche le trou, quatre propositions apparaissent ; une fois la réponse
+   donnée, le trou se remplit, la traduction de la phrase entière s'affiche, et
+   c'est un bouton « Question suivante » qui fait avancer — rien ne part tout
+   seul, on a le temps de lire.
+   La phrase est dans la langue de la RÉPONSE (celle qu'on apprend dans ce
+   sens-là). Les propositions sont des formes telles qu'elles apparaissent dans
+   des phrases (« zei », « de tafels »), pas des entrées de dictionnaire, pour
+   que le trou se remplisse de quelque chose qui tienne dans la phrase. */
+function aPhrases(m) { return !!(m && m.ph && m.ph.length); }
+function morceaux(t) {
+  var x = /^([^{]*)\{([^}]*)\}(.*)$/.exec(String(t || ''));
+  return x ? { av: x[1], mot: x[2], ap: x[3] } : { av: String(t || ''), mot: '', ap: '' };
+}
+function phraseHTML(t, trou) {
+  var x = morceaux(t);
+  var milieu = trou ? '<button class="trou" type="button" onclick="ouvrirTrou()" aria-label="choisir le mot"><span>?</span></button>'
+                    : '<b class="cible">' + ech(x.mot) + '</b>';
+  return ech(x.av) + milieu + ech(x.ap);
+}
+function majuscule(t) { return t ? t.charAt(0).toUpperCase() + t.slice(1) : t; }
+function minuscule(t) { return t ? t.charAt(0).toLowerCase() + t.slice(1) : t; }
+/* forme fléchie d'un autre mot du deck, prise dans une de ses phrases, et
+   ajustée à la place du trou : une majuscule de début de phrase ne doit ni
+   trahir la bonne réponse ni dénoncer un leurre. */
+function formeLeurre(x, rl, enTete) {
+  var f, debut = false;
+  if (aPhrases(x)) {
+    var k = morceaux(x.ph[Math.floor(Math.random() * x.ph.length)][rl]);
+    f = k.mot; debut = !k.av.trim();
+  } else f = x[rl];
+  if (enTete) return majuscule(f);
+  return debut ? minuscule(f) : f;
+}
+function montrerPhrase() {
+  var m = cur.mot, nl = cur.sens === 'nl-fr';
+  if (!cur.ph) cur.ph = m.ph[Math.floor(Math.random() * m.ph.length)];
+  cur.rl = nl ? 'fr' : 'nl';
+  cur.ouvert = false;
+  var x = morceaux(cur.ph[cur.rl]), enTete = !x.av.trim();
+  var r = x.mot;
+  cur.reponse = r;
+  var boite = document.getElementById('t-qcm');
+  boite.classList.add('en-phrase');
+  boite.classList.remove('ouvert', 'repondu');
+  document.getElementById('q-lang').textContent = tr('ph-consigne');
+  document.getElementById('q-score').textContent = prog(liste.id, m).s + ' / ' + CIBLE;
+  var ph = document.getElementById('q-phrase');
+  ph.classList.remove('revele', 'rate');
+  ph.innerHTML = phraseHTML(cur.ph[cur.rl], true);
+  ph.classList.remove('entre'); void ph.offsetWidth; ph.classList.add('entre');
+  document.getElementById('q-trad').innerHTML = '';
+  /* leurres : d'abord de la même nature (verbe pour un verbe, mot pour un
+     mot), sinon la grammaire de la phrase désigne la réponse à elle seule. */
+  var pool = motsDe(liste).filter(function (y) { return y !== m; });
+  var vus = DISTRACTEURS['ph:' + m.nl] || [];
+  function frais(t) { return mel(t.filter(function (y) { return vus.indexOf(y.nl) === -1; })).concat(mel(t.filter(function (y) { return vus.indexOf(y.nl) !== -1; }))); }
+  var ordre = frais(pool.filter(function (y) { return !!y.v === !!m.v; }))
+      .concat(frais(pool.filter(function (y) { return !!y.v !== !!m.v; })));
+  var choisis = [], sources = [], deja = [r.toLowerCase()];
+  for (var i = 0; i < ordre.length && choisis.length < 3; i++) {
+    var f = formeLeurre(ordre[i], cur.rl, enTete);
+    if (!f || deja.indexOf(f.toLowerCase()) !== -1) continue;
+    deja.push(f.toLowerCase()); choisis.push(f); sources.push(ordre[i].nl);
+  }
+  DISTRACTEURS['ph:' + m.nl] = sources;
+  var opts = mel([r].concat(choisis));
+  var c = document.getElementById('q-opts'); c.innerHTML = ''; c.classList.remove('fige');
+  opts.forEach(function (o) {
+    var b = document.createElement('button');
+    b.className = 'opt';
+    b.innerHTML = '<span class="peau"></span><span class="txt"></span>';
+    b.querySelector('.txt').textContent = o;
+    b.onclick = function (e) { onde(b, e, o === r); repPhrase(b, o === r); };
+    c.appendChild(b);
+  });
+  boite.classList.remove('cache');
+}
+/* toucher le trou fait apparaître les quatre propositions */
+function ouvrirTrou() {
+  if (!cur || cur.mode !== 'phrase' || cur.fait || cur.ouvert) return;
+  cur.ouvert = true;
+  document.getElementById('t-qcm').classList.add('ouvert');
+  var t = document.querySelector('#q-phrase .trou');
+  if (t) t.classList.add('actif');
+  vibrer([8]);
+  mesurer(document.getElementById('q-opts').children);
+}
+function repPhrase(b, juste) {
+  if (!cur || cur.fait) return; cur.fait = true;
+  var tous = document.querySelectorAll('#q-opts .opt');
+  document.getElementById('q-opts').classList.add('fige');
+  Array.prototype.forEach.call(tous, function (x) {
+    if (x === b) x.classList.add(juste ? 'juste' : 'faux');
+    else if (x.querySelector('.txt').textContent === cur.reponse) x.classList.add('juste');
+    else x.classList.add('pale');
+  });
+  revelerPhrase(juste);
+  appliquer(juste, 'phrase');
+  if (juste) wtImpact(b, wtPalier(wtStreak));
+  document.getElementById('t-actions-phrase').style.display = 'block';
+}
+/* le trou se remplit de la forme exacte, la traduction entière apparaît */
+function revelerPhrase(juste) {
+  if (!cur || cur.mode !== 'phrase' || !cur.ph) return;
+  var e = document.getElementById('q-phrase');
+  e.innerHTML = phraseHTML(cur.ph[cur.rl]);
+  e.classList.add('revele');
+  e.classList.toggle('rate', juste === false);
+  document.getElementById('q-trad').innerHTML = phraseHTML(cur.ph[cur.rl === 'nl' ? 'fr' : 'nl']);
+  document.getElementById('t-qcm').classList.add('repondu');
+}
+function phraseSuivante() {
+  if (!cur || !cur.fait) return;
+  document.getElementById('t-actions-phrase').style.display = 'none';
+  suite();
 }
 function montrerVF() {
   var m = cur.mot;
@@ -2627,9 +2818,8 @@ function appliquer(juste, mode) {
   p.vu = Date.now();
   if (juste) {
     session.justes++; p.ok++;
-    if (cur.sansPts || plafondJour()) {
-      /* révision libre : plus aucun point, mais la série et le feu continuent */
-      if (!cur.sansPts) document.getElementById('t-retour').textContent = tr('plafond');
+    if (cur.sansPts) {
+      /* deck entièrement acquis : révision libre, la série et le feu continuent */
     } else {
       var g = Math.min(val, CIBLE - p.s);
       p.s += g; session.gain += g; session.gagnes += g;
@@ -2675,7 +2865,7 @@ function appliquer(juste, mode) {
     if (!session.fini && !etat.finies[liste.id] && acquisDe(liste) >= motsDe(liste).length) {
       session.fini = true; etat.finies[liste.id] = true; sauver();
       wtPause = true; setTimeout(wtFinDeListe, 900);
-    } else if (!session.fete && etat.jourPts.j === jour() && !etat.jourPts.fete && plafondJour()) {
+    } else if (!session.fete && etat.jourPts.j === jour() && !etat.jourPts.fete && objAtteint()) {
       session.fete = true; etat.jourPts.fete = true; sauver();
       wtPause = true; setTimeout(wtFeteSeance, 800);
     }
@@ -2696,7 +2886,7 @@ function majCran() {
     }
     if (neuf) { e.classList.add('eclat'); setTimeout(function () { e.classList.remove('eclat'); }, 620); }
   }
-  document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste), TAILLE_DECK);
+  document.getElementById('t-compte').textContent = tr('acquis-n', acquisDe(liste), tailleDeck());
 }
 function onde(bouton, ev, juste) {
   var r = bouton.getBoundingClientRect();
@@ -2790,7 +2980,7 @@ function rendreReglages() {
   document.getElementById('g-moi').value = moi() || 'ulysse';
   document.getElementById('g-copie').value = JSON.stringify(etat);
   document.getElementById('g-reset').innerHTML = listes.map(function (l) { return '<option value="' + l.id + '">' + ech(l.titre) + '</option>'; }).join('');
-  document.getElementById('g-version').textContent = tr('versions', listes.length, listes.length * 40) + ' · build ' + WT_BUILD;
+  document.getElementById('g-version').textContent = tr('versions', listes.length, listes.reduce(function (t, l) { return t + l.mots.length; }, 0)) + ' · build ' + WT_BUILD;
   brancherSonde();
   document.getElementById('g-lang').value = lg();
   document.getElementById('g-son').value = String(etat.reglages.son || 0);
@@ -2963,7 +3153,10 @@ var WT_DELAI_QCM = [650, 620, 580, 540, 500, 460, 430, 430, 420, 420, 410, 410, 
 /* durée du compte à rebours par palier, en ms — 0 = pas de chrono.
    Il n'apparaît qu'à partir de 25 d'affilée, et jamais en mode cartes,
    qui est auto-rythmé par le retournement. */
-var WT_CHRONO = [0, 0, 0, 0, 0, 0, 9000, 8000, 7000, 6000, 5500, 5000, 4500, 4000, 3500];
+/* 05/10/2026 : chronomètre retiré partout, à la demande d'Ulysse — stressant
+   pour rien. Toutes les durées sont à zéro : wtChronoLancer ne pose plus
+   aucun compte à rebours, à aucun palier. */
+var WT_CHRONO = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 /* Quinze paliers.
      0 rien · 3 allumage · 6 flammèches · 10 brasier · 15 fournaise
@@ -3379,7 +3572,8 @@ function wtChronoStop() {
 }
 function wtChronoLancer() {
   wtChronoStop();
-  if (!cur || !session || cur.mode === 'flash') return;
+  /* chronomètre retiré le 05/10/2026 : plus aucun compte à rebours, nulle part */
+  return;
   var d = WT_CHRONO[wtPalier(wtStreak)] || 0;
   if (!d) return;
   var e = document.getElementById('t-chrono'), i = e.querySelector('i');
@@ -3409,6 +3603,7 @@ function wtExpirer() {
   document.getElementById('t-actions-vf').style.display = 'none';
   document.getElementById('t-juge').style.display = 'none';
   document.getElementById('t-retour').textContent = tr('trop-tard', cur.mot.nl + ' = ' + cur.mot.fr);
+  revelerPhrase();
   appliquer(false, cur.mode);
   setTimeout(suite, 1500);
 }
@@ -3468,13 +3663,16 @@ function wtFeteSeance() {
 }
 function wtFinDeListe() {
   vibrer([60, 80, 60, 80, 200]);
-  ouvrirFete(tr('fin-t'), TAILLE_DECK + ' / ' + TAILLE_DECK, tr('fin-m'),
+  ouvrirFete(tr('fin-t'), tailleDeck() + " / " + tailleDeck(), tr('fin-m'),
     '<button class="b plein" onclick="allerChoix()">' + ech(tr('fin-choisir')) + '</button>' +
     '<button class="b fin" onclick="fermerFete(false)">' + ech(tr('fin-rentrer')) + '</button>');
 }
 function fermerFete(continuer) {
   document.getElementById('v-fete').classList.add('cache');
   wtPause = false;
+  /* en phrase à trous, la question répondue reste à l'écran avec sa traduction :
+     c'est le bouton « Question suivante » qui fera avancer. */
+  if (continuer && cur && cur.mode === 'phrase' && cur.fait) return;
   if (continuer) suite(); else finSession();
 }
 function allerChoix() {
@@ -3727,7 +3925,7 @@ function rendreCadeaux() {
   var deja = couponDeLaListe();
   /* sans deck validé il n'y a pas de liste bouclée : motsDe rendrait zéro mot
      et zéro acquis, ce qui aurait ouvert le droit au cadeau d'emblée. */
-  var reste = deckPret(liste) ? motsDe(liste).length - acquisDe(liste) : TAILLE_DECK;
+  var reste = deckPret(liste) ? motsDe(liste).length - acquisDe(liste) : liste.mots.length;
   var droit = !deja && reste <= 0 && cadeauxPrets(ses);
   var dl = document.getElementById('cad-droit');
   dl.textContent = deja ? tr('cad-droit-deja', deja.texte)
