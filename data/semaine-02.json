@@ -5,423 +5,2223 @@
  "mots": [
   {
    "nl": "het brood",
-   "fr": "le pain"
+   "fr": "le pain",
+   "ph": [
+    {
+     "nl": "{Het brood} is nog warm van de bakker.",
+     "fr": "{Le pain} est encore chaud de chez le boulanger."
+    },
+    {
+     "nl": "Heb je gisteren {brood} gekocht?",
+     "fr": "As-tu acheté {du pain} hier ?"
+    },
+    {
+     "nl": "Ik snij {het brood} in dunne sneetjes.",
+     "fr": "Je coupe {le pain} en fines tranches."
+    },
+    {
+     "nl": "Zonder {brood} kan ik geen boterham maken.",
+     "fr": "Sans {pain}, je ne peux pas faire de tartine."
+    }
+   ]
   },
   {
    "nl": "de melk",
-   "fr": "le lait"
+   "fr": "le lait",
+   "ph": [
+    {
+     "nl": "{De melk} staat in de koelkast.",
+     "fr": "{Le lait} est dans le frigo."
+    },
+    {
+     "nl": "Neem jij {melk} in je koffie?",
+     "fr": "Tu prends {du lait} dans ton café ?"
+    },
+    {
+     "nl": "De koe geeft elke dag veel {melk}.",
+     "fr": "La vache donne beaucoup {de lait} chaque jour."
+    },
+    {
+     "nl": "Gooi {de melk} weg, ze is zuur geworden.",
+     "fr": "Jette {le lait}, il a tourné."
+    }
+   ]
   },
   {
    "nl": "de kaas",
-   "fr": "le fromage"
+   "fr": "le fromage",
+   "ph": [
+    {
+     "nl": "Ik eet graag {kaas} op mijn boterham.",
+     "fr": "J'aime manger {du fromage} sur ma tartine."
+    },
+    {
+     "nl": "We hebben geen {kaas} meer in huis.",
+     "fr": "Nous n'avons plus {de fromage} à la maison."
+    },
+    {
+     "nl": "Gouda en brie zijn soorten {kaas}.",
+     "fr": "Le gouda et le brie sont des sortes {de fromage}."
+    },
+    {
+     "nl": "Wil je ham en {kaas} op je broodje?",
+     "fr": "Veux-tu du jambon et {du fromage} sur ton petit pain ?"
+    }
+   ]
   },
   {
    "nl": "het vlees",
-   "fr": "la viande"
+   "fr": "la viande",
+   "ph": [
+    {
+     "nl": "{Het vlees} moet nog tien minuten bakken.",
+     "fr": "{La viande} doit encore cuire dix minutes."
+    },
+    {
+     "nl": "Eet jouw broer geen {vlees}?",
+     "fr": "Ton frère ne mange pas {de viande} ?"
+    },
+    {
+     "nl": "De slager verkoopt {vlees} en worst.",
+     "fr": "Le boucher vend {de la viande} et des saucisses."
+    },
+    {
+     "nl": "Hoe wil je {het vlees}: rood of goed gebakken?",
+     "fr": "Comment veux-tu {la viande} : saignante ou bien cuite ?"
+    }
+   ]
   },
   {
    "nl": "de vis",
-   "fr": "le poisson"
+   "fr": "le poisson",
+   "ph": [
+    {
+     "nl": "Op vrijdag eten we vaak {vis}.",
+     "fr": "Le vendredi, nous mangeons souvent {du poisson}."
+    },
+    {
+     "nl": "Heb je {de vis} al gekocht?",
+     "fr": "As-tu déjà acheté {le poisson} ?"
+    },
+    {
+     "nl": "De visser heeft vandaag veel {vis} gevangen.",
+     "fr": "Le pêcheur a attrapé beaucoup {de poisson} aujourd'hui."
+    },
+    {
+     "nl": "Pas op, er zitten graten in {de vis}!",
+     "fr": "Attention, il y a des arêtes dans {le poisson} !"
+    }
+   ]
   },
   {
    "nl": "de groente",
-   "fr": "le légume"
+   "fr": "le légume",
+   "ph": [
+    {
+     "nl": "Kinderen moeten elke dag {groenten} eten.",
+     "fr": "Les enfants doivent manger {des légumes} chaque jour."
+    },
+    {
+     "nl": "Welke {groente} vind jij het lekkerst?",
+     "fr": "Quel {légume} préfères-tu ?"
+    },
+    {
+     "nl": "Wortels en erwten zijn {groenten}.",
+     "fr": "Les carottes et les petits pois sont {des légumes}."
+    },
+    {
+     "nl": "Kook {de groenten} niet te lang.",
+     "fr": "Ne fais pas trop cuire {les légumes}."
+    }
+   ]
   },
   {
    "nl": "het fruit",
-   "fr": "le fruit"
+   "fr": "le fruit",
+   "ph": [
+    {
+     "nl": "Na de lunch eet ik altijd {fruit}.",
+     "fr": "Après le déjeuner, je mange toujours {des fruits}."
+    },
+    {
+     "nl": "{Het fruit} in deze winkel is erg duur.",
+     "fr": "{Les fruits} dans ce magasin sont très chers."
+    },
+    {
+     "nl": "{Fruit} groeit aan bomen en struiken.",
+     "fr": "{Les fruits} poussent sur les arbres et les buissons."
+    },
+    {
+     "nl": "Ik heb {fruit} gekocht: druiven, kersen en peren.",
+     "fr": "J'ai acheté {des fruits} : du raisin, des cerises et des poires."
+    }
+   ]
   },
   {
    "nl": "de appel",
-   "fr": "la pomme"
+   "fr": "la pomme",
+   "ph": [
+    {
+     "nl": "Wil je {een appel} voor onderweg?",
+     "fr": "Veux-tu {une pomme} pour la route ?"
+    },
+    {
+     "nl": "Mijn grootmoeder maakte taart met {appels} uit de tuin.",
+     "fr": "Ma grand-mère faisait de la tarte avec {des pommes} du jardin."
+    },
+    {
+     "nl": "In Normandië maakt men cider van {appels}.",
+     "fr": "En Normandie, on fait du cidre avec {des pommes}."
+    },
+    {
+     "nl": "Newton zag {een appel} uit de boom vallen.",
+     "fr": "Newton a vu {une pomme} tomber de l'arbre."
+    }
+   ]
   },
   {
    "nl": "de aardappel",
-   "fr": "la pomme de terre"
+   "fr": "la pomme de terre",
+   "ph": [
+    {
+     "nl": "Ik schil {de aardappelen} voor het avondeten.",
+     "fr": "J'épluche {les pommes de terre} pour le souper."
+    },
+    {
+     "nl": "In België eten we veel {aardappelen}.",
+     "fr": "En Belgique, nous mangeons beaucoup {de pommes de terre}."
+    },
+    {
+     "nl": "Frietjes worden gemaakt van {aardappelen}.",
+     "fr": "Les frites sont faites avec {des pommes de terre}."
+    },
+    {
+     "nl": "Ik stamp {de aardappelen} fijn tot puree.",
+     "fr": "J'écrase {les pommes de terre} en purée."
+    }
+   ]
   },
   {
    "nl": "de ui",
-   "fr": "l'oignon"
+   "fr": "l'oignon",
+   "ph": [
+    {
+     "nl": "Snij {de ui} in kleine stukjes.",
+     "fr": "Coupe {l'oignon} en petits morceaux."
+    },
+    {
+     "nl": "Er zit geen {ui} in deze soep.",
+     "fr": "Il n'y a pas {d'oignon} dans cette soupe."
+    },
+    {
+     "nl": "Als ik {een ui} snijd, moet ik huilen.",
+     "fr": "Quand je coupe {un oignon}, je pleure."
+    },
+    {
+     "nl": "Bak {de uien} goudbruin in wat boter.",
+     "fr": "Fais dorer {les oignons} dans un peu de beurre."
+    }
+   ]
   },
   {
    "nl": "de wortel",
-   "fr": "la carotte"
+   "fr": "la carotte",
+   "ph": [
+    {
+     "nl": "Het konijn eet {een wortel} in de tuin.",
+     "fr": "Le lapin mange {une carotte} dans le jardin."
+    },
+    {
+     "nl": "Heb jij {de wortels} al geschild?",
+     "fr": "As-tu déjà épluché {les carottes} ?"
+    },
+    {
+     "nl": "{Wortels} zijn oranje en goed voor je ogen.",
+     "fr": "{Les carottes} sont orange et bonnes pour les yeux."
+    },
+    {
+     "nl": "Rasp {een wortel} voor de salade.",
+     "fr": "Râpe {une carotte} pour la salade."
+    }
+   ]
   },
   {
    "nl": "de tomaat",
-   "fr": "la tomate"
+   "fr": "la tomate",
+   "ph": [
+    {
+     "nl": "{De tomaten} uit onze tuin zijn heel zoet.",
+     "fr": "{Les tomates} de notre jardin sont très sucrées."
+    },
+    {
+     "nl": "Heb je {tomaten} gekocht op de markt?",
+     "fr": "As-tu acheté {des tomates} au marché ?"
+    },
+    {
+     "nl": "Ketchup maak je van {tomaten}.",
+     "fr": "Le ketchup se fait avec {des tomates}."
+    },
+    {
+     "nl": "Snij {de tomaat} in plakjes voor de mozzarella.",
+     "fr": "Coupe {la tomate} en rondelles pour la mozzarella."
+    }
+   ]
   },
   {
    "nl": "de sla",
-   "fr": "la salade"
+   "fr": "la salade",
+   "ph": [
+    {
+     "nl": "{De sla} uit de tuin is heel vers.",
+     "fr": "{La salade} du jardin est très fraîche."
+    },
+    {
+     "nl": "Wil je {sla} bij je vis?",
+     "fr": "Veux-tu {de la salade} avec ton poisson ?"
+    },
+    {
+     "nl": "Ik leg een blaadje {sla} op mijn hamburger.",
+     "fr": "Je mets une feuille {de salade} sur mon hamburger."
+    },
+    {
+     "nl": "De slakken hebben {de sla} opgegeten!",
+     "fr": "Les escargots ont mangé {la salade} !"
+    }
+   ]
   },
   {
    "nl": "het ei",
-   "fr": "l'œuf"
+   "fr": "l'œuf",
+   "ph": [
+    {
+     "nl": "Ik eet elke ochtend {een ei}.",
+     "fr": "Je mange {un œuf} chaque matin."
+    },
+    {
+     "nl": "Voor de pannenkoeken heb je drie {eieren} nodig.",
+     "fr": "Pour les crêpes, il faut trois {œufs}."
+    },
+    {
+     "nl": "De kip heeft vanochtend {een ei} gelegd.",
+     "fr": "La poule a pondu {un œuf} ce matin."
+    },
+    {
+     "nl": "Wil je {je ei} zacht of hard gekookt?",
+     "fr": "Veux-tu {ton œuf} à la coque ou dur ?"
+    }
+   ]
   },
   {
    "nl": "de boter",
-   "fr": "le beurre"
+   "fr": "le beurre",
+   "ph": [
+    {
+     "nl": "Smeer wat {boter} op je boterham.",
+     "fr": "Mets un peu {de beurre} sur ta tartine."
+    },
+    {
+     "nl": "{De boter} is te hard om te smeren.",
+     "fr": "{Le beurre} est trop dur à tartiner."
+    },
+    {
+     "nl": "Laat {de boter} eerst smelten in de pan.",
+     "fr": "Fais d'abord fondre {le beurre} dans la poêle."
+    },
+    {
+     "nl": "{Boter} wordt gemaakt van room.",
+     "fr": "{Le beurre} est fabriqué à partir de crème."
+    }
+   ]
   },
   {
    "nl": "de suiker",
-   "fr": "le sucre"
+   "fr": "le sucre",
+   "ph": [
+    {
+     "nl": "Doe niet te veel {suiker} in de taart.",
+     "fr": "Ne mets pas trop {de sucre} dans la tarte."
+    },
+    {
+     "nl": "{De suiker} staat in de kast boven het fornuis.",
+     "fr": "{Le sucre} est dans l'armoire au-dessus de la cuisinière."
+    },
+    {
+     "nl": "Snoep en frisdrank bevatten veel {suiker}.",
+     "fr": "Les bonbons et les sodas contiennent beaucoup {de sucre}."
+    },
+    {
+     "nl": "Hoeveel klontjes {suiker} wil je in je thee?",
+     "fr": "Combien de morceaux {de sucre} veux-tu dans ton thé ?"
+    }
+   ]
   },
   {
    "nl": "het zout",
-   "fr": "le sel"
+   "fr": "le sel",
+   "ph": [
+    {
+     "nl": "Kun je mij {het zout} geven, alsjeblieft?",
+     "fr": "Peux-tu me donner {le sel}, s'il te plaît ?"
+    },
+    {
+     "nl": "Er zit te veel {zout} in de soep.",
+     "fr": "Il y a trop {de sel} dans la soupe."
+    },
+    {
+     "nl": "Vergeet niet {zout} in het kookwater te doen.",
+     "fr": "N'oublie pas de mettre {du sel} dans l'eau de cuisson."
+    },
+    {
+     "nl": "Het water van de zee bevat veel {zout}.",
+     "fr": "L'eau de mer contient beaucoup {de sel}."
+    }
+   ]
   },
   {
    "nl": "de peper",
-   "fr": "le poivre"
+   "fr": "le poivre",
+   "ph": [
+    {
+     "nl": "Doe een beetje {peper} op het vlees.",
+     "fr": "Mets un peu {de poivre} sur la viande."
+    },
+    {
+     "nl": "Weet jij waar {de peper} staat?",
+     "fr": "Sais-tu où est {le poivre} ?"
+    },
+    {
+     "nl": "Zout en {peper} staan altijd op tafel.",
+     "fr": "Le sel et {le poivre} sont toujours sur la table."
+    },
+    {
+     "nl": "Van te veel {peper} moet ik niezen.",
+     "fr": "Trop {de poivre} me fait éternuer."
+    }
+   ]
   },
   {
    "nl": "de soep",
-   "fr": "la soupe"
+   "fr": "la soupe",
+   "ph": [
+    {
+     "nl": "In de winter eten we vaak {soep}.",
+     "fr": "En hiver, nous mangeons souvent {de la soupe}."
+    },
+    {
+     "nl": "{De soep} is nog te warm.",
+     "fr": "{La soupe} est encore trop chaude."
+    },
+    {
+     "nl": "Mijn moeder maakte {soep} van tomaten en ui.",
+     "fr": "Ma mère faisait {de la soupe} aux tomates et à l'oignon."
+    },
+    {
+     "nl": "Neem een lepel, {de soep} is klaar!",
+     "fr": "Prends une cuillère, {la soupe} est prête !"
+    }
+   ]
   },
   {
    "nl": "de saus",
-   "fr": "la sauce"
+   "fr": "la sauce",
+   "ph": [
+    {
+     "nl": "{De saus} is veel te pikant voor mij.",
+     "fr": "{La sauce} est beaucoup trop piquante pour moi."
+    },
+    {
+     "nl": "Wil je {saus} bij je frietjes?",
+     "fr": "Veux-tu {de la sauce} avec tes frites ?"
+    },
+    {
+     "nl": "Mayonaise is {een saus} met eieren en olie.",
+     "fr": "La mayonnaise est {une sauce} aux œufs et à l'huile."
+    },
+    {
+     "nl": "Giet {de saus} over de pasta.",
+     "fr": "Verse {la sauce} sur les pâtes."
+    }
+   ]
   },
   {
    "nl": "de rijst",
-   "fr": "le riz"
+   "fr": "le riz",
+   "ph": [
+    {
+     "nl": "Ik kook {de rijst} twaalf minuten.",
+     "fr": "Je fais cuire {le riz} douze minutes."
+    },
+    {
+     "nl": "Eten jullie thuis vaak {rijst}?",
+     "fr": "Mangez-vous souvent {du riz} à la maison ?"
+    },
+    {
+     "nl": "In Azië eten veel mensen elke dag {rijst}.",
+     "fr": "En Asie, beaucoup de gens mangent {du riz} chaque jour."
+    },
+    {
+     "nl": "Spoel {de rijst} voor je hem kookt.",
+     "fr": "Rince {le riz} avant de le cuire."
+    }
+   ]
   },
   {
    "nl": "de koek",
-   "fr": "le biscuit"
+   "fr": "le biscuit",
+   "ph": [
+    {
+     "nl": "Mag ik {een koek} bij mijn koffie?",
+     "fr": "Puis-je avoir {un biscuit} avec mon café ?"
+    },
+    {
+     "nl": "De kinderen hebben alle {koeken} opgegeten.",
+     "fr": "Les enfants ont mangé tous {les biscuits}."
+    },
+    {
+     "nl": "Speculoos is {een koek} uit België.",
+     "fr": "Le spéculoos est {un biscuit} belge."
+    },
+    {
+     "nl": "Doe {de koeken} terug in de doos!",
+     "fr": "Remets {les biscuits} dans la boîte !"
+    }
+   ]
   },
   {
    "nl": "de taart",
-   "fr": "la tarte"
+   "fr": "la tarte",
+   "ph": [
+    {
+     "nl": "Mijn zus bakt {een taart} voor mijn verjaardag.",
+     "fr": "Ma sœur prépare {une tarte} pour mon anniversaire."
+    },
+    {
+     "nl": "Wil je nog een stuk {taart}?",
+     "fr": "Veux-tu encore un morceau {de tarte} ?"
+    },
+    {
+     "nl": "{De taart} moet nog veertig minuten in de oven.",
+     "fr": "{La tarte} doit encore rester quarante minutes au four."
+    },
+    {
+     "nl": "Wie heeft {de taart} aangesneden?",
+     "fr": "Qui a entamé {la tarte} ?"
+    }
+   ]
   },
   {
    "nl": "het snoep",
-   "fr": "les bonbons"
+   "fr": "les bonbons",
+   "ph": [
+    {
+     "nl": "De kinderen eten te veel {snoep}.",
+     "fr": "Les enfants mangent trop {de bonbons}."
+    },
+    {
+     "nl": "Waar heb jij {het snoep} verstopt?",
+     "fr": "Où as-tu caché {les bonbons} ?"
+    },
+    {
+     "nl": "Je krijgt pas {snoep} na het eten.",
+     "fr": "Tu n'auras {des bonbons} qu'après le repas."
+    },
+    {
+     "nl": "Te veel {snoep} is slecht voor je tanden.",
+     "fr": "Trop {de bonbons}, c'est mauvais pour les dents."
+    }
+   ]
   },
   {
    "nl": "de chocolade",
-   "fr": "le chocolat"
+   "fr": "le chocolat",
+   "ph": [
+    {
+     "nl": "Ik eet graag {chocolade} bij mijn koffie.",
+     "fr": "J'aime manger {du chocolat} avec mon café."
+    },
+    {
+     "nl": "{De chocolade} uit België is heel bekend.",
+     "fr": "{Le chocolat} de Belgique est très connu."
+    },
+    {
+     "nl": "Met Pasen zoeken de kinderen eieren van {chocolade}.",
+     "fr": "À Pâques, les enfants cherchent des œufs en {chocolat}."
+    },
+    {
+     "nl": "Is deze {chocolade} puur of met melk?",
+     "fr": "Ce {chocolat} est-il noir ou au lait ?"
+    }
+   ]
   },
   {
    "nl": "het water",
-   "fr": "l'eau"
+   "fr": "l'eau",
+   "ph": [
+    {
+     "nl": "Mag ik een glas {water}, alsjeblieft?",
+     "fr": "Puis-je avoir un verre {d'eau}, s'il vous plaît ?"
+    },
+    {
+     "nl": "{Het water} in deze fles is niet koud.",
+     "fr": "{L'eau} de cette bouteille n'est pas froide."
+    },
+    {
+     "nl": "Planten hebben {water} nodig om te groeien.",
+     "fr": "Les plantes ont besoin {d'eau} pour pousser."
+    },
+    {
+     "nl": "Laat {het water} eerst koken voor de pasta.",
+     "fr": "Fais d'abord bouillir {l'eau} pour les pâtes."
+    }
+   ]
   },
   {
    "nl": "het bier",
-   "fr": "la bière"
+   "fr": "la bière",
+   "ph": [
+    {
+     "nl": "In België drinken we graag {bier}.",
+     "fr": "En Belgique, nous aimons boire {de la bière}."
+    },
+    {
+     "nl": "Is {het bier} koud genoeg?",
+     "fr": "{La bière} est-elle assez fraîche ?"
+    },
+    {
+     "nl": "{Bier} wordt gemaakt van gerst en hop.",
+     "fr": "{La bière} est fabriquée à partir d'orge et de houblon."
+    },
+    {
+     "nl": "{Een bier} van het vat, alstublieft.",
+     "fr": "{Une bière} pression, s'il vous plaît."
+    }
+   ]
   },
   {
    "nl": "de wijn",
-   "fr": "le vin"
+   "fr": "le vin",
+   "ph": [
+    {
+     "nl": "Wil je een glas {wijn} bij het eten?",
+     "fr": "Veux-tu un verre {de vin} avec le repas ?"
+    },
+    {
+     "nl": "Ik heb {de wijn} nog niet geproefd.",
+     "fr": "Je n'ai pas encore goûté {le vin}."
+    },
+    {
+     "nl": "Bij vis drinken we witte {wijn}.",
+     "fr": "Avec le poisson, nous buvons {du vin} blanc."
+    },
+    {
+     "nl": "Wie opent {de wijn} met de kurkentrekker?",
+     "fr": "Qui ouvre {le vin} avec le tire-bouchon ?"
+    }
+   ]
   },
   {
    "nl": "de koffie",
-   "fr": "le café (boisson)"
+   "fr": "le café (boisson)",
+   "ph": [
+    {
+     "nl": "'s Ochtends drink ik altijd {koffie}.",
+     "fr": "Le matin, je bois toujours {du café}."
+    },
+    {
+     "nl": "Is {de koffie} al klaar?",
+     "fr": "{Le café} est-il déjà prêt ?"
+    },
+    {
+     "nl": "Zonder {koffie} word ik 's ochtends niet wakker.",
+     "fr": "Sans {café}, je ne me réveille pas le matin."
+    },
+    {
+     "nl": "Wil je {je koffie} zwart of met melk?",
+     "fr": "Tu veux {ton café} noir ou avec du lait ?"
+    }
+   ]
   },
   {
    "nl": "de thee",
-   "fr": "le thé"
+   "fr": "le thé",
+   "ph": [
+    {
+     "nl": "Wil je {thee} of koffie?",
+     "fr": "Tu veux {du thé} ou du café ?"
+    },
+    {
+     "nl": "Ik heb {de thee} te lang laten trekken.",
+     "fr": "J'ai laissé infuser {le thé} trop longtemps."
+    },
+    {
+     "nl": "In Engeland drinkt men veel {thee}.",
+     "fr": "En Angleterre, on boit beaucoup {de thé}."
+    },
+    {
+     "nl": "Doe een zakje {thee} in de kop.",
+     "fr": "Mets un sachet {de thé} dans la tasse."
+    }
+   ]
   },
   {
    "nl": "het sap",
-   "fr": "le jus"
+   "fr": "le jus",
+   "ph": [
+    {
+     "nl": "Ik drink elke ochtend een glas {sap}.",
+     "fr": "Je bois un verre {de jus} chaque matin."
+    },
+    {
+     "nl": "Heb jij {het sap} al opgedronken?",
+     "fr": "As-tu déjà fini {le jus} ?"
+    },
+    {
+     "nl": "Ik pers sinaasappels voor vers {sap}.",
+     "fr": "Je presse des oranges pour avoir {du jus} frais."
+    },
+    {
+     "nl": "Schud {het sap} goed voor het drinken.",
+     "fr": "Secoue bien {le jus} avant de le boire."
+    }
+   ]
   },
   {
    "nl": "het ontbijt",
-   "fr": "le petit-déjeuner"
+   "fr": "le petit-déjeuner",
+   "ph": [
+    {
+     "nl": "Wat eet jij als {ontbijt}?",
+     "fr": "Que manges-tu {au petit-déjeuner} ?"
+    },
+    {
+     "nl": "{Het ontbijt} is om acht uur klaar.",
+     "fr": "{Le petit-déjeuner} est prêt à huit heures."
+    },
+    {
+     "nl": "Ik had vanochtend geen tijd voor {het ontbijt}.",
+     "fr": "Ce matin, je n'ai pas eu le temps de prendre {le petit-déjeuner}."
+    },
+    {
+     "nl": "Op zondag krijgt mama {het ontbijt} op bed.",
+     "fr": "Le dimanche, maman reçoit {le petit-déjeuner} au lit."
+    }
+   ]
   },
   {
    "nl": "de lunch",
-   "fr": "le déjeuner"
+   "fr": "le déjeuner",
+   "ph": [
+    {
+     "nl": "Na {de lunch} gaan we wandelen.",
+     "fr": "Après {le déjeuner}, nous allons nous promener."
+    },
+    {
+     "nl": "Wat heb je meegebracht voor {de lunch}?",
+     "fr": "Qu'as-tu apporté pour {le déjeuner} ?"
+    },
+    {
+     "nl": "Om twaalf uur is het tijd voor {de lunch}.",
+     "fr": "À midi, c'est l'heure {du déjeuner}."
+    },
+    {
+     "nl": "Ik eet {mijn lunch} meestal op kantoor.",
+     "fr": "Je mange généralement {mon déjeuner} au bureau."
+    }
+   ]
   },
   {
    "nl": "het avondeten",
-   "fr": "le souper"
+   "fr": "le souper",
+   "ph": [
+    {
+     "nl": "Wat maken we vanavond voor {het avondeten}?",
+     "fr": "Qu'est-ce qu'on prépare pour {le souper} ce soir ?"
+    },
+    {
+     "nl": "Na {het avondeten} kijken we samen tv.",
+     "fr": "Après {le souper}, nous regardons la télé ensemble."
+    },
+    {
+     "nl": "Eet niet te veel snoep voor {het avondeten}!",
+     "fr": "Ne mange pas trop de bonbons avant {le souper} !"
+    },
+    {
+     "nl": "Om zeven uur 's avonds staat {het avondeten} op tafel.",
+     "fr": "À sept heures du soir, {le souper} est sur la table."
+    }
+   ]
   },
   {
    "nl": "de honger",
-   "fr": "la faim"
+   "fr": "la faim",
+   "ph": [
+    {
+     "nl": "Na het sporten heb ik altijd {honger}.",
+     "fr": "Après le sport, j'ai toujours {faim}."
+    },
+    {
+     "nl": "Heb jij al {honger}, of wachten we nog?",
+     "fr": "As-tu déjà {faim}, ou on attend encore ?"
+    },
+    {
+     "nl": "Ik heb {honger} als een paard!",
+     "fr": "J'ai une {faim} de loup !"
+    },
+    {
+     "nl": "Ik heb geen {honger}, ik heb net gegeten.",
+     "fr": "Je n'ai pas {faim}, je viens de manger."
+    }
+   ]
   },
   {
    "nl": "de dorst",
-   "fr": "la soif"
+   "fr": "la soif",
+   "ph": [
+    {
+     "nl": "Na de wandeling had ik veel {dorst}.",
+     "fr": "Après la promenade, j'avais très {soif}."
+    },
+    {
+     "nl": "Als je {dorst} hebt, drink dan water.",
+     "fr": "Si tu as {soif}, bois de l'eau."
+    },
+    {
+     "nl": "Het is zo warm, ik sterf van de {dorst}.",
+     "fr": "Il fait si chaud, je meurs de {soif}."
+    },
+    {
+     "nl": "Heeft de hond {dorst}? Geef hem water.",
+     "fr": "Le chien a-t-il {soif} ? Donne-lui de l'eau."
+    }
+   ]
   },
   {
    "nl": "de maaltijd",
-   "fr": "le repas"
+   "fr": "le repas",
+   "ph": [
+    {
+     "nl": "We eten drie {maaltijden} per dag.",
+     "fr": "Nous mangeons trois {repas} par jour."
+    },
+    {
+     "nl": "Was {de maaltijd} in het restaurant goed?",
+     "fr": "{Le repas} au restaurant était-il bon ?"
+    },
+    {
+     "nl": "Het ontbijt is de belangrijkste {maaltijd} van de dag.",
+     "fr": "Le petit-déjeuner est {le repas} le plus important de la journée."
+    },
+    {
+     "nl": "Smakelijk, en geniet van {de maaltijd}!",
+     "fr": "Bon appétit, et profitez {du repas} !"
+    }
+   ]
   },
   {
    "nl": "de smaak",
-   "fr": "le goût"
+   "fr": "le goût",
+   "ph": [
+    {
+     "nl": "{De smaak} van deze kaas is te sterk.",
+     "fr": "{Le goût} de ce fromage est trop fort."
+    },
+    {
+     "nl": "Ik hou van {de smaak} van verse munt.",
+     "fr": "J'aime {le goût} de la menthe fraîche."
+    },
+    {
+     "nl": "Deze soep heeft geen {smaak}, er moet zout bij.",
+     "fr": "Cette soupe n'a pas {de goût}, il faut du sel."
+    },
+    {
+     "nl": "{De smaak} van zwarte koffie vind ik bitter.",
+     "fr": "Je trouve {le goût} du café noir amer."
+    }
+   ]
   },
   {
    "nl": "lekker",
-   "fr": "bon, savoureux"
+   "fr": "bon, savoureux",
+   "ph": [
+    {
+     "nl": "Deze taart is echt {lekker}!",
+     "fr": "Cette tarte est vraiment {bonne} !"
+    },
+    {
+     "nl": "De soep was gisteren niet {lekker}.",
+     "fr": "Hier, la soupe n'était pas {bonne}."
+    },
+    {
+     "nl": "Mmm, wat ruikt het hier {lekker}!",
+     "fr": "Mmm, ça sent {bon} ici !"
+    },
+    {
+     "nl": "Vond je de pannenkoeken {lekker}?",
+     "fr": "As-tu trouvé les crêpes {bonnes} ?"
+    }
+   ]
   },
   {
    "nl": "het recept",
-   "fr": "la recette"
+   "fr": "la recette",
+   "ph": [
+    {
+     "nl": "Mag ik {het recept} van deze taart?",
+     "fr": "Puis-je avoir {la recette} de cette tarte ?"
+    },
+    {
+     "nl": "Volg {het recept} stap voor stap.",
+     "fr": "Suis {la recette} étape par étape."
+    },
+    {
+     "nl": "Ik heb {een recept} voor soep op internet gevonden.",
+     "fr": "J'ai trouvé {une recette} de soupe sur internet."
+    },
+    {
+     "nl": "Dit {recept} komt van mijn oma.",
+     "fr": "Cette {recette} vient de ma grand-mère."
+    }
+   ]
   },
   {
    "nl": "het meel",
-   "fr": "la farine"
+   "fr": "la farine",
+   "ph": [
+    {
+     "nl": "Voor pannenkoeken heb je {meel} en melk nodig.",
+     "fr": "Pour les crêpes, il faut {de la farine} et du lait."
+    },
+    {
+     "nl": "Er is geen {meel} meer in de kast.",
+     "fr": "Il n'y a plus {de farine} dans l'armoire."
+    },
+    {
+     "nl": "Van tarwe maakt de molenaar {meel}.",
+     "fr": "Avec le blé, le meunier fait {de la farine}."
+    },
+    {
+     "nl": "Zeef {het meel} voor je het deeg maakt.",
+     "fr": "Tamise {la farine} avant de faire la pâte."
+    }
+   ]
   },
   {
    "nl": "het deeg",
-   "fr": "la pâte"
+   "fr": "la pâte",
+   "ph": [
+    {
+     "nl": "{Het deeg} moet een uur rusten.",
+     "fr": "{La pâte} doit reposer une heure."
+    },
+    {
+     "nl": "Heb je {het deeg} al gemaakt?",
+     "fr": "As-tu déjà préparé {la pâte} ?"
+    },
+    {
+     "nl": "Rol {het deeg} dun uit op tafel.",
+     "fr": "Étale {la pâte} finement sur la table."
+    },
+    {
+     "nl": "Laat {het deeg} niet te lang rijzen.",
+     "fr": "Ne laisse pas {la pâte} lever trop longtemps."
+    }
+   ]
   },
   {
    "nl": "de pasta",
-   "fr": "les pâtes"
+   "fr": "les pâtes",
+   "ph": [
+    {
+     "nl": "Vanavond eten we {pasta} met tomatensaus.",
+     "fr": "Ce soir, nous mangeons {des pâtes} à la sauce tomate."
+    },
+    {
+     "nl": "Is {de pasta} al gaar?",
+     "fr": "{Les pâtes} sont-elles déjà cuites ?"
+    },
+    {
+     "nl": "Spaghetti en macaroni zijn soorten {pasta}.",
+     "fr": "Les spaghettis et les macaronis sont des sortes {de pâtes}."
+    },
+    {
+     "nl": "Kook {de pasta} niet langer dan tien minuten.",
+     "fr": "Ne cuis pas {les pâtes} plus de dix minutes."
+    }
+   ]
   },
   {
    "nl": "de pannenkoek",
-   "fr": "la crêpe"
+   "fr": "la crêpe",
+   "ph": [
+    {
+     "nl": "Op zondag bakken we {pannenkoeken}.",
+     "fr": "Le dimanche, nous faisons {des crêpes}."
+    },
+    {
+     "nl": "Hoeveel {pannenkoeken} heb je gegeten?",
+     "fr": "Combien {de crêpes} as-tu mangées ?"
+    },
+    {
+     "nl": "Mijn vader kan {een pannenkoek} in de lucht omdraaien.",
+     "fr": "Mon père sait retourner {une crêpe} en l'air."
+    },
+    {
+     "nl": "Wil je suiker of stroop op {je pannenkoek}?",
+     "fr": "Veux-tu du sucre ou du sirop sur {ta crêpe} ?"
+    }
+   ]
   },
   {
    "nl": "de boterham",
-   "fr": "la tartine"
+   "fr": "la tartine",
+   "ph": [
+    {
+     "nl": "Ik neem twee {boterhammen} mee naar het werk.",
+     "fr": "J'emporte deux {tartines} au travail."
+    },
+    {
+     "nl": "Wat leg jij op je {boterham}?",
+     "fr": "Qu'est-ce que tu mets sur ta {tartine} ?"
+    },
+    {
+     "nl": "Mama smeert {een boterham} met choco.",
+     "fr": "Maman prépare {une tartine} au choco."
+    },
+    {
+     "nl": "Eet {je boterhammen} op voor je gaat spelen.",
+     "fr": "Mange {tes tartines} avant d'aller jouer."
+    }
+   ]
   },
   {
    "nl": "het broodje",
-   "fr": "le petit pain"
+   "fr": "le petit pain",
+   "ph": [
+    {
+     "nl": "Ik koop {een broodje} kaas voor de lunch.",
+     "fr": "J'achète {un petit pain} au fromage pour le déjeuner."
+    },
+    {
+     "nl": "Zijn {de broodjes} nog warm?",
+     "fr": "{Les petits pains} sont-ils encore chauds ?"
+    },
+    {
+     "nl": "Bij de bakker koop ik zes {broodjes} voor het ontbijt.",
+     "fr": "Chez le boulanger, j'achète six {petits pains} pour le petit-déjeuner."
+    },
+    {
+     "nl": "Wil je {een broodje} met kip of met tonijn?",
+     "fr": "Veux-tu {un petit pain} au poulet ou au thon ?"
+    }
+   ]
   },
   {
    "nl": "de korst",
-   "fr": "la croûte"
+   "fr": "la croûte",
+   "ph": [
+    {
+     "nl": "Mijn zoon eet {de korst} van zijn brood niet.",
+     "fr": "Mon fils ne mange pas {la croûte} de son pain."
+    },
+    {
+     "nl": "Snij {de korst} van de boterham.",
+     "fr": "Coupe {la croûte} de la tartine."
+    },
+    {
+     "nl": "{De korst} van deze pizza is te hard.",
+     "fr": "{La croûte} de cette pizza est trop dure."
+    },
+    {
+     "nl": "Gooi {de korsten} niet weg, de eenden eten ze graag.",
+     "fr": "Ne jette pas {les croûtes}, les canards les adorent."
+    }
+   ]
   },
   {
    "nl": "de honing",
-   "fr": "le miel"
+   "fr": "le miel",
+   "ph": [
+    {
+     "nl": "Ik doe {honing} in mijn thee.",
+     "fr": "Je mets {du miel} dans mon thé."
+    },
+    {
+     "nl": "Waar heb je {de honing} gekocht?",
+     "fr": "Où as-tu acheté {le miel} ?"
+    },
+    {
+     "nl": "Bijen maken {honing} van de bloemen in de tuin.",
+     "fr": "Les abeilles font {du miel} avec les fleurs du jardin."
+    },
+    {
+     "nl": "Neem een lepel {honing} als je keel pijn doet.",
+     "fr": "Prends une cuillère {de miel} si tu as mal à la gorge."
+    }
+   ]
   },
   {
    "nl": "de jam",
-   "fr": "la confiture"
+   "fr": "la confiture",
+   "ph": [
+    {
+     "nl": "Wil je {jam} op je boterham?",
+     "fr": "Veux-tu {de la confiture} sur ta tartine ?"
+    },
+    {
+     "nl": "{De jam} van mijn moeder is de beste.",
+     "fr": "{La confiture} de ma mère est la meilleure."
+    },
+    {
+     "nl": "Oma kookt {jam} van aardbeien uit de tuin.",
+     "fr": "Grand-mère fait {de la confiture} avec les fraises du jardin."
+    },
+    {
+     "nl": "{De jam} van abrikozen is mijn favoriet.",
+     "fr": "{La confiture} d'abricots est ma préférée."
+    }
+   ]
   },
   {
    "nl": "de room",
-   "fr": "la crème"
+   "fr": "la crème",
+   "ph": [
+    {
+     "nl": "Doe wat {room} in de soep.",
+     "fr": "Mets un peu {de crème} dans la soupe."
+    },
+    {
+     "nl": "Is {de room} nog goed?",
+     "fr": "{La crème} est-elle encore bonne ?"
+    },
+    {
+     "nl": "Klop {de room} stijf voor op de taart.",
+     "fr": "Fouette {la crème} pour la tarte."
+    },
+    {
+     "nl": "Wil je {room} bij je aardbeien?",
+     "fr": "Veux-tu {de la crème} avec tes fraises ?"
+    }
+   ]
   },
   {
    "nl": "de yoghurt",
-   "fr": "le yaourt"
+   "fr": "le yaourt",
+   "ph": [
+    {
+     "nl": "Ik eet {yoghurt} met fruit als ontbijt.",
+     "fr": "Je mange {du yaourt} avec des fruits au petit-déjeuner."
+    },
+    {
+     "nl": "Er staat geen {yoghurt} meer in de koelkast.",
+     "fr": "Il n'y a plus {de yaourt} dans le frigo."
+    },
+    {
+     "nl": "Roer wat honing door {de yoghurt}.",
+     "fr": "Mélange un peu de miel dans {le yaourt}."
+    },
+    {
+     "nl": "Eet je {je yoghurt} met een lepel of drink je hem?",
+     "fr": "Manges-tu {ton yaourt} à la cuillère ou le bois-tu ?"
+    }
+   ]
   },
   {
    "nl": "het ijsje",
-   "fr": "la glace"
+   "fr": "la glace",
+   "ph": [
+    {
+     "nl": "In de zomer eten we graag {een ijsje}.",
+     "fr": "En été, nous aimons manger {une glace}."
+    },
+    {
+     "nl": "Welk {ijsje} wil je: vanille of chocolade?",
+     "fr": "Quelle {glace} veux-tu : vanille ou chocolat ?"
+    },
+    {
+     "nl": "{Het ijsje} smelt snel in de zon!",
+     "fr": "{La glace} fond vite au soleil !"
+    },
+    {
+     "nl": "Mag ik {een ijsje} op het strand?",
+     "fr": "Je peux avoir {une glace} à la plage ?"
+    }
+   ]
   },
   {
    "nl": "het toetje",
-   "fr": "le dessert"
+   "fr": "le dessert",
+   "ph": [
+    {
+     "nl": "Wat eten we als {toetje}?",
+     "fr": "Qu'est-ce qu'on mange comme {dessert} ?"
+    },
+    {
+     "nl": "De kinderen kregen vandaag geen {toetje}.",
+     "fr": "Les enfants n'ont pas eu {de dessert} aujourd'hui."
+    },
+    {
+     "nl": "Eet eerst je groenten op, dan krijg je {een toetje}.",
+     "fr": "Mange d'abord tes légumes, ensuite tu auras {un dessert}."
+    },
+    {
+     "nl": "Is er nog plaats voor {een toetje}?",
+     "fr": "Il reste de la place pour {un dessert} ?"
+    }
+   ]
   },
   {
    "nl": "het voorgerecht",
-   "fr": "l'entrée"
+   "fr": "l'entrée",
+   "ph": [
+    {
+     "nl": "Als {voorgerecht} nemen we de soep.",
+     "fr": "En {entrée}, nous prenons la soupe."
+    },
+    {
+     "nl": "Hebben jullie {het voorgerecht} al gegeten?",
+     "fr": "Avez-vous déjà mangé {l'entrée} ?"
+    },
+    {
+     "nl": "Na {het voorgerecht} komt het hoofdgerecht.",
+     "fr": "Après {l'entrée} vient le plat principal."
+    },
+    {
+     "nl": "Neem jij een soep of een salade als {voorgerecht}?",
+     "fr": "Tu prends une soupe ou une salade en {entrée} ?"
+    }
+   ]
   },
   {
    "nl": "het hoofdgerecht",
-   "fr": "le plat principal"
+   "fr": "le plat principal",
+   "ph": [
+    {
+     "nl": "{Het hoofdgerecht} is vis met rijst.",
+     "fr": "{Le plat principal} est du poisson avec du riz."
+    },
+    {
+     "nl": "Wat neem jij als {hoofdgerecht}?",
+     "fr": "Que prends-tu comme {plat principal} ?"
+    },
+    {
+     "nl": "We nemen geen voorgerecht, alleen {een hoofdgerecht}.",
+     "fr": "Nous ne prenons pas d'entrée, seulement {un plat principal}."
+    },
+    {
+     "nl": "Na {het hoofdgerecht} had ik geen plaats meer voor een toetje.",
+     "fr": "Après {le plat principal}, je n'avais plus de place pour un dessert."
+    }
+   ]
   },
   {
    "nl": "de schotel",
-   "fr": "le plat"
+   "fr": "le plat",
+   "ph": [
+    {
+     "nl": "Zet {de schotel} maar op tafel.",
+     "fr": "Mets {le plat} sur la table."
+    },
+    {
+     "nl": "Deze {schotel} is een specialiteit van het huis.",
+     "fr": "Ce {plat} est une spécialité de la maison."
+    },
+    {
+     "nl": "Pas op, {de schotel} komt net uit de oven!",
+     "fr": "Attention, {le plat} sort juste du four !"
+    },
+    {
+     "nl": "Couscous is {een schotel} uit Noord-Afrika.",
+     "fr": "Le couscous est {un plat} d'Afrique du Nord."
+    }
+   ]
   },
   {
    "nl": "de kom",
-   "fr": "le bol"
+   "fr": "le bol",
+   "ph": [
+    {
+     "nl": "Ik eet mijn soep uit {een kom}.",
+     "fr": "Je mange ma soupe dans {un bol}."
+    },
+    {
+     "nl": "{De kom} is te klein voor de sla.",
+     "fr": "{Le bol} est trop petit pour la salade."
+    },
+    {
+     "nl": "Breek de eieren in {een kom}.",
+     "fr": "Casse les œufs dans {un bol}."
+    },
+    {
+     "nl": "Elke ochtend eet ik {een kom} cornflakes met melk.",
+     "fr": "Chaque matin, je mange {un bol} de céréales avec du lait."
+    }
+   ]
   },
   {
    "nl": "de beker",
-   "fr": "le gobelet"
+   "fr": "le gobelet",
+   "ph": [
+    {
+     "nl": "Mijn dochter drinkt melk uit {een beker}.",
+     "fr": "Ma fille boit du lait dans {un gobelet}."
+    },
+    {
+     "nl": "Heb je {de bekers} al afgewassen?",
+     "fr": "As-tu déjà lavé {les gobelets} ?"
+    },
+    {
+     "nl": "Op het feest drinken we uit plastic {bekers}.",
+     "fr": "À la fête, nous buvons dans {des gobelets} en plastique."
+    },
+    {
+     "nl": "Gooi {de beker} na gebruik in de vuilbak.",
+     "fr": "Jette {le gobelet} à la poubelle après usage."
+    }
+   ]
   },
   {
    "nl": "de fles",
-   "fr": "la bouteille"
+   "fr": "la bouteille",
+   "ph": [
+    {
+     "nl": "Kun jij {de fles} wijn openen?",
+     "fr": "Peux-tu ouvrir {la bouteille} de vin ?"
+    },
+    {
+     "nl": "We hebben twee {flessen} water gekocht.",
+     "fr": "Nous avons acheté deux {bouteilles} d'eau."
+    },
+    {
+     "nl": "Breng {de flessen} terug naar de winkel, ze zijn leeg.",
+     "fr": "Rapporte {les bouteilles} au magasin, elles sont vides."
+    },
+    {
+     "nl": "Er zit nog een beetje wijn in {de fles}.",
+     "fr": "Il reste encore un peu de vin dans {la bouteille}."
+    }
+   ]
   },
   {
    "nl": "het blik",
-   "fr": "la boîte de conserve"
+   "fr": "la boîte de conserve",
+   "ph": [
+    {
+     "nl": "Kun jij {het blik} openen?",
+     "fr": "Peux-tu ouvrir {la boîte de conserve} ?"
+    },
+    {
+     "nl": "Soep uit {blik} is niet zo lekker.",
+     "fr": "La soupe en {boîte} n'est pas très bonne."
+    },
+    {
+     "nl": "Ik koop {een blik} tomaten voor de saus.",
+     "fr": "J'achète {une boîte} de tomates pelées pour la sauce."
+    },
+    {
+     "nl": "Ik vind de opener voor {dit blik} niet.",
+     "fr": "Je ne trouve pas l'ouvre-boîte pour {cette boîte de conserve}."
+    }
+   ]
   },
   {
    "nl": "de doos",
-   "fr": "la boîte"
+   "fr": "la boîte",
+   "ph": [
+    {
+     "nl": "{De doos} met koeken is al leeg.",
+     "fr": "{La boîte} de biscuits est déjà vide."
+    },
+    {
+     "nl": "Bewaar de taart in {een doos}.",
+     "fr": "Garde la tarte dans {une boîte}."
+    },
+    {
+     "nl": "De pizza wordt geleverd in {een doos}.",
+     "fr": "La pizza est livrée dans {une boîte}."
+    },
+    {
+     "nl": "Wie heeft {de doos} pralines gekregen?",
+     "fr": "Qui a reçu {la boîte} de pralines ?"
+    }
+   ]
   },
   {
    "nl": "de kurk",
-   "fr": "le bouchon"
+   "fr": "le bouchon",
+   "ph": [
+    {
+     "nl": "Ik krijg {de kurk} niet uit de fles.",
+     "fr": "Je n'arrive pas à sortir {le bouchon} de la bouteille."
+    },
+    {
+     "nl": "Bewaar {de kurk}, dan kunnen we de fles later sluiten.",
+     "fr": "Garde {le bouchon}, on pourra refermer la bouteille plus tard."
+    },
+    {
+     "nl": "{De kurk} vloog met een knal uit de champagnefles.",
+     "fr": "{Le bouchon} a sauté de la bouteille de champagne dans un grand bruit."
+    },
+    {
+     "nl": "Heb je een kurkentrekker om {de kurk} eruit te halen?",
+     "fr": "As-tu un tire-bouchon pour retirer {le bouchon} ?"
+    }
+   ]
   },
   {
    "nl": "de olie",
-   "fr": "l'huile"
+   "fr": "l'huile",
+   "ph": [
+    {
+     "nl": "Bak de vis in een beetje {olie}.",
+     "fr": "Fais cuire le poisson dans un peu {d'huile}."
+    },
+    {
+     "nl": "Is {de olie} al warm genoeg?",
+     "fr": "{L'huile} est-elle déjà assez chaude ?"
+    },
+    {
+     "nl": "Doe nooit water in hete {olie}!",
+     "fr": "Ne mets jamais d'eau dans {de l'huile} chaude !"
+    },
+    {
+     "nl": "Van olijven maakt men {olie}.",
+     "fr": "Avec les olives, on fait {de l'huile}."
+    }
+   ]
   },
   {
    "nl": "de azijn",
-   "fr": "le vinaigre"
+   "fr": "le vinaigre",
+   "ph": [
+    {
+     "nl": "Doe wat {azijn} en olie op de sla.",
+     "fr": "Mets un peu {de vinaigre} et d'huile sur la salade."
+    },
+    {
+     "nl": "{De azijn} ruikt heel sterk.",
+     "fr": "{Le vinaigre} sent très fort."
+    },
+    {
+     "nl": "Augurken worden ingelegd in {azijn}.",
+     "fr": "Les cornichons sont conservés dans {du vinaigre}."
+    },
+    {
+     "nl": "{Azijn} is zuur, maar honing is zoet.",
+     "fr": "{Le vinaigre} est acide, mais le miel est doux."
+    }
+   ]
   },
   {
    "nl": "het kruid",
-   "fr": "l'herbe aromatique"
+   "fr": "l'herbe aromatique",
+   "ph": [
+    {
+     "nl": "Welke {kruiden} gebruik je voor deze saus?",
+     "fr": "Quelles {herbes aromatiques} utilises-tu pour cette sauce ?"
+    },
+    {
+     "nl": "Ik kweek {kruiden} op mijn balkon.",
+     "fr": "Je fais pousser {des herbes aromatiques} sur mon balcon."
+    },
+    {
+     "nl": "Basilicum en tijm zijn {kruiden}.",
+     "fr": "Le basilic et le thym sont {des herbes aromatiques}."
+    },
+    {
+     "nl": "Met {kruiden} uit de tuin smaakt de saus beter.",
+     "fr": "Avec {des herbes aromatiques} du jardin, la sauce a meilleur goût."
+    }
+   ]
   },
   {
    "nl": "de specerij",
-   "fr": "l'épice"
+   "fr": "l'épice",
+   "ph": [
+    {
+     "nl": "Deze soep bevat te veel {specerijen}.",
+     "fr": "Cette soupe contient trop {d'épices}."
+    },
+    {
+     "nl": "In welke kast bewaar je {de specerijen}?",
+     "fr": "Dans quelle armoire ranges-tu {les épices} ?"
+    },
+    {
+     "nl": "Kaneel en nootmuskaat zijn {specerijen}.",
+     "fr": "La cannelle et la muscade sont {des épices}."
+    },
+    {
+     "nl": "Vroeger kwamen {de specerijen} per schip uit Indië.",
+     "fr": "Autrefois, {les épices} arrivaient d'Inde par bateau."
+    }
+   ]
   },
   {
    "nl": "de knoflook",
-   "fr": "l'ail"
+   "fr": "l'ail",
+   "ph": [
+    {
+     "nl": "Deze saus smaakt sterk naar {knoflook}.",
+     "fr": "Cette sauce a un fort goût {d'ail}."
+    },
+    {
+     "nl": "Snij {de knoflook} heel fijn voor de saus.",
+     "fr": "Coupe {l'ail} très finement pour la sauce."
+    },
+    {
+     "nl": "Na het eten ruikt zijn adem naar {knoflook}.",
+     "fr": "Après le repas, son haleine sent {l'ail}."
+    },
+    {
+     "nl": "Hoeveel teentjes {knoflook} doe je in de soep?",
+     "fr": "Combien de gousses {d'ail} mets-tu dans la soupe ?"
+    }
+   ]
   },
   {
    "nl": "de peterselie",
-   "fr": "le persil"
+   "fr": "le persil",
+   "ph": [
+    {
+     "nl": "Strooi wat {peterselie} over de soep.",
+     "fr": "Parsème un peu {de persil} sur la soupe."
+    },
+    {
+     "nl": "Heb je {de peterselie} al gewassen?",
+     "fr": "As-tu déjà lavé {le persil} ?"
+    },
+    {
+     "nl": "{Peterselie} is groen en lijkt een beetje op koriander.",
+     "fr": "{Le persil} est vert et ressemble un peu à la coriandre."
+    },
+    {
+     "nl": "Vergeet {de peterselie} niet bij de mosselen!",
+     "fr": "N'oublie pas {le persil} avec les moules !"
+    }
+   ]
   },
   {
    "nl": "de champignon",
-   "fr": "le champignon"
+   "fr": "le champignon",
+   "ph": [
+    {
+     "nl": "Ik doe {champignons} in de saus.",
+     "fr": "Je mets {des champignons} dans la sauce."
+    },
+    {
+     "nl": "Hij eet geen {champignons}, hij vindt ze vies.",
+     "fr": "Il ne mange pas {de champignons}, il les trouve dégoûtants."
+    },
+    {
+     "nl": "In het bos zoeken we {champignons}.",
+     "fr": "Dans la forêt, nous cherchons {des champignons}."
+    },
+    {
+     "nl": "Eet nooit {een champignon} die je niet kent.",
+     "fr": "Ne mange jamais {un champignon} que tu ne connais pas."
+    }
+   ]
   },
   {
    "nl": "de komkommer",
-   "fr": "le concombre"
+   "fr": "le concombre",
+   "ph": [
+    {
+     "nl": "Ik leg plakjes {komkommer} op mijn boterham.",
+     "fr": "Je mets des rondelles {de concombre} sur ma tartine."
+    },
+    {
+     "nl": "Heb je op de markt {een komkommer} gekocht?",
+     "fr": "As-tu acheté {un concombre} au marché ?"
+    },
+    {
+     "nl": "{Een komkommer} is lang, groen en bestaat vooral uit water.",
+     "fr": "{Un concombre} est long, vert et composé surtout d'eau."
+    },
+    {
+     "nl": "Schil je {de komkommer} of niet?",
+     "fr": "Est-ce que tu épluches {le concombre} ou pas ?"
+    }
+   ]
   },
   {
    "nl": "de paprika",
-   "fr": "le poivron"
+   "fr": "le poivron",
+   "ph": [
+    {
+     "nl": "Ik vul {de paprika's} met rijst en vlees.",
+     "fr": "Je farcis {les poivrons} avec du riz et de la viande."
+    },
+    {
+     "nl": "{De paprika} is niet pikant, maar zoet.",
+     "fr": "{Le poivron} n'est pas piquant, mais doux."
+    },
+    {
+     "nl": "{Een paprika} kan rood, geel of groen zijn.",
+     "fr": "{Un poivron} peut être rouge, jaune ou vert."
+    },
+    {
+     "nl": "Snij {de paprika} doormidden en haal de zaadjes eruit.",
+     "fr": "Coupe {le poivron} en deux et retire les graines."
+    }
+   ]
   },
   {
    "nl": "de erwt",
-   "fr": "le petit pois"
+   "fr": "le petit pois",
+   "ph": [
+    {
+     "nl": "Mijn zoon eet niet graag {erwten}.",
+     "fr": "Mon fils n'aime pas {les petits pois}."
+    },
+    {
+     "nl": "We eten vis met {erwten} en aardappelen.",
+     "fr": "Nous mangeons du poisson avec {des petits pois} et des pommes de terre."
+    },
+    {
+     "nl": "{Erwten} zijn klein, rond en groen.",
+     "fr": "{Les petits pois} sont petits, ronds et verts."
+    },
+    {
+     "nl": "Haal {de erwten} uit de peulen.",
+     "fr": "Retire {les petits pois} des cosses."
+    }
+   ]
   },
   {
    "nl": "de boon",
-   "fr": "le haricot"
+   "fr": "le haricot",
+   "ph": [
+    {
+     "nl": "Ik heb {bonen} geplant in de tuin.",
+     "fr": "J'ai planté {des haricots} dans le jardin."
+    },
+    {
+     "nl": "Zijn {de bonen} al gaar?",
+     "fr": "{Les haricots} sont-ils déjà cuits ?"
+    },
+    {
+     "nl": "Bij het Engelse ontbijt eet hij {bonen} in tomatensaus.",
+     "fr": "Au petit-déjeuner anglais, il mange {des haricots} à la sauce tomate."
+    },
+    {
+     "nl": "Haal de draadjes van {de bonen} af.",
+     "fr": "Enlève les fils {des haricots}."
+    }
+   ]
   },
   {
    "nl": "de kool",
-   "fr": "le chou"
+   "fr": "le chou",
+   "ph": [
+    {
+     "nl": "Mijn oma maakt soep met {kool}.",
+     "fr": "Ma grand-mère fait de la soupe avec {du chou}."
+    },
+    {
+     "nl": "Hoeveel kost {een kool} op de markt?",
+     "fr": "Combien coûte {un chou} au marché ?"
+    },
+    {
+     "nl": "Zuurkool wordt gemaakt van {kool}.",
+     "fr": "La choucroute est faite avec {du chou}."
+    },
+    {
+     "nl": "{De kool} is zo groot als een voetbal!",
+     "fr": "{Le chou} est aussi gros qu'un ballon de foot !"
+    }
+   ]
   },
   {
    "nl": "de spinazie",
-   "fr": "les épinards"
+   "fr": "les épinards",
+   "ph": [
+    {
+     "nl": "Kinderen eten niet altijd graag {spinazie}.",
+     "fr": "Les enfants n'aiment pas toujours {les épinards}."
+    },
+    {
+     "nl": "Ik maak vanavond {spinazie} met eieren.",
+     "fr": "Ce soir, je prépare {des épinards} avec des œufs."
+    },
+    {
+     "nl": "Popeye wordt sterk van {spinazie}.",
+     "fr": "Popeye devient fort grâce {aux épinards}."
+    },
+    {
+     "nl": "Wil je {de spinazie} met room of zonder?",
+     "fr": "Veux-tu {les épinards} à la crème ou sans ?"
+    }
+   ]
   },
   {
    "nl": "de banaan",
-   "fr": "la banane"
+   "fr": "la banane",
+   "ph": [
+    {
+     "nl": "Ik neem {een banaan} mee voor onderweg.",
+     "fr": "J'emporte {une banane} pour la route."
+    },
+    {
+     "nl": "{De bananen} zijn nog groen.",
+     "fr": "{Les bananes} sont encore vertes."
+    },
+    {
+     "nl": "In de dierentuin eten de apen graag {bananen}.",
+     "fr": "Au zoo, les singes aiment manger {des bananes}."
+    },
+    {
+     "nl": "Wie heeft hier de schil van {een banaan} laten liggen?",
+     "fr": "Qui a laissé la peau {d'une banane} ici ?"
+    }
+   ]
   },
   {
    "nl": "de peer",
-   "fr": "la poire"
+   "fr": "la poire",
+   "ph": [
+    {
+     "nl": "{De peren} uit onze tuin zijn rijp.",
+     "fr": "{Les poires} de notre jardin sont mûres."
+    },
+    {
+     "nl": "Wil je liever {een peer} of een appel?",
+     "fr": "Préfères-tu {une poire} ou une pomme ?"
+    },
+    {
+     "nl": "{Een peer} is zachter dan een appel.",
+     "fr": "{Une poire} est plus tendre qu'une pomme."
+    },
+    {
+     "nl": "Kook {de peren} in rode wijn.",
+     "fr": "Fais cuire {les poires} dans du vin rouge."
+    }
+   ]
   },
   {
    "nl": "de druif",
-   "fr": "le raisin"
+   "fr": "le raisin",
+   "ph": [
+    {
+     "nl": "Ik koop {druiven} voor de kinderen.",
+     "fr": "J'achète {du raisin} pour les enfants."
+    },
+    {
+     "nl": "Wijn wordt gemaakt van {druiven}.",
+     "fr": "Le vin est fabriqué à partir {de raisin}."
+    },
+    {
+     "nl": "Rozijnen zijn eigenlijk gedroogde {druiven} uit de zon.",
+     "fr": "Les raisins secs sont en fait {du raisin} séché au soleil."
+    },
+    {
+     "nl": "Hoeveel kost een tros {druiven}?",
+     "fr": "Combien coûte une grappe {de raisin} ?"
+    }
+   ]
   },
   {
    "nl": "de aardbei",
-   "fr": "la fraise"
+   "fr": "la fraise",
+   "ph": [
+    {
+     "nl": "In juni eten we {aardbeien} met room.",
+     "fr": "En juin, nous mangeons {des fraises} avec de la crème."
+    },
+    {
+     "nl": "Heb jij alle {aardbeien} opgegeten?",
+     "fr": "As-tu mangé toutes {les fraises} ?"
+    },
+    {
+     "nl": "{Aardbeien} zijn rood en hebben kleine zaadjes.",
+     "fr": "{Les fraises} sont rouges et ont de petites graines."
+    },
+    {
+     "nl": "Pluk {de aardbeien} niet als ze nog wit zijn.",
+     "fr": "Ne cueille pas {les fraises} quand elles sont encore blanches."
+    }
+   ]
   },
   {
    "nl": "de kers",
-   "fr": "la cerise"
+   "fr": "la cerise",
+   "ph": [
+    {
+     "nl": "{De kersen} aan de boom zijn rood.",
+     "fr": "{Les cerises} sur l'arbre sont rouges."
+    },
+    {
+     "nl": "Mijn moeder maakt taart met {kersen}.",
+     "fr": "Ma mère fait une tarte {aux cerises}."
+    },
+    {
+     "nl": "Spuug de pitten van {de kersen} niet op de grond.",
+     "fr": "Ne crache pas les noyaux {des cerises} par terre."
+    },
+    {
+     "nl": "Leg {een kers} bovenop de slagroom.",
+     "fr": "Pose {une cerise} sur la crème fouettée."
+    }
+   ]
   },
   {
    "nl": "eten",
    "fr": "manger",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "We {eten} vanavond om zeven uur.",
+     "fr": "Ce soir, nous {mangeons} à sept heures."
+    },
+    {
+     "nl": "Wat heb jij gisteren bij de lunch {gegeten}?",
+     "fr": "Qu'as-tu {mangé} hier au déjeuner ?"
+    },
+    {
+     "nl": "Wil je nog iets {eten} voor we vertrekken?",
+     "fr": "Veux-tu encore {manger} quelque chose avant de partir ?"
+    },
+    {
+     "nl": "{Eet} je bord leeg, dan krijg je een ijsje!",
+     "fr": "{Mange} toute ton assiette, ensuite tu auras une glace !"
+    }
+   ]
   },
   {
    "nl": "drinken",
    "fr": "boire",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {drink} elke dag twee liter water.",
+     "fr": "Je {bois} deux litres d'eau par jour."
+    },
+    {
+     "nl": "Hij heeft te veel bier {gedronken}.",
+     "fr": "Il a {bu} trop de bière."
+    },
+    {
+     "nl": "Je moet veel water {drinken} als het warm is.",
+     "fr": "Tu dois {boire} beaucoup d'eau quand il fait chaud."
+    },
+    {
+     "nl": "{Drink} niet uit de fles, neem een glas!",
+     "fr": "Ne {bois} pas à la bouteille, prends un verre !"
+    }
+   ]
   },
   {
    "nl": "nemen",
    "fr": "prendre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {neem} de vis met rijst.",
+     "fr": "Je {prends} le poisson avec du riz."
+    },
+    {
+     "nl": "Heb jij mijn boterham {genomen}?",
+     "fr": "As-tu {pris} ma tartine ?"
+    },
+    {
+     "nl": "{Neem} gerust nog een stuk taart.",
+     "fr": "{Prends} donc encore un morceau de tarte."
+    },
+    {
+     "nl": "We zullen de bus naar het restaurant {nemen}.",
+     "fr": "Nous allons {prendre} le bus pour aller au restaurant."
+    }
+   ]
   },
   {
    "nl": "geven",
    "fr": "donner",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Geef} me de fles, alsjeblieft.",
+     "fr": "{Donne}-moi la bouteille, s'il te plaît."
+    },
+    {
+     "nl": "Ze heeft de kinderen een ijsje {gegeven}.",
+     "fr": "Elle a {donné} une glace aux enfants."
+    },
+    {
+     "nl": "Wat ga je haar voor haar verjaardag {geven}?",
+     "fr": "Qu'est-ce que tu vas lui {donner} pour son anniversaire ?"
+    },
+    {
+     "nl": "Mijn buurman {geeft} ons altijd tomaten uit zijn tuin.",
+     "fr": "Mon voisin nous {donne} toujours des tomates de son jardin."
+    }
+   ]
   },
   {
    "nl": "maken",
    "fr": "faire, fabriquer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {maak} een salade voor het avondeten.",
+     "fr": "Je {fais} une salade pour le souper."
+    },
+    {
+     "nl": "Wie heeft deze taart {gemaakt}?",
+     "fr": "Qui a {fait} cette tarte ?"
+    },
+    {
+     "nl": "Zullen we samen een fruitsalade {maken}?",
+     "fr": "Et si on {faisait} une salade de fruits ensemble ?"
+    },
+    {
+     "nl": "Hij {maakte} een lijstje voor de supermarkt.",
+     "fr": "Il {a fait} une liste pour le supermarché."
+    }
+   ]
   },
   {
    "nl": "koken",
    "fr": "cuisiner, bouillir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn vriend {kookt} elke zondag voor ons.",
+     "fr": "Mon ami {cuisine} pour nous chaque dimanche."
+    },
+    {
+     "nl": "Laat de aardappelen twintig minuten {koken}.",
+     "fr": "Laisse {bouillir} les pommes de terre vingt minutes."
+    },
+    {
+     "nl": "Wie gaat er vanavond {koken}?",
+     "fr": "Qui va {cuisiner} ce soir ?"
+    },
+    {
+     "nl": "Water {kookt} bij honderd graden.",
+     "fr": "L'eau {bout} à cent degrés."
+    }
+   ]
   },
   {
    "nl": "bakken",
    "fr": "cuire au four, frire",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Hoe lang moet de taart in de oven {bakken}?",
+     "fr": "Combien de temps la tarte doit-elle {cuire} au four ?"
+    },
+    {
+     "nl": "Ik heb de vis in de pan {gebakken}.",
+     "fr": "J'ai {fait cuire} le poisson à la poêle."
+    },
+    {
+     "nl": "Mijn oma {bakt} elke week haar eigen brood.",
+     "fr": "Ma grand-mère {cuit} son propre pain chaque semaine."
+    },
+    {
+     "nl": "{Bak} de frietjes twee keer in de olie.",
+     "fr": "{Fais frire} les frites deux fois dans l'huile."
+    }
+   ]
   },
   {
    "nl": "proeven",
    "fr": "goûter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Proef} eens of de soep zout genoeg is.",
+     "fr": "{Goûte} pour voir si la soupe est assez salée."
+    },
+    {
+     "nl": "Heb je de wijn al {geproefd}?",
+     "fr": "As-tu déjà {goûté} le vin ?"
+    },
+    {
+     "nl": "Wil je deze kaas eens {proeven}?",
+     "fr": "Veux-tu {goûter} ce fromage ?"
+    },
+    {
+     "nl": "De kok {proeft} de saus voor hij ze serveert.",
+     "fr": "Le cuisinier {goûte} la sauce avant de la servir."
+    }
+   ]
   },
   {
    "nl": "snijden",
    "fr": "couper",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Kun jij het brood in sneetjes {snijden}?",
+     "fr": "Peux-tu {couper} le pain en tranches ?"
+    },
+    {
+     "nl": "Ik heb me in mijn vinger {gesneden}.",
+     "fr": "Je me suis {coupé} le doigt."
+    },
+    {
+     "nl": "{Snij} de taart in acht stukken.",
+     "fr": "{Coupe} la tarte en huit parts."
+    },
+    {
+     "nl": "Dit mes is bot, het {snijdt} niet goed.",
+     "fr": "Ce couteau est émoussé, il ne {coupe} pas bien."
+    }
+   ]
   },
   {
    "nl": "roeren",
    "fr": "remuer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Je moet de soep goed {roeren}.",
+     "fr": "Tu dois bien {remuer} la soupe."
+    },
+    {
+     "nl": "{Roer} de saus elke twee minuten.",
+     "fr": "{Remue} la sauce toutes les deux minutes."
+    },
+    {
+     "nl": "Blijf {roeren}, anders brandt de melk aan.",
+     "fr": "Continue à {remuer}, sinon le lait va attacher."
+    },
+    {
+     "nl": "Hij {roerde} met een lepeltje in zijn koffie.",
+     "fr": "Il {remuait} son café avec une petite cuillère."
+    }
+   ]
   },
   {
    "nl": "schenken",
    "fr": "verser",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Zal ik nog wat wijn {schenken}?",
+     "fr": "Veux-tu que je {verse} encore du vin ?"
+    },
+    {
+     "nl": "Hij {schonk} koffie voor iedereen.",
+     "fr": "Il a {versé} du café pour tout le monde."
+    },
+    {
+     "nl": "Wie wil de thee {schenken}?",
+     "fr": "Qui veut {verser} le thé ?"
+    },
+    {
+     "nl": "{Schenk} me nog een glaasje water, alsjeblieft.",
+     "fr": "{Verse}-moi encore un petit verre d'eau, s'il te plaît."
+    }
+   ]
   },
   {
    "nl": "bestellen",
    "fr": "commander",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "We willen graag twee pannenkoeken {bestellen}.",
+     "fr": "Nous voudrions {commander} deux crêpes."
+    },
+    {
+     "nl": "Wat heb jij in het restaurant {besteld}?",
+     "fr": "Qu'as-tu {commandé} au restaurant ?"
+    },
+    {
+     "nl": "Heb je al een taxi {besteld}?",
+     "fr": "As-tu déjà {commandé} un taxi ?"
+    },
+    {
+     "nl": "Ik {bestel} mijn boodschappen online.",
+     "fr": "Je {commande} mes courses en ligne."
+    }
+   ]
   },
   {
    "nl": "ruiken",
    "fr": "sentir (une odeur)",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {ruik} iets lekkers in de keuken.",
+     "fr": "Je {sens} quelque chose de bon dans la cuisine."
+    },
+    {
+     "nl": "Heb je al aan de melk {geroken}?",
+     "fr": "As-tu déjà {senti} le lait ?"
+    },
+    {
+     "nl": "Die kaas {ruikt} naar oude sokken!",
+     "fr": "Ce fromage {sent} les vieilles chaussettes !"
+    },
+    {
+     "nl": "{Ruik} eens aan deze rozen.",
+     "fr": "{Sens} donc ces roses."
+    }
+   ]
   },
   {
    "nl": "mengen",
    "fr": "mélanger",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Meng} de eieren met de suiker.",
+     "fr": "{Mélange} les œufs avec le sucre."
+    },
+    {
+     "nl": "Olie en water kun je niet {mengen}.",
+     "fr": "On ne peut pas {mélanger} l'huile et l'eau."
+    },
+    {
+     "nl": "Je moet het meel en de melk goed {mengen}.",
+     "fr": "Tu dois bien {mélanger} la farine et le lait."
+    },
+    {
+     "nl": "Hij {mengde} rood en geel om oranje te maken.",
+     "fr": "Il {a mélangé} le rouge et le jaune pour faire de l'orange."
+    }
+   ]
   },
   {
    "nl": "schillen",
    "fr": "éplucher",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik moet nog de aardappelen {schillen}.",
+     "fr": "Je dois encore {éplucher} les pommes de terre."
+    },
+    {
+     "nl": "Heb je de appels al {geschild}?",
+     "fr": "As-tu déjà {épluché} les pommes ?"
+    },
+    {
+     "nl": "{Schil} de peer niet, de schil is gezond.",
+     "fr": "N'{épluche} pas la poire, la peau est bonne pour la santé."
+    },
+    {
+     "nl": "Mijn vader {schilt} de wortels met een mesje.",
+     "fr": "Mon père {épluche} les carottes avec un petit couteau."
+    }
+   ]
   },
   {
    "nl": "opwarmen",
    "fr": "réchauffer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik ga de soep even {opwarmen}.",
+     "fr": "Je vais {réchauffer} la soupe."
+    },
+    {
+     "nl": "Heb je de pasta in de microgolfoven {opgewarmd}?",
+     "fr": "As-tu {réchauffé} les pâtes au micro-ondes ?"
+    },
+    {
+     "nl": "Ik heb geen zin om het eten nog eens {op te warmen}.",
+     "fr": "Je n'ai pas envie de {réchauffer} encore une fois le repas."
+    },
+    {
+     "nl": "Terwijl ik de lasagne {opwarm}, dek jij de tafel.",
+     "fr": "Pendant que je {réchauffe} la lasagne, tu mets la table."
+    }
+   ]
   },
   {
    "nl": "vullen",
    "fr": "remplir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Kun je de fles met water {vullen}?",
+     "fr": "Peux-tu {remplir} la bouteille d'eau ?"
+    },
+    {
+     "nl": "Hij {vult} de glazen met wijn.",
+     "fr": "Il {remplit} les verres de vin."
+    },
+    {
+     "nl": "{Vul} het glas niet tot de rand.",
+     "fr": "Ne {remplis} pas le verre jusqu'au bord."
+    },
+    {
+     "nl": "Ik heb de kan met koud water {gevuld}.",
+     "fr": "J'ai {rempli} la carafe d'eau froide."
+    }
+   ]
   },
   {
    "nl": "kauwen",
    "fr": "mâcher",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Je moet je eten goed {kauwen}.",
+     "fr": "Tu dois bien {mâcher} ta nourriture."
+    },
+    {
+     "nl": "{Kauw} niet met je mond open!",
+     "fr": "Ne {mâche} pas la bouche ouverte !"
+    },
+    {
+     "nl": "Hij {kauwt} al vijf minuten op een stuk taai vlees.",
+     "fr": "Il {mâche} depuis cinq minutes un morceau de viande dure."
+    },
+    {
+     "nl": "De koe {kauwde} rustig op het gras.",
+     "fr": "La vache {mâchait} tranquillement l'herbe."
+    }
+   ]
   },
   {
    "nl": "slikken",
    "fr": "avaler",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Je moet eerst {slikken} en dan praten.",
+     "fr": "Tu dois d'abord {avaler}, puis parler."
+    },
+    {
+     "nl": "Het vlees was zo taai dat ik het niet kon {slikken}.",
+     "fr": "La viande était si dure que je ne pouvais pas l'{avaler}."
+    },
+    {
+     "nl": "{Slik} de pil met een slok water.",
+     "fr": "{Avale} le comprimé avec une gorgée d'eau."
+    },
+    {
+     "nl": "De kleine jongen {slikte} per ongeluk een knikker.",
+     "fr": "Le petit garçon {a avalé} une bille par accident."
+    }
+   ]
   },
   {
    "nl": "smaken",
    "fr": "avoir bon goût",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Deze taart {smaakt goed}, vind je niet?",
+     "fr": "Cette tarte {a bon goût}, tu ne trouves pas ?"
+    },
+    {
+     "nl": "De soep {smaakte} gisteren beter dan vandaag.",
+     "fr": "La soupe {avait meilleur goût} hier qu'aujourd'hui."
+    },
+    {
+     "nl": "Dit kraanwater {smaakt} naar chloor.",
+     "fr": "Cette eau du robinet {a un goût} de chlore."
+    },
+    {
+     "nl": "Koffie met een beetje suiker {smaakt} beter.",
+     "fr": "Le café avec un peu de sucre {a meilleur goût}."
+    }
+   ]
   }
  ]
 }

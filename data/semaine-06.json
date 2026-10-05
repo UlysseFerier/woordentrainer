@@ -5,423 +5,1023 @@
  "mots": [
   {
    "nl": "de stad",
-   "fr": "la ville"
+   "fr": "la ville",
+   "ph": [
+    {"nl": "{De stad} is erg druk op zaterdag.", "fr": "{La ville} est très animée le samedi."},
+    {"nl": "Ik ken {de stad} nog niet goed.", "fr": "Je ne connais pas encore bien {la ville}."},
+    {"nl": "Antwerpen is {een stad} met een grote haven.", "fr": "Anvers est {une ville} avec un grand port."},
+    {"nl": "Woon je liever in {de stad} of op het platteland?", "fr": "Tu préfères vivre {en ville} ou à la campagne ?"}
+   ]
   },
   {
    "nl": "het dorp",
-   "fr": "le village"
+   "fr": "le village",
+   "ph": [
+    {"nl": "Mijn grootouders wonen in {een dorp}.", "fr": "Mes grands-parents habitent dans {un village}."},
+    {"nl": "Is er een bakker in {het dorp}?", "fr": "Y a-t-il un boulanger dans {le village} ?"},
+    {"nl": "{Het dorp} telt maar driehonderd inwoners.", "fr": "{Le village} ne compte que trois cents habitants."},
+    {"nl": "Ik ben niet in een stad maar in {een dorp} opgegroeid.", "fr": "Je n'ai pas grandi dans une ville mais dans {un village}."}
+   ]
   },
   {
    "nl": "de straat",
-   "fr": "la rue"
+   "fr": "la rue",
+   "ph": [
+    {"nl": "{De straat} is vandaag afgesloten.", "fr": "{La rue} est fermée aujourd'hui."},
+    {"nl": "In welke {straat} woon je?", "fr": "Dans quelle {rue} habites-tu ?"},
+    {"nl": "Aan beide kanten van {de straat} staan huizen.", "fr": "Il y a des maisons des deux côtés de {la rue}."},
+    {"nl": "Speel niet op {straat}, het is gevaarlijk!", "fr": "Ne joue pas dans {la rue}, c'est dangereux !"}
+   ]
   },
   {
    "nl": "het plein",
-   "fr": "la place"
+   "fr": "la place",
+   "ph": [
+    {"nl": "De markt is elke vrijdag op {het plein}.", "fr": "Le marché a lieu chaque vendredi sur {la place}."},
+    {"nl": "We hebben op {het plein} afgesproken.", "fr": "Nous nous sommes donné rendez-vous sur {la place}."},
+    {"nl": "Rond {het plein} zijn veel terrasjes.", "fr": "Il y a beaucoup de terrasses autour de {la place}."},
+    {"nl": "Was er gisteren een concert op {het plein}?", "fr": "Y avait-il un concert sur {la place} hier ?"}
+   ]
   },
   {
    "nl": "de weg",
-   "fr": "la route"
+   "fr": "la route",
+   "ph": [
+    {"nl": "{De weg} naar het dorp is smal.", "fr": "{La route} vers le village est étroite."},
+    {"nl": "Gisteren lag er sneeuw op {de weg}.", "fr": "Hier, il y avait de la neige sur {la route}."},
+    {"nl": "Rij voorzichtig, {de weg} is glad.", "fr": "Roule prudemment, {la route} est glissante."},
+    {"nl": "Er zijn werken op {de weg} naar Leuven.", "fr": "Il y a des travaux sur {la route} de Louvain."}
+   ]
   },
   {
    "nl": "het kruispunt",
-   "fr": "le carrefour"
+   "fr": "le carrefour",
+   "ph": [
+    {"nl": "Sla rechts af aan {het kruispunt}.", "fr": "Tourne à droite {au carrefour}."},
+    {"nl": "{Dit kruispunt} is erg gevaarlijk.", "fr": "{Ce carrefour} est très dangereux."},
+    {"nl": "Er is gisteren een ongeluk gebeurd op {het kruispunt}.", "fr": "Il y a eu un accident hier {au carrefour}."},
+    {"nl": "Er staan geen verkeerslichten op {dit kruispunt}.", "fr": "Il n'y a pas de feux à {ce carrefour}."}
+   ]
   },
   {
    "nl": "de brug",
-   "fr": "le pont"
+   "fr": "le pont",
+   "ph": [
+    {"nl": "We fietsen elke dag over {de brug}.", "fr": "Nous traversons {le pont} à vélo tous les jours."},
+    {"nl": "{De brug} was gisteren gesloten.", "fr": "{Le pont} était fermé hier."},
+    {"nl": "Er ligt {een brug} over de rivier.", "fr": "Il y a {un pont} sur la rivière."},
+    {"nl": "Rij niet over {de brug}, die wordt hersteld.", "fr": "Ne passe pas sur {le pont}, il est en réparation."}
+   ]
   },
   {
    "nl": "de fiets",
-   "fr": "le vélo"
+   "fr": "le vélo",
+   "ph": [
+    {"nl": "Ik ga met {de fiets} naar het werk.", "fr": "Je vais au travail {à vélo}."},
+    {"nl": "Waar staat {je fiets}?", "fr": "Où est {ton vélo} ?"},
+    {"nl": "{Mijn fiets} is gisteren gestolen.", "fr": "{Mon vélo} a été volé hier."},
+    {"nl": "Vergeet niet {je fiets} op slot te doen!", "fr": "N'oublie pas de cadenasser {ton vélo} !"}
+   ]
   },
   {
    "nl": "de auto",
-   "fr": "la voiture"
+   "fr": "la voiture",
+   "ph": [
+    {"nl": "{Onze auto} staat in de garage.", "fr": "{Notre voiture} est au garage."},
+    {"nl": "Ze heeft gisteren {een auto} gekocht.", "fr": "Elle a acheté {une voiture} hier."},
+    {"nl": "Kun je {de auto} vandaag wassen?", "fr": "Peux-tu laver {la voiture} aujourd'hui ?"},
+    {"nl": "We gaan niet met {de auto}, we nemen de trein.", "fr": "Nous n'y allons pas {en voiture}, nous prenons le train."}
+   ]
   },
   {
    "nl": "de bus",
-   "fr": "le bus"
+   "fr": "le bus",
+   "ph": [
+    {"nl": "{De bus} komt om acht uur.", "fr": "{Le bus} arrive à huit heures."},
+    {"nl": "Neem je {de bus} naar school?", "fr": "Tu prends {le bus} pour aller à l'école ?"},
+    {"nl": "De schoolkinderen wachten op {de bus} aan de halte.", "fr": "Les écoliers attendent {le bus} à l'arrêt."},
+    {"nl": "Neem {bus} 71 tot aan het station.", "fr": "Prends {le bus} 71 jusqu'à la gare."}
+   ]
   },
   {
    "nl": "de trein",
-   "fr": "le train"
+   "fr": "le train",
+   "ph": [
+    {"nl": "{De trein} naar Gent vertrekt om negen uur.", "fr": "{Le train} pour Gand part à neuf heures."},
+    {"nl": "Ik heb vanochtend {de trein} gemist.", "fr": "J'ai raté {le train} ce matin."},
+    {"nl": "Door een staking rijdt {de trein} vandaag niet.", "fr": "À cause d'une grève, {le train} ne circule pas aujourd'hui."},
+    {"nl": "Neem {de trein} op perron vijf.", "fr": "Prends {le train} au quai cinq."}
+   ]
   },
   {
    "nl": "de tram",
-   "fr": "le tram"
+   "fr": "le tram",
+   "ph": [
+    {"nl": "{De tram} stopt voor het station.", "fr": "{Le tram} s'arrête devant la gare."},
+    {"nl": "Is {de tram} al voorbij?", "fr": "{Le tram} est-il déjà passé ?"},
+    {"nl": "In Gent neem ik altijd {de tram}.", "fr": "À Gand, je prends toujours {le tram}."},
+    {"nl": "Ik ben met {de tram} naar het centrum gekomen.", "fr": "Je suis venu au centre {en tram}."}
+   ]
   },
   {
    "nl": "het station",
-   "fr": "la gare"
+   "fr": "la gare",
+   "ph": [
+    {"nl": "Is {het station} ver van hier?", "fr": "{La gare} est-elle loin d'ici ?"},
+    {"nl": "Ik wacht op je in {het station}.", "fr": "Je t'attends à {la gare}."},
+    {"nl": "De trein komt om tien uur in {het station} aan.", "fr": "Le train arrive à {la gare} à dix heures."},
+    {"nl": "Er is geen parking bij {het station}.", "fr": "Il n'y a pas de parking près de {la gare}."}
+   ]
   },
   {
    "nl": "de halte",
-   "fr": "l'arrêt"
+   "fr": "l'arrêt",
+   "ph": [
+    {"nl": "De bus stopt niet aan {deze halte}.", "fr": "Le bus ne s'arrête pas à {cet arrêt}."},
+    {"nl": "Bij {welke halte} moet ik uitstappen?", "fr": "À {quel arrêt} dois-je descendre ?"},
+    {"nl": "Wacht aan {de halte}, de bus komt zo.", "fr": "Attends à {l'arrêt}, le bus arrive bientôt."},
+    {"nl": "{De halte} is verplaatst door de werken.", "fr": "{L'arrêt} a été déplacé à cause des travaux."}
+   ]
   },
   {
    "nl": "het vliegtuig",
-   "fr": "l'avion"
+   "fr": "l'avion",
+   "ph": [
+    {"nl": "{Het vliegtuig} landt om tien uur.", "fr": "{L'avion} atterrit à dix heures."},
+    {"nl": "Heb je al eens met {het vliegtuig} gereisd?", "fr": "As-tu déjà voyagé {en avion} ?"},
+    {"nl": "{Het vliegtuig} naar Rome had twee uur vertraging.", "fr": "{L'avion} pour Rome avait deux heures de retard."},
+    {"nl": "Mijn moeder neemt nooit {het vliegtuig}.", "fr": "Ma mère ne prend jamais {l'avion}."}
+   ]
   },
   {
    "nl": "de boot",
-   "fr": "le bateau"
+   "fr": "le bateau",
+   "ph": [
+    {"nl": "We nemen {de boot} naar Engeland.", "fr": "Nous prenons {le bateau} pour l'Angleterre."},
+    {"nl": "{De boot} had gisteren een uur vertraging.", "fr": "{Le bateau} avait une heure de retard hier."},
+    {"nl": "Op {de boot} word ik altijd zeeziek.", "fr": "Sur {le bateau}, j'ai toujours le mal de mer."},
+    {"nl": "Hoe laat vertrekt {de boot} naar Dover?", "fr": "À quelle heure part {le bateau} pour Douvres ?"}
+   ]
   },
   {
    "nl": "de haven",
-   "fr": "le port"
+   "fr": "le port",
+   "ph": [
+    {"nl": "In {de haven} liggen veel boten.", "fr": "Il y a beaucoup de bateaux dans {le port}."},
+    {"nl": "We zijn gisteren naar {de haven} gewandeld.", "fr": "Hier, nous nous sommes promenés jusqu'{au port}."},
+    {"nl": "{De haven} van Antwerpen is heel groot.", "fr": "{Le port} d'Anvers est très grand."},
+    {"nl": "Er vertrekken geen boten meer uit {de haven}.", "fr": "Plus aucun bateau ne part {du port}."}
+   ]
   },
   {
    "nl": "de kaart",
-   "fr": "la carte"
+   "fr": "la carte",
+   "ph": [
+    {"nl": "Heb je {een kaart} van de stad?", "fr": "As-tu {une carte} de la ville ?"},
+    {"nl": "Ik kijk even op {de kaart}.", "fr": "Je regarde vite sur {la carte}."},
+    {"nl": "Zonder {kaart} verdwaal ik altijd in de stad.", "fr": "Sans {carte}, je me perds toujours en ville."},
+    {"nl": "Kun je ons hotel op {de kaart} aanduiden?", "fr": "Peux-tu montrer notre hôtel sur {la carte} ?"}
+   ]
   },
   {
    "nl": "de reis",
-   "fr": "le voyage"
+   "fr": "le voyage",
+   "ph": [
+    {"nl": "{De reis} naar Italië duurde tien uur.", "fr": "{Le voyage} en Italie a duré dix heures."},
+    {"nl": "Hoe was {de reis}?", "fr": "Comment s'est passé {le voyage} ?"},
+    {"nl": "Volgend jaar maken we {een reis} naar Japan.", "fr": "L'année prochaine, nous ferons {un voyage} au Japon."},
+    {"nl": "{De reis} met de trein was niet vermoeiend.", "fr": "{Le voyage} en train n'était pas fatigant."}
+   ]
   },
   {
    "nl": "de winkel",
-   "fr": "le magasin"
+   "fr": "le magasin",
+   "ph": [
+    {"nl": "{De winkel} gaat om zes uur dicht.", "fr": "{Le magasin} ferme à six heures."},
+    {"nl": "Is er {een winkel} in de buurt?", "fr": "Y a-t-il {un magasin} dans le quartier ?"},
+    {"nl": "Ik werk in {een winkel} in het centrum.", "fr": "Je travaille dans {un magasin} du centre."},
+    {"nl": "Ga niet naar {die winkel}, hij is te duur.", "fr": "Ne va pas dans {ce magasin}, il est trop cher."}
+   ]
   },
   {
    "nl": "de markt",
-   "fr": "le marché"
+   "fr": "le marché",
+   "ph": [
+    {"nl": "Op zaterdag gaan we naar {de markt}.", "fr": "Le samedi, nous allons {au marché}."},
+    {"nl": "Ik heb deze appels op {de markt} gekocht.", "fr": "J'ai acheté ces pommes {au marché}."},
+    {"nl": "{De markt} begint om acht uur op het plein.", "fr": "{Le marché} commence à huit heures sur la place."},
+    {"nl": "Is er morgen {een markt} in het dorp?", "fr": "Y a-t-il {un marché} au village demain ?"}
+   ]
   },
   {
    "nl": "de bakker",
-   "fr": "le boulanger"
+   "fr": "le boulanger",
+   "ph": [
+    {"nl": "Ik koop elke ochtend brood bij {de bakker}.", "fr": "J'achète du pain chez {le boulanger} chaque matin."},
+    {"nl": "{De bakker} begint al om vier uur te werken.", "fr": "{Le boulanger} commence à travailler dès quatre heures."},
+    {"nl": "{De bakker} maakt het lekkerste brood van het dorp.", "fr": "{Le boulanger} fait le meilleur pain du village."},
+    {"nl": "Haal jij straks de croissants bij {de bakker}?", "fr": "Tu vas chercher les croissants chez {le boulanger} tout à l'heure ?"}
+   ]
   },
   {
    "nl": "de slager",
-   "fr": "le boucher"
+   "fr": "le boucher",
+   "ph": [
+    {"nl": "{De slager} verkoopt ook kaas.", "fr": "{Le boucher} vend aussi du fromage."},
+    {"nl": "Ga jij vandaag naar {de slager}?", "fr": "Tu vas chez {le boucher} aujourd'hui ?"},
+    {"nl": "Ik koop mijn vlees altijd bij {de slager}.", "fr": "J'achète toujours ma viande chez {le boucher}."},
+    {"nl": "{De slager} heeft vandaag geen kip meer.", "fr": "{Le boucher} n'a plus de poulet aujourd'hui."}
+   ]
   },
   {
    "nl": "het postkantoor",
-   "fr": "la poste"
+   "fr": "la poste",
+   "ph": [
+    {"nl": "{Het postkantoor} is naast het stadhuis.", "fr": "{La poste} est à côté de l'hôtel de ville."},
+    {"nl": "Ik moet straks nog naar {het postkantoor}.", "fr": "Je dois encore aller à {la poste} tout à l'heure."},
+    {"nl": "Ik heb het pakje op {het postkantoor} afgehaald.", "fr": "J'ai retiré le colis à {la poste}."},
+    {"nl": "Breng deze brief naar {het postkantoor}, alsjeblieft.", "fr": "Apporte cette lettre à {la poste}, s'il te plaît."}
+   ]
   },
   {
    "nl": "het geld",
-   "fr": "l'argent"
+   "fr": "l'argent",
+   "ph": [
+    {"nl": "Ik heb niet genoeg {geld} bij me.", "fr": "Je n'ai pas assez d'{argent} sur moi."},
+    {"nl": "Waar heb je {het geld} gelegd?", "fr": "Où as-tu mis {l'argent} ?"},
+    {"nl": "Ik moet nog {geld} afhalen aan de automaat.", "fr": "Je dois encore retirer {de l'argent} au distributeur."},
+    {"nl": "Ze heeft {haar geld} in de trein verloren.", "fr": "Elle a perdu {son argent} dans le train."}
+   ]
   },
   {
    "nl": "de kerk",
-   "fr": "l'église"
+   "fr": "l'église",
+   "ph": [
+    {"nl": "{De kerk} staat in het midden van het dorp.", "fr": "{L'église} se trouve au centre du village."},
+    {"nl": "Gaan jullie zondag naar {de kerk}?", "fr": "Vous allez à {l'église} dimanche ?"},
+    {"nl": "{De kerk} heeft een hoge toren.", "fr": "{L'église} a un haut clocher."},
+    {"nl": "Op zondag luiden de klokken van {de kerk}.", "fr": "Le dimanche, les cloches de {l'église} sonnent."}
+   ]
   },
   {
    "nl": "het museum",
-   "fr": "le musée"
+   "fr": "le musée",
+   "ph": [
+    {"nl": "{Het museum} is op maandag gesloten.", "fr": "{Le musée} est fermé le lundi."},
+    {"nl": "Gisteren hebben we {een museum} bezocht.", "fr": "Hier, nous avons visité {un musée}."},
+    {"nl": "In {het museum} hangen schilderijen van Rubens.", "fr": "Dans {le musée}, il y a des tableaux de Rubens."},
+    {"nl": "Mag je foto's nemen in {het museum}?", "fr": "Peut-on prendre des photos dans {le musée} ?"}
+   ]
   },
   {
    "nl": "het park",
-   "fr": "le parc"
+   "fr": "le parc",
+   "ph": [
+    {"nl": "De kinderen spelen in {het park}.", "fr": "Les enfants jouent dans {le parc}."},
+    {"nl": "Is er {een park} in jouw buurt?", "fr": "Y a-t-il {un parc} dans ton quartier ?"},
+    {"nl": "Laten we picknicken in {het park}.", "fr": "Faisons un pique-nique dans {le parc}."},
+    {"nl": "Honden mogen niet los lopen in {het park}.", "fr": "Les chiens ne peuvent pas courir en liberté dans {le parc}."}
+   ]
   },
   {
    "nl": "het restaurant",
-   "fr": "le restaurant"
+   "fr": "le restaurant",
+   "ph": [
+    {"nl": "We eten vanavond in {een restaurant}.", "fr": "Ce soir, nous mangeons dans {un restaurant}."},
+    {"nl": "{Het restaurant} was helemaal vol.", "fr": "{Le restaurant} était complet."},
+    {"nl": "Heb je een tafel gereserveerd in {het restaurant}?", "fr": "As-tu réservé une table {au restaurant} ?"},
+    {"nl": "{Dit restaurant} serveert de beste mosselen van Brussel.", "fr": "{Ce restaurant} sert les meilleures moules de Bruxelles."}
+   ]
   },
   {
    "nl": "de bibliotheek",
-   "fr": "la bibliothèque"
+   "fr": "la bibliothèque",
+   "ph": [
+    {"nl": "Ik leen boeken in {de bibliotheek}.", "fr": "J'emprunte des livres à {la bibliothèque}."},
+    {"nl": "Is {de bibliotheek} op zondag open?", "fr": "{La bibliothèque} est-elle ouverte le dimanche ?"},
+    {"nl": "Je moet stil zijn in {de bibliotheek}.", "fr": "Il faut être silencieux à {la bibliothèque}."},
+    {"nl": "Heb je de boeken al naar {de bibliotheek} teruggebracht?", "fr": "As-tu déjà rapporté les livres à {la bibliothèque} ?"}
+   ]
   },
   {
    "nl": "het stadhuis",
-   "fr": "l'hôtel de ville"
+   "fr": "l'hôtel de ville",
+   "ph": [
+    {"nl": "{Het stadhuis} van Brussel is heel mooi.", "fr": "{L'hôtel de ville} de Bruxelles est très beau."},
+    {"nl": "Ze zijn gisteren in {het stadhuis} getrouwd.", "fr": "Ils se sont mariés à {l'hôtel de ville} hier."},
+    {"nl": "De burgemeester werkt in {het stadhuis}.", "fr": "Le bourgmestre travaille à {l'hôtel de ville}."},
+    {"nl": "Haal je nieuwe identiteitskaart af in {het stadhuis}.", "fr": "Va chercher ta nouvelle carte d'identité à {l'hôtel de ville}."}
+   ]
   },
   {
    "nl": "de politie",
-   "fr": "la police"
+   "fr": "la police",
+   "ph": [
+    {"nl": "Bel meteen {de politie}!", "fr": "Appelle tout de suite {la police} !"},
+    {"nl": "{De politie} heeft de straat afgesloten.", "fr": "{La police} a fermé la rue."},
+    {"nl": "{De politie} zoekt de dief nog altijd.", "fr": "{La police} cherche toujours le voleur."},
+    {"nl": "{De politie} gaf hem een boete voor te snel rijden.", "fr": "{La police} lui a donné une amende pour excès de vitesse."}
+   ]
   },
   {
    "nl": "de brandweer",
-   "fr": "les pompiers"
+   "fr": "les pompiers",
+   "ph": [
+    {"nl": "{De brandweer} kwam heel snel.", "fr": "{Les pompiers} sont arrivés très vite."},
+    {"nl": "Heb je {de brandweer} al gebeld?", "fr": "As-tu déjà appelé {les pompiers} ?"},
+    {"nl": "{De brandweer} heeft het vuur snel geblust.", "fr": "{Les pompiers} ont vite éteint le feu."},
+    {"nl": "Bij brand bel je {de brandweer} op 112.", "fr": "En cas d'incendie, appelle {les pompiers} au 112."}
+   ]
   },
   {
    "nl": "het verkeer",
-   "fr": "la circulation"
+   "fr": "la circulation",
+   "ph": [
+    {"nl": "Er is veel {verkeer} in de stad.", "fr": "Il y a beaucoup de {circulation} en ville."},
+    {"nl": "{Het verkeer} was vanochtend vreselijk.", "fr": "{La circulation} était terrible ce matin."},
+    {"nl": "In de spits staat {het verkeer} stil.", "fr": "Aux heures de pointe, {la circulation} est bloquée."},
+    {"nl": "Let op {het verkeer} als je oversteekt!", "fr": "Fais attention à {la circulation} quand tu traverses !"}
+   ]
   },
   {
    "nl": "de file",
-   "fr": "l'embouteillage"
+   "fr": "l'embouteillage",
+   "ph": [
+    {"nl": "We stonden een uur in {de file}.", "fr": "Nous sommes restés une heure dans {l'embouteillage}."},
+    {"nl": "Is er vandaag {een file} op de snelweg?", "fr": "Y a-t-il {un embouteillage} sur l'autoroute aujourd'hui ?"},
+    {"nl": "Door {de file} kwam ik te laat op mijn werk.", "fr": "À cause de {l'embouteillage}, je suis arrivé en retard au travail."},
+    {"nl": "Vertrek vroeg, anders sta je in {de file}.", "fr": "Pars tôt, sinon tu seras coincé dans {l'embouteillage}."}
+   ]
   },
   {
    "nl": "de parkeerplaats",
-   "fr": "la place de parking"
+   "fr": "la place de parking",
+   "ph": [
+    {"nl": "Ik vind nergens {een parkeerplaats}.", "fr": "Je ne trouve {une place de parking} nulle part."},
+    {"nl": "Er is {een parkeerplaats} voor het hotel.", "fr": "Il y a {une place de parking} devant l'hôtel."},
+    {"nl": "Hier is nog {een parkeerplaats} vrij.", "fr": "Il y a encore {une place de parking} libre ici."},
+    {"nl": "{Deze parkeerplaats} is voor mensen met een handicap.", "fr": "{Cette place de parking} est réservée aux personnes handicapées."}
+   ]
   },
   {
    "nl": "het adres",
-   "fr": "l'adresse"
+   "fr": "l'adresse",
+   "ph": [
+    {"nl": "Wat is {je adres}?", "fr": "Quelle est {ton adresse} ?"},
+    {"nl": "Ik heb {het adres} niet opgeschreven.", "fr": "Je n'ai pas noté {l'adresse}."},
+    {"nl": "Stuur me {het adres} van het restaurant.", "fr": "Envoie-moi {l'adresse} du restaurant."},
+    {"nl": "Ik woon niet meer op {dat adres}.", "fr": "Je n'habite plus à {cette adresse}."}
+   ]
   },
   {
    "nl": "de buurt",
-   "fr": "le quartier"
+   "fr": "le quartier",
+   "ph": [
+    {"nl": "Ken jij {de buurt} goed?", "fr": "Tu connais bien {le quartier} ?"},
+    {"nl": "Er zijn veel winkels in {onze buurt}.", "fr": "Il y a beaucoup de magasins dans {notre quartier}."},
+    {"nl": "{Deze buurt} is 's avonds heel rustig.", "fr": "{Ce quartier} est très calme le soir."},
+    {"nl": "Woont je zus ook in {de buurt}?", "fr": "Ta sœur habite aussi dans {le quartier} ?"}
+   ]
   },
   {
    "nl": "de hoek",
-   "fr": "le coin"
+   "fr": "le coin",
+   "ph": [
+    {"nl": "Het café is op {de hoek} van de straat.", "fr": "Le café est {au coin} de la rue."},
+    {"nl": "Wacht op mij aan {de hoek}.", "fr": "Attends-moi {au coin}."},
+    {"nl": "Om {de hoek} is er een bakker.", "fr": "Il y a une boulangerie juste {au coin}."},
+    {"nl": "Het huis op {de hoek} is te koop.", "fr": "La maison {du coin} est à vendre."}
+   ]
   },
   {
    "nl": "het bord (verkeer)",
-   "fr": "le panneau"
+   "fr": "le panneau",
+   "ph": [
+    {"nl": "{Dat bord} betekent dat je hier niet mag parkeren.", "fr": "{Ce panneau} signifie qu'on ne peut pas se garer ici."},
+    {"nl": "Ik heb {het bord} niet gezien.", "fr": "Je n'ai pas vu {le panneau}."},
+    {"nl": "Er staat {een bord} met de naam van het dorp.", "fr": "Il y a {un panneau} avec le nom du village."},
+    {"nl": "Het is moeilijk om {de borden} in het donker te lezen.", "fr": "Il est difficile de lire {les panneaux} dans le noir."}
+   ]
   },
   {
    "nl": "de gemeente",
-   "fr": "la commune"
+   "fr": "la commune",
+   "ph": [
+    {"nl": "{De gemeente} bouwt een nieuwe school.", "fr": "{La commune} construit une nouvelle école."},
+    {"nl": "Ik moet mijn nieuwe adres aan {de gemeente} geven.", "fr": "Je dois donner ma nouvelle adresse à {la commune}."},
+    {"nl": "{De gemeente} organiseert zaterdag een feest op het plein.", "fr": "{La commune} organise une fête sur la place samedi."},
+    {"nl": "Mijn dorp hoort bij {de gemeente} Zemst.", "fr": "Mon village fait partie de {la commune} de Zemst."}
+   ]
   },
   {
    "nl": "de voorstad",
-   "fr": "la banlieue"
+   "fr": "la banlieue",
+   "ph": [
+    {"nl": "Veel mensen wonen in {de voorstad}.", "fr": "Beaucoup de gens habitent dans {la banlieue}."},
+    {"nl": "Rijdt deze bus naar {de voorstad}?", "fr": "Ce bus va-t-il {en banlieue} ?"},
+    {"nl": "Het is goedkoper om in {de voorstad} te wonen.", "fr": "Il est moins cher d'habiter {en banlieue}."},
+    {"nl": "Elke dag rijd ik van {de voorstad} naar het centrum.", "fr": "Chaque jour, je vais de {la banlieue} jusqu'au centre."}
+   ]
   },
   {
    "nl": "de voetganger",
-   "fr": "le piéton"
+   "fr": "le piéton",
+   "ph": [
+    {"nl": "{De voetganger} steekt de straat over.", "fr": "{Le piéton} traverse la rue."},
+    {"nl": "Let goed op {de voetgangers}!", "fr": "Fais bien attention {aux piétons} !"},
+    {"nl": "Op het zebrapad heeft {de voetganger} voorrang.", "fr": "Sur le passage piéton, {le piéton} a la priorité."},
+    {"nl": "Deze straat is alleen voor {voetgangers}.", "fr": "Cette rue est réservée aux {piétons}."}
+   ]
   },
   {
    "nl": "het voetpad",
-   "fr": "le trottoir"
+   "fr": "le trottoir",
+   "ph": [
+    {"nl": "Fietsen op {het voetpad} is verboden.", "fr": "Il est interdit de rouler à vélo sur {le trottoir}."},
+    {"nl": "Waarom staat die auto op {het voetpad}?", "fr": "Pourquoi cette voiture est-elle sur {le trottoir} ?"},
+    {"nl": "Loop op {het voetpad}, niet op de straat!", "fr": "Marche sur {le trottoir}, pas dans la rue !"},
+    {"nl": "{Het voetpad} is hier heel smal.", "fr": "{Le trottoir} est très étroit ici."}
+   ]
   },
   {
    "nl": "het fietspad",
-   "fr": "la piste cyclable"
+   "fr": "la piste cyclable",
+   "ph": [
+    {"nl": "Blijf altijd op {het fietspad}.", "fr": "Reste toujours sur {la piste cyclable}."},
+    {"nl": "Er is geen {fietspad} in deze straat.", "fr": "Il n'y a pas de {piste cyclable} dans cette rue."},
+    {"nl": "Langs het kanaal ligt {een fietspad}.", "fr": "Le long du canal, il y a {une piste cyclable}."},
+    {"nl": "Auto's mogen niet op {het fietspad} parkeren.", "fr": "Les voitures ne peuvent pas se garer sur {la piste cyclable}."}
+   ]
   },
   {
    "nl": "het verkeerslicht",
-   "fr": "le feu de signalisation"
+   "fr": "le feu de signalisation",
+   "ph": [
+    {"nl": "{Het verkeerslicht} werkt niet meer.", "fr": "{Le feu de signalisation} ne fonctionne plus."},
+    {"nl": "Sla links af aan {het verkeerslicht}.", "fr": "Tourne à gauche {au feu}."},
+    {"nl": "Wacht tot {het verkeerslicht} op groen springt.", "fr": "Attends que {le feu} passe au vert."},
+    {"nl": "Is {het verkeerslicht} al groen?", "fr": "{Le feu} est-il déjà vert ?"}
+   ]
   },
   {
    "nl": "het zebrapad",
-   "fr": "le passage piéton"
+   "fr": "le passage piéton",
+   "ph": [
+    {"nl": "Steek de straat over op {het zebrapad}.", "fr": "Traverse la rue sur {le passage piéton}."},
+    {"nl": "Er is geen {zebrapad} bij de school.", "fr": "Il n'y a pas de {passage piéton} près de l'école."},
+    {"nl": "Auto's moeten stoppen voor {het zebrapad}.", "fr": "Les voitures doivent s'arrêter devant {le passage piéton}."},
+    {"nl": "Steek nooit over naast {het zebrapad}.", "fr": "Ne traverse jamais à côté {du passage piéton}."}
+   ]
   },
   {
    "nl": "de rotonde",
-   "fr": "le rond-point"
+   "fr": "le rond-point",
+   "ph": [
+    {"nl": "Neem de tweede afslag op {de rotonde}.", "fr": "Prends la deuxième sortie {au rond-point}."},
+    {"nl": "Is er {een rotonde} na de brug?", "fr": "Y a-t-il {un rond-point} après le pont ?"},
+    {"nl": "Op {de rotonde} heb je geen voorrang.", "fr": "{Au rond-point}, tu n'as pas la priorité."},
+    {"nl": "Na {de rotonde} zie je het tankstation.", "fr": "Après {le rond-point}, tu vois la station-service."}
+   ]
   },
   {
    "nl": "de snelweg",
-   "fr": "l'autoroute"
+   "fr": "l'autoroute",
+   "ph": [
+    {"nl": "{De snelweg} naar Brussel is vandaag druk.", "fr": "{L'autoroute} vers Bruxelles est chargée aujourd'hui."},
+    {"nl": "We hebben {de snelweg} niet genomen.", "fr": "Nous n'avons pas pris {l'autoroute}."},
+    {"nl": "Op {de snelweg} mag je 120 rijden.", "fr": "Sur {l'autoroute}, on peut rouler à 120."},
+    {"nl": "Neem {de snelweg}, dat gaat sneller.", "fr": "Prends {l'autoroute}, c'est plus rapide."}
+   ]
   },
   {
    "nl": "de tunnel",
-   "fr": "le tunnel"
+   "fr": "le tunnel",
+   "ph": [
+    {"nl": "{De tunnel} is 's nachts gesloten.", "fr": "{Le tunnel} est fermé la nuit."},
+    {"nl": "Rijden we door {de tunnel}?", "fr": "On passe par {le tunnel} ?"},
+    {"nl": "In {de tunnel} heb ik geen bereik.", "fr": "Dans {le tunnel}, je n'ai pas de réseau."},
+    {"nl": "Doe je lichten aan in {de tunnel}.", "fr": "Allume tes phares dans {le tunnel}."}
+   ]
   },
   {
    "nl": "het rijbewijs",
-   "fr": "le permis de conduire"
+   "fr": "le permis de conduire",
+   "ph": [
+    {"nl": "Mijn zus heeft net {haar rijbewijs} gehaald.", "fr": "Ma sœur vient d'obtenir {son permis de conduire}."},
+    {"nl": "Heb je {je rijbewijs} bij je?", "fr": "As-tu {ton permis de conduire} sur toi ?"},
+    {"nl": "Zonder {rijbewijs} mag je niet rijden.", "fr": "Sans {permis de conduire}, tu ne peux pas conduire."},
+    {"nl": "De politie heeft {zijn rijbewijs} afgepakt.", "fr": "La police lui a retiré {son permis de conduire}."}
+   ]
   },
   {
    "nl": "de benzine",
-   "fr": "l'essence"
+   "fr": "l'essence",
+   "ph": [
+    {"nl": "{De benzine} is weer duurder geworden.", "fr": "{L'essence} est encore devenue plus chère."},
+    {"nl": "We hebben bijna geen {benzine} meer.", "fr": "Nous n'avons presque plus d'{essence}."},
+    {"nl": "Ik moet nog {benzine} tanken.", "fr": "Je dois encore prendre {de l'essence}."},
+    {"nl": "Hoeveel kost {de benzine} hier?", "fr": "Combien coûte {l'essence} ici ?"}
+   ]
   },
   {
    "nl": "het tankstation",
-   "fr": "la station-service"
+   "fr": "la station-service",
+   "ph": [
+    {"nl": "Is er {een tankstation} in de buurt?", "fr": "Y a-t-il {une station-service} près d'ici ?"},
+    {"nl": "We stopten bij {het tankstation} langs de snelweg.", "fr": "Nous nous sommes arrêtés à {la station-service} sur l'autoroute."},
+    {"nl": "Bij {het tankstation} kun je ook koffie kopen.", "fr": "À {la station-service}, on peut aussi acheter du café."},
+    {"nl": "Om middernacht was {het tankstation} gesloten.", "fr": "À minuit, {la station-service} était fermée."}
+   ]
   },
   {
    "nl": "de band",
-   "fr": "le pneu"
+   "fr": "le pneu",
+   "ph": [
+    {"nl": "{De band} van mijn fiets is lek.", "fr": "{Le pneu} de mon vélo est crevé."},
+    {"nl": "Moet je {de banden} nog oppompen?", "fr": "Tu dois encore gonfler {les pneus} ?"},
+    {"nl": "Hoe vervang je {een band} van een auto?", "fr": "Comment remplace-t-on {un pneu} de voiture ?"},
+    {"nl": "Er zit niet genoeg lucht in {de banden}.", "fr": "Il n'y a pas assez d'air dans {les pneus}."}
+   ]
   },
   {
    "nl": "het stuur",
-   "fr": "le volant"
+   "fr": "le volant",
+   "ph": [
+    {"nl": "Hou {het stuur} met twee handen vast.", "fr": "Tiens {le volant} à deux mains."},
+    {"nl": "Wie zit er vandaag achter {het stuur}?", "fr": "Qui est {au volant} aujourd'hui ?"},
+    {"nl": "Draai {het stuur} naar links.", "fr": "Tourne {le volant} vers la gauche."},
+    {"nl": "Laat {het stuur} nooit los tijdens het rijden.", "fr": "Ne lâche jamais {le volant} en conduisant."}
+   ]
   },
   {
    "nl": "de motor",
-   "fr": "le moteur, la moto"
+   "fr": "le moteur, la moto",
+   "ph": [
+    {"nl": "{De motor} van de auto maakt een raar geluid.", "fr": "{Le moteur} de la voiture fait un bruit bizarre."},
+    {"nl": "Heb je {de motor} al gestart?", "fr": "As-tu déjà démarré {le moteur} ?"},
+    {"nl": "Mijn broer rijdt op {een motor}.", "fr": "Mon frère conduit {une moto}."},
+    {"nl": "{De motor} start niet bij koud weer.", "fr": "{Le moteur} ne démarre pas par temps froid."}
+   ]
   },
   {
    "nl": "de rem",
-   "fr": "le frein"
+   "fr": "le frein",
+   "ph": [
+    {"nl": "{De remmen} van mijn fiets werken niet goed.", "fr": "{Les freins} de mon vélo ne marchent pas bien."},
+    {"nl": "Trap snel op {de rem}!", "fr": "Appuie vite sur {le frein} !"},
+    {"nl": "De garagist moet {de remmen} van mijn auto nakijken.", "fr": "Le garagiste doit vérifier {les freins} de ma voiture."},
+    {"nl": "{De rem} werkte niet, dus ik kon niet stoppen.", "fr": "{Le frein} ne marchait pas, donc je n'ai pas pu m'arrêter."}
+   ]
   },
   {
    "nl": "de metro",
-   "fr": "le métro"
+   "fr": "le métro",
+   "ph": [
+    {"nl": "{De metro} is sneller dan de bus.", "fr": "{Le métro} est plus rapide que le bus."},
+    {"nl": "Ik heb gisteren {de metro} genomen.", "fr": "Hier, j'ai pris {le métro}."},
+    {"nl": "Brussel heeft {een metro}, Gent niet.", "fr": "Bruxelles a {un métro}, Gand non."},
+    {"nl": "{De metro} rijdt onder de grond.", "fr": "{Le métro} roule sous terre."}
+   ]
   },
   {
    "nl": "het perron",
-   "fr": "le quai"
+   "fr": "le quai",
+   "ph": [
+    {"nl": "De trein vertrekt van {perron} drie.", "fr": "Le train part du {quai} numéro trois."},
+    {"nl": "Wacht op {het perron}, alsjeblieft.", "fr": "Attends sur {le quai}, s'il te plaît."},
+    {"nl": "Op welk {perron} vertrekt de trein naar Leuven?", "fr": "De quel {quai} part le train pour Louvain ?"},
+    {"nl": "Blijf achter de witte lijn op {het perron}.", "fr": "Reste derrière la ligne blanche sur {le quai}."}
+   ]
   },
   {
    "nl": "het spoor",
-   "fr": "la voie ferrée"
+   "fr": "la voie ferrée",
+   "ph": [
+    {"nl": "Het is verboden over {het spoor} te lopen.", "fr": "Il est interdit de marcher sur {la voie ferrée}."},
+    {"nl": "Er lag gisteren een boom op {het spoor}.", "fr": "Hier, il y avait un arbre sur {la voie ferrée}."},
+    {"nl": "De trein kan niet rijden: er zijn werken aan {het spoor}.", "fr": "Le train ne peut pas circuler : il y a des travaux sur {la voie ferrée}."},
+    {"nl": "Wij wonen vlak naast {het spoor}.", "fr": "Nous habitons juste à côté de {la voie ferrée}."}
+   ]
   },
   {
    "nl": "het kaartje",
-   "fr": "le ticket"
+   "fr": "le ticket",
+   "ph": [
+    {"nl": "Waar kan ik {een kaartje} kopen?", "fr": "Où puis-je acheter {un ticket} ?"},
+    {"nl": "Ik ben {mijn kaartje} vergeten.", "fr": "J'ai oublié {mon ticket}."},
+    {"nl": "Laat {je kaartje} zien aan de controleur.", "fr": "Montre {ton ticket} au contrôleur."},
+    {"nl": "{Een kaartje} naar Brugge kost vijftien euro.", "fr": "{Un ticket} pour Bruges coûte quinze euros."}
+   ]
   },
   {
    "nl": "de reiziger",
-   "fr": "le voyageur"
+   "fr": "le voyageur",
+   "ph": [
+    {"nl": "{De reizigers} wachten op het perron.", "fr": "{Les voyageurs} attendent sur le quai."},
+    {"nl": "Gisteren zat er geen enkele {reiziger} in de tram.", "fr": "Hier, il n'y avait aucun {voyageur} dans le tram."},
+    {"nl": "Deze trein heeft plaats voor vijfhonderd {reizigers}.", "fr": "Ce train a de la place pour cinq cents {voyageurs}."},
+    {"nl": "Elke {reiziger} moet een kaartje hebben.", "fr": "Chaque {voyageur} doit avoir un ticket."}
+   ]
   },
   {
    "nl": "de koffer",
-   "fr": "la valise"
+   "fr": "la valise",
+   "ph": [
+    {"nl": "{Mijn koffer} is te zwaar.", "fr": "{Ma valise} est trop lourde."},
+    {"nl": "Heb je {je koffer} al gepakt?", "fr": "As-tu déjà fait {ta valise} ?"},
+    {"nl": "Zet {je koffer} in de kofferbak.", "fr": "Mets {ta valise} dans le coffre."},
+    {"nl": "Ik kan {mijn koffer} niet meer dichtkrijgen.", "fr": "Je n'arrive plus à fermer {ma valise}."}
+   ]
   },
   {
    "nl": "de rugzak",
-   "fr": "le sac à dos"
+   "fr": "le sac à dos",
+   "ph": [
+    {"nl": "Ik neem alleen {een rugzak} mee.", "fr": "Je prends seulement {un sac à dos}."},
+    {"nl": "Waar is {mijn rugzak}?", "fr": "Où est {mon sac à dos} ?"},
+    {"nl": "Steek een fles water in {je rugzak}.", "fr": "Mets une bouteille d'eau dans {ton sac à dos}."},
+    {"nl": "Voor de wandeling heb je {een rugzak} nodig, geen koffer.", "fr": "Pour la randonnée, il te faut {un sac à dos}, pas une valise."}
+   ]
   },
   {
    "nl": "de vertraging",
-   "fr": "le retard"
+   "fr": "le retard",
+   "ph": [
+    {"nl": "De trein heeft twintig minuten {vertraging}.", "fr": "Le train a vingt minutes de {retard}."},
+    {"nl": "{De vertraging} was gelukkig niet zo erg.", "fr": "Heureusement, {le retard} n'était pas si grave."},
+    {"nl": "Door de sneeuw hebben alle treinen {vertraging}.", "fr": "À cause de la neige, tous les trains ont du {retard}."},
+    {"nl": "Sorry voor {de vertraging}, er was een file.", "fr": "Désolé pour {le retard}, il y avait un embouteillage."}
+   ]
   },
   {
    "nl": "de dienstregeling",
-   "fr": "les horaires"
+   "fr": "les horaires",
+   "ph": [
+    {"nl": "Heb je {de dienstregeling} van de bus?", "fr": "As-tu {les horaires} du bus ?"},
+    {"nl": "{De dienstregeling} verandert in december.", "fr": "{Les horaires} changent en décembre."},
+    {"nl": "Je vindt {de dienstregeling} op de website van de NMBS.", "fr": "Tu trouves {les horaires} sur le site de la SNCB."},
+    {"nl": "Kijk eerst naar {de dienstregeling} voor je vertrekt.", "fr": "Regarde d'abord {les horaires} avant de partir."}
+   ]
   },
   {
    "nl": "de bestemming",
-   "fr": "la destination"
+   "fr": "la destination",
+   "ph": [
+    {"nl": "We zijn eindelijk op {onze bestemming} aangekomen.", "fr": "Nous sommes enfin arrivés à {notre destination}."},
+    {"nl": "Wat is {de bestemming} van deze trein?", "fr": "Quelle est {la destination} de ce train ?"},
+    {"nl": "Ik ken {de bestemming} van onze reis nog niet.", "fr": "Je ne connais pas encore {la destination} de notre voyage."},
+    {"nl": "Kies {een bestemming} voor onze vakantie!", "fr": "Choisis {une destination} pour nos vacances !"}
+   ]
   },
   {
    "nl": "de afstand",
-   "fr": "la distance"
+   "fr": "la distance",
+   "ph": [
+    {"nl": "{De afstand} tussen Gent en Brussel is vijftig kilometer.", "fr": "{La distance} entre Gand et Bruxelles est de cinquante kilomètres."},
+    {"nl": "Is {de afstand} te groot om te fietsen?", "fr": "{La distance} est-elle trop grande pour y aller à vélo ?"},
+    {"nl": "Vroeger fietste ik {die afstand} elke dag.", "fr": "Avant, je faisais {cette distance} à vélo tous les jours."},
+    {"nl": "Houd genoeg {afstand} van de auto voor je.", "fr": "Garde {une distance} suffisante avec la voiture de devant."}
+   ]
   },
   {
    "nl": "de richting",
-   "fr": "la direction"
+   "fr": "la direction",
+   "ph": [
+    {"nl": "Is dit {de richting} van het station?", "fr": "Est-ce {la direction} de la gare ?"},
+    {"nl": "Welke {richting} moeten we nemen?", "fr": "Quelle {direction} devons-nous prendre ?"},
+    {"nl": "Deze tram rijdt in {de richting} van het centrum.", "fr": "Ce tram roule {en direction} du centre."},
+    {"nl": "Kun je mij {de richting} van de haven wijzen?", "fr": "Peux-tu m'indiquer {la direction} du port ?"}
+   ]
   },
   {
    "nl": "de omweg",
-   "fr": "le détour"
+   "fr": "le détour",
+   "ph": [
+    {"nl": "We moesten {een omweg} maken door de wegenwerken.", "fr": "Nous avons dû faire {un détour} à cause des travaux."},
+    {"nl": "{De omweg} duurde een halfuur.", "fr": "{Le détour} a pris une demi-heure."},
+    {"nl": "Door de file nemen we liever {een omweg}.", "fr": "À cause de l'embouteillage, nous préférons faire {un détour}."},
+    {"nl": "Maak geen {omweg}, we zijn al laat!", "fr": "Ne fais pas de {détour}, nous sommes déjà en retard !"}
+   ]
   },
   {
    "nl": "het café",
-   "fr": "le café (lieu)"
+   "fr": "le café (lieu)",
+   "ph": [
+    {"nl": "We drinken iets in {het café} op de hoek.", "fr": "Nous buvons un verre dans {le café} du coin."},
+    {"nl": "Is {het café} op zondag open?", "fr": "{Le café} est-il ouvert le dimanche ?"},
+    {"nl": "{Het café} op het plein heeft een groot terras.", "fr": "{Le café} sur la place a une grande terrasse."},
+    {"nl": "Mijn opa speelt elke week kaart in {het café}.", "fr": "Mon grand-père joue aux cartes {au café} chaque semaine."}
+   ]
   },
   {
    "nl": "de bioscoop",
-   "fr": "le cinéma"
+   "fr": "le cinéma",
+   "ph": [
+    {"nl": "Gaan we vanavond naar {de bioscoop}?", "fr": "On va {au cinéma} ce soir ?"},
+    {"nl": "{De bioscoop} was gisteren helemaal vol.", "fr": "{Le cinéma} était complet hier."},
+    {"nl": "In {de bioscoop} draait een nieuwe film.", "fr": "Un nouveau film passe {au cinéma}."},
+    {"nl": "Zet je gsm uit tijdens de film in {de bioscoop}.", "fr": "Éteins ton portable pendant le film {au cinéma}."}
+   ]
   },
   {
    "nl": "het theater",
-   "fr": "le théâtre"
+   "fr": "le théâtre",
+   "ph": [
+    {"nl": "{Het theater} ligt naast het park.", "fr": "{Le théâtre} se trouve à côté du parc."},
+    {"nl": "Ben je al eens naar {het theater} geweest?", "fr": "Es-tu déjà allé {au théâtre} ?"},
+    {"nl": "In {het theater} spelen ze vanavond een toneelstuk.", "fr": "Ce soir, on joue une pièce {au théâtre}."},
+    {"nl": "Ze speelt al tien jaar toneel in {het theater}.", "fr": "Elle joue {au théâtre} depuis dix ans."}
+   ]
   },
   {
    "nl": "het hotel",
-   "fr": "l'hôtel"
+   "fr": "l'hôtel",
+   "ph": [
+    {"nl": "{Ons hotel} is dicht bij het station.", "fr": "{Notre hôtel} est près de la gare."},
+    {"nl": "Heb je al {een hotel} geboekt?", "fr": "As-tu déjà réservé {un hôtel} ?"},
+    {"nl": "Het ontbijt in {het hotel} was heel lekker.", "fr": "Le petit-déjeuner à {l'hôtel} était délicieux."},
+    {"nl": "We slapen vannacht niet in {een hotel}, maar in een tent.", "fr": "Cette nuit, nous ne dormons pas dans {un hôtel}, mais sous une tente."}
+   ]
   },
   {
    "nl": "de school",
-   "fr": "l'école"
+   "fr": "l'école",
+   "ph": [
+    {"nl": "{De school} begint om half negen.", "fr": "{L'école} commence à huit heures et demie."},
+    {"nl": "Ik breng de kinderen met de fiets naar {school}.", "fr": "J'amène les enfants à {l'école} à vélo."},
+    {"nl": "Mijn dochter gaat naar {de school} in ons dorp.", "fr": "Ma fille va à {l'école} de notre village."},
+    {"nl": "Morgen is er geen {school}, het is vakantie.", "fr": "Demain, il n'y a pas d'{école}, ce sont les vacances."}
+   ]
   },
   {
    "nl": "de toren",
-   "fr": "la tour"
+   "fr": "la tour",
+   "ph": [
+    {"nl": "Vanaf {de toren} zie je de hele stad.", "fr": "Du haut de {la tour}, on voit toute la ville."},
+    {"nl": "Hoe hoog is {die toren}?", "fr": "Quelle est la hauteur de {cette tour} ?"},
+    {"nl": "{De toren} van de kerk is honderd meter hoog.", "fr": "{La tour} de l'église fait cent mètres de haut."},
+    {"nl": "Mogen we tot boven in {de toren} klimmen?", "fr": "Peut-on monter en haut de {la tour} ?"}
+   ]
   },
   {
    "nl": "het gebouw",
-   "fr": "le bâtiment"
+   "fr": "le bâtiment",
+   "ph": [
+    {"nl": "{Dat gebouw} is heel oud.", "fr": "{Ce bâtiment} est très ancien."},
+    {"nl": "In {welk gebouw} is de bibliotheek?", "fr": "Dans {quel bâtiment} se trouve la bibliothèque ?"},
+    {"nl": "{Het gebouw} heeft twintig verdiepingen.", "fr": "{Le bâtiment} a vingt étages."},
+    {"nl": "Roken is verboden in {dit gebouw}.", "fr": "Il est interdit de fumer dans {ce bâtiment}."}
+   ]
   },
   {
    "nl": "de fontein",
-   "fr": "la fontaine"
+   "fr": "la fontaine",
+   "ph": [
+    {"nl": "Er staat {een fontein} op het plein.", "fr": "Il y a {une fontaine} sur la place."},
+    {"nl": "De kinderen speelden bij {de fontein}.", "fr": "Les enfants jouaient près de {la fontaine}."},
+    {"nl": "Het water in {de fontein} is niet drinkbaar.", "fr": "L'eau de {la fontaine} n'est pas potable."},
+    {"nl": "Gooi een muntje in {de fontein}!", "fr": "Jette une pièce dans {la fontaine} !"}
+   ]
   },
   {
    "nl": "het standbeeld",
-   "fr": "la statue"
+   "fr": "la statue",
+   "ph": [
+    {"nl": "{Het standbeeld} staat voor het stadhuis.", "fr": "{La statue} se trouve devant l'hôtel de ville."},
+    {"nl": "Hebben jullie {het standbeeld} op het plein gezien?", "fr": "Avez-vous vu {la statue} sur la place ?"},
+    {"nl": "{Dat standbeeld} is van brons.", "fr": "{Cette statue} est en bronze."},
+    {"nl": "{Het standbeeld} van de koning werd vorig jaar gerestaureerd.", "fr": "{La statue} du roi a été restaurée l'an dernier."}
+   ]
   },
   {
    "nl": "de ingang",
-   "fr": "l'entrée (le seuil)"
+   "fr": "l'entrée (le seuil)",
+   "ph": [
+    {"nl": "{De ingang} is aan de andere kant.", "fr": "{L'entrée} est de l'autre côté."},
+    {"nl": "Ik wacht op je bij {de ingang} van het park.", "fr": "Je t'attends à {l'entrée} du parc."},
+    {"nl": "Waar is {de ingang} van het museum?", "fr": "Où est {l'entrée} du musée ?"},
+    {"nl": "Blokkeer {de ingang} niet met je fiets.", "fr": "Ne bloque pas {l'entrée} avec ton vélo."}
+   ]
   },
   {
    "nl": "lopen",
    "fr": "marcher",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Ik {loop} elke dag naar het station.", "fr": "Je {marche} jusqu'à la gare tous les jours."},
+    {"nl": "Kunnen we naar het centrum {lopen}?", "fr": "Est-ce qu'on peut {marcher} jusqu'au centre ?"},
+    {"nl": "Gisteren hebben we tien kilometer {gelopen}.", "fr": "Hier, nous avons {marché} dix kilomètres."},
+    {"nl": "{Loop} niet zo snel, ik kan je niet volgen!", "fr": "Ne {marche} pas si vite, je n'arrive pas à te suivre !"}
+   ]
   },
   {
    "nl": "rijden",
    "fr": "rouler, conduire",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Mijn vader {rijdt} altijd heel voorzichtig.", "fr": "Mon père {conduit} toujours très prudemment."},
+    {"nl": "Kun jij vanavond {rijden}?", "fr": "Tu peux {conduire} ce soir ?"},
+    {"nl": "Je mag hier maar dertig {rijden}.", "fr": "Ici, tu ne peux {rouler} qu'à trente."},
+    {"nl": "Gisteren heb ik voor het eerst op de snelweg {gereden}.", "fr": "Hier, j'ai {conduit} sur l'autoroute pour la première fois."}
+   ]
   },
   {
    "nl": "doen",
    "fr": "faire",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Wat {doe} je dit weekend?", "fr": "Que {fais}-tu ce week-end ?"},
+    {"nl": "Ik heb mijn boodschappen in de stad {gedaan}.", "fr": "J'ai {fait} mes courses en ville."},
+    {"nl": "Hij {doet} zijn best om Frans te leren.", "fr": "Il {fait} de son mieux pour apprendre le français."},
+    {"nl": "{Doe} voorzichtig op de fiets!", "fr": "{Fais} attention à vélo !"}
+   ]
   },
   {
    "nl": "fietsen",
    "fr": "faire du vélo",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Op zondag {fietsen} we graag langs het kanaal.", "fr": "Le dimanche, nous aimons {faire du vélo} le long du canal."},
+    {"nl": "Heb je vandaag al {gefietst}?", "fr": "As-tu déjà {fait du vélo} aujourd'hui ?"},
+    {"nl": "Mijn dochter leert {fietsen}.", "fr": "Ma fille apprend à {faire du vélo}."},
+    {"nl": "Het regent te hard om te {fietsen}.", "fr": "Il pleut trop fort pour {faire du vélo}."}
+   ]
   },
   {
    "nl": "wandelen",
    "fr": "se promener",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "We {wandelen} elke avond met de hond.", "fr": "Nous {nous promenons} chaque soir avec le chien."},
+    {"nl": "Zullen we in het park gaan {wandelen}?", "fr": "On va {se promener} dans le parc ?"},
+    {"nl": "Gisteren hebben we twee uur in het bos {gewandeld}.", "fr": "Hier, nous {nous sommes promenés} deux heures dans la forêt."},
+    {"nl": "{Wandel} je graag langs de zee?", "fr": "Aimes-tu {te promener} au bord de la mer ?"}
+   ]
   },
   {
    "nl": "reizen",
    "fr": "voyager",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Ik {reis} graag met de trein.", "fr": "J'aime {voyager} en train."},
+    {"nl": "Hebben jullie veel {gereisd} deze zomer?", "fr": "Avez-vous beaucoup {voyagé} cet été ?"},
+    {"nl": "Na zijn pensioen wil hij rond de wereld {reizen}.", "fr": "Après sa retraite, il veut {voyager} autour du monde."},
+    {"nl": "{Reis} je nooit alleen?", "fr": "Tu ne {voyages} jamais seul ?"}
+   ]
   },
   {
    "nl": "vertrekken",
    "fr": "partir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "De trein {vertrekt} om tien uur.", "fr": "Le train {part} à dix heures."},
+    {"nl": "Wanneer zijn jullie gisteren {vertrokken}?", "fr": "Quand êtes-vous {partis} hier ?"},
+    {"nl": "We moeten om zeven uur {vertrekken}.", "fr": "Nous devons {partir} à sept heures."},
+    {"nl": "{Vertrek} niet zonder je kaartje!", "fr": "Ne {pars} pas sans ton ticket !"}
+   ]
   },
   {
    "nl": "aankomen",
    "fr": "arriver",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Hoe laat zal de trein {aankomen}?", "fr": "À quelle heure le train va-t-il {arriver} ?"},
+    {"nl": "We zijn gisteren laat in Gent {aangekomen}.", "fr": "Hier, nous sommes {arrivés} tard à Gand."},
+    {"nl": "Bel me als je in het hotel {aankomt}.", "fr": "Appelle-moi quand tu {arrives} à l'hôtel."},
+    {"nl": "Ik hoop dat we op tijd zullen {aankomen}.", "fr": "J'espère que nous {arriverons} à l'heure."}
+   ]
   },
   {
    "nl": "oversteken",
    "fr": "traverser",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Je moet hier voorzichtig {oversteken}.", "fr": "Tu dois {traverser} prudemment ici."},
+    {"nl": "Ik wacht tot het licht groen is voor ik {oversteek}.", "fr": "J'attends que le feu soit vert avant de {traverser}."},
+    {"nl": "Kinderen mogen hier niet alleen {oversteken}.", "fr": "Les enfants ne peuvent pas {traverser} seuls ici."},
+    {"nl": "Ze is zonder te kijken {overgestoken}.", "fr": "Elle a {traversé} sans regarder."}
+   ]
   },
   {
    "nl": "parkeren",
    "fr": "se garer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Waar kan ik hier {parkeren}?", "fr": "Où est-ce que je peux {me garer} ici ?"},
+    {"nl": "Ik heb naast de kerk {geparkeerd}.", "fr": "Je {me suis garé} à côté de l'église."},
+    {"nl": "Je mag hier niet {parkeren}.", "fr": "Tu ne peux pas {te garer} ici."},
+    {"nl": "{Parkeer} je auto achter het huis.", "fr": "{Gare} ta voiture derrière la maison."}
+   ]
   },
   {
    "nl": "stoppen",
    "fr": "s'arrêter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "De bus {stopt} voor de school.", "fr": "Le bus {s'arrête} devant l'école."},
+    {"nl": "Waarom wil je hier {stoppen}?", "fr": "Pourquoi veux-tu {t'arrêter} ici ?"},
+    {"nl": "{Stop} altijd voor een rood licht!", "fr": "{Arrête-toi} toujours à un feu rouge !"},
+    {"nl": "We zijn onderweg twee keer {gestopt}.", "fr": "Nous {nous sommes arrêtés} deux fois en route."}
+   ]
   },
   {
    "nl": "afslaan",
    "fr": "tourner",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Je moet aan de rotonde links {afslaan}.", "fr": "Tu dois {tourner} à gauche au rond-point."},
+    {"nl": "Ik denk dat we te vroeg zijn {afgeslagen}.", "fr": "Je pense que nous avons {tourné} trop tôt."},
+    {"nl": "Weet je waar we moeten {afslaan}?", "fr": "Sais-tu où nous devons {tourner} ?"},
+    {"nl": "Kijk in je spiegel voor je {afslaat}.", "fr": "Regarde dans ton rétroviseur avant de {tourner}."}
+   ]
   },
   {
    "nl": "volgen",
    "fr": "suivre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "{Volg} de borden naar het centrum.", "fr": "{Suis} les panneaux vers le centre."},
+    {"nl": "Hebben jullie de kaart goed {gevolgd}?", "fr": "Avez-vous bien {suivi} la carte ?"},
+    {"nl": "Ik denk dat die auto ons {volgt}.", "fr": "Je pense que cette voiture nous {suit}."},
+    {"nl": "Je moet de gps niet altijd {volgen}.", "fr": "Tu ne dois pas toujours {suivre} le GPS."}
+   ]
   },
   {
    "nl": "verdwalen",
    "fr": "se perdre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "In deze buurt kun je makkelijk {verdwalen}.", "fr": "Dans ce quartier, on peut facilement {se perdre}."},
+    {"nl": "We zijn gisteren in Brussel {verdwaald}.", "fr": "Hier, nous {nous sommes perdus} à Bruxelles."},
+    {"nl": "Neem een kaart mee, zodat je niet {verdwaalt}.", "fr": "Prends une carte pour ne pas {te perdre}."},
+    {"nl": "Ben je ooit in een grote stad {verdwaald}?", "fr": "T'es-tu déjà {perdu} dans une grande ville ?"}
+   ]
   },
   {
    "nl": "instappen",
    "fr": "monter (dans un véhicule)",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "De reizigers mogen nu {instappen}.", "fr": "Les voyageurs peuvent maintenant {monter}."},
+    {"nl": "Ik zag hem gisteren in de bus {instappen}.", "fr": "Hier, je l'ai vu {monter} dans le bus."},
+    {"nl": "Je mag pas {instappen} als iedereen uitgestapt is.", "fr": "Tu ne peux {monter} que quand tout le monde est descendu."},
+    {"nl": "Ze is in de verkeerde trein {ingestapt}.", "fr": "Elle est {montée} dans le mauvais train."}
+   ]
   },
   {
    "nl": "uitstappen",
    "fr": "descendre (d'un véhicule)",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "We moeten bij de volgende halte {uitstappen}.", "fr": "Nous devons {descendre} au prochain arrêt."},
+    {"nl": "Ze zijn aan het station {uitgestapt}.", "fr": "Ils sont {descendus} à la gare."},
+    {"nl": "Waar moet ik {uitstappen} voor het museum?", "fr": "Où dois-je {descendre} pour le musée ?"},
+    {"nl": "Wacht tot de tram stilstaat voor je {uitstapt}.", "fr": "Attends que le tram soit arrêté avant de {descendre}."}
+   ]
   },
   {
    "nl": "winkelen",
    "fr": "faire les magasins",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Op zaterdag gaan we graag {winkelen}.", "fr": "Le samedi, nous aimons aller {faire les magasins}."},
+    {"nl": "Heb je gisteren in Antwerpen {gewinkeld}?", "fr": "As-tu {fait les magasins} à Anvers hier ?"},
+    {"nl": "Ik heb geen zin om te {winkelen}.", "fr": "Je n'ai pas envie de {faire les magasins}."},
+    {"nl": "Ze {winkelde} de hele dag zonder iets te kopen.", "fr": "Elle {a fait les magasins} toute la journée sans rien acheter."}
+   ]
   },
   {
    "nl": "bezorgen",
    "fr": "livrer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "De postbode {bezorgt} elke dag pakjes.", "fr": "Le facteur {livre} des colis tous les jours."},
+    {"nl": "Wanneer wordt mijn pakje {bezorgd}?", "fr": "Quand mon colis sera-t-il {livré} ?"},
+    {"nl": "Kunnen jullie de pizza om acht uur {bezorgen}?", "fr": "Pouvez-vous {livrer} la pizza à huit heures ?"},
+    {"nl": "De postbode heeft het pakje gisteren niet {bezorgd}.", "fr": "Hier, le facteur n'a pas {livré} le colis."}
+   ]
   },
   {
    "nl": "vliegen",
    "fr": "voler",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Het vliegtuig {vliegt} laag boven de stad.", "fr": "L'avion {vole} bas au-dessus de la ville."},
+    {"nl": "Heb je al eens in een helikopter {gevlogen}?", "fr": "As-tu déjà {volé} en hélicoptère ?"},
+    {"nl": "In de herfst {vliegen} de vogels naar het zuiden.", "fr": "En automne, les oiseaux {volent} vers le sud."},
+    {"nl": "Dit vliegtuig kan heel hoog {vliegen}.", "fr": "Cet avion peut {voler} très haut."}
+   ]
   },
   {
    "nl": "varen",
    "fr": "naviguer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "De boot {vaart} langzaam naar de haven.", "fr": "Le bateau {navigue} lentement vers le port."},
+    {"nl": "Hebben jullie al eens op de Schelde {gevaren}?", "fr": "Avez-vous déjà {navigué} sur l'Escaut ?"},
+    {"nl": "We gaan morgen op het meer {varen}.", "fr": "Demain, nous allons {naviguer} sur le lac."},
+    {"nl": "Grote schepen {varen} tot in de haven van Antwerpen.", "fr": "Les grands navires {naviguent} jusqu'au port d'Anvers."}
+   ]
   }
  ]
 }

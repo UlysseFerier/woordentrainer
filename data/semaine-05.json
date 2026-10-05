@@ -5,423 +5,1023 @@
  "mots": [
   {
    "nl": "het weer",
-   "fr": "le temps (météo)"
+   "fr": "le temps (météo)",
+   "ph": [
+    {"nl": "{Het weer} is vandaag erg mooi.", "fr": "{Le temps} est très beau aujourd'hui."},
+    {"nl": "Hoe was {het weer} aan zee?", "fr": "Comment était {le temps} à la mer ?"},
+    {"nl": "Volgens de radio wordt {het weer} morgen slechter.", "fr": "Selon la radio, {le temps} sera plus mauvais demain."},
+    {"nl": "We gaan picknicken als {het weer} mooi blijft.", "fr": "Nous allons pique-niquer si {le temps} reste beau."}
+   ]
   },
   {
    "nl": "de zon",
-   "fr": "le soleil"
+   "fr": "le soleil",
+   "ph": [
+    {"nl": "{De zon} schijnt de hele dag.", "fr": "{Le soleil} brille toute la journée."},
+    {"nl": "Zie je {de zon} achter de wolken?", "fr": "Tu vois {le soleil} derrière les nuages ?"},
+    {"nl": "Kijk nooit recht in {de zon}!", "fr": "Ne regarde jamais directement {le soleil} !"},
+    {"nl": "Om zes uur ging {de zon} onder.", "fr": "{Le soleil} s'est couché à six heures."}
+   ]
   },
   {
    "nl": "de regen",
-   "fr": "la pluie"
+   "fr": "la pluie",
+   "ph": [
+    {"nl": "{De regen} valt al sinds vanochtend.", "fr": "{La pluie} tombe depuis ce matin."},
+    {"nl": "We wandelen niet graag in {de regen}.", "fr": "Nous n'aimons pas nous promener sous {la pluie}."},
+    {"nl": "Neem je paraplu mee tegen {de regen}.", "fr": "Prends ton parapluie contre {la pluie}."},
+    {"nl": "Door {de regen} is mijn jas helemaal nat.", "fr": "À cause de {la pluie}, ma veste est toute mouillée."}
+   ]
   },
   {
    "nl": "de wind",
-   "fr": "le vent"
+   "fr": "le vent",
+   "ph": [
+    {"nl": "{De wind} is vandaag heel sterk.", "fr": "{Le vent} est très fort aujourd'hui."},
+    {"nl": "Hoor je {de wind} buiten?", "fr": "Tu entends {le vent} dehors ?"},
+    {"nl": "Door {de wind} vloog mijn hoed weg.", "fr": "À cause {du vent}, mon chapeau s'est envolé."},
+    {"nl": "Was {de wind} gisteren niet te sterk om te fietsen?", "fr": "{Le vent} n'était-il pas trop fort hier pour faire du vélo ?"}
+   ]
   },
   {
    "nl": "de wolk",
-   "fr": "le nuage"
+   "fr": "le nuage",
+   "ph": [
+    {"nl": "{Een wolk} verbergt de zon.", "fr": "{Un nuage} cache le soleil."},
+    {"nl": "{De wolken} zijn vandaag erg donker.", "fr": "{Les nuages} sont très sombres aujourd'hui."},
+    {"nl": "Er is vandaag geen enkele {wolk} te zien.", "fr": "On ne voit aucun {nuage} aujourd'hui."},
+    {"nl": "Kijk, {die wolk} lijkt op een konijn!", "fr": "Regarde, {ce nuage} ressemble à un lapin !"}
+   ]
   },
   {
    "nl": "de sneeuw",
-   "fr": "la neige"
+   "fr": "la neige",
+   "ph": [
+    {"nl": "{De sneeuw} smelt in de zon.", "fr": "{La neige} fond au soleil."},
+    {"nl": "De kinderen spelen graag in {de sneeuw}.", "fr": "Les enfants aiment jouer dans {la neige}."},
+    {"nl": "Alles is wit door {de sneeuw}.", "fr": "Tout est blanc à cause de {la neige}."},
+    {"nl": "Er lag gisteren tien centimeter {sneeuw} in de tuin.", "fr": "Hier, il y avait dix centimètres de {neige} dans le jardin."}
+   ]
   },
   {
    "nl": "het ijs",
-   "fr": "la glace, le verglas"
+   "fr": "la glace, le verglas",
+   "ph": [
+    {"nl": "Pas op, {het ijs} op de weg is gevaarlijk.", "fr": "Attention, {le verglas} sur la route est dangereux."},
+    {"nl": "Kunnen we al op {het ijs} schaatsen?", "fr": "Pouvons-nous déjà patiner sur {la glace} ?"},
+    {"nl": "{Het ijs} op de vijver is nog te dun.", "fr": "{La glace} sur l'étang est encore trop fine."},
+    {"nl": "Gisteren ben ik op {het ijs} uitgegleden.", "fr": "Hier, j'ai glissé sur {la glace}."}
+   ]
   },
   {
    "nl": "de mist",
-   "fr": "le brouillard"
+   "fr": "le brouillard",
+   "ph": [
+    {"nl": "Door {de mist} zie ik bijna niets.", "fr": "À cause {du brouillard}, je ne vois presque rien."},
+    {"nl": "Was er gisteren veel {mist}?", "fr": "Y avait-il beaucoup de {brouillard} hier ?"},
+    {"nl": "Rij langzaam, {de mist} is erg dicht.", "fr": "Roule lentement, {le brouillard} est très épais."},
+    {"nl": "Om tien uur was {de mist} eindelijk weg.", "fr": "À dix heures, {le brouillard} avait enfin disparu."}
+   ]
   },
   {
    "nl": "de storm",
-   "fr": "la tempête"
+   "fr": "la tempête",
+   "ph": [
+    {"nl": "{De storm} was vannacht erg hevig.", "fr": "{La tempête} était très violente cette nuit."},
+    {"nl": "Er komt morgen {een storm}.", "fr": "{Une tempête} arrive demain."},
+    {"nl": "Door {de storm} zijn er bomen omgevallen.", "fr": "À cause de {la tempête}, des arbres sont tombés."},
+    {"nl": "Het waait zo hard, is dit {een storm}?", "fr": "Il vente si fort, est-ce {une tempête} ?"}
+   ]
   },
   {
    "nl": "het onweer",
-   "fr": "l'orage"
+   "fr": "l'orage",
+   "ph": [
+    {"nl": "{Het onweer} begon rond acht uur.", "fr": "{L'orage} a commencé vers huit heures."},
+    {"nl": "Ben jij bang voor {het onweer}?", "fr": "As-tu peur de {l'orage} ?"},
+    {"nl": "Bij {onweer} mag je niet onder een boom staan.", "fr": "En cas d'{orage}, il ne faut pas rester sous un arbre."},
+    {"nl": "Tijdens {het onweer} hoorden we veel donder.", "fr": "Pendant {l'orage}, nous avons entendu beaucoup de tonnerre."}
+   ]
   },
   {
    "nl": "de bliksem",
-   "fr": "l'éclair"
+   "fr": "l'éclair",
+   "ph": [
+    {"nl": "{De bliksem} lichtte de hele hemel op.", "fr": "{L'éclair} a illuminé tout le ciel."},
+    {"nl": "Tel de seconden na {de bliksem}.", "fr": "Compte les secondes après {l'éclair}."},
+    {"nl": "Ik zag {de bliksem}, daarna hoorde ik de donder.", "fr": "J'ai vu {l'éclair}, puis j'ai entendu le tonnerre."},
+    {"nl": "Een seconde lang flitste {de bliksem} door de lucht.", "fr": "Pendant une seconde, {l'éclair} a traversé le ciel."}
+   ]
   },
   {
    "nl": "de donder",
-   "fr": "le tonnerre"
+   "fr": "le tonnerre",
+   "ph": [
+    {"nl": "Hoor je {de donder} in de verte?", "fr": "Tu entends {le tonnerre} au loin ?"},
+    {"nl": "{De donder} maakte de hond bang.", "fr": "{Le tonnerre} a fait peur au chien."},
+    {"nl": "{De donder} rommelde de hele nacht.", "fr": "{Le tonnerre} a grondé toute la nuit."},
+    {"nl": "Na de bliksem komt altijd {de donder}.", "fr": "Après l'éclair vient toujours {le tonnerre}."}
+   ]
   },
   {
    "nl": "de hemel",
-   "fr": "le ciel"
+   "fr": "le ciel",
+   "ph": [
+    {"nl": "{De hemel} is vandaag helemaal blauw.", "fr": "{Le ciel} est tout bleu aujourd'hui."},
+    {"nl": "Vannacht zagen we veel sterren aan {de hemel}.", "fr": "Cette nuit, nous avons vu beaucoup d'étoiles dans {le ciel}."},
+    {"nl": "Oma zegt dat opa nu in {de hemel} is.", "fr": "Grand-mère dit que grand-père est maintenant {au ciel}."},
+    {"nl": "Er staat geen enkele wolk aan {de hemel}.", "fr": "Il n'y a pas un seul nuage dans {le ciel}."}
+   ]
   },
   {
    "nl": "de lucht",
-   "fr": "l'air, le ciel"
+   "fr": "l'air, le ciel",
+   "ph": [
+    {"nl": "{De lucht} is grijs en donker.", "fr": "{Le ciel} est gris et sombre."},
+    {"nl": "In de bergen is {de lucht} heel zuiver.", "fr": "À la montagne, {l'air} est très pur."},
+    {"nl": "Doe het raam open, ik heb frisse {lucht} nodig.", "fr": "Ouvre la fenêtre, j'ai besoin d'{air} frais."},
+    {"nl": "Waarom is {de lucht} zo donker? Komt er regen?", "fr": "Pourquoi {le ciel} est-il si sombre ? Va-t-il pleuvoir ?"}
+   ]
   },
   {
    "nl": "de temperatuur",
-   "fr": "la température"
+   "fr": "la température",
+   "ph": [
+    {"nl": "{De temperatuur} daalt vannacht onder nul.", "fr": "{La température} descend sous zéro cette nuit."},
+    {"nl": "Wat is {de temperatuur} buiten?", "fr": "Quelle est {la température} dehors ?"},
+    {"nl": "De dokter meet {de temperatuur} van het kind.", "fr": "Le médecin prend {la température} de l'enfant."},
+    {"nl": "Morgen stijgt {de temperatuur} tot dertig graden.", "fr": "Demain, {la température} monte jusqu'à trente degrés."}
+   ]
   },
   {
    "nl": "warm",
-   "fr": "chaud"
+   "fr": "chaud",
+   "ph": [
+    {"nl": "Het is vandaag erg {warm}.", "fr": "Il fait très {chaud} aujourd'hui."},
+    {"nl": "Was het water niet te {warm}?", "fr": "L'eau n'était pas trop {chaude} ?"},
+    {"nl": "Doe je jas uit, het is hier {warm}.", "fr": "Enlève ton manteau, il fait {chaud} ici."},
+    {"nl": "Deze zomer was {warmer} dan vorig jaar.", "fr": "Cet été a été {plus chaud} que l'année dernière."}
+   ]
   },
   {
    "nl": "koud",
-   "fr": "froid"
+   "fr": "froid",
+   "ph": [
+    {"nl": "In de winter is het vaak {koud}.", "fr": "En hiver, il fait souvent {froid}."},
+    {"nl": "Heb je het {koud} zonder jas?", "fr": "Tu as {froid} sans manteau ?"},
+    {"nl": "Doe je muts op, het is buiten {koud}.", "fr": "Mets ton bonnet, il fait {froid} dehors."},
+    {"nl": "Mijn koffie is al {koud} geworden.", "fr": "Mon café est déjà devenu {froid}."}
+   ]
   },
   {
    "nl": "de lente",
-   "fr": "le printemps"
+   "fr": "le printemps",
+   "ph": [
+    {"nl": "In {de lente} bloeien de bloemen.", "fr": "{Au printemps}, les fleurs s'ouvrent."},
+    {"nl": "{De lente} is mijn favoriete seizoen.", "fr": "{Le printemps} est ma saison préférée."},
+    {"nl": "Na de winter komt {de lente}.", "fr": "Après l'hiver vient {le printemps}."},
+    {"nl": "Komen de vogels in {de lente} terug?", "fr": "Les oiseaux reviennent-ils {au printemps} ?"}
+   ]
   },
   {
    "nl": "de zomer",
-   "fr": "l'été"
+   "fr": "l'été",
+   "ph": [
+    {"nl": "{Deze zomer} was heel warm.", "fr": "{Cet été} a été très chaud."},
+    {"nl": "Hou jij van {de zomer}?", "fr": "Tu aimes {l'été} ?"},
+    {"nl": "In {de zomer} gaan we vaak naar het strand.", "fr": "{En été}, nous allons souvent à la plage."},
+    {"nl": "De buitenzwembaden zijn alleen in {de zomer} open.", "fr": "Les piscines extérieures sont seulement ouvertes {en été}."}
+   ]
   },
   {
    "nl": "de herfst",
-   "fr": "l'automne"
+   "fr": "l'automne",
+   "ph": [
+    {"nl": "In {de herfst} vallen de bladeren.", "fr": "{À l'automne}, les feuilles tombent."},
+    {"nl": "{De herfst} is dit jaar erg nat.", "fr": "{L'automne} est très humide cette année."},
+    {"nl": "In {de herfst} zoeken we paddenstoelen in het bos.", "fr": "{En automne}, nous cherchons des champignons dans la forêt."},
+    {"nl": "Na {de herfst} komt de winter.", "fr": "Après {l'automne} vient l'hiver."}
+   ]
   },
   {
    "nl": "de winter",
-   "fr": "l'hiver"
+   "fr": "l'hiver",
+   "ph": [
+    {"nl": "{De winter} was dit jaar niet koud.", "fr": "{L'hiver} n'a pas été froid cette année."},
+    {"nl": "Gaan jullie {deze winter} skiën?", "fr": "Allez-vous skier {cet hiver} ?"},
+    {"nl": "Trek warme kleren aan, {de winter} komt eraan.", "fr": "Mets des vêtements chauds, {l'hiver} arrive."},
+    {"nl": "Ik schaats alleen in {de winter}.", "fr": "Je patine seulement {en hiver}."}
+   ]
   },
   {
    "nl": "het seizoen",
-   "fr": "la saison"
+   "fr": "la saison",
+   "ph": [
+    {"nl": "Welk {seizoen} vind jij het mooiste?", "fr": "Quelle {saison} préfères-tu ?"},
+    {"nl": "Een jaar heeft vier {seizoenen}.", "fr": "Une année compte quatre {saisons}."},
+    {"nl": "De lente is {het seizoen} van de bloemen.", "fr": "Le printemps est {la saison} des fleurs."},
+    {"nl": "Elk {seizoen} heeft zijn eigen kleuren.", "fr": "Chaque {saison} a ses propres couleurs."}
+   ]
   },
   {
    "nl": "de dag",
-   "fr": "le jour"
+   "fr": "le jour",
+   "ph": [
+    {"nl": "Ik werk acht uur per {dag}.", "fr": "Je travaille huit heures par {jour}."},
+    {"nl": "{De dagen} worden korter in de herfst.", "fr": "{Les jours} raccourcissent en automne."},
+    {"nl": "Ik poets twee keer per {dag} mijn tanden.", "fr": "Je me brosse les dents deux fois par {jour}."},
+    {"nl": "Een week heeft zeven {dagen}.", "fr": "Une semaine compte sept {jours}."}
+   ]
   },
   {
    "nl": "de nacht",
-   "fr": "la nuit"
+   "fr": "la nuit",
+   "ph": [
+    {"nl": "{De nacht} was erg koud.", "fr": "{La nuit} a été très froide."},
+    {"nl": "Het heeft de hele {nacht} geregend.", "fr": "Il a plu toute la {nuit}."},
+    {"nl": "Midden in {de nacht} ging de telefoon.", "fr": "Au milieu de {la nuit}, le téléphone a sonné."},
+    {"nl": "Uilen jagen in {de nacht}.", "fr": "Les hiboux chassent {la nuit}."}
+   ]
   },
   {
    "nl": "de ochtend",
-   "fr": "le matin"
+   "fr": "le matin",
+   "ph": [
+    {"nl": "Ik sta elke {ochtend} vroeg op.", "fr": "Je me lève tôt chaque {matin}."},
+    {"nl": "{De ochtend} is het beste moment om te sporten.", "fr": "{Le matin} est le meilleur moment pour faire du sport."},
+    {"nl": "De bakker opent om zes uur in {de ochtend}.", "fr": "Le boulanger ouvre à six heures du {matin}."},
+    {"nl": "Ben je in {de ochtend} altijd zo moe?", "fr": "Es-tu toujours aussi fatigué {le matin} ?"}
+   ]
   },
   {
    "nl": "de middag",
-   "fr": "l'après-midi"
+   "fr": "l'après-midi",
+   "ph": [
+    {"nl": "Ze werkt elke {middag} in de tuin.", "fr": "Elle travaille au jardin chaque {après-midi}."},
+    {"nl": "{De middag} ging heel snel voorbij.", "fr": "{L'après-midi} est passé très vite."},
+    {"nl": "Ik ben om twee uur in {de middag} vrij.", "fr": "Je suis libre à deux heures de {l'après-midi}."},
+    {"nl": "Slaap jij soms in {de middag}?", "fr": "Tu dors parfois {l'après-midi} ?"}
+   ]
   },
   {
    "nl": "de avond",
-   "fr": "le soir"
+   "fr": "le soir",
+   "ph": [
+    {"nl": "Elke {avond} kijken we samen tv.", "fr": "Chaque {soir}, nous regardons la télé ensemble."},
+    {"nl": "Hij belt me altijd laat op {de avond}.", "fr": "Il m'appelle toujours tard {le soir}."},
+    {"nl": "In {de avond} lees ik graag een boek.", "fr": "{Le soir}, j'aime lire un livre."},
+    {"nl": "Werk jij ook op {de avond}?", "fr": "Tu travailles aussi {le soir} ?"}
+   ]
   },
   {
    "nl": "de week",
-   "fr": "la semaine"
+   "fr": "la semaine",
+   "ph": [
+    {"nl": "Ik werk vijf dagen per {week}.", "fr": "Je travaille cinq jours par {semaine}."},
+    {"nl": "{De week} is snel voorbijgegaan.", "fr": "{La semaine} est passée vite."},
+    {"nl": "Volgende {week} gaan we op reis.", "fr": "{La semaine} prochaine, nous partons en voyage."},
+    {"nl": "Een maand heeft ongeveer vier {weken}.", "fr": "Un mois compte environ quatre {semaines}."}
+   ]
   },
   {
    "nl": "de maand",
-   "fr": "le mois"
+   "fr": "le mois",
+   "ph": [
+    {"nl": "{Deze maand} heb ik veel werk.", "fr": "{Ce mois-ci}, j'ai beaucoup de travail."},
+    {"nl": "Hoeveel dagen heeft {de maand} februari?", "fr": "Combien de jours compte {le mois} de février ?"},
+    {"nl": "Een jaar heeft twaalf {maanden}.", "fr": "Une année compte douze {mois}."},
+    {"nl": "Betaal je de huur aan het begin van {de maand}?", "fr": "Tu paies le loyer au début {du mois} ?"}
+   ]
   },
   {
    "nl": "het jaar",
-   "fr": "l'année"
+   "fr": "l'année",
+   "ph": [
+    {"nl": "{Het jaar} begint op één januari.", "fr": "{L'année} commence le premier janvier."},
+    {"nl": "Hoe oud wordt je zus {dit jaar}?", "fr": "Quel âge aura ta sœur {cette année} ?"},
+    {"nl": "Vorig {jaar} zijn we naar Spanje gegaan.", "fr": "{L'année} dernière, nous sommes allés en Espagne."},
+    {"nl": "Hoeveel maanden heeft {een jaar}?", "fr": "Combien de mois compte {une année} ?"}
+   ]
   },
   {
    "nl": "maandag",
-   "fr": "lundi"
+   "fr": "lundi",
+   "ph": [
+    {"nl": "{Maandag} ga ik naar de dokter.", "fr": "{Lundi}, je vais chez le médecin."},
+    {"nl": "Werk je niet op {maandag}?", "fr": "Tu ne travailles pas le {lundi} ?"},
+    {"nl": "Na zondag komt altijd {maandag}.", "fr": "Après dimanche vient toujours {lundi}."},
+    {"nl": "{Maandag} is de eerste dag van de week.", "fr": "{Lundi} est le premier jour de la semaine."}
+   ]
   },
   {
    "nl": "dinsdag",
-   "fr": "mardi"
+   "fr": "mardi",
+   "ph": [
+    {"nl": "De les is elke {dinsdag}.", "fr": "Le cours a lieu chaque {mardi}."},
+    {"nl": "Is de winkel {dinsdag} open?", "fr": "Le magasin est-il ouvert {mardi} ?"},
+    {"nl": "Gisteren was het maandag, dus vandaag is het {dinsdag}.", "fr": "Hier, c'était lundi, donc aujourd'hui, c'est {mardi}."},
+    {"nl": "{Dinsdag} is de tweede dag van de week.", "fr": "{Mardi} est le deuxième jour de la semaine."}
+   ]
   },
   {
    "nl": "woensdag",
-   "fr": "mercredi"
+   "fr": "mercredi",
+   "ph": [
+    {"nl": "Op {woensdag} gaan we altijd zwemmen.", "fr": "Le {mercredi}, nous allons toujours nager."},
+    {"nl": "Was het {woensdag} ook zo koud?", "fr": "Faisait-il aussi froid {mercredi} ?"},
+    {"nl": "{Woensdag} ligt midden in de week.", "fr": "{Mercredi} est au milieu de la semaine."},
+    {"nl": "Is het morgen {woensdag}? Dan was het gisteren maandag.", "fr": "Demain, c'est {mercredi} ? Alors hier, c'était lundi."}
+   ]
   },
   {
    "nl": "donderdag",
-   "fr": "jeudi"
+   "fr": "jeudi",
+   "ph": [
+    {"nl": "{Donderdag} komt mijn moeder op bezoek.", "fr": "{Jeudi}, ma mère vient nous rendre visite."},
+    {"nl": "Ik heb {donderdag} geen tijd.", "fr": "Je n'ai pas le temps {jeudi}."},
+    {"nl": "Na woensdag komt {donderdag}.", "fr": "Après mercredi vient {jeudi}."},
+    {"nl": "Vandaag is het vrijdag, dus gisteren was het {donderdag}.", "fr": "Aujourd'hui, c'est vendredi, donc hier, c'était {jeudi}."}
+   ]
   },
   {
    "nl": "vrijdag",
-   "fr": "vendredi"
+   "fr": "vendredi",
+   "ph": [
+    {"nl": "Op {vrijdag} eten we vaak vis.", "fr": "Le {vendredi}, nous mangeons souvent du poisson."},
+    {"nl": "Ben je {vrijdag} vrij?", "fr": "Es-tu libre {vendredi} ?"},
+    {"nl": "{Vrijdag} is de laatste werkdag van de week.", "fr": "{Vendredi} est le dernier jour de travail de la semaine."},
+    {"nl": "Is het morgen al {vrijdag}? Dan is het bijna weekend!", "fr": "Demain, c'est déjà {vendredi} ? Alors c'est presque le week-end !"}
+   ]
   },
   {
    "nl": "zaterdag",
-   "fr": "samedi"
+   "fr": "samedi",
+   "ph": [
+    {"nl": "{Zaterdag} gaan we naar de markt.", "fr": "{Samedi}, nous allons au marché."},
+    {"nl": "Wat heb je {zaterdag} gedaan?", "fr": "Qu'as-tu fait {samedi} ?"},
+    {"nl": "We werken niet op {zaterdag} en zondag.", "fr": "Nous ne travaillons ni le {samedi} ni le dimanche."},
+    {"nl": "De dag voor zondag is {zaterdag}.", "fr": "Le jour avant dimanche, c'est {samedi}."}
+   ]
   },
   {
    "nl": "zondag",
-   "fr": "dimanche"
+   "fr": "dimanche",
+   "ph": [
+    {"nl": "Op {zondag} zijn de winkels dicht.", "fr": "Le {dimanche}, les magasins sont fermés."},
+    {"nl": "Regent het {zondag} ook?", "fr": "Est-ce qu'il pleut aussi {dimanche} ?"},
+    {"nl": "{Zondag} is de laatste dag van de week.", "fr": "{Dimanche} est le dernier jour de la semaine."},
+    {"nl": "Na zaterdag komt {zondag}.", "fr": "Après samedi vient {dimanche}."}
+   ]
   },
   {
    "nl": "vandaag",
-   "fr": "aujourd'hui"
+   "fr": "aujourd'hui",
+   "ph": [
+    {"nl": "{Vandaag} schijnt de zon.", "fr": "{Aujourd'hui}, le soleil brille."},
+    {"nl": "Welke dag is het {vandaag}?", "fr": "Quel jour sommes-nous {aujourd'hui} ?"},
+    {"nl": "Gisteren regende het, maar {vandaag} is het droog.", "fr": "Hier, il pleuvait, mais {aujourd'hui}, il fait sec."},
+    {"nl": "Kun je {vandaag} niet komen? Dan morgen.", "fr": "Tu ne peux pas venir {aujourd'hui} ? Alors demain."}
+   ]
   },
   {
    "nl": "morgen",
-   "fr": "demain"
+   "fr": "demain",
+   "ph": [
+    {"nl": "{Morgen} gaat het regenen.", "fr": "{Demain}, il va pleuvoir."},
+    {"nl": "Kom je {morgen} niet?", "fr": "Tu ne viens pas {demain} ?"},
+    {"nl": "Vandaag is het maandag, {morgen} is het dinsdag.", "fr": "Aujourd'hui, c'est lundi, {demain}, c'est mardi."},
+    {"nl": "Tot {morgen}, slaap lekker!", "fr": "À {demain}, dors bien !"}
+   ]
   },
   {
    "nl": "gisteren",
-   "fr": "hier"
+   "fr": "hier",
+   "ph": [
+    {"nl": "{Gisteren} heeft het de hele dag gesneeuwd.", "fr": "{Hier}, il a neigé toute la journée."},
+    {"nl": "Waar was je {gisteren}?", "fr": "Où étais-tu {hier} ?"},
+    {"nl": "Vandaag is het dinsdag, dus {gisteren} was het maandag.", "fr": "Aujourd'hui, c'est mardi, donc {hier}, c'était lundi."},
+    {"nl": "Het brood van {gisteren} is al hard.", "fr": "Le pain d'{hier} est déjà dur."}
+   ]
   },
   {
    "nl": "januari",
-   "fr": "janvier"
+   "fr": "janvier",
+   "ph": [
+    {"nl": "Mijn verjaardag is in {januari}.", "fr": "Mon anniversaire est en {janvier}."},
+    {"nl": "Sneeuwde het veel in {januari}?", "fr": "A-t-il beaucoup neigé en {janvier} ?"},
+    {"nl": "{Januari} is de eerste maand van het jaar.", "fr": "{Janvier} est le premier mois de l'année."},
+    {"nl": "Na december komt {januari}.", "fr": "Après décembre vient {janvier}."}
+   ]
   },
   {
    "nl": "februari",
-   "fr": "février"
+   "fr": "février",
+   "ph": [
+    {"nl": "{Februari} is de kortste maand.", "fr": "{Février} est le mois le plus court."},
+    {"nl": "Gaan we in {februari} skiën?", "fr": "Est-ce qu'on va skier en {février} ?"},
+    {"nl": "Na januari komt {februari}.", "fr": "Après janvier vient {février}."},
+    {"nl": "Valentijnsdag is op veertien {februari}.", "fr": "La Saint-Valentin est le quatorze {février}."}
+   ]
   },
   {
    "nl": "maart",
-   "fr": "mars"
+   "fr": "mars",
+   "ph": [
+    {"nl": "In {maart} begint de lente.", "fr": "Le printemps commence en {mars}."},
+    {"nl": "Was het in {maart} al warm?", "fr": "Faisait-il déjà chaud en {mars} ?"},
+    {"nl": "{Maart} is de derde maand van het jaar.", "fr": "{Mars} est le troisième mois de l'année."},
+    {"nl": "Tussen februari en april ligt {maart}.", "fr": "Entre février et avril, il y a {mars}."}
+   ]
   },
   {
    "nl": "april",
-   "fr": "avril"
+   "fr": "avril",
+   "ph": [
+    {"nl": "In {april} regent het vaak.", "fr": "En {avril}, il pleut souvent."},
+    {"nl": "Hebben jullie in {april} vakantie?", "fr": "Vous avez des vacances en {avril} ?"},
+    {"nl": "Op één {april} maken we grappen.", "fr": "Le premier {avril}, on fait des blagues."},
+    {"nl": "Na maart komt {april}.", "fr": "Après mars vient {avril}."}
+   ]
   },
   {
    "nl": "mei",
-   "fr": "mai"
+   "fr": "mai",
+   "ph": [
+    {"nl": "In {mei} bloeien veel planten.", "fr": "En {mai}, beaucoup de plantes fleurissent."},
+    {"nl": "Trouwen jullie in {mei}?", "fr": "Vous vous mariez en {mai} ?"},
+    {"nl": "Op één {mei} is het de Dag van de Arbeid.", "fr": "Le premier {mai}, c'est la fête du Travail."},
+    {"nl": "Tussen april en juni ligt {mei}.", "fr": "Entre avril et juin, il y a {mai}."}
+   ]
   },
   {
    "nl": "juni",
-   "fr": "juin"
+   "fr": "juin",
+   "ph": [
+    {"nl": "De examens eindigen eind {juni}.", "fr": "Les examens se terminent fin {juin}."},
+    {"nl": "Was het in {juni} niet te warm?", "fr": "Il ne faisait pas trop chaud en {juin} ?"},
+    {"nl": "{Juni} is de zesde maand van het jaar.", "fr": "{Juin} est le sixième mois de l'année."},
+    {"nl": "Na mei komt {juni}.", "fr": "Après mai vient {juin}."}
+   ]
   },
   {
    "nl": "juli",
-   "fr": "juillet"
+   "fr": "juillet",
+   "ph": [
+    {"nl": "In {juli} gaan we op vakantie.", "fr": "En {juillet}, nous partons en vacances."},
+    {"nl": "Is er op elf {juli} een feest?", "fr": "Y a-t-il une fête le onze {juillet} ?"},
+    {"nl": "Op eenentwintig {juli} vieren we de nationale feestdag.", "fr": "Le vingt et un {juillet}, nous célébrons la fête nationale."},
+    {"nl": "Tussen juni en augustus ligt {juli}.", "fr": "Entre juin et août, il y a {juillet}."}
+   ]
   },
   {
    "nl": "augustus",
-   "fr": "août"
+   "fr": "août",
+   "ph": [
+    {"nl": "In {augustus} is het strand vol.", "fr": "En {août}, la plage est pleine."},
+    {"nl": "Waren jullie in {augustus} in Italië?", "fr": "Étiez-vous en Italie en {août} ?"},
+    {"nl": "{Augustus} is de achtste maand van het jaar.", "fr": "{Août} est le huitième mois de l'année."},
+    {"nl": "Na juli komt {augustus}.", "fr": "Après juillet vient {août}."}
+   ]
   },
   {
    "nl": "september",
-   "fr": "septembre"
+   "fr": "septembre",
+   "ph": [
+    {"nl": "In {september} begint de school weer.", "fr": "En {septembre}, l'école recommence."},
+    {"nl": "Is het in {september} nog warm?", "fr": "Fait-il encore chaud en {septembre} ?"},
+    {"nl": "Na augustus komt {september}.", "fr": "Après août vient {septembre}."},
+    {"nl": "{September} is de negende maand van het jaar.", "fr": "{Septembre} est le neuvième mois de l'année."}
+   ]
   },
   {
    "nl": "oktober",
-   "fr": "octobre"
+   "fr": "octobre",
+   "ph": [
+    {"nl": "In {oktober} vallen de eerste bladeren.", "fr": "En {octobre}, les premières feuilles tombent."},
+    {"nl": "Ben je in {oktober} jarig?", "fr": "C'est ton anniversaire en {octobre} ?"},
+    {"nl": "Na september komt {oktober}.", "fr": "Après septembre vient {octobre}."},
+    {"nl": "Op eenendertig {oktober} vieren sommigen Halloween.", "fr": "Le trente et un {octobre}, certains fêtent Halloween."}
+   ]
   },
   {
    "nl": "november",
-   "fr": "novembre"
+   "fr": "novembre",
+   "ph": [
+    {"nl": "{November} is vaak grijs en nat.", "fr": "{Novembre} est souvent gris et humide."},
+    {"nl": "Ik ben in {november} niet thuis.", "fr": "Je ne suis pas à la maison en {novembre}."},
+    {"nl": "Op één {november} is het Allerheiligen.", "fr": "Le premier {novembre}, c'est la Toussaint."},
+    {"nl": "Tussen oktober en december ligt {november}.", "fr": "Entre octobre et décembre, il y a {novembre}."}
+   ]
   },
   {
    "nl": "december",
-   "fr": "décembre"
+   "fr": "décembre",
+   "ph": [
+    {"nl": "In {december} vieren we Kerstmis.", "fr": "En {décembre}, nous fêtons Noël."},
+    {"nl": "Sneeuwt het vaak in {december}?", "fr": "Neige-t-il souvent en {décembre} ?"},
+    {"nl": "{December} is de laatste maand van het jaar.", "fr": "{Décembre} est le dernier mois de l'année."},
+    {"nl": "Na november komt {december}.", "fr": "Après novembre vient {décembre}."}
+   ]
   },
   {
    "nl": "het weekend",
-   "fr": "le week-end"
+   "fr": "le week-end",
+   "ph": [
+    {"nl": "Wat doe je {dit weekend}?", "fr": "Que fais-tu {ce week-end} ?"},
+    {"nl": "{Het weekend} was veel te kort.", "fr": "{Le week-end} était beaucoup trop court."},
+    {"nl": "Op zaterdag en zondag is het {weekend}.", "fr": "Le samedi et le dimanche, c'est le {week-end}."},
+    {"nl": "Ik wens je een fijn {weekend}!", "fr": "Je te souhaite un bon {week-end} !"}
+   ]
   },
   {
    "nl": "de feestdag",
-   "fr": "le jour férié"
+   "fr": "le jour férié",
+   "ph": [
+    {"nl": "Morgen is {een feestdag}.", "fr": "Demain, c'est {un jour férié}."},
+    {"nl": "Op {feestdagen} zijn de banken dicht.", "fr": "{Les jours fériés}, les banques sont fermées."},
+    {"nl": "Kerstmis is {een feestdag} in België.", "fr": "Noël est {un jour férié} en Belgique."},
+    {"nl": "Is de post open op {een feestdag}?", "fr": "La poste est-elle ouverte {un jour férié} ?"}
+   ]
   },
   {
    "nl": "de datum",
-   "fr": "la date"
+   "fr": "la date",
+   "ph": [
+    {"nl": "Wat is {de datum} van vandaag?", "fr": "Quelle est {la date} d'aujourd'hui ?"},
+    {"nl": "Schrijf {de datum} boven je brief.", "fr": "Écris {la date} en haut de ta lettre."},
+    {"nl": "Vergeet niet {de datum} op het formulier te zetten.", "fr": "N'oublie pas de mettre {la date} sur le formulaire."},
+    {"nl": "Hebben jullie al {een datum} voor de bruiloft?", "fr": "Avez-vous déjà {une date} pour le mariage ?"}
+   ]
   },
   {
    "nl": "de eeuw",
-   "fr": "le siècle"
+   "fr": "le siècle",
+   "ph": [
+    {"nl": "Dit huis is meer dan {een eeuw} oud.", "fr": "Cette maison a plus d'{un siècle}."},
+    {"nl": "Hoeveel jaren heeft {een eeuw}?", "fr": "Combien d'années compte {un siècle} ?"},
+    {"nl": "We leven in de eenentwintigste {eeuw}.", "fr": "Nous vivons au vingt et unième {siècle}."},
+    {"nl": "Honderd jaar is {een eeuw}.", "fr": "Cent ans, c'est {un siècle}."}
+   ]
   },
   {
    "nl": "de minuut",
-   "fr": "la minute"
+   "fr": "la minute",
+   "ph": [
+    {"nl": "Ik ben over vijf {minuten} terug.", "fr": "Je reviens dans cinq {minutes}."},
+    {"nl": "Wacht {een minuut}, alsjeblieft.", "fr": "Attends {une minute}, s'il te plaît."},
+    {"nl": "Een uur heeft zestig {minuten}.", "fr": "Une heure compte soixante {minutes}."},
+    {"nl": "Kook het ei vier {minuten}.", "fr": "Fais cuire l'œuf quatre {minutes}."}
+   ]
   },
   {
    "nl": "de seconde",
-   "fr": "la seconde"
+   "fr": "la seconde",
+   "ph": [
+    {"nl": "Een minuut heeft zestig {seconden}.", "fr": "Une minute compte soixante {secondes}."},
+    {"nl": "Het duurde maar {een seconde}.", "fr": "Ça n'a duré qu'{une seconde}."},
+    {"nl": "Hij liep de honderd meter in tien {seconden}.", "fr": "Il a couru le cent mètres en dix {secondes}."},
+    {"nl": "{Een seconde} is korter dan een minuut.", "fr": "{Une seconde} est plus courte qu'une minute."}
+   ]
   },
   {
    "nl": "de tijd",
-   "fr": "le temps"
+   "fr": "le temps",
+   "ph": [
+    {"nl": "Ik heb vandaag geen {tijd}.", "fr": "Je n'ai pas {le temps} aujourd'hui."},
+    {"nl": "{De tijd} gaat snel in de zomer.", "fr": "{Le temps} passe vite en été."},
+    {"nl": "Heb je even {tijd} om me te helpen?", "fr": "As-tu un peu de {temps} pour m'aider ?"},
+    {"nl": "Neem je {tijd}, er is geen haast.", "fr": "Prends ton {temps}, il n'y a pas d'urgence."}
+   ]
   },
   {
    "nl": "de duur",
-   "fr": "la durée"
+   "fr": "la durée",
+   "ph": [
+    {"nl": "{De duur} van de film is twee uur.", "fr": "{La durée} du film est de deux heures."},
+    {"nl": "Ik ken {de duur} van de les niet.", "fr": "Je ne connais pas {la durée} du cours."},
+    {"nl": "Wat is {de duur} van de reis?", "fr": "Quelle est {la durée} du voyage ?"},
+    {"nl": "Kies {de duur} van je abonnement: een maand of een jaar.", "fr": "Choisis {la durée} de ton abonnement : un mois ou un an."}
+   ]
   },
   {
    "nl": "het begin",
-   "fr": "le début"
+   "fr": "le début",
+   "ph": [
+    {"nl": "{Het begin} van de film was saai.", "fr": "{Le début} du film était ennuyeux."},
+    {"nl": "We vertrekken {begin} juli op reis.", "fr": "Nous partons en voyage {début} juillet."},
+    {"nl": "Aan {het begin} van de les zeggen we goedemorgen.", "fr": "{Au début} du cours, nous disons bonjour."},
+    {"nl": "Lees het boek vanaf {het begin}.", "fr": "Lis le livre depuis {le début}."}
+   ]
   },
   {
    "nl": "het einde",
-   "fr": "la fin"
+   "fr": "la fin",
+   "ph": [
+    {"nl": "{Het einde} van het boek is triest.", "fr": "{La fin} du livre est triste."},
+    {"nl": "Wacht tot {het einde} van de les.", "fr": "Attends jusqu'à {la fin} du cours."},
+    {"nl": "Aan {het einde} van de dag ben ik moe.", "fr": "{À la fin} de la journée, je suis fatigué."},
+    {"nl": "Vertel me niet {het einde} van de film!", "fr": "Ne me raconte pas {la fin} du film !"}
+   ]
   },
   {
    "nl": "de toekomst",
-   "fr": "l'avenir"
+   "fr": "l'avenir",
+   "ph": [
+    {"nl": "Niemand kent {de toekomst}.", "fr": "Personne ne connaît {l'avenir}."},
+    {"nl": "Wat wil je in {de toekomst} doen?", "fr": "Que veux-tu faire à {l'avenir} ?"},
+    {"nl": "Ik maak me zorgen over {de toekomst}.", "fr": "Je m'inquiète pour {l'avenir}."},
+    {"nl": "In {de toekomst} rijden alle auto's misschien elektrisch.", "fr": "À {l'avenir}, toutes les voitures rouleront peut-être à l'électricité."}
+   ]
   },
   {
    "nl": "het verleden",
-   "fr": "le passé"
+   "fr": "le passé",
+   "ph": [
+    {"nl": "Denk niet te veel aan {het verleden}.", "fr": "Ne pense pas trop {au passé}."},
+    {"nl": "In {het verleden} waren de winters kouder.", "fr": "Par {le passé}, les hivers étaient plus froids."},
+    {"nl": "Dat is {het verleden}, vergeet het.", "fr": "C'est {le passé}, oublie-le."},
+    {"nl": "Leer je op school veel over {het verleden}?", "fr": "Tu apprends beaucoup sur {le passé} à l'école ?"}
+   ]
   },
   {
    "nl": "de vorst",
-   "fr": "le gel"
+   "fr": "le gel",
+   "ph": [
+    {"nl": "{De vorst} heeft de planten beschadigd.", "fr": "{Le gel} a abîmé les plantes."},
+    {"nl": "Wordt er vannacht {vorst} verwacht?", "fr": "Est-ce qu'on prévoit {du gel} cette nuit ?"},
+    {"nl": "Bij {vorst} moet je de planten binnenzetten.", "fr": "En cas de {gel}, il faut rentrer les plantes."},
+    {"nl": "Na een nacht met {vorst} zijn de ramen wit.", "fr": "Après une nuit de {gel}, les vitres sont blanches."}
+   ]
   },
   {
    "nl": "de hagel",
-   "fr": "la grêle"
+   "fr": "la grêle",
+   "ph": [
+    {"nl": "{De hagel} viel hard op het dak.", "fr": "{La grêle} tombait fort sur le toit."},
+    {"nl": "Was er gisteren ook {hagel}?", "fr": "Y avait-il aussi {de la grêle} hier ?"},
+    {"nl": "{De hagel} was zo groot als knikkers.", "fr": "{La grêle} était grosse comme des billes."},
+    {"nl": "Door {de hagel} heeft mijn auto deuken.", "fr": "À cause de {la grêle}, ma voiture a des bosses."}
+   ]
   },
   {
    "nl": "de bui",
-   "fr": "l'averse"
+   "fr": "l'averse",
+   "ph": [
+    {"nl": "Na {de bui} scheen de zon weer.", "fr": "Après {l'averse}, le soleil brillait de nouveau."},
+    {"nl": "Er komt straks {een bui}.", "fr": "{Une averse} arrive bientôt."},
+    {"nl": "Wacht binnen tot {de bui} voorbij is.", "fr": "Attends à l'intérieur jusqu'à ce que {l'averse} soit passée."},
+    {"nl": "Het was maar {een bui}, nu is het weer droog.", "fr": "Ce n'était qu'{une averse}, maintenant il fait de nouveau sec."}
+   ]
   },
   {
    "nl": "de druppel",
-   "fr": "la goutte"
+   "fr": "la goutte",
+   "ph": [
+    {"nl": "Ik voel {een druppel} op mijn hand.", "fr": "Je sens {une goutte} sur ma main."},
+    {"nl": "{De druppels} vallen tegen het raam.", "fr": "{Les gouttes} tombent contre la vitre."},
+    {"nl": "Er valt nog geen {druppel} regen.", "fr": "Il ne tombe pas encore {une goutte} de pluie."},
+    {"nl": "Doe nog {een druppel} melk in mijn koffie.", "fr": "Mets encore {une goutte} de lait dans mon café."}
+   ]
   },
   {
    "nl": "de schaduw",
-   "fr": "l'ombre"
+   "fr": "l'ombre",
+   "ph": [
+    {"nl": "We zitten in {de schaduw} van de boom.", "fr": "Nous sommes assis à {l'ombre} de l'arbre."},
+    {"nl": "Is het niet te warm zonder {schaduw}?", "fr": "Il ne fait pas trop chaud sans {ombre} ?"},
+    {"nl": "Zet je fiets in {de schaduw}.", "fr": "Mets ton vélo à {l'ombre}."},
+    {"nl": "'s Avonds worden {de schaduwen} langer.", "fr": "Le soir, {les ombres} s'allongent."}
+   ]
   },
   {
    "nl": "de regenboog",
-   "fr": "l'arc-en-ciel"
+   "fr": "l'arc-en-ciel",
+   "ph": [
+    {"nl": "Na de regen zie ik {een regenboog}.", "fr": "Après la pluie, je vois {un arc-en-ciel}."},
+    {"nl": "Heb je {de regenboog} gezien?", "fr": "As-tu vu {l'arc-en-ciel} ?"},
+    {"nl": "{Een regenboog} heeft zeven kleuren.", "fr": "{Un arc-en-ciel} a sept couleurs."},
+    {"nl": "Kijk, boven het dak staat {een regenboog}!", "fr": "Regarde, il y a {un arc-en-ciel} au-dessus du toit !"}
+   ]
   },
   {
    "nl": "de maan",
-   "fr": "la lune"
+   "fr": "la lune",
+   "ph": [
+    {"nl": "{De maan} is vannacht vol.", "fr": "{La lune} est pleine cette nuit."},
+    {"nl": "We zagen {de maan} boven de zee.", "fr": "Nous avons vu {la lune} au-dessus de la mer."},
+    {"nl": "Neil Armstrong liep als eerste op {de maan}.", "fr": "Neil Armstrong a été le premier à marcher sur {la lune}."},
+    {"nl": "Waarom zie je {de maan} soms overdag?", "fr": "Pourquoi voit-on parfois {la lune} en journée ?"}
+   ]
   },
   {
    "nl": "de ster",
-   "fr": "l'étoile"
+   "fr": "l'étoile",
+   "ph": [
+    {"nl": "Vannacht zie ik veel {sterren}.", "fr": "Cette nuit, je vois beaucoup d'{étoiles}."},
+    {"nl": "Welke {ster} is het helderst?", "fr": "Quelle {étoile} est la plus brillante ?"},
+    {"nl": "De zon is eigenlijk ook {een ster}.", "fr": "Le soleil est en fait aussi {une étoile}."},
+    {"nl": "Kijk, daar fonkelt {een ster}!", "fr": "Regarde, {une étoile} scintille là-bas !"}
+   ]
   },
   {
    "nl": "de zonsopgang",
-   "fr": "le lever du soleil"
+   "fr": "le lever du soleil",
+   "ph": [
+    {"nl": "We staan vroeg op voor {de zonsopgang}.", "fr": "Nous nous levons tôt pour {le lever du soleil}."},
+    {"nl": "Was {de zonsopgang} mooi?", "fr": "{Le lever du soleil} était-il beau ?"},
+    {"nl": "Om zes uur 's ochtends keken we naar {de zonsopgang}.", "fr": "À six heures du matin, nous avons regardé {le lever du soleil}."},
+    {"nl": "In de zomer is {de zonsopgang} heel vroeg.", "fr": "En été, {le lever du soleil} a lieu très tôt."}
+   ]
   },
   {
    "nl": "de zonsondergang",
-   "fr": "le coucher du soleil"
+   "fr": "le coucher du soleil",
+   "ph": [
+    {"nl": "{De zonsondergang} aan zee is prachtig.", "fr": "{Le coucher du soleil} à la mer est magnifique."},
+    {"nl": "We hebben samen naar {de zonsondergang} gekeken.", "fr": "Nous avons regardé {le coucher du soleil} ensemble."},
+    {"nl": "Na {de zonsondergang} wordt het snel donker.", "fr": "Après {le coucher du soleil}, il fait vite sombre."},
+    {"nl": "In de winter is {de zonsondergang} al om vijf uur.", "fr": "En hiver, {le coucher du soleil} a lieu dès cinq heures."}
+   ]
   },
   {
    "nl": "het klimaat",
-   "fr": "le climat"
+   "fr": "le climat",
+   "ph": [
+    {"nl": "{Het klimaat} in België is vochtig.", "fr": "{Le climat} en Belgique est humide."},
+    {"nl": "Hou je van {het klimaat} in Spanje?", "fr": "Tu aimes {le climat} en Espagne ?"},
+    {"nl": "{Het klimaat} op aarde wordt steeds warmer.", "fr": "{Le climat} sur Terre devient de plus en plus chaud."},
+    {"nl": "In de woestijn is {het klimaat} heel droog.", "fr": "Dans le désert, {le climat} est très sec."}
+   ]
   },
   {
    "nl": "het weerbericht",
-   "fr": "le bulletin météo"
+   "fr": "le bulletin météo",
+   "ph": [
+    {"nl": "Wat zegt {het weerbericht} voor morgen?", "fr": "Que dit {le bulletin météo} pour demain ?"},
+    {"nl": "Ik heb {het weerbericht} niet gezien.", "fr": "Je n'ai pas vu {le bulletin météo}."},
+    {"nl": "Volgens {het weerbericht} wordt het morgen zonnig.", "fr": "Selon {le bulletin météo}, il fera beau demain."},
+    {"nl": "Kijk eerst naar {het weerbericht} voor je gaat wandelen.", "fr": "Regarde d'abord {le bulletin météo} avant d'aller te promener."}
+   ]
   },
   {
    "nl": "de kalender",
-   "fr": "le calendrier"
+   "fr": "le calendrier",
+   "ph": [
+    {"nl": "{De kalender} hangt in de keuken.", "fr": "{Le calendrier} est accroché dans la cuisine."},
+    {"nl": "Schrijf de datum op {de kalender}.", "fr": "Note la date sur {le calendrier}."},
+    {"nl": "Op {de kalender} zie ik dat Pasen vroeg valt.", "fr": "Sur {le calendrier}, je vois que Pâques tombe tôt."},
+    {"nl": "Elk jaar koop ik {een kalender} met foto's van honden.", "fr": "Chaque année, j'achète {un calendrier} avec des photos de chiens."}
+   ]
   },
   {
    "nl": "vroeg",
-   "fr": "tôt"
+   "fr": "tôt",
+   "ph": [
+    {"nl": "Ik sta altijd {vroeg} op.", "fr": "Je me lève toujours {tôt}."},
+    {"nl": "Is het niet te {vroeg} om te vertrekken?", "fr": "N'est-il pas trop {tôt} pour partir ?"},
+    {"nl": "De bakker begint heel {vroeg} met werken.", "fr": "Le boulanger commence à travailler très {tôt}."},
+    {"nl": "We moeten morgen {vroeg} vertrekken om de trein te halen.", "fr": "Nous devons partir {tôt} demain pour prendre le train."}
+   ]
   },
   {
    "nl": "laat",
-   "fr": "tard"
+   "fr": "tard",
+   "ph": [
+    {"nl": "Het is al {laat}, ik ga slapen.", "fr": "Il est déjà {tard}, je vais dormir."},
+    {"nl": "Gisteren ben ik {laat} thuisgekomen.", "fr": "Hier, je suis rentré {tard}."},
+    {"nl": "Ga niet te {laat} slapen, morgen is er school.", "fr": "Ne te couche pas trop {tard}, demain il y a école."},
+    {"nl": "In de zomer wordt het pas {laat} donker.", "fr": "En été, la nuit ne tombe que {tard}."}
+   ]
   },
   {
    "nl": "nooit",
-   "fr": "jamais"
+   "fr": "jamais",
+   "ph": [
+    {"nl": "Het sneeuwt hier {nooit} in mei.", "fr": "Il ne neige {jamais} ici en mai."},
+    {"nl": "Ben je {nooit} in Brugge geweest?", "fr": "Tu n'es {jamais} allé à Bruges ?"},
+    {"nl": "Ik drink {nooit} koffie na acht uur 's avonds.", "fr": "Je ne bois {jamais} de café après huit heures du soir."},
+    {"nl": "Vergeet {nooit} je sleutels!", "fr": "N'oublie {jamais} tes clés !"}
+   ]
   },
   {
    "nl": "gaan",
    "fr": "aller",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Morgen {gaan} we naar zee.", "fr": "Demain, nous {allons} à la mer."},
+    {"nl": "Gisteren ben ik naar de markt {gegaan}.", "fr": "Hier, je {suis allé} au marché."},
+    {"nl": "Waar {ga} je deze zomer naartoe?", "fr": "Où {vas}-tu cet été ?"},
+    {"nl": "Ik wil morgen niet naar school {gaan}.", "fr": "Je ne veux pas {aller} à l'école demain."}
+   ]
   },
   {
    "nl": "komen",
    "fr": "venir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "{Kom} je morgen bij ons eten?", "fr": "Tu {viens} manger chez nous demain ?"},
+    {"nl": "Ik weet niet of hij morgen {komt}.", "fr": "Je ne sais pas s'il {vient} demain."},
+    {"nl": "{Kom} hier, de film begint!", "fr": "{Viens} ici, le film commence !"},
+    {"nl": "Hij is gisteren niet naar het feest {gekomen}.", "fr": "Il n'est pas {venu} à la fête hier."}
+   ]
   },
   {
    "nl": "regenen",
    "fr": "pleuvoir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Het {regent} al sinds vanochtend.", "fr": "Il {pleut} depuis ce matin."},
+    {"nl": "Ik denk dat het morgen gaat {regenen}.", "fr": "Je pense qu'il va {pleuvoir} demain."},
+    {"nl": "Gisteren heeft het de hele dag {geregend}.", "fr": "Hier, il a {plu} toute la journée."},
+    {"nl": "{Regent} het nog, of kunnen we vertrekken?", "fr": "Est-ce qu'il {pleut} encore, ou on peut partir ?"}
+   ]
   },
   {
    "nl": "sneeuwen",
    "fr": "neiger",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Het {sneeuwt} in de bergen.", "fr": "Il {neige} à la montagne."},
+    {"nl": "Gaat het deze winter {sneeuwen}?", "fr": "Va-t-il {neiger} cet hiver ?"},
+    {"nl": "Vorige winter heeft het nooit {gesneeuwd}.", "fr": "L'hiver dernier, il n'a jamais {neigé}."},
+    {"nl": "Kijk, het {sneeuwt}! Alles wordt wit.", "fr": "Regarde, il {neige} ! Tout devient blanc."}
+   ]
   },
   {
    "nl": "waaien",
    "fr": "venter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Het {waait} vandaag erg hard.", "fr": "Il {vente} très fort aujourd'hui."},
+    {"nl": "Ik hoop dat het morgen niet {waait}.", "fr": "J'espère qu'il ne {ventera} pas demain."},
+    {"nl": "Het {waaide} zo hard dat mijn paraplu kapotging.", "fr": "Il {ventait} si fort que mon parapluie s'est cassé."},
+    {"nl": "Gaat het morgen veel {waaien} aan zee?", "fr": "Va-t-il beaucoup {venter} à la mer demain ?"}
+   ]
   },
   {
    "nl": "vriezen",
    "fr": "geler",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Het {vriest} vannacht buiten.", "fr": "Il {gèle} dehors cette nuit."},
+    {"nl": "Heeft het gisteren {gevroren}?", "fr": "A-t-il {gelé} hier ?"},
+    {"nl": "Als het {vriest}, wordt het water ijs.", "fr": "Quand il {gèle}, l'eau devient de la glace."},
+    {"nl": "Het zal vannacht hard {vriezen}.", "fr": "Il va beaucoup {geler} cette nuit."}
+   ]
   },
   {
    "nl": "dooien",
    "fr": "dégeler",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Het {dooit} eindelijk, de sneeuw smelt.", "fr": "Il {dégèle} enfin, la neige fond."},
+    {"nl": "Wanneer begint het te {dooien}?", "fr": "Quand est-ce que ça commence à {dégeler} ?"},
+    {"nl": "Het heeft vannacht {gedooid}, de wegen zijn nat.", "fr": "Il a {dégelé} cette nuit, les routes sont mouillées."},
+    {"nl": "Als het {dooit}, smelt het ijs op de vijver.", "fr": "Quand il {dégèle}, la glace de l'étang fond."}
+   ]
   },
   {
    "nl": "schijnen",
    "fr": "briller",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "De zon {schijnt} vandaag heel fel.", "fr": "Le soleil {brille} très fort aujourd'hui."},
+    {"nl": "Gisteren {scheen} de maan door het raam.", "fr": "Hier, la lune {brillait} à travers la fenêtre."},
+    {"nl": "{Schijnt} morgen de zon weer?", "fr": "Le soleil {brillera}-t-il encore demain ?"},
+    {"nl": "De sterren {schijnen} vannacht heel helder.", "fr": "Les étoiles {brillent} intensément cette nuit."}
+   ]
   },
   {
    "nl": "beginnen",
    "fr": "commencer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "De les {begint} om negen uur.", "fr": "Le cours {commence} à neuf heures."},
+    {"nl": "Wanneer ben je met je werk {begonnen}?", "fr": "Quand as-tu {commencé} ton travail ?"},
+    {"nl": "Je mag nu {beginnen} met eten.", "fr": "Tu peux {commencer} à manger maintenant."},
+    {"nl": "{Begin} niet zonder mij!", "fr": "Ne {commence} pas sans moi !"}
+   ]
   },
   {
    "nl": "eindigen",
    "fr": "finir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "De film {eindigt} om tien uur.", "fr": "Le film {finit} à dix heures."},
+    {"nl": "Weet je wanneer de les {eindigt}?", "fr": "Tu sais quand le cours {finit} ?"},
+    {"nl": "Het verhaal {eindigt} met een feest.", "fr": "L'histoire {finit} par une fête."},
+    {"nl": "Hoe laat {eindigde} de vergadering gisteren?", "fr": "À quelle heure la réunion {a-t-elle fini} hier ?"}
+   ]
   },
   {
    "nl": "duren",
    "fr": "durer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "De reis {duurt} drie uur.", "fr": "Le voyage {dure} trois heures."},
+    {"nl": "Hoe lang {duurde} de storm gisteren?", "fr": "Combien de temps la tempête {a-t-elle duré} hier ?"},
+    {"nl": "Het zal niet lang {duren}.", "fr": "Ça ne va pas {durer} longtemps."},
+    {"nl": "Onze vakantie heeft twee weken {geduurd}.", "fr": "Nos vacances {ont duré} deux semaines."}
+   ]
   },
   {
    "nl": "wachten",
    "fr": "attendre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Ik {wacht} al tien minuten op de bus.", "fr": "J'{attends} le bus depuis dix minutes."},
+    {"nl": "Hoe lang heb je moeten {wachten}?", "fr": "Combien de temps as-tu dû {attendre} ?"},
+    {"nl": "{Wacht} op mij, ik kom eraan!", "fr": "{Attends}-moi, j'arrive !"},
+    {"nl": "We hebben een uur op de trein {gewacht}.", "fr": "Nous {avons attendu} le train pendant une heure."}
+   ]
   },
   {
    "nl": "gebeuren",
    "fr": "se passer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Wat {gebeurt} er daar buiten?", "fr": "Qu'est-ce qui {se passe} là dehors ?"},
+    {"nl": "Wat is er gisteren {gebeurd}?", "fr": "Qu'est-ce qui {s'est passé} hier ?"},
+    {"nl": "Dat mag nooit meer {gebeuren}.", "fr": "Ça ne doit plus jamais {se passer}."},
+    {"nl": "Ik weet niet wat er {gebeurt}.", "fr": "Je ne sais pas ce qui {se passe}."}
+   ]
   },
   {
    "nl": "veranderen",
    "fr": "changer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Het weer {verandert} snel aan zee.", "fr": "Le temps {change} vite à la mer."},
+    {"nl": "Je bent helemaal niet {veranderd}.", "fr": "Tu n'as pas du tout {changé}."},
+    {"nl": "Wil je je kapsel {veranderen}?", "fr": "Tu veux {changer} de coiffure ?"},
+    {"nl": "In de herfst {veranderen} de bladeren van kleur.", "fr": "En automne, les feuilles {changent} de couleur."}
+   ]
   },
   {
    "nl": "herhalen",
    "fr": "répéter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Kun je de vraag nog eens {herhalen}?", "fr": "Peux-tu {répéter} la question encore une fois ?"},
+    {"nl": "De leraar {herhaalt} de oefening elke week.", "fr": "Le professeur {répète} l'exercice chaque semaine."},
+    {"nl": "{Herhaal} na mij: goedemorgen!", "fr": "{Répète} après moi : bonjour !"},
+    {"nl": "Ik heb de woorden gisteren drie keer {herhaald}.", "fr": "Hier, j'{ai répété} les mots trois fois."}
+   ]
   },
   {
    "nl": "uitstellen",
    "fr": "reporter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "We moeten de wandeling {uitstellen}.", "fr": "Nous devons {reporter} la promenade."},
+    {"nl": "De wedstrijd is door de storm {uitgesteld}.", "fr": "Le match a été {reporté} à cause de la tempête."},
+    {"nl": "Kunnen we de vergadering {uitstellen} tot maandag?", "fr": "Pouvons-nous {reporter} la réunion à lundi ?"},
+    {"nl": "Het is jammer dat ze het feest {uitstellen}.", "fr": "C'est dommage qu'ils {reportent} la fête."}
+   ]
   },
   {
    "nl": "opschieten",
    "fr": "se dépêcher",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "We moeten {opschieten}, de trein vertrekt.", "fr": "Nous devons {nous dépêcher}, le train part."},
+    {"nl": "Als je niet {opschiet}, ben je te laat.", "fr": "Si tu ne {te dépêches} pas, tu seras en retard."},
+    {"nl": "Ik ben {opgeschoten}, maar de bus was al weg.", "fr": "Je {me suis dépêché}, mais le bus était déjà parti."},
+    {"nl": "Kun je wat {opschieten}? We zijn laat.", "fr": "Peux-tu {te dépêcher} un peu ? Nous sommes en retard."}
+   ]
   },
   {
    "nl": "voorspellen",
    "fr": "prévoir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Het weerbericht {voorspelt} regen voor morgen.", "fr": "Le bulletin météo {prévoit} de la pluie pour demain."},
+    {"nl": "Niemand kan de toekomst {voorspellen}.", "fr": "Personne ne peut {prévoir} l'avenir."},
+    {"nl": "Ze {voorspelden} sneeuw, maar het bleef droog.", "fr": "Ils {prévoyaient} de la neige, mais il a fait sec."},
+    {"nl": "Kun jij {voorspellen} wie de wedstrijd wint?", "fr": "Peux-tu {prévoir} qui va gagner le match ?"}
+   ]
   },
   {
    "nl": "verdwijnen",
    "fr": "disparaître",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "De zon {verdwijnt} achter de wolken.", "fr": "Le soleil {disparaît} derrière les nuages."},
+    {"nl": "Mijn sleutels zijn gisteren {verdwenen}.", "fr": "Mes clés ont {disparu} hier."},
+    {"nl": "De sneeuw zal snel {verdwijnen} als de zon schijnt.", "fr": "La neige va vite {disparaître} quand le soleil brille."},
+    {"nl": "Mijn geld {verdwijnt} altijd zo snel!", "fr": "Mon argent {disparaît} toujours si vite !"}
+   ]
   },
   {
    "nl": "verschijnen",
    "fr": "apparaître",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Na de regen {verschijnt} een regenboog.", "fr": "Après la pluie, un arc-en-ciel {apparaît}."},
+    {"nl": "Plots {verscheen} de maan tussen de wolken.", "fr": "Soudain, la lune {est apparue} entre les nuages."},
+    {"nl": "De eerste sterren {verschijnen} na zonsondergang.", "fr": "Les premières étoiles {apparaissent} après le coucher du soleil."},
+    {"nl": "Er is een vreemde man aan de deur {verschenen}.", "fr": "Un homme étrange {est apparu} à la porte."}
+   ]
   }
  ]
 }

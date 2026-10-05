@@ -5,423 +5,2223 @@
  "mots": [
   {
    "nl": "het huis",
-   "fr": "la maison"
+   "fr": "la maison",
+   "ph": [
+    {
+     "nl": "{Het huis} van mijn ouders is oud.",
+     "fr": "{La maison} de mes parents est vieille."
+    },
+    {
+     "nl": "Hebben jullie {een huis} gekocht?",
+     "fr": "Vous avez acheté {une maison} ?"
+    },
+    {
+     "nl": "Ze bouwen {een huis} naast de kerk.",
+     "fr": "Ils construisent {une maison} à côté de l'église."
+    },
+    {
+     "nl": "Wij hebben geen {huis}, maar een appartement.",
+     "fr": "Nous n'avons pas de {maison}, mais un appartement."
+    }
+   ]
   },
   {
    "nl": "de deur",
-   "fr": "la porte"
+   "fr": "la porte",
+   "ph": [
+    {
+     "nl": "Wil je {de deur} sluiten, alsjeblieft?",
+     "fr": "Tu veux bien fermer {la porte}, s'il te plaît ?"
+    },
+    {
+     "nl": "{De deur} van de keuken was niet op slot.",
+     "fr": "{La porte} de la cuisine n'était pas fermée à clé."
+    },
+    {
+     "nl": "Er wordt op {de deur} geklopt.",
+     "fr": "On frappe à {la porte}."
+    },
+    {
+     "nl": "Laat {de deur} niet open, anders loopt de kat weg.",
+     "fr": "Ne laisse pas {la porte} ouverte, sinon le chat s'enfuit."
+    }
+   ]
   },
   {
    "nl": "het raam",
-   "fr": "la fenêtre"
+   "fr": "la fenêtre",
+   "ph": [
+    {
+     "nl": "Ik doe {het raam} open, het is warm.",
+     "fr": "J'ouvre {la fenêtre}, il fait chaud."
+    },
+    {
+     "nl": "Is {het raam} in de slaapkamer nog open?",
+     "fr": "Est-ce que {la fenêtre} de la chambre est encore ouverte ?"
+    },
+    {
+     "nl": "Door {het raam} zie ik de tuin.",
+     "fr": "Par {la fenêtre}, je vois le jardin."
+    },
+    {
+     "nl": "Wie heeft {het raam} met een bal gebroken?",
+     "fr": "Qui a cassé {la fenêtre} avec un ballon ?"
+    }
+   ]
   },
   {
    "nl": "de keuken",
-   "fr": "la cuisine"
+   "fr": "la cuisine",
+   "ph": [
+    {
+     "nl": "We eten vaak samen in {de keuken}.",
+     "fr": "Nous mangeons souvent ensemble dans {la cuisine}."
+    },
+    {
+     "nl": "{De keuken} was gisteren erg vuil.",
+     "fr": "{La cuisine} était très sale hier."
+    },
+    {
+     "nl": "Mama kookt het avondeten in {de keuken}.",
+     "fr": "Maman prépare le dîner dans {la cuisine}."
+    },
+    {
+     "nl": "In {de keuken} staan een fornuis en een koelkast.",
+     "fr": "Dans {la cuisine}, il y a une cuisinière et un frigo."
+    }
+   ]
   },
   {
    "nl": "de kamer",
-   "fr": "la pièce, la chambre"
+   "fr": "la pièce, la chambre",
+   "ph": [
+    {
+     "nl": "Dit huis heeft vijf {kamers}.",
+     "fr": "Cette maison a cinq {pièces}."
+    },
+    {
+     "nl": "Mijn broer slaapt in {de kamer} naast de badkamer.",
+     "fr": "Mon frère dort dans {la chambre} à côté de la salle de bain."
+    },
+    {
+     "nl": "{Mijn kamer} is klein maar gezellig.",
+     "fr": "{Ma chambre} est petite mais accueillante."
+    },
+    {
+     "nl": "Ga naar {je kamer} en doe je huiswerk!",
+     "fr": "Va dans {ta chambre} et fais tes devoirs !"
+    }
+   ]
   },
   {
    "nl": "de tafel",
-   "fr": "la table"
+   "fr": "la table",
+   "ph": [
+    {
+     "nl": "Het eten staat op {de tafel}.",
+     "fr": "Le repas est sur {la table}."
+    },
+    {
+     "nl": "Kun je {de tafel} dekken?",
+     "fr": "Tu peux mettre {la table} ?"
+    },
+    {
+     "nl": "Na het eten ruim ik {de tafel} af.",
+     "fr": "Après le repas, je débarrasse {la table}."
+    },
+    {
+     "nl": "Vier stoelen staan rond {de tafel}.",
+     "fr": "Quatre chaises sont autour de {la table}."
+    }
+   ]
   },
   {
    "nl": "de stoel",
-   "fr": "la chaise"
+   "fr": "la chaise",
+   "ph": [
+    {
+     "nl": "Er staat {een stoel} bij het raam.",
+     "fr": "Il y a {une chaise} près de la fenêtre."
+    },
+    {
+     "nl": "We hebben niet genoeg {stoelen} voor iedereen.",
+     "fr": "Nous n'avons pas assez de {chaises} pour tout le monde."
+    },
+    {
+     "nl": "Hij staat op {een stoel} om de lamp te vervangen.",
+     "fr": "Il monte sur {une chaise} pour changer la lampe."
+    },
+    {
+     "nl": "Schuif {je stoel} wat dichter bij de tafel.",
+     "fr": "Rapproche un peu {ta chaise} de la table."
+    }
+   ]
   },
   {
    "nl": "het bed",
-   "fr": "le lit"
+   "fr": "le lit",
+   "ph": [
+    {
+     "nl": "Ik ga vanavond vroeg naar {bed}.",
+     "fr": "Ce soir, je vais tôt {au lit}."
+    },
+    {
+     "nl": "Heb je {het bed} al opgemaakt?",
+     "fr": "Tu as déjà fait {le lit} ?"
+    },
+    {
+     "nl": "{Het bed} is te kort voor mijn lange broer.",
+     "fr": "{Le lit} est trop court pour mon grand frère."
+    },
+    {
+     "nl": "Spring niet op {het bed}, kinderen!",
+     "fr": "Ne sautez pas sur {le lit}, les enfants !"
+    }
+   ]
   },
   {
    "nl": "de kast",
-   "fr": "l'armoire"
+   "fr": "l'armoire",
+   "ph": [
+    {
+     "nl": "Mijn kleren hangen in {de kast}.",
+     "fr": "Mes vêtements sont pendus dans {l'armoire}."
+    },
+    {
+     "nl": "Is er nog plaats in {de kast}?",
+     "fr": "Il y a encore de la place dans {l'armoire} ?"
+    },
+    {
+     "nl": "{De kast} in de slaapkamer is te klein voor al mijn kleren.",
+     "fr": "{L'armoire} de la chambre est trop petite pour tous mes vêtements."
+    },
+    {
+     "nl": "Kun je de truien boven in {de kast} leggen?",
+     "fr": "Tu peux ranger les pulls en haut dans {l'armoire} ?"
+    }
+   ]
   },
   {
    "nl": "de tuin",
-   "fr": "le jardin"
+   "fr": "le jardin",
+   "ph": [
+    {
+     "nl": "De kinderen spelen in {de tuin}.",
+     "fr": "Les enfants jouent dans {le jardin}."
+    },
+    {
+     "nl": "Hebben jullie {een tuin} achter het huis?",
+     "fr": "Vous avez {un jardin} derrière la maison ?"
+    },
+    {
+     "nl": "Opa plant tomaten en bloemen in {de tuin}.",
+     "fr": "Papy plante des tomates et des fleurs dans {le jardin}."
+    },
+    {
+     "nl": "Het gras in {de tuin} moet gemaaid worden.",
+     "fr": "L'herbe {du jardin} doit être tondue."
+    }
+   ]
   },
   {
    "nl": "de sleutel",
-   "fr": "la clé"
+   "fr": "la clé",
+   "ph": [
+    {
+     "nl": "Ik kan {mijn sleutel} niet vinden.",
+     "fr": "Je ne trouve pas {ma clé}."
+    },
+    {
+     "nl": "{De sleutel} ligt op de tafel in de gang.",
+     "fr": "{La clé} est sur la table du couloir."
+    },
+    {
+     "nl": "Vergeet {je sleutel} niet als je weggaat!",
+     "fr": "N'oublie pas {ta clé} quand tu pars !"
+    },
+    {
+     "nl": "Met {deze sleutel} open je de garage.",
+     "fr": "Avec {cette clé}, tu ouvres le garage."
+    }
+   ]
   },
   {
    "nl": "de vloer",
-   "fr": "le sol"
+   "fr": "le sol",
+   "ph": [
+    {
+     "nl": "Er ligt water op {de vloer}.",
+     "fr": "Il y a de l'eau sur {le sol}."
+    },
+    {
+     "nl": "We hebben {de vloer} vorige week gepoetst.",
+     "fr": "Nous avons nettoyé {le sol} la semaine dernière."
+    },
+    {
+     "nl": "Gooi je kleren niet op {de vloer}!",
+     "fr": "Ne jette pas tes vêtements sur {le sol} !"
+    },
+    {
+     "nl": "{De vloer} van de badkamer is glad als hij nat is.",
+     "fr": "{Le sol} de la salle de bain est glissant quand il est mouillé."
+    }
+   ]
   },
   {
    "nl": "het dak",
-   "fr": "le toit"
+   "fr": "le toit",
+   "ph": [
+    {
+     "nl": "De kat zit op {het dak}.",
+     "fr": "Le chat est sur {le toit}."
+    },
+    {
+     "nl": "{Het dak} lekt als het regent.",
+     "fr": "{Le toit} fuit quand il pleut."
+    },
+    {
+     "nl": "Er ligt sneeuw op {het dak}.",
+     "fr": "Il y a de la neige sur {le toit}."
+    },
+    {
+     "nl": "Morgen komt een man om {het dak} te repareren.",
+     "fr": "Demain, un homme vient pour réparer {le toit}."
+    }
+   ]
   },
   {
    "nl": "de trap",
-   "fr": "l'escalier"
+   "fr": "l'escalier",
+   "ph": [
+    {
+     "nl": "Ik ben gisteren van {de trap} gevallen.",
+     "fr": "Je suis tombé dans {l'escalier} hier."
+    },
+    {
+     "nl": "Is {de trap} niet te steil voor de hond?",
+     "fr": "{L'escalier} n'est pas trop raide pour le chien ?"
+    },
+    {
+     "nl": "Loop niet zo snel op {de trap}!",
+     "fr": "Ne cours pas comme ça dans {l'escalier} !"
+    },
+    {
+     "nl": "De slaapkamers zijn boven, neem {de trap} links.",
+     "fr": "Les chambres sont en haut, prends {l'escalier} à gauche."
+    }
+   ]
   },
   {
    "nl": "de muur",
-   "fr": "le mur"
+   "fr": "le mur",
+   "ph": [
+    {
+     "nl": "Er hangt een klok aan {de muur}.",
+     "fr": "Il y a une horloge accrochée {au mur}."
+    },
+    {
+     "nl": "We hebben {de muren} wit geverfd.",
+     "fr": "Nous avons peint {les murs} en blanc."
+    },
+    {
+     "nl": "Het schilderij aan {de muur} is van mijn oma.",
+     "fr": "Le tableau accroché {au mur} appartient à ma grand-mère."
+    },
+    {
+     "nl": "Leun niet tegen {de muur}, de verf is nat.",
+     "fr": "Ne t'appuie pas contre {le mur}, la peinture est fraîche."
+    }
+   ]
   },
   {
    "nl": "het licht",
-   "fr": "la lumière"
+   "fr": "la lumière",
+   "ph": [
+    {
+     "nl": "Doe {het licht} uit, alsjeblieft.",
+     "fr": "Éteins {la lumière}, s'il te plaît."
+    },
+    {
+     "nl": "Er is niet genoeg {licht} in deze kamer.",
+     "fr": "Il n'y a pas assez de {lumière} dans cette pièce."
+    },
+    {
+     "nl": "Kun je {het licht} aandoen? Ik zie niets.",
+     "fr": "Tu peux allumer {la lumière} ? Je ne vois rien."
+    },
+    {
+     "nl": "Waarom brandt {het licht} nog in de gang?",
+     "fr": "Pourquoi {la lumière} est-elle encore allumée dans le couloir ?"
+    }
+   ]
   },
   {
    "nl": "de lamp",
-   "fr": "la lampe"
+   "fr": "la lampe",
+   "ph": [
+    {
+     "nl": "{De lamp} naast het bed is kapot.",
+     "fr": "{La lampe} à côté du lit est cassée."
+    },
+    {
+     "nl": "Heb je {een lamp} voor de woonkamer gekocht?",
+     "fr": "Tu as acheté {une lampe} pour le salon ?"
+    },
+    {
+     "nl": "Op mijn bureau staat {een lamp}.",
+     "fr": "Il y a {une lampe} sur mon bureau."
+    },
+    {
+     "nl": "Wie heeft {de lamp} van de tafel laten vallen?",
+     "fr": "Qui a fait tomber {la lampe} de la table ?"
+    }
+   ]
   },
   {
    "nl": "het bad",
-   "fr": "le bain"
+   "fr": "le bain",
+   "ph": [
+    {
+     "nl": "Ik neem elke zondag {een bad}.",
+     "fr": "Je prends {un bain} chaque dimanche."
+    },
+    {
+     "nl": "{Het bad} is te warm voor de baby.",
+     "fr": "{Le bain} est trop chaud pour le bébé."
+    },
+    {
+     "nl": "Het water van {het bad} is al koud.",
+     "fr": "L'eau {du bain} est déjà froide."
+    },
+    {
+     "nl": "Laat jij {het bad} vollopen?",
+     "fr": "Tu fais couler {le bain} ?"
+    }
+   ]
   },
   {
    "nl": "de douche",
-   "fr": "la douche"
+   "fr": "la douche",
+   "ph": [
+    {
+     "nl": "Ik neem 's morgens {een douche}.",
+     "fr": "Je prends {une douche} le matin."
+    },
+    {
+     "nl": "{De douche} werkt niet meer.",
+     "fr": "{La douche} ne fonctionne plus."
+    },
+    {
+     "nl": "Wie staat er nu onder {de douche}?",
+     "fr": "Qui est sous {la douche} maintenant ?"
+    },
+    {
+     "nl": "Mijn haar is nat, ik kom net uit {de douche}.",
+     "fr": "Mes cheveux sont mouillés, je sors de {la douche}."
+    }
+   ]
   },
   {
    "nl": "de spiegel",
-   "fr": "le miroir"
+   "fr": "le miroir",
+   "ph": [
+    {
+     "nl": "Ze kijkt in {de spiegel}.",
+     "fr": "Elle se regarde dans {le miroir}."
+    },
+    {
+     "nl": "Er hangt {een spiegel} boven de wastafel.",
+     "fr": "Il y a {un miroir} au-dessus du lavabo."
+    },
+    {
+     "nl": "Ik poets mijn tanden voor {de spiegel}.",
+     "fr": "Je me brosse les dents devant {le miroir}."
+    },
+    {
+     "nl": "{De spiegel} in de badkamer is beslagen na de douche.",
+     "fr": "{Le miroir} de la salle de bain est embué après la douche."
+    }
+   ]
   },
   {
    "nl": "het glas",
-   "fr": "le verre"
+   "fr": "le verre",
+   "ph": [
+    {
+     "nl": "Mag ik {een glas} water?",
+     "fr": "Je peux avoir {un verre} d'eau ?"
+    },
+    {
+     "nl": "Hij heeft gisteren {een glas} gebroken.",
+     "fr": "Il a cassé {un verre} hier."
+    },
+    {
+     "nl": "Schenk de wijn in {de glazen}.",
+     "fr": "Verse le vin dans {les verres}."
+    },
+    {
+     "nl": "Er zit nog melk in {je glas}.",
+     "fr": "Il reste encore du lait dans {ton verre}."
+    }
+   ]
   },
   {
    "nl": "het bord",
-   "fr": "l'assiette"
+   "fr": "l'assiette",
+   "ph": [
+    {
+     "nl": "Zet {de borden} op de tafel.",
+     "fr": "Mets {les assiettes} sur la table."
+    },
+    {
+     "nl": "{Mijn bord} is nog niet leeg.",
+     "fr": "{Mon assiette} n'est pas encore vide."
+    },
+    {
+     "nl": "Zijn {de borden} al afgewassen?",
+     "fr": "{Les assiettes} sont déjà lavées ?"
+    },
+    {
+     "nl": "Leg nog wat frietjes op {mijn bord}.",
+     "fr": "Mets encore quelques frites dans {mon assiette}."
+    }
+   ]
   },
   {
    "nl": "de vork",
-   "fr": "la fourchette"
+   "fr": "la fourchette",
+   "ph": [
+    {
+     "nl": "Ik eet de pasta met {een vork}.",
+     "fr": "Je mange les pâtes avec {une fourchette}."
+    },
+    {
+     "nl": "Waar liggen {de vorken} en de messen?",
+     "fr": "Où sont {les fourchettes} et les couteaux ?"
+    },
+    {
+     "nl": "{De vork} ligt links van het bord.",
+     "fr": "{La fourchette} se met à gauche de l'assiette."
+    },
+    {
+     "nl": "Kinderen, eet niet met je handen, neem {een vork}!",
+     "fr": "Les enfants, ne mangez pas avec les mains, prenez {une fourchette} !"
+    }
+   ]
   },
   {
    "nl": "het mes",
-   "fr": "le couteau"
+   "fr": "le couteau",
+   "ph": [
+    {
+     "nl": "{Dit mes} snijdt niet goed.",
+     "fr": "{Ce couteau} ne coupe pas bien."
+    },
+    {
+     "nl": "Heb je {een mes} voor het brood?",
+     "fr": "Tu as {un couteau} pour le pain ?"
+    },
+    {
+     "nl": "Pas op, {het mes} is heel scherp!",
+     "fr": "Attention, {le couteau} est très tranchant !"
+    },
+    {
+     "nl": "Ik heb me gesneden met {een mes}.",
+     "fr": "Je me suis coupé avec {un couteau}."
+    }
+   ]
   },
   {
    "nl": "de lepel",
-   "fr": "la cuillère"
+   "fr": "la cuillère",
+   "ph": [
+    {
+     "nl": "Soep eet je met {een lepel}.",
+     "fr": "La soupe se mange avec {une cuillère}."
+    },
+    {
+     "nl": "Ik heb {de lepels} al in de la gelegd.",
+     "fr": "J'ai déjà mis {les cuillères} dans le tiroir."
+    },
+    {
+     "nl": "Roer de koffie met {een lepel}.",
+     "fr": "Remue le café avec {une cuillère}."
+    },
+    {
+     "nl": "Er ligt geen {lepel} bij mijn yoghurt.",
+     "fr": "Il n'y a pas de {cuillère} avec mon yaourt."
+    }
+   ]
   },
   {
    "nl": "de pan",
-   "fr": "la casserole"
+   "fr": "la casserole",
+   "ph": [
+    {
+     "nl": "Het water kookt in {de pan}.",
+     "fr": "L'eau bout dans {la casserole}."
+    },
+    {
+     "nl": "Wie heeft {de pan} niet afgewassen?",
+     "fr": "Qui n'a pas lavé {la casserole} ?"
+    },
+    {
+     "nl": "Doe de aardappelen in {een pan} met water.",
+     "fr": "Mets les pommes de terre dans {une casserole} d'eau."
+    },
+    {
+     "nl": "Zet {de pan} op het vuur.",
+     "fr": "Mets {la casserole} sur le feu."
+    }
+   ]
   },
   {
    "nl": "de koelkast",
-   "fr": "le frigo"
+   "fr": "le frigo",
+   "ph": [
+    {
+     "nl": "De melk staat in {de koelkast}.",
+     "fr": "Le lait est dans {le frigo}."
+    },
+    {
+     "nl": "Is {de koelkast} weer leeg?",
+     "fr": "{Le frigo} est encore vide ?"
+    },
+    {
+     "nl": "Zet de boter terug in {de koelkast}.",
+     "fr": "Remets le beurre dans {le frigo}."
+    },
+    {
+     "nl": "Het bier is niet koud genoeg, {de koelkast} is kapot.",
+     "fr": "La bière n'est pas assez froide, {le frigo} est cassé."
+    }
+   ]
   },
   {
    "nl": "de oven",
-   "fr": "le four"
+   "fr": "le four",
+   "ph": [
+    {
+     "nl": "De pizza zit al in {de oven}.",
+     "fr": "La pizza est déjà dans {le four}."
+    },
+    {
+     "nl": "Heb je {de oven} uitgezet?",
+     "fr": "Tu as éteint {le four} ?"
+    },
+    {
+     "nl": "Bak het brood veertig minuten in {de oven}.",
+     "fr": "Fais cuire le pain quarante minutes {au four}."
+    },
+    {
+     "nl": "Open {de oven} niet, de taart is nog niet klaar!",
+     "fr": "N'ouvre pas {le four}, le gâteau n'est pas encore prêt !"
+    }
+   ]
   },
   {
    "nl": "de wasmachine",
-   "fr": "la machine à laver"
+   "fr": "la machine à laver",
+   "ph": [
+    {
+     "nl": "{De wasmachine} staat in de kelder.",
+     "fr": "{La machine à laver} est à la cave."
+    },
+    {
+     "nl": "Mijn kleren zitten nog in {de wasmachine}.",
+     "fr": "Mes vêtements sont encore dans {la machine à laver}."
+    },
+    {
+     "nl": "Doe de vuile kleren in {de wasmachine}.",
+     "fr": "Mets les vêtements sales dans {la machine à laver}."
+    },
+    {
+     "nl": "{De wasmachine} is kapot, ik moet naar de wasserette.",
+     "fr": "{La machine à laver} est en panne, je dois aller à la laverie."
+    }
+   ]
   },
   {
    "nl": "het gordijn",
-   "fr": "le rideau"
+   "fr": "le rideau",
+   "ph": [
+    {
+     "nl": "Doe {de gordijnen} dicht, het is al donker.",
+     "fr": "Ferme {les rideaux}, il fait déjà noir."
+    },
+    {
+     "nl": "{Het gordijn} in de badkamer is nat.",
+     "fr": "{Le rideau} de la salle de bain est mouillé."
+    },
+    {
+     "nl": "Mag ik {de gordijnen} opendoen? Het is mooi weer.",
+     "fr": "Je peux ouvrir {les rideaux} ? Il fait beau."
+    },
+    {
+     "nl": "We hebben nieuwe {gordijnen} voor de slaapkamer gekocht.",
+     "fr": "Nous avons acheté de nouveaux {rideaux} pour la chambre."
+    }
+   ]
   },
   {
    "nl": "de bank",
-   "fr": "le canapé"
+   "fr": "le canapé",
+   "ph": [
+    {
+     "nl": "We zitten 's avonds samen op {de bank}.",
+     "fr": "Le soir, nous sommes assis ensemble sur {le canapé}."
+    },
+    {
+     "nl": "Is {die bank} niet te groot voor de woonkamer?",
+     "fr": "{Ce canapé} n'est pas trop grand pour le salon ?"
+    },
+    {
+     "nl": "Onze gast slaapt vannacht op {de bank}.",
+     "fr": "Notre invité dort sur {le canapé} cette nuit."
+    },
+    {
+     "nl": "Er passen drie mensen op {deze bank}.",
+     "fr": "Trois personnes tiennent sur {ce canapé}."
+    }
+   ]
   },
   {
    "nl": "het kussen",
-   "fr": "le coussin, l'oreiller"
+   "fr": "le coussin, l'oreiller",
+   "ph": [
+    {
+     "nl": "Ik slaap met twee {kussens}.",
+     "fr": "Je dors avec deux {oreillers}."
+    },
+    {
+     "nl": "Leg {het kussen} op de bank.",
+     "fr": "Pose {le coussin} sur le canapé."
+    },
+    {
+     "nl": "{Mijn kussen} is te hard, ik slaap slecht.",
+     "fr": "{Mon oreiller} est trop dur, je dors mal."
+    },
+    {
+     "nl": "Gooi niet met {de kussens}, kinderen!",
+     "fr": "Ne lancez pas {les coussins}, les enfants !"
+    }
+   ]
   },
   {
    "nl": "de deken",
-   "fr": "la couverture"
+   "fr": "la couverture",
+   "ph": [
+    {
+     "nl": "Het is koud, neem {een deken}.",
+     "fr": "Il fait froid, prends {une couverture}."
+    },
+    {
+     "nl": "Waar heb je {de dekens} gelegd?",
+     "fr": "Où as-tu mis {les couvertures} ?"
+    },
+    {
+     "nl": "In de winter slaap ik onder twee {dekens}.",
+     "fr": "En hiver, je dors sous deux {couvertures}."
+    },
+    {
+     "nl": "Leg {een deken} over de baby.",
+     "fr": "Mets {une couverture} sur le bébé."
+    }
+   ]
   },
   {
    "nl": "de handdoek",
-   "fr": "la serviette"
+   "fr": "la serviette",
+   "ph": [
+    {
+     "nl": "{De handdoeken} liggen in de badkamer.",
+     "fr": "{Les serviettes} sont dans la salle de bain."
+    },
+    {
+     "nl": "Mag ik {een handdoek}, alsjeblieft?",
+     "fr": "Je peux avoir {une serviette}, s'il te plaît ?"
+    },
+    {
+     "nl": "Droog je handen af met {deze handdoek}.",
+     "fr": "Sèche-toi les mains avec {cette serviette}."
+    },
+    {
+     "nl": "Vergeet {je handdoek} niet voor het zwembad!",
+     "fr": "N'oublie pas {ta serviette} pour la piscine !"
+    }
+   ]
   },
   {
    "nl": "de zeep",
-   "fr": "le savon"
+   "fr": "le savon",
+   "ph": [
+    {
+     "nl": "Was je handen met {zeep}.",
+     "fr": "Lave-toi les mains avec {du savon}."
+    },
+    {
+     "nl": "Er is geen {zeep} meer in de badkamer.",
+     "fr": "Il n'y a plus de {savon} dans la salle de bain."
+    },
+    {
+     "nl": "{De zeep} ruikt naar lavendel.",
+     "fr": "{Le savon} sent la lavande."
+    },
+    {
+     "nl": "Kun je morgen {zeep} kopen in de supermarkt?",
+     "fr": "Tu peux acheter {du savon} au supermarché demain ?"
+    }
+   ]
   },
   {
    "nl": "de emmer",
-   "fr": "le seau"
+   "fr": "le seau",
+   "ph": [
+    {
+     "nl": "Vul {de emmer} met warm water.",
+     "fr": "Remplis {le seau} d'eau chaude."
+    },
+    {
+     "nl": "Waar heb je {de emmer} gezet?",
+     "fr": "Où as-tu mis {le seau} ?"
+    },
+    {
+     "nl": "{De emmer} lekt, er zit een gat in.",
+     "fr": "{Le seau} fuit, il y a un trou dedans."
+    },
+    {
+     "nl": "Het kind speelt met {een emmer} en een schep op het strand.",
+     "fr": "L'enfant joue avec {un seau} et une pelle sur la plage."
+    }
+   ]
   },
   {
    "nl": "de bezem",
-   "fr": "le balai"
+   "fr": "le balai",
+   "ph": [
+    {
+     "nl": "{De bezem} staat in de schuur.",
+     "fr": "{Le balai} est dans la remise."
+    },
+    {
+     "nl": "Kun je mij {de bezem} geven?",
+     "fr": "Tu peux me donner {le balai} ?"
+    },
+    {
+     "nl": "Veeg de keuken met {de bezem}.",
+     "fr": "Balaie la cuisine avec {le balai}."
+    },
+    {
+     "nl": "Waarom staat {de bezem} midden in de gang?",
+     "fr": "Pourquoi {le balai} est-il au milieu du couloir ?"
+    }
+   ]
   },
   {
    "nl": "het stopcontact",
-   "fr": "la prise de courant"
+   "fr": "la prise de courant",
+   "ph": [
+    {
+     "nl": "Er is geen {stopcontact} naast het bed.",
+     "fr": "Il n'y a pas de {prise de courant} à côté du lit."
+    },
+    {
+     "nl": "Steek de stekker in {het stopcontact}.",
+     "fr": "Mets la fiche dans {la prise de courant}."
+    },
+    {
+     "nl": "Mijn gsm laadt niet op, {het stopcontact} werkt niet.",
+     "fr": "Mon portable ne charge pas, {la prise de courant} ne fonctionne pas."
+    },
+    {
+     "nl": "Kinderen mogen niet aan {het stopcontact} komen.",
+     "fr": "Les enfants ne doivent pas toucher {la prise de courant}."
+    }
+   ]
   },
   {
    "nl": "de zolder",
-   "fr": "le grenier"
+   "fr": "le grenier",
+   "ph": [
+    {
+     "nl": "De oude spullen liggen op {de zolder}.",
+     "fr": "Les vieilles affaires sont {au grenier}."
+    },
+    {
+     "nl": "Heb je {de zolder} al opgeruimd?",
+     "fr": "Tu as déjà rangé {le grenier} ?"
+    },
+    {
+     "nl": "Onder het dak is {een zolder} vol oude dozen.",
+     "fr": "Sous le toit, il y a {un grenier} plein de vieux cartons."
+    },
+    {
+     "nl": "Breng de kerstboom naar {de zolder}.",
+     "fr": "Monte le sapin de Noël {au grenier}."
+    }
+   ]
   },
   {
    "nl": "de kelder",
-   "fr": "la cave"
+   "fr": "la cave",
+   "ph": [
+    {
+     "nl": "De wijn ligt in {de kelder}.",
+     "fr": "Le vin est {à la cave}."
+    },
+    {
+     "nl": "Ik ga niet graag naar {de kelder}.",
+     "fr": "Je n'aime pas aller {à la cave}."
+    },
+    {
+     "nl": "Het is koud en donker in {de kelder}.",
+     "fr": "Il fait froid et sombre dans {la cave}."
+    },
+    {
+     "nl": "Kun je een fles water uit {de kelder} halen?",
+     "fr": "Tu peux aller chercher une bouteille d'eau {à la cave} ?"
+    }
+   ]
   },
   {
    "nl": "de gang",
-   "fr": "le couloir"
+   "fr": "le couloir",
+   "ph": [
+    {
+     "nl": "Zet je schoenen in {de gang}.",
+     "fr": "Mets tes chaussures dans {le couloir}."
+    },
+    {
+     "nl": "{De gang} is te donker.",
+     "fr": "{Le couloir} est trop sombre."
+    },
+    {
+     "nl": "De jassen hangen in {de gang}.",
+     "fr": "Les manteaux sont pendus dans {le couloir}."
+    },
+    {
+     "nl": "Loop door {de gang} tot de laatste deur.",
+     "fr": "Traverse {le couloir} jusqu'à la dernière porte."
+    }
+   ]
   },
   {
    "nl": "de woonkamer",
-   "fr": "le salon"
+   "fr": "le salon",
+   "ph": [
+    {
+     "nl": "We kijken tv in {de woonkamer}.",
+     "fr": "Nous regardons la télé dans {le salon}."
+    },
+    {
+     "nl": "Is {de woonkamer} groot genoeg voor de bank?",
+     "fr": "{Le salon} est assez grand pour le canapé ?"
+    },
+    {
+     "nl": "Kom binnen, ga in {de woonkamer} zitten.",
+     "fr": "Entre, va t'asseoir dans {le salon}."
+    },
+    {
+     "nl": "{De woonkamer} heeft grote ramen naar de tuin.",
+     "fr": "{Le salon} a de grandes fenêtres donnant sur le jardin."
+    }
+   ]
   },
   {
    "nl": "de slaapkamer",
-   "fr": "la chambre à coucher"
+   "fr": "la chambre à coucher",
+   "ph": [
+    {
+     "nl": "{De slaapkamer} is boven.",
+     "fr": "{La chambre à coucher} est à l'étage."
+    },
+    {
+     "nl": "Ons huis heeft drie {slaapkamers}.",
+     "fr": "Notre maison a trois {chambres à coucher}."
+    },
+    {
+     "nl": "Doe zachtjes, de baby slaapt in {de slaapkamer}.",
+     "fr": "Doucement, le bébé dort dans {la chambre à coucher}."
+    },
+    {
+     "nl": "Heeft {jullie slaapkamer} een eigen badkamer?",
+     "fr": "{Votre chambre à coucher} a sa propre salle de bain ?"
+    }
+   ]
   },
   {
    "nl": "de badkamer",
-   "fr": "la salle de bain"
+   "fr": "la salle de bain",
+   "ph": [
+    {
+     "nl": "{De badkamer} is naast de slaapkamer.",
+     "fr": "{La salle de bain} est à côté de la chambre."
+    },
+    {
+     "nl": "Wie is er nu in {de badkamer}?",
+     "fr": "Qui est dans {la salle de bain} maintenant ?"
+    },
+    {
+     "nl": "Na het opstaan ga ik meteen naar {de badkamer}.",
+     "fr": "Après le lever, je vais tout de suite dans {la salle de bain}."
+    },
+    {
+     "nl": "{De badkamer} heeft een douche en een bad.",
+     "fr": "{La salle de bain} a une douche et une baignoire."
+    }
+   ]
   },
   {
    "nl": "het toilet",
-   "fr": "les toilettes"
+   "fr": "les toilettes",
+   "ph": [
+    {
+     "nl": "Waar is {het toilet}, alstublieft?",
+     "fr": "Où sont {les toilettes}, s'il vous plaît ?"
+    },
+    {
+     "nl": "Sorry, {het toilet} is nog bezet.",
+     "fr": "Désolé, {les toilettes} sont encore occupées."
+    },
+    {
+     "nl": "Kan ik even naar {het toilet} gaan?",
+     "fr": "Je peux aller {aux toilettes} ?"
+    },
+    {
+     "nl": "Er is geen papier meer op {het toilet}.",
+     "fr": "Il n'y a plus de papier {aux toilettes}."
+    }
+   ]
   },
   {
    "nl": "de garage",
-   "fr": "le garage"
+   "fr": "le garage",
+   "ph": [
+    {
+     "nl": "De auto staat in {de garage}.",
+     "fr": "La voiture est dans {le garage}."
+    },
+    {
+     "nl": "We hebben {de garage} nog niet opgeruimd.",
+     "fr": "Nous n'avons pas encore rangé {le garage}."
+    },
+    {
+     "nl": "{De garage} is te klein voor twee auto's.",
+     "fr": "{Le garage} est trop petit pour deux voitures."
+    },
+    {
+     "nl": "Heb je de auto uit {de garage} gehaald?",
+     "fr": "Tu as sorti la voiture {du garage} ?"
+    }
+   ]
   },
   {
    "nl": "het balkon",
-   "fr": "le balcon"
+   "fr": "le balcon",
+   "ph": [
+    {
+     "nl": "We ontbijten op {het balkon}.",
+     "fr": "Nous prenons le petit-déjeuner sur {le balcon}."
+    },
+    {
+     "nl": "Heeft je appartement {een balkon}?",
+     "fr": "Ton appartement a {un balcon} ?"
+    },
+    {
+     "nl": "Mijn plantjes staan buiten op {het balkon}.",
+     "fr": "Mes plantes sont dehors sur {le balcon}."
+    },
+    {
+     "nl": "Vanaf {het balkon} zie je de zee.",
+     "fr": "Depuis {le balcon}, on voit la mer."
+    }
+   ]
   },
   {
    "nl": "de schuur",
-   "fr": "la remise"
+   "fr": "la remise",
+   "ph": [
+    {
+     "nl": "De fietsen staan in {de schuur}.",
+     "fr": "Les vélos sont dans {la remise}."
+    },
+    {
+     "nl": "Is {de schuur} op slot?",
+     "fr": "{La remise} est fermée à clé ?"
+    },
+    {
+     "nl": "De grasmaaier staat achter in {de schuur}.",
+     "fr": "La tondeuse est au fond de {la remise}."
+    },
+    {
+     "nl": "We willen {een schuur} achter in de tuin bouwen.",
+     "fr": "Nous voulons construire {une remise} au fond du jardin."
+    }
+   ]
   },
   {
    "nl": "de brievenbus",
-   "fr": "la boîte aux lettres"
+   "fr": "la boîte aux lettres",
+   "ph": [
+    {
+     "nl": "Er zit een brief in {de brievenbus}.",
+     "fr": "Il y a une lettre dans {la boîte aux lettres}."
+    },
+    {
+     "nl": "Heb je vandaag al in {de brievenbus} gekeken?",
+     "fr": "Tu as déjà regardé dans {la boîte aux lettres} aujourd'hui ?"
+    },
+    {
+     "nl": "De postbode stopt de krant in {de brievenbus}.",
+     "fr": "Le facteur met le journal dans {la boîte aux lettres}."
+    },
+    {
+     "nl": "{De brievenbus} is vol reclame.",
+     "fr": "{La boîte aux lettres} est pleine de publicités."
+    }
+   ]
   },
   {
    "nl": "de bel",
-   "fr": "la sonnette"
+   "fr": "la sonnette",
+   "ph": [
+    {
+     "nl": "{De bel} van de voordeur werkt niet.",
+     "fr": "{La sonnette} de la porte d'entrée ne marche pas."
+    },
+    {
+     "nl": "Heb je {de bel} gehoord?",
+     "fr": "Tu as entendu {la sonnette} ?"
+    },
+    {
+     "nl": "Druk op {de bel} en wacht even.",
+     "fr": "Appuie sur {la sonnette} et attends un peu."
+    },
+    {
+     "nl": "Als je komt, gebruik {de bel} niet, de baby slaapt.",
+     "fr": "Quand tu viens, n'utilise pas {la sonnette}, le bébé dort."
+    }
+   ]
   },
   {
    "nl": "het slot",
-   "fr": "la serrure"
+   "fr": "la serrure",
+   "ph": [
+    {
+     "nl": "{Het slot} van de deur is kapot.",
+     "fr": "{La serrure} de la porte est cassée."
+    },
+    {
+     "nl": "De sleutel past niet in {het slot}.",
+     "fr": "La clé ne rentre pas dans {la serrure}."
+    },
+    {
+     "nl": "De dief heeft {het slot} opengebroken.",
+     "fr": "Le voleur a forcé {la serrure}."
+    },
+    {
+     "nl": "Er zit geen {slot} op de deur van het toilet.",
+     "fr": "Il n'y a pas de {serrure} à la porte des toilettes."
+    }
+   ]
   },
   {
    "nl": "de vuilnisbak",
-   "fr": "la poubelle"
+   "fr": "la poubelle",
+   "ph": [
+    {
+     "nl": "Gooi het papier in {de vuilnisbak}.",
+     "fr": "Jette le papier dans {la poubelle}."
+    },
+    {
+     "nl": "Wie zet vanavond {de vuilnisbak} buiten?",
+     "fr": "Qui sort {la poubelle} ce soir ?"
+    },
+    {
+     "nl": "{De vuilnisbak} is vol, kun je hem leegmaken?",
+     "fr": "{La poubelle} est pleine, tu peux la vider ?"
+    },
+    {
+     "nl": "Waarom stinkt {de vuilnisbak} zo?",
+     "fr": "Pourquoi {la poubelle} sent-elle si mauvais ?"
+    }
+   ]
   },
   {
    "nl": "de gootsteen",
-   "fr": "l'évier"
+   "fr": "l'évier",
+   "ph": [
+    {
+     "nl": "De vuile borden staan in {de gootsteen}.",
+     "fr": "Les assiettes sales sont dans {l'évier}."
+    },
+    {
+     "nl": "{De gootsteen} in de keuken is verstopt.",
+     "fr": "{L'évier} de la cuisine est bouché."
+    },
+    {
+     "nl": "Ik was de groenten in {de gootsteen}.",
+     "fr": "Je lave les légumes dans {l'évier}."
+    },
+    {
+     "nl": "Giet geen olie in {de gootsteen}!",
+     "fr": "Ne verse pas d'huile dans {l'évier} !"
+    }
+   ]
   },
   {
    "nl": "de kraan",
-   "fr": "le robinet"
+   "fr": "le robinet",
+   "ph": [
+    {
+     "nl": "Draai {de kraan} dicht, alsjeblieft.",
+     "fr": "Ferme {le robinet}, s'il te plaît."
+    },
+    {
+     "nl": "{De kraan} in de badkamer lekt.",
+     "fr": "{Le robinet} de la salle de bain fuit."
+    },
+    {
+     "nl": "Het water uit {de kraan} is drinkbaar.",
+     "fr": "L'eau {du robinet} est potable."
+    },
+    {
+     "nl": "Wie heeft {de kraan} laten openstaan?",
+     "fr": "Qui a laissé {le robinet} ouvert ?"
+    }
+   ]
   },
   {
    "nl": "de spons",
-   "fr": "l'éponge"
+   "fr": "l'éponge",
+   "ph": [
+    {
+     "nl": "Ik maak de tafel schoon met {een spons}.",
+     "fr": "Je nettoie la table avec {une éponge}."
+    },
+    {
+     "nl": "{De spons} ligt naast de gootsteen.",
+     "fr": "{L'éponge} est à côté de l'évier."
+    },
+    {
+     "nl": "Doe wat afwasmiddel op {de spons}.",
+     "fr": "Mets un peu de liquide vaisselle sur {l'éponge}."
+    },
+    {
+     "nl": "{Deze spons} is oud en vuil, gooi hem weg.",
+     "fr": "{Cette éponge} est vieille et sale, jette-la."
+    }
+   ]
   },
   {
    "nl": "de vaatwasser",
-   "fr": "le lave-vaisselle"
+   "fr": "le lave-vaisselle",
+   "ph": [
+    {
+     "nl": "Zet de glazen in {de vaatwasser}.",
+     "fr": "Mets les verres dans {le lave-vaisselle}."
+    },
+    {
+     "nl": "Is {de vaatwasser} al klaar?",
+     "fr": "{Le lave-vaisselle} a déjà fini ?"
+    },
+    {
+     "nl": "Kun je {de vaatwasser} uitruimen?",
+     "fr": "Tu peux vider {le lave-vaisselle} ?"
+    },
+    {
+     "nl": "We wassen alles met de hand, we hebben geen {vaatwasser}.",
+     "fr": "Nous lavons tout à la main, nous n'avons pas de {lave-vaisselle}."
+    }
+   ]
   },
   {
    "nl": "de droogkast",
-   "fr": "le sèche-linge"
+   "fr": "le sèche-linge",
+   "ph": [
+    {
+     "nl": "De handdoeken zitten in {de droogkast}.",
+     "fr": "Les serviettes sont dans {le sèche-linge}."
+    },
+    {
+     "nl": "We hebben geen {droogkast} in ons appartement.",
+     "fr": "Nous n'avons pas de {sèche-linge} dans notre appartement."
+    },
+    {
+     "nl": "Deze trui mag niet in {de droogkast}.",
+     "fr": "Ce pull ne peut pas aller dans {le sèche-linge}."
+    },
+    {
+     "nl": "{De droogkast} maakt de handdoeken lekker zacht.",
+     "fr": "{Le sèche-linge} rend les serviettes bien douces."
+    }
+   ]
   },
   {
    "nl": "het strijkijzer",
-   "fr": "le fer à repasser"
+   "fr": "le fer à repasser",
+   "ph": [
+    {
+     "nl": "{Het strijkijzer} is nog heet.",
+     "fr": "{Le fer à repasser} est encore chaud."
+    },
+    {
+     "nl": "Heb je {het strijkijzer} uitgezet?",
+     "fr": "Tu as éteint {le fer à repasser} ?"
+    },
+    {
+     "nl": "Ik strijk mijn hemd met {het strijkijzer}.",
+     "fr": "Je repasse ma chemise avec {le fer à repasser}."
+    },
+    {
+     "nl": "Waar staat {het strijkijzer}? Mijn broek is gekreukt.",
+     "fr": "Où est {le fer à repasser} ? Mon pantalon est froissé."
+    }
+   ]
   },
   {
    "nl": "de stofzuiger",
-   "fr": "l'aspirateur"
+   "fr": "l'aspirateur",
+   "ph": [
+    {
+     "nl": "{De stofzuiger} staat in de kast.",
+     "fr": "{L'aspirateur} est dans l'armoire."
+    },
+    {
+     "nl": "Mag ik {je stofzuiger} lenen?",
+     "fr": "Je peux emprunter {ton aspirateur} ?"
+    },
+    {
+     "nl": "{De stofzuiger} maakt te veel lawaai.",
+     "fr": "{L'aspirateur} fait trop de bruit."
+    },
+    {
+     "nl": "De zak van {de stofzuiger} is vol.",
+     "fr": "Le sac de {l'aspirateur} est plein."
+    }
+   ]
   },
   {
    "nl": "de plank",
-   "fr": "l'étagère, la planche"
+   "fr": "l'étagère, la planche",
+   "ph": [
+    {
+     "nl": "De boeken staan op {de plank}.",
+     "fr": "Les livres sont sur {l'étagère}."
+    },
+    {
+     "nl": "Hij heeft {een plank} aan de muur gehangen.",
+     "fr": "Il a accroché {une étagère} au mur."
+    },
+    {
+     "nl": "Zet de potten jam op {de plank} in de kelder.",
+     "fr": "Mets les pots de confiture sur {l'étagère} de la cave."
+    },
+    {
+     "nl": "{De plank} is gebroken, er stonden te veel boeken op.",
+     "fr": "{L'étagère} s'est cassée, il y avait trop de livres dessus."
+    }
+   ]
   },
   {
    "nl": "de la",
-   "fr": "le tiroir"
+   "fr": "le tiroir",
+   "ph": [
+    {
+     "nl": "De messen liggen in {de la}.",
+     "fr": "Les couteaux sont dans {le tiroir}."
+    },
+    {
+     "nl": "{De la} gaat niet meer open.",
+     "fr": "{Le tiroir} ne s'ouvre plus."
+    },
+    {
+     "nl": "Leg de schaar terug in {de la}.",
+     "fr": "Remets les ciseaux dans {le tiroir}."
+    },
+    {
+     "nl": "Zit mijn paspoort niet in {de la} van het bureau?",
+     "fr": "Mon passeport n'est pas dans {le tiroir} du bureau ?"
+    }
+   ]
   },
   {
    "nl": "de klok",
-   "fr": "l'horloge"
+   "fr": "l'horloge",
+   "ph": [
+    {
+     "nl": "{De klok} in de keuken staat stil.",
+     "fr": "{L'horloge} de la cuisine est arrêtée."
+    },
+    {
+     "nl": "Er hangt {een klok} boven de deur.",
+     "fr": "Il y a {une horloge} au-dessus de la porte."
+    },
+    {
+     "nl": "Kijk op {de klok}, het is al laat!",
+     "fr": "Regarde {l'horloge}, il est déjà tard !"
+    },
+    {
+     "nl": "{De klok} loopt vijf minuten voor.",
+     "fr": "{L'horloge} avance de cinq minutes."
+    }
+   ]
   },
   {
    "nl": "de wekker",
-   "fr": "le réveil"
+   "fr": "le réveil",
+   "ph": [
+    {
+     "nl": "{Mijn wekker} gaat om zeven uur af.",
+     "fr": "{Mon réveil} sonne à sept heures."
+    },
+    {
+     "nl": "Heb je {de wekker} gezet?",
+     "fr": "Tu as réglé {le réveil} ?"
+    },
+    {
+     "nl": "Ik heb {de wekker} niet gehoord en ik was te laat.",
+     "fr": "Je n'ai pas entendu {le réveil} et j'étais en retard."
+    },
+    {
+     "nl": "Morgen is het zondag, ik zet geen {wekker}.",
+     "fr": "Demain, c'est dimanche, je ne mets pas de {réveil}."
+    }
+   ]
   },
   {
    "nl": "het tapijt",
-   "fr": "le tapis"
+   "fr": "le tapis",
+   "ph": [
+    {
+     "nl": "{Het tapijt} in de woonkamer is nieuw.",
+     "fr": "{Le tapis} du salon est neuf."
+    },
+    {
+     "nl": "We moeten {het tapijt} nog stofzuigen.",
+     "fr": "Nous devons encore passer l'aspirateur sur {le tapis}."
+    },
+    {
+     "nl": "Wie heeft koffie op {het tapijt} gemorst?",
+     "fr": "Qui a renversé du café sur {le tapis} ?"
+    },
+    {
+     "nl": "Leg {een tapijt} onder de tafel, dan is het minder koud.",
+     "fr": "Mets {un tapis} sous la table, il fera moins froid."
+    }
+   ]
   },
   {
    "nl": "de vaas",
-   "fr": "le vase"
+   "fr": "le vase",
+   "ph": [
+    {
+     "nl": "Zet de bloemen in {een vaas}.",
+     "fr": "Mets les fleurs dans {un vase}."
+    },
+    {
+     "nl": "Wie heeft {de vaas} gebroken?",
+     "fr": "Qui a cassé {le vase} ?"
+    },
+    {
+     "nl": "In {de vaas} staan rode rozen.",
+     "fr": "Il y a des roses rouges dans {le vase}."
+    },
+    {
+     "nl": "Ververs elke dag het water in {de vaas}.",
+     "fr": "Change l'eau {du vase} chaque jour."
+    }
+   ]
   },
   {
    "nl": "de kaars",
-   "fr": "la bougie"
+   "fr": "la bougie",
+   "ph": [
+    {
+     "nl": "Er brandt {een kaars} op de tafel.",
+     "fr": "{Une bougie} brûle sur la table."
+    },
+    {
+     "nl": "We hebben geen {kaarsen} meer.",
+     "fr": "Nous n'avons plus de {bougies}."
+    },
+    {
+     "nl": "Blaas {de kaarsen} uit en doe een wens!",
+     "fr": "Souffle {les bougies} et fais un vœu !"
+    },
+    {
+     "nl": "Toen de stroom uitviel, hebben we {een kaars} aangestoken.",
+     "fr": "Quand le courant a été coupé, nous avons allumé {une bougie}."
+    }
+   ]
   },
   {
    "nl": "de schakelaar",
-   "fr": "l'interrupteur"
+   "fr": "l'interrupteur",
+   "ph": [
+    {
+     "nl": "{De schakelaar} is naast de deur.",
+     "fr": "{L'interrupteur} est à côté de la porte."
+    },
+    {
+     "nl": "Ik vind {de schakelaar} niet in het donker.",
+     "fr": "Je ne trouve pas {l'interrupteur} dans le noir."
+    },
+    {
+     "nl": "Druk op {de schakelaar} om het licht aan te doen.",
+     "fr": "Appuie sur {l'interrupteur} pour allumer la lumière."
+    },
+    {
+     "nl": "{De schakelaar} in de gang is kapot.",
+     "fr": "{L'interrupteur} du couloir est cassé."
+    }
+   ]
   },
   {
    "nl": "de verwarming",
-   "fr": "le chauffage"
+   "fr": "le chauffage",
+   "ph": [
+    {
+     "nl": "Zet {de verwarming} wat hoger.",
+     "fr": "Monte un peu {le chauffage}."
+    },
+    {
+     "nl": "{De verwarming} werkt niet sinds gisteren.",
+     "fr": "{Le chauffage} ne marche plus depuis hier."
+    },
+    {
+     "nl": "Het is koud, staat {de verwarming} wel aan?",
+     "fr": "Il fait froid, {le chauffage} est bien allumé ?"
+    },
+    {
+     "nl": "In de zomer zetten we {de verwarming} uit.",
+     "fr": "En été, nous éteignons {le chauffage}."
+    }
+   ]
   },
   {
    "nl": "de haard",
-   "fr": "la cheminée"
+   "fr": "la cheminée",
+   "ph": [
+    {
+     "nl": "We zitten graag bij {de haard}.",
+     "fr": "Nous aimons être assis près de {la cheminée}."
+    },
+    {
+     "nl": "Heeft jullie huis {een haard}?",
+     "fr": "Votre maison a {une cheminée} ?"
+    },
+    {
+     "nl": "Gooi nog wat hout in {de haard}.",
+     "fr": "Remets un peu de bois dans {la cheminée}."
+    },
+    {
+     "nl": "Hangen de kerstsokken al boven {de haard}?",
+     "fr": "Les chaussettes de Noël sont déjà accrochées au-dessus de {la cheminée} ?"
+    }
+   ]
   },
   {
    "nl": "de ladder",
-   "fr": "l'échelle"
+   "fr": "l'échelle",
+   "ph": [
+    {
+     "nl": "Ik heb {een ladder} nodig voor het dak.",
+     "fr": "J'ai besoin d'{une échelle} pour le toit."
+    },
+    {
+     "nl": "{De ladder} staat in de garage.",
+     "fr": "{L'échelle} est dans le garage."
+    },
+    {
+     "nl": "Houd {de ladder} vast, ik klim naar boven.",
+     "fr": "Tiens {l'échelle}, je monte."
+    },
+    {
+     "nl": "Mag ik {jouw ladder} lenen om de appels te plukken?",
+     "fr": "Je peux emprunter {ton échelle} pour cueillir les pommes ?"
+    }
+   ]
   },
   {
    "nl": "de hamer",
-   "fr": "le marteau"
+   "fr": "le marteau",
+   "ph": [
+    {
+     "nl": "Geef me {de hamer}, alsjeblieft.",
+     "fr": "Donne-moi {le marteau}, s'il te plaît."
+    },
+    {
+     "nl": "Waar is {de hamer} gebleven?",
+     "fr": "Où est passé {le marteau} ?"
+    },
+    {
+     "nl": "Sla de spijker in de muur met {een hamer}.",
+     "fr": "Enfonce le clou dans le mur avec {un marteau}."
+    },
+    {
+     "nl": "Au! Ik heb met {de hamer} op mijn vinger geslagen.",
+     "fr": "Aïe ! Je me suis tapé sur le doigt avec {le marteau}."
+    }
+   ]
   },
   {
    "nl": "de schroef",
-   "fr": "la vis"
+   "fr": "la vis",
+   "ph": [
+    {
+     "nl": "Er ontbreekt {een schroef} aan de kast.",
+     "fr": "Il manque {une vis} à l'armoire."
+    },
+    {
+     "nl": "{Deze schroeven} zijn te klein.",
+     "fr": "{Ces vis} sont trop petites."
+    },
+    {
+     "nl": "Draai {de schroef} vast met een schroevendraaier.",
+     "fr": "Serre {la vis} avec un tournevis."
+    },
+    {
+     "nl": "Na het monteren van de kast had ik nog drie {schroeven} over.",
+     "fr": "Après le montage de l'armoire, il me restait trois {vis}."
+    }
+   ]
   },
   {
    "nl": "de spijker",
-   "fr": "le clou"
+   "fr": "le clou",
+   "ph": [
+    {
+     "nl": "Ik sla {een spijker} in de muur.",
+     "fr": "Je plante {un clou} dans le mur."
+    },
+    {
+     "nl": "Heb je nog {spijkers} voor de schilderijen?",
+     "fr": "Tu as encore {des clous} pour les tableaux ?"
+    },
+    {
+     "nl": "Pas op, er steekt {een spijker} uit de plank.",
+     "fr": "Attention, {un clou} dépasse de la planche."
+    },
+    {
+     "nl": "Het schilderij is gevallen, {de spijker} was te klein.",
+     "fr": "Le tableau est tombé, {le clou} était trop petit."
+    }
+   ]
   },
   {
    "nl": "de verf",
-   "fr": "la peinture"
+   "fr": "la peinture",
+   "ph": [
+    {
+     "nl": "{De verf} is nog nat.",
+     "fr": "{La peinture} est encore fraîche."
+    },
+    {
+     "nl": "We hebben {verf} gekocht voor de slaapkamer.",
+     "fr": "Nous avons acheté {de la peinture} pour la chambre."
+    },
+    {
+     "nl": "Welke kleur {verf} wil je voor de keuken?",
+     "fr": "Quelle couleur de {peinture} veux-tu pour la cuisine ?"
+    },
+    {
+     "nl": "Er zit {verf} op je broek!",
+     "fr": "Il y a {de la peinture} sur ton pantalon !"
+    }
+   ]
   },
   {
    "nl": "het gereedschap",
-   "fr": "les outils"
+   "fr": "les outils",
+   "ph": [
+    {
+     "nl": "{Het gereedschap} ligt in de schuur.",
+     "fr": "{Les outils} sont dans la remise."
+    },
+    {
+     "nl": "Ik heb geen {gereedschap} om de kast te repareren.",
+     "fr": "Je n'ai pas d'{outils} pour réparer l'armoire."
+    },
+    {
+     "nl": "Berg {het gereedschap} op na het werk.",
+     "fr": "Range {les outils} après le travail."
+    },
+    {
+     "nl": "Met goed {gereedschap} gaat het werk sneller.",
+     "fr": "Avec de bons {outils}, le travail va plus vite."
+    }
+   ]
   },
   {
    "nl": "de mat",
-   "fr": "le paillasson"
+   "fr": "le paillasson",
+   "ph": [
+    {
+     "nl": "Veeg je voeten op {de mat}.",
+     "fr": "Essuie tes pieds sur {le paillasson}."
+    },
+    {
+     "nl": "De sleutel ligt onder {de mat}.",
+     "fr": "La clé est sous {le paillasson}."
+    },
+    {
+     "nl": "Er staat 'Welkom' op {de mat} voor de deur.",
+     "fr": "Il y a « Bienvenue » écrit sur {le paillasson} devant la porte."
+    },
+    {
+     "nl": "{De mat} is vuil, ik moet hem uitkloppen.",
+     "fr": "{Le paillasson} est sale, je dois le secouer."
+    }
+   ]
   },
   {
    "nl": "het meubel",
-   "fr": "le meuble"
+   "fr": "le meuble",
+   "ph": [
+    {
+     "nl": "{Dit meubel} is te groot voor de kamer.",
+     "fr": "{Ce meuble} est trop grand pour la pièce."
+    },
+    {
+     "nl": "We hebben gisteren {meubels} gekocht.",
+     "fr": "Nous avons acheté {des meubles} hier."
+    },
+    {
+     "nl": "{De meubels} passen niet allemaal in de verhuiswagen.",
+     "fr": "{Les meubles} ne rentrent pas tous dans le camion de déménagement."
+    },
+    {
+     "nl": "We hebben {de meubels} van oma gekregen.",
+     "fr": "Nous avons reçu {les meubles} de grand-mère."
+    }
+   ]
   },
   {
    "nl": "de rommel",
-   "fr": "le désordre"
+   "fr": "le désordre",
+   "ph": [
+    {
+     "nl": "Wat {een rommel} in je kamer!",
+     "fr": "Quel {désordre} dans ta chambre !"
+    },
+    {
+     "nl": "Ik hou niet van {rommel}.",
+     "fr": "Je n'aime pas {le désordre}."
+    },
+    {
+     "nl": "Ruim {die rommel} op voor je vertrekt!",
+     "fr": "Range {ce désordre} avant de partir !"
+    },
+    {
+     "nl": "Na het feest was er veel {rommel} in de woonkamer.",
+     "fr": "Après la fête, il y avait beaucoup de {désordre} dans le salon."
+    }
+   ]
   },
   {
    "nl": "de was",
-   "fr": "la lessive"
+   "fr": "la lessive",
+   "ph": [
+    {
+     "nl": "Ik doe vandaag {de was}.",
+     "fr": "Je fais {la lessive} aujourd'hui."
+    },
+    {
+     "nl": "Heb je {de was} al opgehangen?",
+     "fr": "Tu as déjà étendu {la lessive} ?"
+    },
+    {
+     "nl": "Kun je {de was} uit de wasmachine halen?",
+     "fr": "Tu peux sortir {la lessive} de la machine à laver ?"
+    },
+    {
+     "nl": "Het regent, haal {de was} snel binnen!",
+     "fr": "Il pleut, rentre vite {la lessive} !"
+    }
+   ]
   },
   {
    "nl": "het afval",
-   "fr": "les déchets"
+   "fr": "les déchets",
+   "ph": [
+    {
+     "nl": "Wij sorteren {het afval} altijd zorgvuldig.",
+     "fr": "Nous trions toujours {les déchets} soigneusement."
+    },
+    {
+     "nl": "Wanneer halen ze {het afval} op?",
+     "fr": "Quand est-ce qu'ils ramassent {les déchets} ?"
+    },
+    {
+     "nl": "Breng {het afval} naar het containerpark.",
+     "fr": "Apporte {les déchets} au parc à conteneurs."
+    },
+    {
+     "nl": "Er ligt veel {afval} op straat.",
+     "fr": "Il y a beaucoup de {déchets} dans la rue."
+    }
+   ]
   },
   {
    "nl": "zijn",
    "fr": "être",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {ben} moe na het werk.",
+     "fr": "Je {suis} fatigué après le travail."
+    },
+    {
+     "nl": "{Waren} jullie gisteren de hele dag thuis?",
+     "fr": "Vous {étiez} à la maison toute la journée hier ?"
+    },
+    {
+     "nl": "{Is} de koffie al klaar?",
+     "fr": "Le café {est} déjà prêt ?"
+    },
+    {
+     "nl": "Mijn ouders {zijn} heel vriendelijk.",
+     "fr": "Mes parents {sont} très gentils."
+    }
+   ]
   },
   {
    "nl": "hebben",
    "fr": "avoir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Wij {hebben} een kleine tuin.",
+     "fr": "Nous {avons} un petit jardin."
+    },
+    {
+     "nl": "Ik {had} geen tijd om af te wassen.",
+     "fr": "Je n'{avais} pas le temps de faire la vaisselle."
+    },
+    {
+     "nl": "{Heb} je een pen voor mij?",
+     "fr": "Tu {as} un stylo pour moi ?"
+    },
+    {
+     "nl": "Mijn buren {hebben} twee honden en een kat.",
+     "fr": "Mes voisins {ont} deux chiens et un chat."
+    }
+   ]
   },
   {
    "nl": "blijven",
    "fr": "rester",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {blijf} vandaag de hele dag thuis.",
+     "fr": "Je {reste} à la maison toute la journée aujourd'hui."
+    },
+    {
+     "nl": "Kun je nog even {blijven}?",
+     "fr": "Tu peux {rester} encore un peu ?"
+    },
+    {
+     "nl": "{Blijf} hier, ik kom zo terug!",
+     "fr": "{Reste} ici, je reviens tout de suite !"
+    },
+    {
+     "nl": "Hoe lang zijn jullie in Spanje {gebleven}?",
+     "fr": "Combien de temps êtes-vous {restés} en Espagne ?"
+    }
+   ]
   },
   {
    "nl": "wonen",
    "fr": "habiter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Wij {wonen} in een klein huis.",
+     "fr": "Nous {habitons} dans une petite maison."
+    },
+    {
+     "nl": "Waar {woonde} je vroeger?",
+     "fr": "Où est-ce que tu {habitais} avant ?"
+    },
+    {
+     "nl": "Mijn oma {woont} alleen in een groot huis.",
+     "fr": "Ma grand-mère {habite} seule dans une grande maison."
+    },
+    {
+     "nl": "Ik wil later op het platteland {wonen}.",
+     "fr": "Plus tard, je veux {habiter} à la campagne."
+    }
+   ]
   },
   {
    "nl": "opruimen",
    "fr": "ranger",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Je moet je kamer {opruimen}.",
+     "fr": "Tu dois {ranger} ta chambre."
+    },
+    {
+     "nl": "Ik heb geen zin om de zolder {op te ruimen}.",
+     "fr": "Je n'ai pas envie de {ranger} le grenier."
+    },
+    {
+     "nl": "Als je je speelgoed niet {opruimt}, mag je geen tv kijken.",
+     "fr": "Si tu ne {ranges} pas tes jouets, tu ne peux pas regarder la télé."
+    },
+    {
+     "nl": "Wij hebben samen de garage {opgeruimd}.",
+     "fr": "Nous avons {rangé} le garage ensemble."
+    }
+   ]
   },
   {
    "nl": "schoonmaken",
    "fr": "nettoyer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Morgen gaan we de keuken {schoonmaken}.",
+     "fr": "Demain, nous allons {nettoyer} la cuisine."
+    },
+    {
+     "nl": "Heb je de douche al {schoongemaakt}?",
+     "fr": "Tu as déjà {nettoyé} la douche ?"
+    },
+    {
+     "nl": "Ik moet de oven nog {schoonmaken}.",
+     "fr": "Je dois encore {nettoyer} le four."
+    },
+    {
+     "nl": "Terwijl hij de ramen {schoonmaakte}, begon het te regenen.",
+     "fr": "Pendant qu'il {nettoyait} les fenêtres, il a commencé à pleuvoir."
+    }
+   ]
   },
   {
    "nl": "afwassen",
    "fr": "faire la vaisselle",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Wie gaat er vanavond {afwassen}?",
+     "fr": "Qui va {faire la vaisselle} ce soir ?"
+    },
+    {
+     "nl": "Ik heb gisteren al {afgewassen}.",
+     "fr": "J'ai déjà {fait la vaisselle} hier."
+    },
+    {
+     "nl": "Na het eten moet ik nog {afwassen}.",
+     "fr": "Après le repas, je dois encore {faire la vaisselle}."
+    },
+    {
+     "nl": "Omdat de vaatwasser kapot is, moeten we met de hand {afwassen}.",
+     "fr": "Comme le lave-vaisselle est cassé, nous devons {faire la vaisselle} à la main."
+    }
+   ]
   },
   {
    "nl": "poetsen",
    "fr": "astiquer, nettoyer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Op zaterdag {poetsen} we het hele huis.",
+     "fr": "Le samedi, nous {nettoyons} toute la maison."
+    },
+    {
+     "nl": "Heb je de ramen al {gepoetst}?",
+     "fr": "Tu as déjà {nettoyé} les fenêtres ?"
+    },
+    {
+     "nl": "Mijn moeder {poetst} elke week de keukenvloer.",
+     "fr": "Ma mère {nettoie} le sol de la cuisine chaque semaine."
+    },
+    {
+     "nl": "Hij {poetste} zijn schoenen tot ze glommen.",
+     "fr": "Il {astiquait} ses chaussures jusqu'à ce qu'elles brillent."
+    }
+   ]
   },
   {
    "nl": "stofzuigen",
    "fr": "passer l'aspirateur",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik moet nog {stofzuigen} in de woonkamer.",
+     "fr": "Je dois encore {passer l'aspirateur} dans le salon."
+    },
+    {
+     "nl": "Heb je gisteren de woonkamer {gestofzuigd}?",
+     "fr": "Tu as {passé l'aspirateur} dans le salon hier ?"
+    },
+    {
+     "nl": "Wanneer {stofzuig} je de slaapkamers?",
+     "fr": "Quand est-ce que tu {passes l'aspirateur} dans les chambres ?"
+    },
+    {
+     "nl": "Ik {stofzuig} niet graag, het maakt zoveel lawaai.",
+     "fr": "Je n'aime pas {passer l'aspirateur}, ça fait tellement de bruit."
+    }
+   ]
   },
   {
    "nl": "verhuizen",
    "fr": "déménager",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Volgend jaar {verhuizen} we naar Gent.",
+     "fr": "L'année prochaine, nous {déménageons} à Gand."
+    },
+    {
+     "nl": "Wanneer zijn jullie naar Brussel {verhuisd}?",
+     "fr": "Quand est-ce que vous avez {déménagé} à Bruxelles ?"
+    },
+    {
+     "nl": "Mijn beste vriend {verhuist} volgende maand naar Antwerpen.",
+     "fr": "Mon meilleur ami {déménage} le mois prochain à Anvers."
+    },
+    {
+     "nl": "Ik wil niet meer {verhuizen}, het is te veel werk.",
+     "fr": "Je ne veux plus {déménager}, c'est trop de travail."
+    }
+   ]
   },
   {
    "nl": "openen",
    "fr": "ouvrir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De winkel {opent} om negen uur.",
+     "fr": "Le magasin {ouvre} à neuf heures."
+    },
+    {
+     "nl": "Kun je dit pakje {openen}?",
+     "fr": "Tu peux {ouvrir} ce colis ?"
+    },
+    {
+     "nl": "Wie {opent} de fles wijn?",
+     "fr": "Qui {ouvre} la bouteille de vin ?"
+    },
+    {
+     "nl": "Ik heb je brief nog niet {geopend}.",
+     "fr": "Je n'ai pas encore {ouvert} ta lettre."
+    }
+   ]
   },
   {
    "nl": "sluiten",
    "fr": "fermer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Vergeet niet de deur te {sluiten}.",
+     "fr": "N'oublie pas de {fermer} la porte."
+    },
+    {
+     "nl": "Ik heb het raam niet {gesloten}.",
+     "fr": "Je n'ai pas {fermé} la fenêtre."
+    },
+    {
+     "nl": "De bakker {sluit} op zondag om twaalf uur.",
+     "fr": "Le boulanger {ferme} à midi le dimanche."
+    },
+    {
+     "nl": "{Sluit} je ogen, ik heb een verrassing!",
+     "fr": "{Ferme} les yeux, j'ai une surprise !"
+    }
+   ]
   },
   {
    "nl": "zitten",
    "fr": "être assis",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {zit} graag bij het raam.",
+     "fr": "J'aime {être assis} près de la fenêtre."
+    },
+    {
+     "nl": "De kinderen {zaten} rond de tafel.",
+     "fr": "Les enfants {étaient assis} autour de la table."
+    },
+    {
+     "nl": "Opa {zit} in zijn stoel en leest de krant.",
+     "fr": "Papy {est assis} sur sa chaise et lit le journal."
+    },
+    {
+     "nl": "In de trein {zat} ik naast een oude man.",
+     "fr": "Dans le train, j'{étais assis} à côté d'un vieil homme."
+    }
+   ]
   },
   {
    "nl": "staan",
    "fr": "être debout",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {sta} al sinds zes uur.",
+     "fr": "Je {suis debout} depuis six heures."
+    },
+    {
+     "nl": "Gisteren {stond} ik de hele avond in de keuken.",
+     "fr": "Hier, j'{étais debout} toute la soirée dans la cuisine."
+    },
+    {
+     "nl": "Waarom {sta} je? Er is nog een stoel vrij.",
+     "fr": "Pourquoi tu {es debout} ? Il reste une chaise libre."
+    },
+    {
+     "nl": "Mijn voeten doen pijn, ik heb te lang {gestaan}.",
+     "fr": "J'ai mal aux pieds, j'ai {été debout} trop longtemps."
+    }
+   ]
   },
   {
    "nl": "liggen",
    "fr": "être couché",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De hond {ligt} op het tapijt.",
+     "fr": "Le chien {est couché} sur le tapis."
+    },
+    {
+     "nl": "Ik {lag} de hele middag op de bank.",
+     "fr": "J'{étais couché} sur le canapé tout l'après-midi."
+    },
+    {
+     "nl": "De baby {ligt} rustig in zijn bedje.",
+     "fr": "Le bébé {est couché} tranquillement dans son petit lit."
+    },
+    {
+     "nl": "Blijf niet de hele dag in bed {liggen}!",
+     "fr": "Ne reste pas {couché} au lit toute la journée !"
+    }
+   ]
   },
   {
    "nl": "hangen",
    "fr": "pendre, accrocher",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {hang} de spiegel aan de muur.",
+     "fr": "J'{accroche} le miroir au mur."
+    },
+    {
+     "nl": "Waar wil je de klok {hangen}?",
+     "fr": "Où veux-tu {accrocher} l'horloge ?"
+    },
+    {
+     "nl": "Mijn jas {hangt} aan de kapstok.",
+     "fr": "Mon manteau {est accroché} au portemanteau."
+    },
+    {
+     "nl": "Wie heeft deze foto's aan de muur {gehangen}?",
+     "fr": "Qui a {accroché} ces photos au mur ?"
+    }
+   ]
   },
   {
    "nl": "leggen",
    "fr": "poser (à plat)",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Leg} de sleutel op de tafel.",
+     "fr": "{Pose} la clé sur la table."
+    },
+    {
+     "nl": "Waar heb je mijn boek {gelegd}?",
+     "fr": "Où as-tu {posé} mon livre ?"
+    },
+    {
+     "nl": "Ik {leg} het boek naast mijn bed.",
+     "fr": "Je {pose} le livre à côté de mon lit."
+    },
+    {
+     "nl": "Hij {legde} zijn hand op mijn schouder.",
+     "fr": "Il {a posé} sa main sur mon épaule."
+    }
+   ]
   },
   {
    "nl": "zetten",
    "fr": "poser (debout)",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Zet} de vaas op de tafel.",
+     "fr": "{Pose} le vase sur la table."
+    },
+    {
+     "nl": "Ik heb de glazen op de tafel {gezet}.",
+     "fr": "J'ai {posé} les verres sur la table."
+    },
+    {
+     "nl": "Mag ik mijn tas hier {zetten}?",
+     "fr": "Je peux {poser} mon sac ici ?"
+    },
+    {
+     "nl": "Hij {zette} de boeken netjes op de plank.",
+     "fr": "Il {a posé} soigneusement les livres sur l'étagère."
+    }
+   ]
   },
   {
    "nl": "aansteken",
    "fr": "allumer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Wil je de kaarsen {aansteken}?",
+     "fr": "Tu veux bien {allumer} les bougies ?"
+    },
+    {
+     "nl": "Hij heeft de haard {aangestoken}.",
+     "fr": "Il a {allumé} la cheminée."
+    },
+    {
+     "nl": "Het is donker, kun je het licht {aansteken}?",
+     "fr": "Il fait noir, tu peux {allumer} la lumière ?"
+    },
+    {
+     "nl": "Toen hij de barbecue {aanstak}, begon het te regenen.",
+     "fr": "Quand il {a allumé} le barbecue, il a commencé à pleuvoir."
+    }
+   ]
   },
   {
    "nl": "repareren",
    "fr": "réparer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn vader {repareert} de fiets in de garage.",
+     "fr": "Mon père {répare} le vélo dans le garage."
+    },
+    {
+     "nl": "Heb je de kraan al {gerepareerd}?",
+     "fr": "Tu as déjà {réparé} le robinet ?"
+    },
+    {
+     "nl": "Wie kan de wasmachine {repareren}?",
+     "fr": "Qui peut {réparer} la machine à laver ?"
+    },
+    {
+     "nl": "De loodgieter {repareerde} het toilet in tien minuten.",
+     "fr": "Le plombier {a réparé} les toilettes en dix minutes."
+    }
+   ]
   }
  ]
 }

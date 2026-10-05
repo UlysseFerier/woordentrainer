@@ -5,423 +5,2223 @@
  "mots": [
   {
    "nl": "het werk",
-   "fr": "le travail"
+   "fr": "le travail",
+   "ph": [
+    {
+     "nl": "{Het werk} begint om acht uur.",
+     "fr": "{Le travail} commence à huit heures."
+    },
+    {
+     "nl": "Heb je vandaag veel {werk}?",
+     "fr": "As-tu beaucoup de {travail} aujourd'hui ?"
+    },
+    {
+     "nl": "Na {het werk} ga ik meteen naar huis.",
+     "fr": "Après {le travail}, je rentre directement à la maison."
+    },
+    {
+     "nl": "Stop met praten en ga weer aan {het werk}!",
+     "fr": "Arrête de parler et remets-toi {au travail} !"
+    }
+   ]
   },
   {
    "nl": "de baan",
-   "fr": "l'emploi"
+   "fr": "l'emploi",
+   "ph": [
+    {
+     "nl": "Mijn broer zoekt {een nieuwe baan}.",
+     "fr": "Mon frère cherche {un nouvel emploi}."
+    },
+    {
+     "nl": "Ze heeft {haar baan} vorig jaar verloren.",
+     "fr": "Elle a perdu {son emploi} l'année dernière."
+    },
+    {
+     "nl": "Hij heeft eindelijk {een vaste baan} gevonden.",
+     "fr": "Il a enfin trouvé {un emploi stable}."
+    },
+    {
+     "nl": "Waarom wil je niet van {baan} veranderen?",
+     "fr": "Pourquoi ne veux-tu pas changer d'{emploi} ?"
+    }
+   ]
   },
   {
    "nl": "het kantoor",
-   "fr": "le bureau"
+   "fr": "le bureau",
+   "ph": [
+    {
+     "nl": "{Het kantoor} is op de derde verdieping.",
+     "fr": "{Le bureau} est au troisième étage."
+    },
+    {
+     "nl": "Werk je vandaag niet op {kantoor}?",
+     "fr": "Tu ne travailles pas {au bureau} aujourd'hui ?"
+    },
+    {
+     "nl": "Kom morgen even langs op {het kantoor}.",
+     "fr": "Passe {au bureau} demain."
+    },
+    {
+     "nl": "{Mijn kantoor} heeft geen raam.",
+     "fr": "{Mon bureau} n'a pas de fenêtre."
+    }
+   ]
   },
   {
    "nl": "de vergadering",
-   "fr": "la réunion"
+   "fr": "la réunion",
+   "ph": [
+    {
+     "nl": "{De vergadering} begint om tien uur.",
+     "fr": "{La réunion} commence à dix heures."
+    },
+    {
+     "nl": "Was {de vergadering} gisteren lang?",
+     "fr": "Est-ce que {la réunion} était longue hier ?"
+    },
+    {
+     "nl": "Zet je gsm uit tijdens {de vergadering}.",
+     "fr": "Éteins ton GSM pendant {la réunion}."
+    },
+    {
+     "nl": "Ik kan niet bellen, ik zit in {een vergadering}.",
+     "fr": "Je ne peux pas téléphoner, je suis en {réunion}."
+    }
+   ]
   },
   {
    "nl": "de afspraak",
-   "fr": "le rendez-vous"
+   "fr": "le rendez-vous",
+   "ph": [
+    {
+     "nl": "Ik heb morgen {een afspraak} bij de dokter.",
+     "fr": "J'ai {un rendez-vous} chez le médecin demain."
+    },
+    {
+     "nl": "Kun je {de afspraak} naar vrijdag verplaatsen?",
+     "fr": "Peux-tu déplacer {le rendez-vous} à vendredi ?"
+    },
+    {
+     "nl": "Ik kom te laat voor {mijn afspraak}!",
+     "fr": "Je vais être en retard à {mon rendez-vous} !"
+    },
+    {
+     "nl": "Bel de kapper om {een afspraak} te maken.",
+     "fr": "Appelle le coiffeur pour prendre {un rendez-vous}."
+    }
+   ]
   },
   {
    "nl": "het bedrijf",
-   "fr": "l'entreprise"
+   "fr": "l'entreprise",
+   "ph": [
+    {
+     "nl": "Mijn vader werkt in {een groot bedrijf}.",
+     "fr": "Mon père travaille dans {une grande entreprise}."
+    },
+    {
+     "nl": "Hoeveel mensen werken er in {het bedrijf}?",
+     "fr": "Combien de personnes travaillent dans {l'entreprise} ?"
+    },
+    {
+     "nl": "Hij heeft vorig jaar {zijn eigen bedrijf} opgericht.",
+     "fr": "Il a créé {sa propre entreprise} l'année dernière."
+    },
+    {
+     "nl": "Welk {bedrijf} maakt deze auto's?",
+     "fr": "Quelle {entreprise} fabrique ces voitures ?"
+    }
+   ]
   },
   {
    "nl": "de klant",
-   "fr": "le client"
+   "fr": "le client",
+   "ph": [
+    {
+     "nl": "{De klant} wacht al tien minuten.",
+     "fr": "{Le client} attend depuis dix minutes."
+    },
+    {
+     "nl": "We hebben vandaag geen {klanten} gehad.",
+     "fr": "Nous n'avons pas eu de {clients} aujourd'hui."
+    },
+    {
+     "nl": "{De klant} is koning, zegt mijn baas.",
+     "fr": "{Le client} est roi, dit mon patron."
+    },
+    {
+     "nl": "Komen er op zondag veel {klanten} in de winkel?",
+     "fr": "Y a-t-il beaucoup de {clients} dans le magasin le dimanche ?"
+    }
+   ]
   },
   {
    "nl": "het loon",
-   "fr": "le salaire"
+   "fr": "le salaire",
+   "ph": [
+    {
+     "nl": "{Het loon} wordt op het einde van de maand betaald.",
+     "fr": "{Le salaire} est payé à la fin du mois."
+    },
+    {
+     "nl": "Is {je loon} hoger dan vorig jaar?",
+     "fr": "Est-ce que {ton salaire} est plus élevé que l'année dernière ?"
+    },
+    {
+     "nl": "Hij vraagt {een hoger loon} aan zijn baas.",
+     "fr": "Il demande {un salaire plus élevé} à son patron."
+    },
+    {
+     "nl": "Met {dit loon} kan ik geen huis kopen.",
+     "fr": "Avec {ce salaire}, je ne peux pas acheter de maison."
+    }
+   ]
   },
   {
    "nl": "de vakantie",
-   "fr": "les vacances"
+   "fr": "les vacances",
+   "ph": [
+    {
+     "nl": "In juli gaan we op {vakantie} naar Spanje.",
+     "fr": "En juillet, nous partons en {vacances} en Espagne."
+    },
+    {
+     "nl": "Was {je vakantie} leuk?",
+     "fr": "{Tes vacances} se sont bien passées ?"
+    },
+    {
+     "nl": "Tijdens {de grote vakantie} gaan de kinderen niet naar school.",
+     "fr": "Pendant {les grandes vacances}, les enfants ne vont pas à l'école."
+    },
+    {
+     "nl": "Neem je deze zomer {vakantie}?",
+     "fr": "Tu prends {des vacances} cet été ?"
+    }
+   ]
   },
   {
    "nl": "het uur",
-   "fr": "l'heure"
+   "fr": "l'heure",
+   "ph": [
+    {
+     "nl": "De les duurt precies {een uur}.",
+     "fr": "Le cours dure exactement {une heure}."
+    },
+    {
+     "nl": "Gisteren heb ik drie {uur} gestudeerd.",
+     "fr": "Hier, j'ai étudié trois {heures}."
+    },
+    {
+     "nl": "De trein vertrekt over {een half uur}.",
+     "fr": "Le train part dans {une demi-heure}."
+    },
+    {
+     "nl": "Hoeveel {uur} werk je per week?",
+     "fr": "Combien d'{heures} travailles-tu par semaine ?"
+    }
+   ]
   },
   {
    "nl": "de taak",
-   "fr": "la tâche"
+   "fr": "la tâche",
+   "ph": [
+    {
+     "nl": "Elke leerling krijgt {een taak}.",
+     "fr": "Chaque élève reçoit {une tâche}."
+    },
+    {
+     "nl": "Heb je {je taken} al gedaan?",
+     "fr": "As-tu déjà fait {tes tâches} ?"
+    },
+    {
+     "nl": "Thuis verdelen we {de taken} eerlijk.",
+     "fr": "À la maison, nous partageons {les tâches} équitablement."
+    },
+    {
+     "nl": "{Deze taak} is te zwaar voor één persoon.",
+     "fr": "{Cette tâche} est trop lourde pour une seule personne."
+    }
+   ]
   },
   {
    "nl": "het project",
-   "fr": "le projet"
+   "fr": "le projet",
+   "ph": [
+    {
+     "nl": "We werken samen aan {een nieuw project}.",
+     "fr": "Nous travaillons ensemble sur {un nouveau projet}."
+    },
+    {
+     "nl": "Wanneer is {het project} klaar?",
+     "fr": "Quand {le projet} sera-t-il terminé ?"
+    },
+    {
+     "nl": "{Het project} kost meer geld dan gepland.",
+     "fr": "{Le projet} coûte plus d'argent que prévu."
+    },
+    {
+     "nl": "Wie leidt {dit project}?",
+     "fr": "Qui dirige {ce projet} ?"
+    }
+   ]
   },
   {
    "nl": "de leraar",
-   "fr": "l'enseignant"
+   "fr": "l'enseignant",
+   "ph": [
+    {
+     "nl": "{De leraar} schrijft een zin op het bord.",
+     "fr": "{L'enseignant} écrit une phrase au tableau."
+    },
+    {
+     "nl": "Is {jullie leraar} streng?",
+     "fr": "Est-ce que {votre enseignant} est sévère ?"
+    },
+    {
+     "nl": "{Onze leraar} Frans komt uit Namen.",
+     "fr": "{Notre enseignant} de français vient de Namur."
+    },
+    {
+     "nl": "Steek je vinger op als je {de leraar} iets wilt vragen.",
+     "fr": "Lève le doigt si tu veux demander quelque chose à {l'enseignant}."
+    }
+   ]
   },
   {
    "nl": "de leerling",
-   "fr": "l'élève"
+   "fr": "l'élève",
+   "ph": [
+    {
+     "nl": "Er zitten twintig {leerlingen} in de klas.",
+     "fr": "Il y a vingt {élèves} dans la classe."
+    },
+    {
+     "nl": "{De leerling} heeft zijn huiswerk niet gemaakt.",
+     "fr": "{L'élève} n'a pas fait ses devoirs."
+    },
+    {
+     "nl": "{De beste leerling} krijgt een prijs.",
+     "fr": "{Le meilleur élève} reçoit un prix."
+    },
+    {
+     "nl": "De leraar stuurt {de leerling} naar de directeur.",
+     "fr": "L'enseignant envoie {l'élève} chez le directeur."
+    }
+   ]
   },
   {
    "nl": "de student",
-   "fr": "l'étudiant"
+   "fr": "l'étudiant",
+   "ph": [
+    {
+     "nl": "{De studenten} hebben in juni examens.",
+     "fr": "{Les étudiants} ont des examens en juin."
+    },
+    {
+     "nl": "Ben jij {student} in Leuven?",
+     "fr": "Tu es {étudiant} à Louvain ?"
+    },
+    {
+     "nl": "Veel {studenten} wonen tijdens de week op kot.",
+     "fr": "Beaucoup d'{étudiants} vivent en kot pendant la semaine."
+    },
+    {
+     "nl": "Was jij {een goede student}?",
+     "fr": "Étais-tu {un bon étudiant} ?"
+    }
+   ]
   },
   {
    "nl": "de les",
-   "fr": "le cours"
+   "fr": "le cours",
+   "ph": [
+    {
+     "nl": "{De les} begint om half negen.",
+     "fr": "{Le cours} commence à huit heures et demie."
+    },
+    {
+     "nl": "Ik heb {de les} gisteren gemist.",
+     "fr": "J'ai raté {le cours} hier."
+    },
+    {
+     "nl": "Na {de les} gaan we samen eten.",
+     "fr": "Après {le cours}, nous allons manger ensemble."
+    },
+    {
+     "nl": "Hoe laat eindigt {de laatste les}?",
+     "fr": "À quelle heure se termine {le dernier cours} ?"
+    }
+   ]
   },
   {
    "nl": "het vak",
-   "fr": "la matière"
+   "fr": "la matière",
+   "ph": [
+    {
+     "nl": "Wiskunde is {mijn favoriete vak}.",
+     "fr": "Les maths sont {ma matière préférée}."
+    },
+    {
+     "nl": "Hoeveel {vakken} heb je dit jaar?",
+     "fr": "Combien de {matières} as-tu cette année ?"
+    },
+    {
+     "nl": "Welk {vak} vind je het moeilijkst?",
+     "fr": "Quelle {matière} trouves-tu la plus difficile ?"
+    },
+    {
+     "nl": "Dit jaar krijg ik {een nieuw vak}: economie.",
+     "fr": "Cette année, j'ai {une nouvelle matière} : l'économie."
+    }
+   ]
   },
   {
    "nl": "het huiswerk",
-   "fr": "les devoirs"
+   "fr": "les devoirs",
+   "ph": [
+    {
+     "nl": "Ik maak {mijn huiswerk} na het eten.",
+     "fr": "Je fais {mes devoirs} après le repas."
+    },
+    {
+     "nl": "Heb je vandaag veel {huiswerk}?",
+     "fr": "As-tu beaucoup de {devoirs} aujourd'hui ?"
+    },
+    {
+     "nl": "Je mag pas spelen als {je huiswerk} klaar is.",
+     "fr": "Tu ne pourras jouer que quand {tes devoirs} seront finis."
+    },
+    {
+     "nl": "De leraar heeft vandaag geen {huiswerk} gegeven.",
+     "fr": "L'enseignant n'a pas donné de {devoirs} aujourd'hui."
+    }
+   ]
   },
   {
    "nl": "het examen",
-   "fr": "l'examen"
+   "fr": "l'examen",
+   "ph": [
+    {
+     "nl": "{Het examen} was echt moeilijk.",
+     "fr": "{L'examen} était vraiment difficile."
+    },
+    {
+     "nl": "Wanneer heb je {je examen} Frans?",
+     "fr": "Quand as-tu {ton examen} de français ?"
+    },
+    {
+     "nl": "Veel succes met {je examen} morgen!",
+     "fr": "Bonne chance pour {ton examen} demain !"
+    },
+    {
+     "nl": "In juni studeer ik elke dag voor {de examens}.",
+     "fr": "En juin, j'étudie tous les jours pour {les examens}."
+    }
+   ]
   },
   {
    "nl": "het cijfer",
-   "fr": "la note"
+   "fr": "la note",
+   "ph": [
+    {
+     "nl": "Ze kreeg {een goed cijfer} voor de toets.",
+     "fr": "Elle a eu {une bonne note} au contrôle."
+    },
+    {
+     "nl": "Ben je tevreden met {je cijfers}?",
+     "fr": "Es-tu content de {tes notes} ?"
+    },
+    {
+     "nl": "Mijn ouders zijn boos door {mijn slechte cijfers}.",
+     "fr": "Mes parents sont fâchés à cause de {mes mauvaises notes}."
+    },
+    {
+     "nl": "Welk {cijfer} heb je voor wiskunde gehaald?",
+     "fr": "Quelle {note} as-tu eue en maths ?"
+    }
+   ]
   },
   {
    "nl": "de klas",
-   "fr": "la classe"
+   "fr": "la classe",
+   "ph": [
+    {
+     "nl": "Er zijn vijfentwintig leerlingen in {de klas}.",
+     "fr": "Il y a vingt-cinq élèves dans {la classe}."
+    },
+    {
+     "nl": "In welke {klas} zit je broer?",
+     "fr": "Dans quelle {classe} est ton frère ?"
+    },
+    {
+     "nl": "Wie is de beste leerling van {de klas}?",
+     "fr": "Qui est le meilleur élève de {la classe} ?"
+    },
+    {
+     "nl": "{De hele klas} gaat morgen naar het museum.",
+     "fr": "{Toute la classe} va au musée demain."
+    }
+   ]
   },
   {
    "nl": "het boek",
-   "fr": "le livre"
+   "fr": "le livre",
+   "ph": [
+    {
+     "nl": "Open {het boek} op bladzijde tien.",
+     "fr": "Ouvre {le livre} à la page dix."
+    },
+    {
+     "nl": "Heb je {dat boek} al gelezen?",
+     "fr": "As-tu déjà lu {ce livre} ?"
+    },
+    {
+     "nl": "In de bibliotheek mag je drie {boeken} lenen.",
+     "fr": "À la bibliothèque, tu peux emprunter trois {livres}."
+    },
+    {
+     "nl": "Lees je liever {een boek} of kijk je tv?",
+     "fr": "Tu préfères lire {un livre} ou regarder la télé ?"
+    }
+   ]
   },
   {
    "nl": "het schrift",
-   "fr": "le cahier"
+   "fr": "le cahier",
+   "ph": [
+    {
+     "nl": "Schrijf de oefening in {je schrift}.",
+     "fr": "Écris l'exercice dans {ton cahier}."
+    },
+    {
+     "nl": "Ik ben {mijn schrift} thuis vergeten.",
+     "fr": "J'ai oublié {mon cahier} à la maison."
+    },
+    {
+     "nl": "Neem {jullie schriften} uit jullie boekentas.",
+     "fr": "Sortez {vos cahiers} de vos cartables."
+    },
+    {
+     "nl": "{Dit schrift} heeft geen lege bladzijden meer.",
+     "fr": "{Ce cahier} n'a plus de pages vides."
+    }
+   ]
   },
   {
    "nl": "de pen",
-   "fr": "le stylo"
+   "fr": "le stylo",
+   "ph": [
+    {
+     "nl": "Mag ik {je pen} even lenen?",
+     "fr": "Je peux emprunter {ton stylo} un instant ?"
+    },
+    {
+     "nl": "{De pen} schrijft niet meer.",
+     "fr": "{Le stylo} n'écrit plus."
+    },
+    {
+     "nl": "Schrijf met {een blauwe pen}, niet met potlood.",
+     "fr": "Écris avec {un stylo bleu}, pas au crayon."
+    },
+    {
+     "nl": "Heb je {een pen} om dit formulier in te vullen?",
+     "fr": "As-tu {un stylo} pour remplir ce formulaire ?"
+    }
+   ]
   },
   {
    "nl": "het potlood",
-   "fr": "le crayon"
+   "fr": "le crayon",
+   "ph": [
+    {
+     "nl": "Teken het eerst met {een potlood}.",
+     "fr": "Dessine-le d'abord avec {un crayon}."
+    },
+    {
+     "nl": "Waar is {mijn potlood} gebleven?",
+     "fr": "Où est passé {mon crayon} ?"
+    },
+    {
+     "nl": "{Mijn potlood} is bot, waar is de slijper?",
+     "fr": "{Mon crayon} n'est plus pointu, où est le taille-crayon ?"
+    },
+    {
+     "nl": "Gebruik geen pen, maar {een potlood}.",
+     "fr": "N'utilise pas de stylo, mais {un crayon}."
+    }
+   ]
   },
   {
    "nl": "het papier",
-   "fr": "le papier"
+   "fr": "le papier",
+   "ph": [
+    {
+     "nl": "Heb je nog {papier} voor de printer?",
+     "fr": "As-tu encore {du papier} pour l'imprimante ?"
+    },
+    {
+     "nl": "Schrijf je naam op {het papier}.",
+     "fr": "Écris ton nom sur {le papier}."
+    },
+    {
+     "nl": "Deze zak is gemaakt van {papier}.",
+     "fr": "Ce sac est fait de {papier}."
+    },
+    {
+     "nl": "Neem {een vel papier} en schrijf een brief.",
+     "fr": "Prends {une feuille de papier} et écris une lettre."
+    }
+   ]
   },
   {
    "nl": "de computer",
-   "fr": "l'ordinateur"
+   "fr": "l'ordinateur",
+   "ph": [
+    {
+     "nl": "{De computer} staat op het bureau.",
+     "fr": "{L'ordinateur} est sur le bureau."
+    },
+    {
+     "nl": "{Mijn computer} is gisteren kapotgegaan.",
+     "fr": "{Mon ordinateur} est tombé en panne hier."
+    },
+    {
+     "nl": "Zet {de computer} aan en open je mail.",
+     "fr": "Allume {l'ordinateur} et ouvre tes mails."
+    },
+    {
+     "nl": "Hoeveel heeft {je nieuwe computer} gekost?",
+     "fr": "Combien a coûté {ton nouvel ordinateur} ?"
+    }
+   ]
   },
   {
    "nl": "het scherm",
-   "fr": "l'écran"
+   "fr": "l'écran",
+   "ph": [
+    {
+     "nl": "{Het scherm} van mijn gsm is kapot.",
+     "fr": "{L'écran} de mon GSM est cassé."
+    },
+    {
+     "nl": "Kijk niet te lang naar {het scherm}.",
+     "fr": "Ne regarde pas {l'écran} trop longtemps."
+    },
+    {
+     "nl": "Ik zie niets, {het scherm} is helemaal zwart.",
+     "fr": "Je ne vois rien, {l'écran} est tout noir."
+    },
+    {
+     "nl": "Wil je een tv met {een groter scherm}?",
+     "fr": "Veux-tu une télé avec {un plus grand écran} ?"
+    }
+   ]
   },
   {
    "nl": "de vraag",
-   "fr": "la question"
+   "fr": "la question",
+   "ph": [
+    {
+     "nl": "Mag ik {een vraag} stellen?",
+     "fr": "Puis-je poser {une question} ?"
+    },
+    {
+     "nl": "Ik begreep {de laatste vraag} niet.",
+     "fr": "Je n'ai pas compris {la dernière question}."
+    },
+    {
+     "nl": "Het examen had twintig {vragen}.",
+     "fr": "L'examen comportait vingt {questions}."
+    },
+    {
+     "nl": "Beantwoord eerst {de makkelijke vragen}.",
+     "fr": "Réponds d'abord {aux questions faciles}."
+    }
+   ]
   },
   {
    "nl": "het antwoord",
-   "fr": "la réponse"
+   "fr": "la réponse",
+   "ph": [
+    {
+     "nl": "Weet jij {het antwoord}?",
+     "fr": "Tu connais {la réponse} ?"
+    },
+    {
+     "nl": "Schrijf {je antwoord} op het blad.",
+     "fr": "Écris {ta réponse} sur la feuille."
+    },
+    {
+     "nl": "Ik heb nog geen {antwoord} op mijn mail gekregen.",
+     "fr": "Je n'ai pas encore reçu de {réponse} à mon mail."
+    },
+    {
+     "nl": "Is dit {het juiste antwoord}?",
+     "fr": "Est-ce {la bonne réponse} ?"
+    }
+   ]
   },
   {
    "nl": "de fout",
-   "fr": "l'erreur"
+   "fr": "l'erreur",
+   "ph": [
+    {
+     "nl": "Ik heb drie {fouten} gemaakt in het dictee.",
+     "fr": "J'ai fait trois {erreurs} dans la dictée."
+    },
+    {
+     "nl": "Dat is niet erg, iedereen maakt {fouten}.",
+     "fr": "Ce n'est pas grave, tout le monde fait {des erreurs}."
+    },
+    {
+     "nl": "Sorry, dat was {mijn fout}.",
+     "fr": "Désolé, c'était {mon erreur}."
+    },
+    {
+     "nl": "Verbeter {de fouten} in je tekst.",
+     "fr": "Corrige {les erreurs} dans ton texte."
+    }
+   ]
   },
   {
    "nl": "de oefening",
-   "fr": "l'exercice"
+   "fr": "l'exercice",
+   "ph": [
+    {
+     "nl": "Maak {oefening} vijf op bladzijde twaalf.",
+     "fr": "Fais {l'exercice} cinq à la page douze."
+    },
+    {
+     "nl": "Was {de oefening} moeilijk?",
+     "fr": "Est-ce que {l'exercice} était difficile ?"
+    },
+    {
+     "nl": "We maken {de volgende oefening} samen.",
+     "fr": "Nous faisons {l'exercice suivant} ensemble."
+    },
+    {
+     "nl": "Ik heb {alle oefeningen} van bladzijde tien gemaakt.",
+     "fr": "J'ai fait {tous les exercices} de la page dix."
+    }
+   ]
   },
   {
    "nl": "het woord",
-   "fr": "le mot"
+   "fr": "le mot",
+   "ph": [
+    {
+     "nl": "Ik ken {dat woord} niet.",
+     "fr": "Je ne connais pas {ce mot}."
+    },
+    {
+     "nl": "Hoe schrijf je {dit woord}?",
+     "fr": "Comment écris-tu {ce mot} ?"
+    },
+    {
+     "nl": "Zoek {het woord} op in het woordenboek.",
+     "fr": "Cherche {le mot} dans le dictionnaire."
+    },
+    {
+     "nl": "'Gezellig' is {mijn favoriete Nederlandse woord}.",
+     "fr": "« Gezellig » est {mon mot néerlandais préféré}."
+    }
+   ]
   },
   {
    "nl": "de zin",
-   "fr": "la phrase"
+   "fr": "la phrase",
+   "ph": [
+    {
+     "nl": "Lees {de eerste zin} luidop.",
+     "fr": "Lis {la première phrase} à voix haute."
+    },
+    {
+     "nl": "{Deze zin} is veel te lang.",
+     "fr": "{Cette phrase} est beaucoup trop longue."
+    },
+    {
+     "nl": "Maak {een zin} met het woord 'huis'.",
+     "fr": "Fais {une phrase} avec le mot « maison »."
+    },
+    {
+     "nl": "{Elke zin} begint met een hoofdletter.",
+     "fr": "{Chaque phrase} commence par une majuscule."
+    }
+   ]
   },
   {
    "nl": "de taal",
-   "fr": "la langue"
+   "fr": "la langue",
+   "ph": [
+    {
+     "nl": "Nederlands is {een moeilijke taal}.",
+     "fr": "Le néerlandais est {une langue difficile}."
+    },
+    {
+     "nl": "Hoeveel {talen} spreek jij?",
+     "fr": "Combien de {langues} parles-tu ?"
+    },
+    {
+     "nl": "In België zijn er drie {officiële talen}.",
+     "fr": "En Belgique, il y a trois {langues officielles}."
+    },
+    {
+     "nl": "Ik spreek {die taal} helemaal niet.",
+     "fr": "Je ne parle pas du tout {cette langue}."
+    }
+   ]
   },
   {
    "nl": "de regel",
-   "fr": "la règle"
+   "fr": "la règle",
+   "ph": [
+    {
+     "nl": "Ken je {de regel} voor het meervoud?",
+     "fr": "Connais-tu {la règle} du pluriel ?"
+    },
+    {
+     "nl": "In de klas zijn er duidelijke {regels}.",
+     "fr": "En classe, il y a {des règles} claires."
+    },
+    {
+     "nl": "Je moet je aan {de regels} houden.",
+     "fr": "Tu dois respecter {les règles}."
+    },
+    {
+     "nl": "{Deze regel} heeft veel uitzonderingen.",
+     "fr": "{Cette règle} a beaucoup d'exceptions."
+    }
+   ]
   },
   {
    "nl": "het voorbeeld",
-   "fr": "l'exemple"
+   "fr": "l'exemple",
+   "ph": [
+    {
+     "nl": "Kun je {een voorbeeld} geven?",
+     "fr": "Peux-tu donner {un exemple} ?"
+    },
+    {
+     "nl": "{Het voorbeeld} staat onderaan de bladzijde.",
+     "fr": "{L'exemple} se trouve en bas de la page."
+    },
+    {
+     "nl": "Volg {het voorbeeld} van je grote zus.",
+     "fr": "Suis {l'exemple} de ta grande sœur."
+    },
+    {
+     "nl": "Ik begrijp het niet zonder {een voorbeeld}.",
+     "fr": "Je ne comprends pas sans {un exemple}."
+    }
+   ]
   },
   {
    "nl": "de uitleg",
-   "fr": "l'explication"
+   "fr": "l'explication",
+   "ph": [
+    {
+     "nl": "Dank je wel voor {de duidelijke uitleg}.",
+     "fr": "Merci beaucoup pour {l'explication claire}."
+    },
+    {
+     "nl": "Ik begreep {zijn uitleg} niet.",
+     "fr": "Je n'ai pas compris {son explication}."
+    },
+    {
+     "nl": "Na {de uitleg} van de leraar was alles duidelijk.",
+     "fr": "Après {l'explication} de l'enseignant, tout était clair."
+    },
+    {
+     "nl": "Lees eerst {de uitleg} en maak dan de oefening.",
+     "fr": "Lis d'abord {l'explication}, puis fais l'exercice."
+    }
+   ]
   },
   {
    "nl": "de kennis",
-   "fr": "le savoir"
+   "fr": "le savoir",
+   "ph": [
+    {
+     "nl": "{Kennis} is belangrijk voor je toekomst.",
+     "fr": "{Le savoir} est important pour ton avenir."
+    },
+    {
+     "nl": "Hij deelt graag {zijn kennis} met anderen.",
+     "fr": "Il aime partager {son savoir} avec les autres."
+    },
+    {
+     "nl": "{Haar kennis} van geschiedenis is indrukwekkend.",
+     "fr": "{Son savoir} en histoire est impressionnant."
+    },
+    {
+     "nl": "Je kunt {kennis} niet kopen.",
+     "fr": "On ne peut pas acheter {le savoir}."
+    }
+   ]
   },
   {
    "nl": "het diploma",
-   "fr": "le diplôme"
+   "fr": "le diplôme",
+   "ph": [
+    {
+     "nl": "Ze heeft vorig jaar {haar diploma} gehaald.",
+     "fr": "Elle a obtenu {son diplôme} l'année dernière."
+    },
+    {
+     "nl": "Heb je {een diploma} nodig voor die baan?",
+     "fr": "As-tu besoin d'{un diplôme} pour cet emploi ?"
+    },
+    {
+     "nl": "Zonder {diploma} is het moeilijk om werk te vinden.",
+     "fr": "Sans {diplôme}, il est difficile de trouver du travail."
+    },
+    {
+     "nl": "Wanneer krijg je {je diploma}?",
+     "fr": "Quand reçois-tu {ton diplôme} ?"
+    }
+   ]
   },
   {
    "nl": "de sollicitatie",
-   "fr": "la candidature"
+   "fr": "la candidature",
+   "ph": [
+    {
+     "nl": "Ik heb {mijn sollicitatie} gisteren verstuurd.",
+     "fr": "J'ai envoyé {ma candidature} hier."
+    },
+    {
+     "nl": "Hoeveel {sollicitaties} heeft het bedrijf ontvangen?",
+     "fr": "Combien de {candidatures} l'entreprise a-t-elle reçues ?"
+    },
+    {
+     "nl": "Stuur {je sollicitatie} voor vrijdag naar het bedrijf.",
+     "fr": "Envoie {ta candidature} à l'entreprise avant vendredi."
+    },
+    {
+     "nl": "Helaas is {haar sollicitatie} afgewezen.",
+     "fr": "Malheureusement, {sa candidature} a été refusée."
+    }
+   ]
   },
   {
    "nl": "het contract",
-   "fr": "le contrat"
+   "fr": "le contrat",
+   "ph": [
+    {
+     "nl": "Lees {het contract} goed voor je tekent.",
+     "fr": "Lis bien {le contrat} avant de signer."
+    },
+    {
+     "nl": "Ze heeft {het contract} nog niet getekend.",
+     "fr": "Elle n'a pas encore signé {le contrat}."
+    },
+    {
+     "nl": "{Mijn contract} loopt eind juni af.",
+     "fr": "{Mon contrat} se termine fin juin."
+    },
+    {
+     "nl": "Wanneer krijg ik {een vast contract}?",
+     "fr": "Quand est-ce que j'aurai {un contrat fixe} ?"
+    }
+   ]
   },
   {
    "nl": "het pensioen",
-   "fr": "la retraite"
+   "fr": "la retraite",
+   "ph": [
+    {
+     "nl": "Mijn grootvader is al tien jaar met {pensioen}.",
+     "fr": "Mon grand-père est à {la retraite} depuis dix ans."
+    },
+    {
+     "nl": "Wanneer gaat je moeder met {pensioen}?",
+     "fr": "Quand ta mère part-elle à {la retraite} ?"
+    },
+    {
+     "nl": "Met {zijn pensioen} kan hij goed leven.",
+     "fr": "Avec {sa retraite}, il peut bien vivre."
+    },
+    {
+     "nl": "Mijn oma geniet van {haar pensioen} aan zee.",
+     "fr": "Ma grand-mère profite de {sa retraite} à la mer."
+    }
+   ]
   },
   {
    "nl": "de werkgever",
-   "fr": "l'employeur"
+   "fr": "l'employeur",
+   "ph": [
+    {
+     "nl": "{Mijn werkgever} betaalt mijn treinabonnement.",
+     "fr": "{Mon employeur} paie mon abonnement de train."
+    },
+    {
+     "nl": "Is {je werkgever} tevreden over je werk?",
+     "fr": "Est-ce que {ton employeur} est content de ton travail ?"
+    },
+    {
+     "nl": "Je moet {je werkgever} verwittigen als je ziek bent.",
+     "fr": "Tu dois prévenir {ton employeur} si tu es malade."
+    },
+    {
+     "nl": "{De werkgever} heeft het contract nog niet getekend.",
+     "fr": "{L'employeur} n'a pas encore signé le contrat."
+    }
+   ]
   },
   {
    "nl": "de werknemer",
-   "fr": "l'employé"
+   "fr": "l'employé",
+   "ph": [
+    {
+     "nl": "Het bedrijf heeft vijftig {werknemers}.",
+     "fr": "L'entreprise compte cinquante {employés}."
+    },
+    {
+     "nl": "{De nieuwe werknemer} begint maandag.",
+     "fr": "{Le nouvel employé} commence lundi."
+    },
+    {
+     "nl": "{Elke werknemer} heeft recht op twintig vakantiedagen.",
+     "fr": "{Chaque employé} a droit à vingt jours de congé."
+    },
+    {
+     "nl": "Is hij {een goede werknemer}?",
+     "fr": "Est-il {un bon employé} ?"
+    }
+   ]
   },
   {
    "nl": "de werkloosheid",
-   "fr": "le chômage"
+   "fr": "le chômage",
+   "ph": [
+    {
+     "nl": "{De werkloosheid} is dit jaar gedaald.",
+     "fr": "{Le chômage} a baissé cette année."
+    },
+    {
+     "nl": "Is {de werkloosheid} hoog in deze stad?",
+     "fr": "Est-ce que {le chômage} est élevé dans cette ville ?"
+    },
+    {
+     "nl": "Door de crisis stijgt {de werkloosheid}.",
+     "fr": "À cause de la crise, {le chômage} augmente."
+    },
+    {
+     "nl": "Na {een jaar werkloosheid} vond hij een nieuwe baan.",
+     "fr": "Après {un an de chômage}, il a trouvé un nouvel emploi."
+    }
+   ]
   },
   {
    "nl": "de staking",
-   "fr": "la grève"
+   "fr": "la grève",
+   "ph": [
+    {
+     "nl": "Door {de staking} rijden er geen treinen.",
+     "fr": "À cause de {la grève}, il n'y a pas de trains."
+    },
+    {
+     "nl": "Was er gisteren {een staking} op school?",
+     "fr": "Y avait-il {une grève} à l'école hier ?"
+    },
+    {
+     "nl": "{De staking} duurt al drie dagen.",
+     "fr": "{La grève} dure depuis trois jours."
+    },
+    {
+     "nl": "Gaan de leraren morgen in {staking}?",
+     "fr": "Les enseignants font-ils {grève} demain ?"
+    }
+   ]
   },
   {
    "nl": "de ploeg",
-   "fr": "l'équipe"
+   "fr": "l'équipe",
+   "ph": [
+    {
+     "nl": "{Onze ploeg} werkt goed samen.",
+     "fr": "{Notre équipe} travaille bien ensemble."
+    },
+    {
+     "nl": "In welke {ploeg} speel jij?",
+     "fr": "Dans quelle {équipe} joues-tu ?"
+    },
+    {
+     "nl": "{De ploeg} van mijn broer heeft gisteren verloren.",
+     "fr": "{L'équipe} de mon frère a perdu hier."
+    },
+    {
+     "nl": "Je kunt dit niet alleen, je hebt {een ploeg} nodig.",
+     "fr": "Tu ne peux pas le faire seul, tu as besoin d'{une équipe}."
+    }
+   ]
   },
   {
    "nl": "de dienst",
-   "fr": "le service"
+   "fr": "le service",
+   "ph": [
+    {
+     "nl": "Hij werkt op {de dienst} boekhouding.",
+     "fr": "Il travaille {au service} comptabilité."
+    },
+    {
+     "nl": "Kun je me {een dienst} bewijzen?",
+     "fr": "Peux-tu me rendre {un service} ?"
+    },
+    {
+     "nl": "Ik heb je {een dienst} bewezen, nu help jij mij.",
+     "fr": "Je t'ai rendu {un service}, maintenant c'est à toi de m'aider."
+    },
+    {
+     "nl": "Bel {de technische dienst} als de printer kapot is.",
+     "fr": "Appelle {le service technique} si l'imprimante est en panne."
+    }
+   ]
   },
   {
    "nl": "het beroep",
-   "fr": "le métier"
+   "fr": "le métier",
+   "ph": [
+    {
+     "nl": "Wat is {jouw beroep} precies?",
+     "fr": "Quel est {ton métier} exactement ?"
+    },
+    {
+     "nl": "Kok is {een zwaar beroep}.",
+     "fr": "Cuisinier, c'est {un métier pénible}."
+    },
+    {
+     "nl": "Welk {beroep} wil je later uitoefenen?",
+     "fr": "Quel {métier} veux-tu exercer plus tard ?"
+    },
+    {
+     "nl": "Mijn grootvader was timmerman van {beroep}.",
+     "fr": "Mon grand-père était menuisier de {métier}."
+    }
+   ]
   },
   {
    "nl": "de carrière",
-   "fr": "la carrière"
+   "fr": "la carrière",
+   "ph": [
+    {
+     "nl": "Ze heeft {een mooie carrière} gehad.",
+     "fr": "Elle a eu {une belle carrière}."
+    },
+    {
+     "nl": "Hij begon {zijn carrière} als leraar.",
+     "fr": "Il a commencé {sa carrière} comme enseignant."
+    },
+    {
+     "nl": "Ze stopte {haar carrière} om voor haar kinderen te zorgen.",
+     "fr": "Elle a arrêté {sa carrière} pour s'occuper de ses enfants."
+    },
+    {
+     "nl": "Wat zijn je plannen voor {je carrière}?",
+     "fr": "Quels sont tes projets pour {ta carrière} ?"
+    }
+   ]
   },
   {
    "nl": "de opleiding",
-   "fr": "la formation"
+   "fr": "la formation",
+   "ph": [
+    {
+     "nl": "Ik volg {een opleiding} tot verpleegkundige.",
+     "fr": "Je suis {une formation} d'infirmier."
+    },
+    {
+     "nl": "Hoe lang duurt {de opleiding}?",
+     "fr": "Combien de temps dure {la formation} ?"
+    },
+    {
+     "nl": "Na {de opleiding} kun je meteen beginnen werken.",
+     "fr": "Après {la formation}, tu peux commencer à travailler tout de suite."
+    },
+    {
+     "nl": "Het bedrijf betaalt {een opleiding} voor zijn werknemers.",
+     "fr": "L'entreprise paie {une formation} à ses employés."
+    }
+   ]
   },
   {
    "nl": "de universiteit",
-   "fr": "l'université"
+   "fr": "l'université",
+   "ph": [
+    {
+     "nl": "Mijn zus studeert aan {de universiteit} van Gent.",
+     "fr": "Ma sœur étudie à {l'université} de Gand."
+    },
+    {
+     "nl": "Is {de universiteit} ver van het station?",
+     "fr": "Est-ce que {l'université} est loin de la gare ?"
+    },
+    {
+     "nl": "{De universiteit} van Leuven is de oudste van België.",
+     "fr": "{L'université} de Louvain est la plus ancienne de Belgique."
+    },
+    {
+     "nl": "Hij werkt als professor aan {de universiteit}.",
+     "fr": "Il travaille comme professeur à {l'université}."
+    }
+   ]
   },
   {
    "nl": "de hogeschool",
-   "fr": "la haute école"
+   "fr": "la haute école",
+   "ph": [
+    {
+     "nl": "Hij volgt een opleiding aan {een hogeschool}.",
+     "fr": "Il suit une formation dans {une haute école}."
+    },
+    {
+     "nl": "{De hogeschool} ligt in het centrum van de stad.",
+     "fr": "{La haute école} se trouve au centre de la ville."
+    },
+    {
+     "nl": "Ze studeert verpleegkunde aan {een hogeschool}.",
+     "fr": "Elle étudie les soins infirmiers dans {une haute école}."
+    },
+    {
+     "nl": "{De hogeschool} is praktischer dan de universiteit.",
+     "fr": "{La haute école} est plus pratique que l'université."
+    }
+   ]
   },
   {
    "nl": "de directeur",
-   "fr": "le directeur"
+   "fr": "le directeur",
+   "ph": [
+    {
+     "nl": "{De directeur} wil je even spreken.",
+     "fr": "{Le directeur} veut te parler un instant."
+    },
+    {
+     "nl": "Heb je {de nieuwe directeur} al ontmoet?",
+     "fr": "As-tu déjà rencontré {le nouveau directeur} ?"
+    },
+    {
+     "nl": "Na het gevecht moest hij naar {de directeur}.",
+     "fr": "Après la bagarre, il a dû aller chez {le directeur}."
+    },
+    {
+     "nl": "Wie is {de directeur} van deze school?",
+     "fr": "Qui est {le directeur} de cette école ?"
+    }
+   ]
   },
   {
    "nl": "de secretaresse",
-   "fr": "la secrétaire"
+   "fr": "la secrétaire",
+   "ph": [
+    {
+     "nl": "{De secretaresse} neemt de telefoon op.",
+     "fr": "{La secrétaire} répond au téléphone."
+    },
+    {
+     "nl": "Vraag het maar aan {de secretaresse}.",
+     "fr": "Demande-le donc à {la secrétaire}."
+    },
+    {
+     "nl": "{De secretaresse} heeft mijn afspraak verplaatst.",
+     "fr": "{La secrétaire} a déplacé mon rendez-vous."
+    },
+    {
+     "nl": "De directeur dicteert een brief aan {zijn secretaresse}.",
+     "fr": "Le directeur dicte une lettre à {sa secrétaire}."
+    }
+   ]
   },
   {
    "nl": "de ingenieur",
-   "fr": "l'ingénieur"
+   "fr": "l'ingénieur",
+   "ph": [
+    {
+     "nl": "Haar broer is {ingenieur} bij een groot bedrijf.",
+     "fr": "Son frère est {ingénieur} dans une grande entreprise."
+    },
+    {
+     "nl": "{De ingenieurs} werken aan een nieuwe brug.",
+     "fr": "{Les ingénieurs} travaillent sur un nouveau pont."
+    },
+    {
+     "nl": "{Een ingenieur} heeft dit gebouw ontworpen.",
+     "fr": "{Un ingénieur} a conçu ce bâtiment."
+    },
+    {
+     "nl": "Om {ingenieur} te worden, moet je veel wiskunde studeren.",
+     "fr": "Pour devenir {ingénieur}, il faut étudier beaucoup de maths."
+    }
+   ]
   },
   {
    "nl": "de boer",
-   "fr": "l'agriculteur"
+   "fr": "l'agriculteur",
+   "ph": [
+    {
+     "nl": "{De boer} werkt elke dag op het veld.",
+     "fr": "{L'agriculteur} travaille tous les jours aux champs."
+    },
+    {
+     "nl": "Wij kopen onze eieren bij {een boer}.",
+     "fr": "Nous achetons nos œufs chez {un agriculteur}."
+    },
+    {
+     "nl": "{De boer} melkt zijn koeien elke ochtend.",
+     "fr": "{L'agriculteur} trait ses vaches chaque matin."
+    },
+    {
+     "nl": "Heeft {de boer} veel varkens?",
+     "fr": "Est-ce que {l'agriculteur} a beaucoup de cochons ?"
+    }
+   ]
   },
   {
    "nl": "de kok",
-   "fr": "le cuisinier"
+   "fr": "le cuisinier",
+   "ph": [
+    {
+     "nl": "{De kok} maakt een lekkere soep.",
+     "fr": "{Le cuisinier} prépare une bonne soupe."
+    },
+    {
+     "nl": "Wil je later {kok} worden?",
+     "fr": "Veux-tu devenir {cuisinier} plus tard ?"
+    },
+    {
+     "nl": "{De kok} heeft het vlees te lang gebakken.",
+     "fr": "{Le cuisinier} a trop cuit la viande."
+    },
+    {
+     "nl": "Mijn complimenten aan {de kok}, het was heerlijk!",
+     "fr": "Mes compliments {au cuisinier}, c'était délicieux !"
+    }
+   ]
   },
   {
    "nl": "de kapper",
-   "fr": "le coiffeur"
+   "fr": "le coiffeur",
+   "ph": [
+    {
+     "nl": "Ik ga morgen naar {de kapper}.",
+     "fr": "Je vais chez {le coiffeur} demain."
+    },
+    {
+     "nl": "{De kapper} heeft mijn haar te kort geknipt.",
+     "fr": "{Le coiffeur} m'a coupé les cheveux trop court."
+    },
+    {
+     "nl": "{Mijn kapper} is op maandag gesloten.",
+     "fr": "{Mon coiffeur} est fermé le lundi."
+    },
+    {
+     "nl": "Je haar is te lang, je moet naar {de kapper}.",
+     "fr": "Tes cheveux sont trop longs, tu dois aller chez {le coiffeur}."
+    }
+   ]
   },
   {
    "nl": "de monteur",
-   "fr": "le mécanicien"
+   "fr": "le mécanicien",
+   "ph": [
+    {
+     "nl": "{De monteur} herstelt mijn auto.",
+     "fr": "{Le mécanicien} répare ma voiture."
+    },
+    {
+     "nl": "Heeft {de monteur} al gebeld?",
+     "fr": "Est-ce que {le mécanicien} a déjà appelé ?"
+    },
+    {
+     "nl": "{De monteur} zegt dat de remmen versleten zijn.",
+     "fr": "{Le mécanicien} dit que les freins sont usés."
+    },
+    {
+     "nl": "Mijn auto maakt een raar geluid, ik bel {de monteur}.",
+     "fr": "Ma voiture fait un bruit bizarre, j'appelle {le mécanicien}."
+    }
+   ]
   },
   {
    "nl": "de schrijver",
-   "fr": "l'écrivain"
+   "fr": "l'écrivain",
+   "ph": [
+    {
+     "nl": "Hugo Claus is {een bekende Vlaamse schrijver}.",
+     "fr": "Hugo Claus est {un écrivain flamand connu}."
+    },
+    {
+     "nl": "{De schrijver} heeft vorig jaar een nieuw boek uitgebracht.",
+     "fr": "{L'écrivain} a publié un nouveau livre l'année dernière."
+    },
+    {
+     "nl": "Wie is {de schrijver} van dit boek?",
+     "fr": "Qui est {l'écrivain} de ce livre ?"
+    },
+    {
+     "nl": "Hij wil later {schrijver} worden.",
+     "fr": "Il veut devenir {écrivain} plus tard."
+    }
+   ]
   },
   {
    "nl": "de kunstenaar",
-   "fr": "l'artiste"
+   "fr": "l'artiste",
+   "ph": [
+    {
+     "nl": "{De kunstenaar} schildert een portret van mijn moeder.",
+     "fr": "{L'artiste} peint un portrait de ma mère."
+    },
+    {
+     "nl": "Was je grootvader ook {kunstenaar}?",
+     "fr": "Ton grand-père était-il aussi {artiste} ?"
+    },
+    {
+     "nl": "Dit museum toont werken van {Belgische kunstenaars}.",
+     "fr": "Ce musée montre des œuvres d'{artistes belges}."
+    },
+    {
+     "nl": "{De kunstenaar} heeft dit beeld zelf gemaakt.",
+     "fr": "{L'artiste} a fait cette sculpture lui-même."
+    }
+   ]
   },
   {
    "nl": "het schooljaar",
-   "fr": "l'année scolaire"
+   "fr": "l'année scolaire",
+   "ph": [
+    {
+     "nl": "{Het schooljaar} begint op 1 september.",
+     "fr": "{L'année scolaire} commence le 1er septembre."
+    },
+    {
+     "nl": "Hoe was {je eerste schooljaar}?",
+     "fr": "Comment s'est passée {ta première année scolaire} ?"
+    },
+    {
+     "nl": "{Het schooljaar} eindigt eind juni.",
+     "fr": "{L'année scolaire} se termine fin juin."
+    },
+    {
+     "nl": "{Dit schooljaar} heb ik veel geleerd.",
+     "fr": "{Cette année scolaire}, j'ai beaucoup appris."
+    }
+   ]
   },
   {
    "nl": "het rapport",
-   "fr": "le bulletin"
+   "fr": "le bulletin",
+   "ph": [
+    {
+     "nl": "Morgen krijgen de leerlingen {hun rapport}.",
+     "fr": "Demain, les élèves reçoivent {leur bulletin}."
+    },
+    {
+     "nl": "Heb je {je rapport} al aan je ouders getoond?",
+     "fr": "As-tu déjà montré {ton bulletin} à tes parents ?"
+    },
+    {
+     "nl": "Er staan alleen goede cijfers op {mijn rapport}.",
+     "fr": "Il n'y a que de bonnes notes sur {mon bulletin}."
+    },
+    {
+     "nl": "Je ouders moeten {het rapport} ondertekenen.",
+     "fr": "Tes parents doivent signer {le bulletin}."
+    }
+   ]
   },
   {
    "nl": "de toets",
-   "fr": "le contrôle"
+   "fr": "le contrôle",
+   "ph": [
+    {
+     "nl": "Morgen hebben we {een toets} wiskunde.",
+     "fr": "Demain, nous avons {un contrôle} de maths."
+    },
+    {
+     "nl": "{De toets} was niet zo moeilijk.",
+     "fr": "{Le contrôle} n'était pas si difficile."
+    },
+    {
+     "nl": "Leer de woorden voor {de toets} van vrijdag.",
+     "fr": "Apprends les mots pour {le contrôle} de vendredi."
+    },
+    {
+     "nl": "Hoeveel had je op {de toets} van gisteren?",
+     "fr": "Combien as-tu eu {au contrôle} d'hier ?"
+    }
+   ]
   },
   {
    "nl": "het resultaat",
-   "fr": "le résultat"
+   "fr": "le résultat",
+   "ph": [
+    {
+     "nl": "Wanneer krijgen we {de resultaten} van het examen?",
+     "fr": "Quand recevons-nous {les résultats} de l'examen ?"
+    },
+    {
+     "nl": "Ik ben niet tevreden met {mijn resultaat}.",
+     "fr": "Je ne suis pas satisfait de {mon résultat}."
+    },
+    {
+     "nl": "Hard werken geeft {goede resultaten}.",
+     "fr": "Travailler dur donne {de bons résultats}."
+    },
+    {
+     "nl": "Wat was {het resultaat} van de match?",
+     "fr": "Quel était {le résultat} du match ?"
+    }
+   ]
   },
   {
    "nl": "de pauze",
-   "fr": "la récréation, la pause"
+   "fr": "la récréation, la pause",
+   "ph": [
+    {
+     "nl": "Tijdens {de pauze} spelen de kinderen buiten.",
+     "fr": "Pendant {la récréation}, les enfants jouent dehors."
+    },
+    {
+     "nl": "We nemen om tien uur {een korte pauze}.",
+     "fr": "Nous faisons {une courte pause} à dix heures."
+    },
+    {
+     "nl": "Na {de pauze} gaan we verder met de les.",
+     "fr": "Après {la pause}, nous continuons le cours."
+    },
+    {
+     "nl": "Mag ik even {een pauze} nemen?",
+     "fr": "Puis-je faire {une pause} un instant ?"
+    }
+   ]
   },
   {
    "nl": "de speelplaats",
-   "fr": "la cour de récréation"
+   "fr": "la cour de récréation",
+   "ph": [
+    {
+     "nl": "De kinderen spelen op {de speelplaats}.",
+     "fr": "Les enfants jouent dans {la cour de récréation}."
+    },
+    {
+     "nl": "Is {de speelplaats} groot genoeg?",
+     "fr": "Est-ce que {la cour de récréation} est assez grande ?"
+    },
+    {
+     "nl": "De leerlingen mogen niet voetballen op {de speelplaats}.",
+     "fr": "Les élèves ne peuvent pas jouer au foot dans {la cour de récréation}."
+    },
+    {
+     "nl": "Er staat een grote boom midden op {de speelplaats}.",
+     "fr": "Il y a un grand arbre au milieu de {la cour de récréation}."
+    }
+   ]
   },
   {
    "nl": "het lokaal",
-   "fr": "la salle de classe"
+   "fr": "la salle de classe",
+   "ph": [
+    {
+     "nl": "{Het lokaal} is te klein voor dertig leerlingen.",
+     "fr": "{La salle de classe} est trop petite pour trente élèves."
+    },
+    {
+     "nl": "In welk {lokaal} hebben we Frans?",
+     "fr": "Dans quelle {salle de classe} avons-nous français ?"
+    },
+    {
+     "nl": "Ga allemaal terug naar {jullie lokaal}.",
+     "fr": "Retournez tous dans {votre salle de classe}."
+    },
+    {
+     "nl": "{Het lokaal} van meneer Peeters is op de eerste verdieping.",
+     "fr": "{La salle de classe} de monsieur Peeters est au premier étage."
+    }
+   ]
   },
   {
    "nl": "het schoolbord",
-   "fr": "le tableau"
+   "fr": "le tableau",
+   "ph": [
+    {
+     "nl": "De leraar schrijft de datum op {het schoolbord}.",
+     "fr": "L'enseignant écrit la date {au tableau}."
+    },
+    {
+     "nl": "Kun jij {het schoolbord} even afvegen?",
+     "fr": "Peux-tu effacer {le tableau}, s'il te plaît ?"
+    },
+    {
+     "nl": "Ik kan niet lezen wat er op {het schoolbord} staat.",
+     "fr": "Je ne peux pas lire ce qui est écrit {au tableau}."
+    },
+    {
+     "nl": "Kom naar voren en maak de oefening aan {het schoolbord}.",
+     "fr": "Viens devant et fais l'exercice {au tableau}."
+    }
+   ]
   },
   {
    "nl": "de gom",
-   "fr": "la gomme"
+   "fr": "la gomme",
+   "ph": [
+    {
+     "nl": "Mag ik {je gom} even gebruiken?",
+     "fr": "Je peux utiliser {ta gomme} un instant ?"
+    },
+    {
+     "nl": "Ik heb {mijn gom} verloren.",
+     "fr": "J'ai perdu {ma gomme}."
+    },
+    {
+     "nl": "Gebruik {een gom} om de fout uit te vegen.",
+     "fr": "Utilise {une gomme} pour effacer l'erreur."
+    },
+    {
+     "nl": "{Deze gom} maakt het blad vuil.",
+     "fr": "{Cette gomme} salit la feuille."
+    }
+   ]
   },
   {
    "nl": "de liniaal",
-   "fr": "la règle (à mesurer)"
+   "fr": "la règle (à mesurer)",
+   "ph": [
+    {
+     "nl": "Trek een rechte lijn met {de liniaal}.",
+     "fr": "Trace une ligne droite avec {la règle}."
+    },
+    {
+     "nl": "Heb jij {een liniaal} van dertig centimeter?",
+     "fr": "As-tu {une règle} de trente centimètres ?"
+    },
+    {
+     "nl": "{Mijn liniaal} is in twee gebroken.",
+     "fr": "{Ma règle} est cassée en deux."
+    },
+    {
+     "nl": "Meet de lengte met {je liniaal}.",
+     "fr": "Mesure la longueur avec {ta règle}."
+    }
+   ]
   },
   {
    "nl": "de schaar",
-   "fr": "les ciseaux"
+   "fr": "les ciseaux",
+   "ph": [
+    {
+     "nl": "Knip het papier met {de schaar}.",
+     "fr": "Coupe le papier avec {les ciseaux}."
+    },
+    {
+     "nl": "Waar heb je {de schaar} gelegd?",
+     "fr": "Où as-tu mis {les ciseaux} ?"
+    },
+    {
+     "nl": "Pas op, {deze schaar} is heel scherp!",
+     "fr": "Attention, {ces ciseaux} sont très coupants !"
+    },
+    {
+     "nl": "Kinderen mogen niet met {een schaar} spelen.",
+     "fr": "Les enfants ne doivent pas jouer avec {des ciseaux}."
+    }
+   ]
   },
   {
    "nl": "de lijm",
-   "fr": "la colle"
+   "fr": "la colle",
+   "ph": [
+    {
+     "nl": "We hebben {lijm} nodig voor het project.",
+     "fr": "Nous avons besoin de {colle} pour le projet."
+    },
+    {
+     "nl": "{De lijm} is nog niet droog.",
+     "fr": "{La colle} n'est pas encore sèche."
+    },
+    {
+     "nl": "Plak de foto met {lijm} in je schrift.",
+     "fr": "Fixe la photo dans ton cahier avec {de la colle}."
+    },
+    {
+     "nl": "{Deze lijm} plakt heel goed.",
+     "fr": "{Cette colle} tient très bien."
+    }
+   ]
   },
   {
    "nl": "de map",
-   "fr": "le classeur"
+   "fr": "le classeur",
+   "ph": [
+    {
+     "nl": "Steek de bladen in {je map}.",
+     "fr": "Mets les feuilles dans {ton classeur}."
+    },
+    {
+     "nl": "Ik vind {mijn blauwe map} niet meer.",
+     "fr": "Je ne trouve plus {mon classeur bleu}."
+    },
+    {
+     "nl": "Bewaar je cursus in {een map}.",
+     "fr": "Range ton cours dans {un classeur}."
+    },
+    {
+     "nl": "{Deze map} zit vol, ik heb een nieuwe nodig.",
+     "fr": "{Ce classeur} est plein, j'en ai besoin d'un nouveau."
+    }
+   ]
   },
   {
    "nl": "de agenda",
-   "fr": "le journal de classe"
+   "fr": "le journal de classe",
+   "ph": [
+    {
+     "nl": "Schrijf het huiswerk in {je agenda}.",
+     "fr": "Écris les devoirs dans {ton journal de classe}."
+    },
+    {
+     "nl": "Heb je {je agenda} vandaag bij?",
+     "fr": "As-tu {ton journal de classe} avec toi aujourd'hui ?"
+    },
+    {
+     "nl": "De leraar heeft een opmerking in {mijn agenda} geschreven.",
+     "fr": "L'enseignant a écrit une remarque dans {mon journal de classe}."
+    },
+    {
+     "nl": "Kijk in {je agenda} welk huiswerk we hebben.",
+     "fr": "Regarde dans {ton journal de classe} quels devoirs nous avons."
+    }
+   ]
   },
   {
    "nl": "het onderwerp",
-   "fr": "le sujet"
+   "fr": "le sujet",
+   "ph": [
+    {
+     "nl": "Wat is {het onderwerp} van je spreekbeurt?",
+     "fr": "Quel est {le sujet} de ton exposé ?"
+    },
+    {
+     "nl": "Ze kiest {een interessant onderwerp} voor haar project.",
+     "fr": "Elle choisit {un sujet intéressant} pour son projet."
+    },
+    {
+     "nl": "Laten we over {een ander onderwerp} praten.",
+     "fr": "Parlons d'{un autre sujet}."
+    },
+    {
+     "nl": "Ik vind {dit onderwerp} niet interessant.",
+     "fr": "Je ne trouve pas {ce sujet} intéressant."
+    }
+   ]
   },
   {
    "nl": "de titel",
-   "fr": "le titre"
+   "fr": "le titre",
+   "ph": [
+    {
+     "nl": "Schrijf {de titel} bovenaan de bladzijde.",
+     "fr": "Écris {le titre} en haut de la page."
+    },
+    {
+     "nl": "Ken je {de titel} van dat boek?",
+     "fr": "Connais-tu {le titre} de ce livre ?"
+    },
+    {
+     "nl": "Ik ben {de titel} van die film vergeten.",
+     "fr": "J'ai oublié {le titre} de ce film."
+    },
+    {
+     "nl": "Kies {een goede titel} voor je tekst.",
+     "fr": "Choisis {un bon titre} pour ton texte."
+    }
+   ]
   },
   {
    "nl": "de bladzijde",
-   "fr": "la page"
+   "fr": "la page",
+   "ph": [
+    {
+     "nl": "Open je boek op {bladzijde} vijftien.",
+     "fr": "Ouvre ton livre à {la page} quinze."
+    },
+    {
+     "nl": "Ik heb gisteren vijftig {bladzijden} gelezen.",
+     "fr": "Hier, j'ai lu cinquante {pages}."
+    },
+    {
+     "nl": "Er ontbreekt {een bladzijde} in mijn boek.",
+     "fr": "Il manque {une page} dans mon livre."
+    },
+    {
+     "nl": "Lees {de volgende bladzijde} voor morgen.",
+     "fr": "Lis {la page suivante} pour demain."
+    }
+   ]
   },
   {
    "nl": "werken",
    "fr": "travailler",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn moeder {werkt} in een ziekenhuis.",
+     "fr": "Ma mère {travaille} dans un hôpital."
+    },
+    {
+     "nl": "Heb je gisteren lang {gewerkt}?",
+     "fr": "As-tu {travaillé} longtemps hier ?"
+    },
+    {
+     "nl": "Ik {werk} niet op zondag.",
+     "fr": "Je ne {travaille} pas le dimanche."
+    },
+    {
+     "nl": "Hij wil later in een bank {werken}.",
+     "fr": "Plus tard, il veut {travailler} dans une banque."
+    }
+   ]
   },
   {
    "nl": "leren",
    "fr": "apprendre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {leer} elke dag tien nieuwe woorden.",
+     "fr": "J'{apprends} dix nouveaux mots chaque jour."
+    },
+    {
+     "nl": "Waar heb je Frans {geleerd}?",
+     "fr": "Où as-tu {appris} le français ?"
+    },
+    {
+     "nl": "{Leer} de woorden voor morgen!",
+     "fr": "{Apprends} les mots pour demain !"
+    },
+    {
+     "nl": "Wil je Nederlands {leren}?",
+     "fr": "Veux-tu {apprendre} le néerlandais ?"
+    }
+   ]
   },
   {
    "nl": "weten",
    "fr": "savoir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Weet} jij hoe laat de les begint?",
+     "fr": "{Sais}-tu à quelle heure commence le cours ?"
+    },
+    {
+     "nl": "Ik {wist} niet dat je ziek was.",
+     "fr": "Je ne {savais} pas que tu étais malade."
+    },
+    {
+     "nl": "Ik {weet} niet waar hij woont.",
+     "fr": "Je ne {sais} pas où il habite."
+    },
+    {
+     "nl": "Hoe {wist} je dat?",
+     "fr": "Comment {savais}-tu ça ?"
+    }
+   ]
   },
   {
    "nl": "kennen",
    "fr": "connaître",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Ken} je de nieuwe leraar al?",
+     "fr": "{Connais}-tu déjà le nouvel enseignant ?"
+    },
+    {
+     "nl": "Ik {kende} dat woord niet.",
+     "fr": "Je ne {connaissais} pas ce mot."
+    },
+    {
+     "nl": "Ik {ken} hem al tien jaar.",
+     "fr": "Je le {connais} depuis dix ans."
+    },
+    {
+     "nl": "Iedereen in het dorp {kent} de bakker.",
+     "fr": "Tout le monde au village {connaît} le boulanger."
+    }
+   ]
   },
   {
    "nl": "kunnen",
    "fr": "pouvoir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Kan} je me even helpen?",
+     "fr": "{Peux}-tu m'aider un instant ?"
+    },
+    {
+     "nl": "Ik {kon} gisteren niet komen.",
+     "fr": "Je n'ai pas {pu} venir hier."
+    },
+    {
+     "nl": "Morgen {kan} ik niet, ik moet werken.",
+     "fr": "Demain, je ne {peux} pas, je dois travailler."
+    },
+    {
+     "nl": "Als je wilt, {kunnen} we samen studeren.",
+     "fr": "Si tu veux, nous {pouvons} étudier ensemble."
+    }
+   ]
   },
   {
    "nl": "moeten",
    "fr": "devoir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "We {moeten} morgen vroeg opstaan.",
+     "fr": "Nous {devons} nous lever tôt demain."
+    },
+    {
+     "nl": "{Moest} je gisteren lang werken?",
+     "fr": "As-tu {dû} travailler longtemps hier ?"
+    },
+    {
+     "nl": "Iedereen {moet} een helm dragen op de werf.",
+     "fr": "Tout le monde {doit} porter un casque sur le chantier."
+    },
+    {
+     "nl": "Hoe laat {moet} je morgen op school zijn?",
+     "fr": "À quelle heure {dois}-tu être à l'école demain ?"
+    }
+   ]
   },
   {
    "nl": "helpen",
    "fr": "aider",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Kan ik je {helpen} met de oefening?",
+     "fr": "Est-ce que je peux t'{aider} pour l'exercice ?"
+    },
+    {
+     "nl": "Mijn vader {hielp} me met mijn huiswerk.",
+     "fr": "Mon père m'{a aidé} à faire mes devoirs."
+    },
+    {
+     "nl": "{Help} je zus eens met de afwas!",
+     "fr": "{Aide} donc ta sœur à faire la vaisselle !"
+    },
+    {
+     "nl": "Niemand wil me {helpen}.",
+     "fr": "Personne ne veut m'{aider}."
+    }
+   ]
   },
   {
    "nl": "vragen",
    "fr": "demander",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik zal het aan de leraar {vragen}.",
+     "fr": "Je vais le {demander} à l'enseignant."
+    },
+    {
+     "nl": "Ze {vroeg} me de weg naar het station.",
+     "fr": "Elle m'{a demandé} le chemin de la gare."
+    },
+    {
+     "nl": "Mag ik je iets {vragen}?",
+     "fr": "Je peux te {demander} quelque chose ?"
+    },
+    {
+     "nl": "{Vraag} hulp als je het niet begrijpt.",
+     "fr": "{Demande} de l'aide si tu ne comprends pas."
+    }
+   ]
   },
   {
    "nl": "antwoorden",
    "fr": "répondre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Waarom {antwoord} je niet op mijn vraag?",
+     "fr": "Pourquoi ne {réponds}-tu pas à ma question ?"
+    },
+    {
+     "nl": "Hij {antwoordde} meteen op mijn mail.",
+     "fr": "Il {a répondu} tout de suite à mon mail."
+    },
+    {
+     "nl": "{Antwoord} in volledige zinnen.",
+     "fr": "{Réponds} par des phrases complètes."
+    },
+    {
+     "nl": "Niemand {antwoordt} als ik bel.",
+     "fr": "Personne ne {répond} quand j'appelle."
+    }
+   ]
   },
   {
    "nl": "lezen",
    "fr": "lire",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {lees} elke avond in bed.",
+     "fr": "Je {lis} tous les soirs au lit."
+    },
+    {
+     "nl": "Heb je dat boek al {gelezen}?",
+     "fr": "As-tu déjà {lu} ce livre ?"
+    },
+    {
+     "nl": "Mijn zoon kan nog niet {lezen}.",
+     "fr": "Mon fils ne sait pas encore {lire}."
+    },
+    {
+     "nl": "{Lees} de tekst en beantwoord de vragen.",
+     "fr": "{Lis} le texte et réponds aux questions."
+    }
+   ]
   },
   {
    "nl": "schrijven",
    "fr": "écrire",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Schrijf} je naam bovenaan het blad.",
+     "fr": "{Écris} ton nom en haut de la feuille."
+    },
+    {
+     "nl": "Ze heeft een lange brief {geschreven}.",
+     "fr": "Elle a {écrit} une longue lettre."
+    },
+    {
+     "nl": "Ik {schrijf} elke week een brief aan mijn oma.",
+     "fr": "J'{écris} une lettre à ma grand-mère chaque semaine."
+    },
+    {
+     "nl": "Mijn broer {schreef} vroeger gedichten.",
+     "fr": "Autrefois, mon frère {écrivait} des poèmes."
+    }
+   ]
   },
   {
    "nl": "spreken",
    "fr": "parler",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Spreekt} jouw vriendin goed Frans?",
+     "fr": "Est-ce que ta copine {parle} bien français ?"
+    },
+    {
+     "nl": "Ik heb gisteren met de directeur {gesproken}.",
+     "fr": "Hier, j'ai {parlé} avec le directeur."
+    },
+    {
+     "nl": "Ik {spreek} een beetje Nederlands.",
+     "fr": "Je {parle} un peu néerlandais."
+    },
+    {
+     "nl": "{Spreek} wat luider, ik hoor je niet.",
+     "fr": "{Parle} un peu plus fort, je ne t'entends pas."
+    }
+   ]
   },
   {
    "nl": "begrijpen",
    "fr": "comprendre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {begrijp} deze oefening niet.",
+     "fr": "Je ne {comprends} pas cet exercice."
+    },
+    {
+     "nl": "Heb je de uitleg goed {begrepen}?",
+     "fr": "As-tu bien {compris} l'explication ?"
+    },
+    {
+     "nl": "{Begrijp} je wat ik bedoel?",
+     "fr": "{Comprends}-tu ce que je veux dire ?"
+    },
+    {
+     "nl": "Niemand {begreep} de grap van de leraar.",
+     "fr": "Personne n'{a compris} la blague de l'enseignant."
+    }
+   ]
   },
   {
    "nl": "studeren",
    "fr": "étudier",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn zus {studeert} rechten in Leuven.",
+     "fr": "Ma sœur {étudie} le droit à Louvain."
+    },
+    {
+     "nl": "Ik moet vanavond nog {studeren} voor het examen.",
+     "fr": "Je dois encore {étudier} ce soir pour l'examen."
+    },
+    {
+     "nl": "Waar wil je volgend jaar {studeren}?",
+     "fr": "Où veux-tu {étudier} l'année prochaine ?"
+    },
+    {
+     "nl": "Hij heeft vijf jaar in Gent {gestudeerd}.",
+     "fr": "Il {a étudié} cinq ans à Gand."
+    }
+   ]
   },
   {
    "nl": "lesgeven",
    "fr": "donner cours",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ze wil later {lesgeven} in een lagere school.",
+     "fr": "Plus tard, elle veut {donner cours} dans une école primaire."
+    },
+    {
+     "nl": "Hij heeft twintig jaar {lesgegeven}.",
+     "fr": "Il {a donné cours} pendant vingt ans."
+    },
+    {
+     "nl": "Hoe lang wil je nog {lesgeven}?",
+     "fr": "Combien de temps veux-tu encore {donner cours} ?"
+    },
+    {
+     "nl": "Ze vindt {lesgeven} aan kinderen heel leuk.",
+     "fr": "Elle aime beaucoup {donner cours} aux enfants."
+    }
+   ]
   },
   {
    "nl": "uitleggen",
    "fr": "expliquer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Kun je deze regel nog eens {uitleggen}?",
+     "fr": "Peux-tu {expliquer} encore une fois cette règle ?"
+    },
+    {
+     "nl": "De leraar heeft de oefening goed {uitgelegd}.",
+     "fr": "L'enseignant a bien {expliqué} l'exercice."
+    },
+    {
+     "nl": "Ik zal je {uitleggen} hoe het werkt.",
+     "fr": "Je vais t'{expliquer} comment ça marche."
+    },
+    {
+     "nl": "Ik begreep niet wat de leraar {uitlegde}.",
+     "fr": "Je ne comprenais pas ce que l'enseignant {expliquait}."
+    }
+   ]
   },
   {
    "nl": "oefenen",
    "fr": "s'exercer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Je moet elke dag {oefenen}.",
+     "fr": "Tu dois {t'exercer} tous les jours."
+    },
+    {
+     "nl": "Hebben jullie gisteren samen {geoefend}?",
+     "fr": "Vous {vous êtes exercés} ensemble hier ?"
+    },
+    {
+     "nl": "Als je meer {oefent}, maak je minder fouten.",
+     "fr": "Si tu {t'exerces} plus, tu fais moins d'erreurs."
+    },
+    {
+     "nl": "Mijn zus {oefent} elke avond piano.",
+     "fr": "Ma sœur {s'exerce} au piano tous les soirs."
+    }
+   ]
   },
   {
    "nl": "slagen",
    "fr": "réussir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik hoop te {slagen} voor het examen.",
+     "fr": "J'espère {réussir} l'examen."
+    },
+    {
+     "nl": "Is je broer {geslaagd} voor zijn rijexamen?",
+     "fr": "Est-ce que ton frère {a réussi} son examen de conduite ?"
+    },
+    {
+     "nl": "Bijna alle leerlingen zijn {geslaagd}.",
+     "fr": "Presque tous les élèves {ont réussi}."
+    },
+    {
+     "nl": "Als je hard studeert, {slaag} je zeker.",
+     "fr": "Si tu étudies sérieusement, tu {réussiras} certainement."
+    }
+   ]
   },
   {
    "nl": "zakken",
    "fr": "rater (un examen)",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Hij is voor zijn examen wiskunde {gezakt}.",
+     "fr": "Il {a raté} son examen de maths."
+    },
+    {
+     "nl": "Als je niet studeert, {zak} je voor het examen.",
+     "fr": "Si tu n'étudies pas, tu {rates} l'examen."
+    },
+    {
+     "nl": "Ik ben bang dat ik voor het examen {zak}.",
+     "fr": "J'ai peur de {rater} l'examen."
+    },
+    {
+     "nl": "Hoeveel studenten zijn er voor het examen {gezakt}?",
+     "fr": "Combien d'étudiants {ont raté} l'examen ?"
+    }
+   ]
   },
   {
    "nl": "verdienen",
    "fr": "gagner (sa vie)",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Hoeveel {verdien} je per maand?",
+     "fr": "Combien {gagnes}-tu par mois ?"
+    },
+    {
+     "nl": "Hij heeft vroeger veel geld {verdiend}.",
+     "fr": "Autrefois, il a {gagné} beaucoup d'argent."
+    },
+    {
+     "nl": "Ze {verdient} meer dan haar man.",
+     "fr": "Elle {gagne} plus que son mari."
+    },
+    {
+     "nl": "Ik wil mijn eigen geld {verdienen}.",
+     "fr": "Je veux {gagner} mon propre argent."
+    }
+   ]
   }
  ]
 }

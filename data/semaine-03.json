@@ -5,423 +5,2223 @@
  "mots": [
   {
    "nl": "het hoofd",
-   "fr": "la tête"
+   "fr": "la tête",
+   "ph": [
+    {
+     "nl": "Hij draait {het hoofd} naar de deur.",
+     "fr": "Il tourne {la tête} vers la porte."
+    },
+    {
+     "nl": "Doet {je hoofd} nog altijd pijn?",
+     "fr": "{Ta tête} te fait encore mal ?"
+    },
+    {
+     "nl": "Zet een muts op {je hoofd}, het is koud.",
+     "fr": "Mets un bonnet sur {ta tête}, il fait froid."
+    },
+    {
+     "nl": "Hij knikte met {zijn hoofd} en zei niets.",
+     "fr": "Il a hoché {la tête} sans rien dire."
+    }
+   ]
   },
   {
    "nl": "het haar",
-   "fr": "les cheveux"
+   "fr": "les cheveux",
+   "ph": [
+    {
+     "nl": "{Het haar} van mijn zus is heel lang.",
+     "fr": "{Les cheveux} de ma sœur sont très longs."
+    },
+    {
+     "nl": "Ik heb vanochtend {mijn haar} niet gewassen.",
+     "fr": "Je ne me suis pas lavé {les cheveux} ce matin."
+    },
+    {
+     "nl": "De kapper knipt morgen {mijn haar} korter.",
+     "fr": "Le coiffeur me coupe {les cheveux} plus court demain."
+    },
+    {
+     "nl": "Droog {je haar} goed voor je naar buiten gaat.",
+     "fr": "Sèche bien {tes cheveux} avant de sortir."
+    }
+   ]
   },
   {
    "nl": "het oog",
-   "fr": "l'œil"
+   "fr": "l'œil",
+   "ph": [
+    {
+     "nl": "Ik heb iets in {mijn oog}.",
+     "fr": "J'ai quelque chose dans {l'œil}."
+    },
+    {
+     "nl": "Waarom zijn {je ogen} zo rood?",
+     "fr": "Pourquoi {tes yeux} sont-ils si rouges ?"
+    },
+    {
+     "nl": "Doe {je ogen} dicht en tel tot tien.",
+     "fr": "Ferme {les yeux} et compte jusqu'à dix."
+    },
+    {
+     "nl": "Zij heeft blauwe {ogen}, net als haar moeder.",
+     "fr": "Elle a {les yeux} bleus, comme sa mère."
+    }
+   ]
   },
   {
    "nl": "het oor",
-   "fr": "l'oreille"
+   "fr": "l'oreille",
+   "ph": [
+    {
+     "nl": "Ik heb sinds gisteren pijn in {mijn oor}.",
+     "fr": "J'ai mal à {l'oreille} depuis hier."
+    },
+    {
+     "nl": "Hij heeft iets in {mijn oor} gefluisterd.",
+     "fr": "Il m'a chuchoté quelque chose à {l'oreille}."
+    },
+    {
+     "nl": "Zet de muziek zachter, {mijn oren} doen pijn!",
+     "fr": "Baisse la musique, j'ai mal {aux oreilles} !"
+    },
+    {
+     "nl": "Een konijn heeft lange {oren}.",
+     "fr": "Un lapin a de longues {oreilles}."
+    }
+   ]
   },
   {
    "nl": "de neus",
-   "fr": "le nez"
+   "fr": "le nez",
+   "ph": [
+    {
+     "nl": "{Mijn neus} loopt al sinds vanochtend.",
+     "fr": "J'ai {le nez} qui coule depuis ce matin."
+    },
+    {
+     "nl": "Hij is gisteren op {zijn neus} gevallen.",
+     "fr": "Il est tombé sur {le nez} hier."
+    },
+    {
+     "nl": "Snuit {je neus} met deze zakdoek.",
+     "fr": "Mouche-toi {le nez} avec ce mouchoir."
+    },
+    {
+     "nl": "Ik ruik niets, want {mijn neus} zit dicht.",
+     "fr": "Je ne sens rien, car j'ai {le nez} bouché."
+    }
+   ]
   },
   {
    "nl": "de mond",
-   "fr": "la bouche"
+   "fr": "la bouche",
+   "ph": [
+    {
+     "nl": "Doe {uw mond} open, alstublieft.",
+     "fr": "Ouvrez {la bouche}, s'il vous plaît."
+    },
+    {
+     "nl": "Praat niet met eten in {je mond}.",
+     "fr": "Ne parle pas avec de la nourriture dans {la bouche}."
+    },
+    {
+     "nl": "Hou {je mond} dicht als je kauwt.",
+     "fr": "Garde {la bouche} fermée quand tu mâches."
+    },
+    {
+     "nl": "De baby steekt alles in {zijn mond}.",
+     "fr": "Le bébé met tout dans {sa bouche}."
+    }
+   ]
   },
   {
    "nl": "de tand",
-   "fr": "la dent"
+   "fr": "la dent",
+   "ph": [
+    {
+     "nl": "Ik poets {mijn tanden} twee keer per dag.",
+     "fr": "Je me brosse {les dents} deux fois par jour."
+    },
+    {
+     "nl": "Het kind heeft gisteren {een tand} verloren.",
+     "fr": "L'enfant a perdu {une dent} hier."
+    },
+    {
+     "nl": "Ik heb pijn aan {een tand}, dus ik ga naar de tandarts.",
+     "fr": "J'ai mal à {une dent}, donc je vais chez le dentiste."
+    },
+    {
+     "nl": "Eet niet te veel snoep, dat is slecht voor {je tanden}.",
+     "fr": "Ne mange pas trop de bonbons, c'est mauvais pour {tes dents}."
+    }
+   ]
   },
   {
    "nl": "de tong",
-   "fr": "la langue (organe)"
+   "fr": "la langue (organe)",
+   "ph": [
+    {
+     "nl": "Steek {uw tong} uit, alstublieft.",
+     "fr": "Tirez {la langue}, s'il vous plaît."
+    },
+    {
+     "nl": "Ik heb op {mijn tong} gebeten.",
+     "fr": "Je me suis mordu {la langue}."
+    },
+    {
+     "nl": "Verbrand {je tong} niet aan de hete soep!",
+     "fr": "Ne te brûle pas {la langue} avec la soupe chaude !"
+    },
+    {
+     "nl": "Met {de tong} proeven we zoet en zout.",
+     "fr": "Avec {la langue}, on goûte le sucré et le salé."
+    }
+   ]
   },
   {
    "nl": "de nek",
-   "fr": "la nuque"
+   "fr": "la nuque",
+   "ph": [
+    {
+     "nl": "Na een lange dag heb ik pijn in {mijn nek}.",
+     "fr": "Après une longue journée, j'ai mal à {la nuque}."
+    },
+    {
+     "nl": "De kapper heeft {mijn nek} geschoren.",
+     "fr": "Le coiffeur m'a rasé {la nuque}."
+    },
+    {
+     "nl": "Ik heb slecht geslapen en nu is {mijn nek} stijf.",
+     "fr": "J'ai mal dormi et maintenant j'ai {la nuque} raide."
+    },
+    {
+     "nl": "De zon brandt op {mijn nek} tijdens het tuinieren.",
+     "fr": "Le soleil me brûle {la nuque} pendant que je jardine."
+    }
+   ]
   },
   {
    "nl": "de schouder",
-   "fr": "l'épaule"
+   "fr": "l'épaule",
+   "ph": [
+    {
+     "nl": "Ze legt haar hand op {mijn schouder}.",
+     "fr": "Elle pose sa main sur {mon épaule}."
+    },
+    {
+     "nl": "Waarom doet {je schouder} pijn?",
+     "fr": "Pourquoi as-tu mal à {l'épaule} ?"
+    },
+    {
+     "nl": "Hij draagt zijn zoon op {zijn schouders}.",
+     "fr": "Il porte son fils sur {ses épaules}."
+    },
+    {
+     "nl": "Ze haalde {haar schouders} op en zei niets.",
+     "fr": "Elle a haussé {les épaules} sans rien dire."
+    }
+   ]
   },
   {
    "nl": "de arm",
-   "fr": "le bras"
+   "fr": "le bras",
+   "ph": [
+    {
+     "nl": "Hij heeft vorige week {zijn arm} gebroken.",
+     "fr": "Il s'est cassé {le bras} la semaine dernière."
+    },
+    {
+     "nl": "Kun je {je arm} optillen?",
+     "fr": "Peux-tu lever {le bras} ?"
+    },
+    {
+     "nl": "Ze neemt de baby in {haar armen}.",
+     "fr": "Elle prend le bébé dans {ses bras}."
+    },
+    {
+     "nl": "Steek {je arm} niet uit het raam van de auto!",
+     "fr": "Ne sors pas {le bras} par la fenêtre de la voiture !"
+    }
+   ]
   },
   {
    "nl": "de hand",
-   "fr": "la main"
+   "fr": "la main",
+   "ph": [
+    {
+     "nl": "Was {je handen} voor het eten.",
+     "fr": "Lave-toi {les mains} avant le repas."
+    },
+    {
+     "nl": "Ik heb {de hand} van de dokter geschud.",
+     "fr": "J'ai serré {la main} du médecin."
+    },
+    {
+     "nl": "Steek {je hand} op als je een vraag hebt.",
+     "fr": "Lève {la main} si tu as une question."
+    },
+    {
+     "nl": "Geef me {je hand} als we de straat oversteken.",
+     "fr": "Donne-moi {la main} quand on traverse la rue."
+    }
+   ]
   },
   {
    "nl": "de vinger",
-   "fr": "le doigt"
+   "fr": "le doigt",
+   "ph": [
+    {
+     "nl": "Ik heb in {mijn vinger} gesneden.",
+     "fr": "Je me suis coupé {le doigt}."
+    },
+    {
+     "nl": "Een hand heeft vijf {vingers}.",
+     "fr": "Une main a cinq {doigts}."
+    },
+    {
+     "nl": "Wijs niet met {je vinger} naar mensen.",
+     "fr": "Ne montre pas les gens {du doigt}."
+    },
+    {
+     "nl": "Ze draagt een ring aan {haar vinger}.",
+     "fr": "Elle porte une bague {au doigt}."
+    }
+   ]
   },
   {
    "nl": "de rug",
-   "fr": "le dos"
+   "fr": "le dos",
+   "ph": [
+    {
+     "nl": "Mijn vader heeft vaak pijn in {de rug}.",
+     "fr": "Mon père a souvent mal {au dos}."
+    },
+    {
+     "nl": "Slaap jij op {je rug}?",
+     "fr": "Est-ce que tu dors sur {le dos} ?"
+    },
+    {
+     "nl": "Kun je {mijn rug} insmeren met zonnecrème?",
+     "fr": "Peux-tu mettre de la crème solaire sur {mon dos} ?"
+    },
+    {
+     "nl": "Hij zat met {zijn rug} naar de deur.",
+     "fr": "Il était assis {le dos} tourné vers la porte."
+    }
+   ]
   },
   {
    "nl": "de buik",
-   "fr": "le ventre"
+   "fr": "le ventre",
+   "ph": [
+    {
+     "nl": "Na het eten had ik pijn in {mijn buik}.",
+     "fr": "Après le repas, j'avais mal {au ventre}."
+    },
+    {
+     "nl": "De baby slaapt op {zijn buik}.",
+     "fr": "Le bébé dort sur {le ventre}."
+    },
+    {
+     "nl": "Ik heb honger, {mijn buik} rammelt.",
+     "fr": "J'ai faim, {mon ventre} gargouille."
+    },
+    {
+     "nl": "{Haar buik} wordt steeds dikker, want ze is zwanger.",
+     "fr": "{Son ventre} grossit de plus en plus, car elle est enceinte."
+    }
+   ]
   },
   {
    "nl": "het hart",
-   "fr": "le cœur"
+   "fr": "le cœur",
+   "ph": [
+    {
+     "nl": "{Het hart} pompt bloed door het lichaam.",
+     "fr": "{Le cœur} pompe le sang dans le corps."
+    },
+    {
+     "nl": "Na het sporten klopt {mijn hart} heel snel.",
+     "fr": "Après le sport, {mon cœur} bat très vite."
+    },
+    {
+     "nl": "Mijn opa is gisteren aan {zijn hart} geopereerd.",
+     "fr": "Mon grand-père a été opéré {du cœur} hier."
+    },
+    {
+     "nl": "Hoeveel keer per minuut klopt {je hart}?",
+     "fr": "Combien de fois par minute {ton cœur} bat-il ?"
+    }
+   ]
   },
   {
    "nl": "het been",
-   "fr": "la jambe"
+   "fr": "la jambe",
+   "ph": [
+    {
+     "nl": "Ze heeft vorig jaar {haar been} gebroken.",
+     "fr": "Elle s'est cassé {la jambe} l'an dernier."
+    },
+    {
+     "nl": "Na de wandeling zijn {mijn benen} moe.",
+     "fr": "Après la promenade, {mes jambes} sont fatiguées."
+    },
+    {
+     "nl": "Strek {je benen} na een lange autorit.",
+     "fr": "Dégourdis-toi {les jambes} après un long trajet en voiture."
+    },
+    {
+     "nl": "Hij heeft lange {benen}, dus hij loopt snel.",
+     "fr": "Il a de longues {jambes}, donc il marche vite."
+    }
+   ]
   },
   {
    "nl": "de knie",
-   "fr": "le genou"
+   "fr": "le genou",
+   "ph": [
+    {
+     "nl": "{Mijn knie} doet pijn als ik loop.",
+     "fr": "{Mon genou} me fait mal quand je marche."
+    },
+    {
+     "nl": "Ze is vorige maand aan {haar knie} geopereerd.",
+     "fr": "Elle a été opérée {du genou} le mois dernier."
+    },
+    {
+     "nl": "Het kind is gevallen en {zijn knie} bloedt.",
+     "fr": "L'enfant est tombé et {son genou} saigne."
+    },
+    {
+     "nl": "Ga op {je knieën} om onder het bed te kijken.",
+     "fr": "Mets-toi à {genoux} pour regarder sous le lit."
+    }
+   ]
   },
   {
    "nl": "de voet",
-   "fr": "le pied"
+   "fr": "le pied",
+   "ph": [
+    {
+     "nl": "Ik ga elke dag te {voet} naar het werk.",
+     "fr": "Je vais au travail à {pied} chaque jour."
+    },
+    {
+     "nl": "Waarom zijn {je voeten} zo koud?",
+     "fr": "Pourquoi {tes pieds} sont-ils si froids ?"
+    },
+    {
+     "nl": "In de bus stond iemand op {mijn voet}.",
+     "fr": "Dans le bus, quelqu'un m'a marché sur {le pied}."
+    },
+    {
+     "nl": "Veeg {je voeten} af voordat je binnenkomt.",
+     "fr": "Essuie-toi {les pieds} avant d'entrer."
+    }
+   ]
   },
   {
    "nl": "de huid",
-   "fr": "la peau"
+   "fr": "la peau",
+   "ph": [
+    {
+     "nl": "{Haar huid} is erg gevoelig voor de zon.",
+     "fr": "{Sa peau} est très sensible au soleil."
+    },
+    {
+     "nl": "Gebruik je een crème voor {je huid}?",
+     "fr": "Utilises-tu une crème pour {la peau} ?"
+    },
+    {
+     "nl": "Na het bad is {de huid} van de baby heel zacht.",
+     "fr": "Après le bain, {la peau} du bébé est très douce."
+    },
+    {
+     "nl": "Krab niet aan die muggenbeet, je beschadigt {je huid}.",
+     "fr": "Ne gratte pas cette piqûre de moustique, tu abîmes {ta peau}."
+    }
+   ]
   },
   {
    "nl": "het bloed",
-   "fr": "le sang"
+   "fr": "le sang",
+   "ph": [
+    {
+     "nl": "Er zit {bloed} op je hemd.",
+     "fr": "Il y a {du sang} sur ta chemise."
+    },
+    {
+     "nl": "Ik moet morgen {bloed} laten nemen.",
+     "fr": "Demain, je dois faire une prise de {sang}."
+    },
+    {
+     "nl": "Hij valt flauw als hij {bloed} ziet.",
+     "fr": "Il s'évanouit quand il voit {du sang}."
+    },
+    {
+     "nl": "Ik geef twee keer per jaar {bloed} bij het Rode Kruis.",
+     "fr": "Je donne {mon sang} deux fois par an à la Croix-Rouge."
+    }
+   ]
   },
   {
    "nl": "de pijn",
-   "fr": "la douleur"
+   "fr": "la douleur",
+   "ph": [
+    {
+     "nl": "{De pijn} is na een uur verdwenen.",
+     "fr": "{La douleur} a disparu après une heure."
+    },
+    {
+     "nl": "Voel je {de pijn} nog?",
+     "fr": "Sens-tu encore {la douleur} ?"
+    },
+    {
+     "nl": "Neem een pil als {de pijn} te erg wordt.",
+     "fr": "Prends un comprimé si {la douleur} devient trop forte."
+    },
+    {
+     "nl": "Door {de pijn} kon hij niet slapen.",
+     "fr": "À cause de {la douleur}, il ne pouvait pas dormir."
+    }
+   ]
   },
   {
    "nl": "de koorts",
-   "fr": "la fièvre"
+   "fr": "la fièvre",
+   "ph": [
+    {
+     "nl": "Mijn zoon heeft sinds gisteren {koorts}.",
+     "fr": "Mon fils a {de la fièvre} depuis hier."
+    },
+    {
+     "nl": "{De koorts} is vanochtend gezakt.",
+     "fr": "{La fièvre} est tombée ce matin."
+    },
+    {
+     "nl": "Met 39 graden heb je echt {koorts}.",
+     "fr": "À 39 degrés, tu as vraiment {de la fièvre}."
+    },
+    {
+     "nl": "Neem de thermometer: misschien heb je {koorts}.",
+     "fr": "Prends le thermomètre : tu as peut-être {de la fièvre}."
+    }
+   ]
   },
   {
    "nl": "de hoest",
-   "fr": "la toux"
+   "fr": "la toux",
+   "ph": [
+    {
+     "nl": "{De hoest} gaat maar niet over.",
+     "fr": "{La toux} ne passe pas."
+    },
+    {
+     "nl": "Deze siroop is goed tegen {de hoest}.",
+     "fr": "Ce sirop est bon contre {la toux}."
+    },
+    {
+     "nl": "{Die hoest} klinkt niet goed, ga naar de dokter.",
+     "fr": "{Cette toux} n'est pas bon signe, va chez le médecin."
+    },
+    {
+     "nl": "Rokers hebben 's ochtends vaak {een hoest}.",
+     "fr": "Les fumeurs ont souvent {une toux} le matin."
+    }
+   ]
   },
   {
    "nl": "de arts",
-   "fr": "le médecin"
+   "fr": "le médecin",
+   "ph": [
+    {
+     "nl": "Met die koorts moet je naar {de arts} gaan.",
+     "fr": "Avec cette fièvre, tu dois aller chez {le médecin}."
+    },
+    {
+     "nl": "{De arts} heeft me een medicijn gegeven.",
+     "fr": "{Le médecin} m'a donné un médicament."
+    },
+    {
+     "nl": "Mijn zus studeert om {arts} te worden.",
+     "fr": "Ma sœur fait des études pour devenir {médecin}."
+    },
+    {
+     "nl": "Heeft {de arts} je al onderzocht?",
+     "fr": "{Le médecin} t'a-t-il déjà examiné ?"
+    }
+   ]
   },
   {
    "nl": "de tandarts",
-   "fr": "le dentiste"
+   "fr": "le dentiste",
+   "ph": [
+    {
+     "nl": "Ik heb morgen een afspraak bij {de tandarts}.",
+     "fr": "J'ai rendez-vous chez {le dentiste} demain."
+    },
+    {
+     "nl": "Ben je al naar {de tandarts} geweest?",
+     "fr": "Es-tu déjà allé chez {le dentiste} ?"
+    },
+    {
+     "nl": "{De tandarts} heeft een gaatje in mijn tand gevuld.",
+     "fr": "{Le dentiste} a bouché un trou dans ma dent."
+    },
+    {
+     "nl": "Ik ben bang van {de tandarts} en zijn boor.",
+     "fr": "J'ai peur {du dentiste} et de sa fraise."
+    }
+   ]
   },
   {
    "nl": "het ziekenhuis",
-   "fr": "l'hôpital"
+   "fr": "l'hôpital",
+   "ph": [
+    {
+     "nl": "Mijn oma ligt al een week in {het ziekenhuis}.",
+     "fr": "Ma grand-mère est à {l'hôpital} depuis une semaine."
+    },
+    {
+     "nl": "Hoe ver is {het ziekenhuis} van hier?",
+     "fr": "{L'hôpital} est à quelle distance d'ici ?"
+    },
+    {
+     "nl": "De ambulance brengt hem naar {het ziekenhuis}.",
+     "fr": "L'ambulance l'emmène à {l'hôpital}."
+    },
+    {
+     "nl": "Ik ben in {dit ziekenhuis} geboren.",
+     "fr": "Je suis né dans {cet hôpital}."
+    }
+   ]
   },
   {
    "nl": "de apotheek",
-   "fr": "la pharmacie"
+   "fr": "la pharmacie",
+   "ph": [
+    {
+     "nl": "Ik koop zalf bij {de apotheek}.",
+     "fr": "J'achète de la pommade à {la pharmacie}."
+    },
+    {
+     "nl": "Is {de apotheek} op zondag open?",
+     "fr": "{La pharmacie} est-elle ouverte le dimanche ?"
+    },
+    {
+     "nl": "Met dit voorschrift kun je naar {de apotheek} gaan.",
+     "fr": "Avec cette ordonnance, tu peux aller à {la pharmacie}."
+    },
+    {
+     "nl": "Ik heb geen aspirine meer; is er {een apotheek} in de buurt?",
+     "fr": "Je n'ai plus d'aspirine ; y a-t-il {une pharmacie} près d'ici ?"
+    }
+   ]
   },
   {
    "nl": "het medicijn",
-   "fr": "le médicament"
+   "fr": "le médicament",
+   "ph": [
+    {
+     "nl": "Neem {dit medicijn} drie keer per dag.",
+     "fr": "Prends {ce médicament} trois fois par jour."
+    },
+    {
+     "nl": "Ik ben {mijn medicijnen} vergeten.",
+     "fr": "J'ai oublié {mes médicaments}."
+    },
+    {
+     "nl": "Bewaar {de medicijnen} buiten het bereik van kinderen.",
+     "fr": "Garde {les médicaments} hors de portée des enfants."
+    },
+    {
+     "nl": "Is {dit medicijn} ook zonder voorschrift te koop?",
+     "fr": "{Ce médicament} est-il vendu sans ordonnance ?"
+    }
+   ]
   },
   {
    "nl": "de ziekte",
-   "fr": "la maladie"
+   "fr": "la maladie",
+   "ph": [
+    {
+     "nl": "Griep is {een ziekte} die vaak voorkomt in de winter.",
+     "fr": "La grippe est {une maladie} fréquente en hiver."
+    },
+    {
+     "nl": "Na {zijn ziekte} werkt hij opnieuw.",
+     "fr": "Après {sa maladie}, il travaille de nouveau."
+    },
+    {
+     "nl": "Niemand weet welke {ziekte} hij heeft.",
+     "fr": "Personne ne sait quelle {maladie} il a."
+    },
+    {
+     "nl": "Handen wassen beschermt tegen {ziektes}.",
+     "fr": "Se laver les mains protège contre {les maladies}."
+    }
+   ]
   },
   {
    "nl": "gezond",
-   "fr": "en bonne santé"
+   "fr": "en bonne santé",
+   "ph": [
+    {
+     "nl": "Mijn grootouders zijn nog altijd {gezond}.",
+     "fr": "Mes grands-parents sont toujours {en bonne santé}."
+    },
+    {
+     "nl": "Na de griep voel ik me weer {gezond}.",
+     "fr": "Après la grippe, je me sens de nouveau {en bonne santé}."
+    },
+    {
+     "nl": "Eet fruit als je {gezond} wilt blijven.",
+     "fr": "Mange des fruits si tu veux rester {en bonne santé}."
+    },
+    {
+     "nl": "Is de baby {gezond} geboren?",
+     "fr": "Le bébé est-il né {en bonne santé} ?"
+    }
+   ]
   },
   {
    "nl": "ziek",
-   "fr": "malade"
+   "fr": "malade",
+   "ph": [
+    {
+     "nl": "Ik ben vandaag {ziek} en blijf thuis.",
+     "fr": "Je suis {malade} aujourd'hui et je reste à la maison."
+    },
+    {
+     "nl": "Was je gisteren ook {ziek}?",
+     "fr": "Étais-tu aussi {malade} hier ?"
+    },
+    {
+     "nl": "Mijn hond is {ziek} en eet niets meer.",
+     "fr": "Mon chien est {malade} et ne mange plus rien."
+    },
+    {
+     "nl": "Van te veel snoep word je {ziek}.",
+     "fr": "Trop de bonbons, ça te rend {malade}."
+    }
+   ]
   },
   {
    "nl": "moe",
-   "fr": "fatigué"
+   "fr": "fatigué",
+   "ph": [
+    {
+     "nl": "Na het werk ben ik altijd {moe}.",
+     "fr": "Après le travail, je suis toujours {fatigué}."
+    },
+    {
+     "nl": "Ze is niet {moe}, maar ze wil rusten.",
+     "fr": "Elle n'est pas {fatiguée}, mais elle veut se reposer."
+    },
+    {
+     "nl": "Ga slapen als je {moe} bent.",
+     "fr": "Va dormir si tu es {fatigué}."
+    },
+    {
+     "nl": "Waarom ben je vandaag zo {moe}?",
+     "fr": "Pourquoi es-tu si {fatigué} aujourd'hui ?"
+    }
+   ]
   },
   {
    "nl": "de slaap",
-   "fr": "le sommeil"
+   "fr": "le sommeil",
+   "ph": [
+    {
+     "nl": "{Slaap} is belangrijk voor je gezondheid.",
+     "fr": "{Le sommeil} est important pour ta santé."
+    },
+    {
+     "nl": "Ik heb deze week te weinig {slaap} gehad.",
+     "fr": "J'ai eu trop peu de {sommeil} cette semaine."
+    },
+    {
+     "nl": "Na de lunch heb ik altijd {slaap}.",
+     "fr": "Après le repas de midi, j'ai toujours {sommeil}."
+    },
+    {
+     "nl": "Stress is slecht voor {je slaap}.",
+     "fr": "Le stress est mauvais pour {ton sommeil}."
+    }
+   ]
   },
   {
    "nl": "de adem",
-   "fr": "le souffle"
+   "fr": "le souffle",
+   "ph": [
+    {
+     "nl": "Na de trap was ik buiten {adem}.",
+     "fr": "Après l'escalier, j'étais à bout de {souffle}."
+    },
+    {
+     "nl": "Hou {je adem} tien seconden in.",
+     "fr": "Retiens {ton souffle} pendant dix secondes."
+    },
+    {
+     "nl": "Wacht even, ik moet op {adem} komen.",
+     "fr": "Attends, je dois reprendre {mon souffle}."
+    },
+    {
+     "nl": "In de winter zie je {je adem} in de lucht.",
+     "fr": "En hiver, on voit {son souffle} dans l'air."
+    }
+   ]
   },
   {
    "nl": "de spier",
-   "fr": "le muscle"
+   "fr": "le muscle",
+   "ph": [
+    {
+     "nl": "Na het sporten doen {mijn spieren} pijn.",
+     "fr": "Après le sport, {mes muscles} me font mal."
+    },
+    {
+     "nl": "Wist je dat het hart {een spier} is?",
+     "fr": "Savais-tu que le cœur est {un muscle} ?"
+    },
+    {
+     "nl": "Hij gaat naar de fitness om {spieren} op te bouwen.",
+     "fr": "Il va à la salle de sport pour se faire {des muscles}."
+    },
+    {
+     "nl": "Je gebruikt veel {spieren} om te lachen.",
+     "fr": "On utilise beaucoup de {muscles} pour rire."
+    }
+   ]
   },
   {
    "nl": "het bot",
-   "fr": "l'os"
+   "fr": "l'os",
+   "ph": [
+    {
+     "nl": "Hij heeft {een bot} in zijn hand gebroken.",
+     "fr": "Il s'est cassé {un os} de la main."
+    },
+    {
+     "nl": "Heeft de hond {het bot} opgegeten?",
+     "fr": "Le chien a-t-il mangé {l'os} ?"
+    },
+    {
+     "nl": "Melk is goed voor sterke {botten}.",
+     "fr": "Le lait est bon pour avoir {des os} solides."
+    },
+    {
+     "nl": "Op de röntgenfoto zie je {het bot} duidelijk.",
+     "fr": "Sur la radio, on voit clairement {l'os}."
+    }
+   ]
   },
   {
    "nl": "de wond",
-   "fr": "la blessure"
+   "fr": "la blessure",
+   "ph": [
+    {
+     "nl": "{De wond} bloedt niet meer.",
+     "fr": "{La blessure} ne saigne plus."
+    },
+    {
+     "nl": "De verpleegster heeft {de wond} verzorgd.",
+     "fr": "L'infirmière a soigné {la blessure}."
+    },
+    {
+     "nl": "Was {de wond} eerst met water.",
+     "fr": "Lave d'abord {la blessure} à l'eau."
+    },
+    {
+     "nl": "Is {je wond} al dicht?",
+     "fr": "{Ta blessure} est-elle déjà refermée ?"
+    }
+   ]
   },
   {
    "nl": "de gezondheid",
-   "fr": "la santé"
+   "fr": "la santé",
+   "ph": [
+    {
+     "nl": "Sporten is goed voor {de gezondheid}.",
+     "fr": "Le sport est bon pour {la santé}."
+    },
+    {
+     "nl": "Hoe gaat het met {de gezondheid} van je vader?",
+     "fr": "Comment va {la santé} de ton père ?"
+    },
+    {
+     "nl": "Proost! Op {je gezondheid} en een gelukkig nieuwjaar!",
+     "fr": "Tchin ! À {ta santé} et bonne année !"
+    },
+    {
+     "nl": "Hij let goed op {zijn gezondheid} en eet veel groenten.",
+     "fr": "Il fait attention à {sa santé} et mange beaucoup de légumes."
+    }
+   ]
   },
   {
    "nl": "het lichaam",
-   "fr": "le corps"
+   "fr": "le corps",
+   "ph": [
+    {
+     "nl": "{Het lichaam} heeft meer dan zeshonderd spieren.",
+     "fr": "{Le corps} a plus de six cents muscles."
+    },
+    {
+     "nl": "Na de griep was {mijn lichaam} heel moe.",
+     "fr": "Après la grippe, {mon corps} était très fatigué."
+    },
+    {
+     "nl": "Na de marathon deed {mijn lichaam} overal pijn.",
+     "fr": "Après le marathon, {mon corps} me faisait mal partout."
+    },
+    {
+     "nl": "Welk deel van {het lichaam} is het grootst?",
+     "fr": "Quelle partie {du corps} est la plus grande ?"
+    }
+   ]
   },
   {
    "nl": "het gezicht",
-   "fr": "le visage"
+   "fr": "le visage",
+   "ph": [
+    {
+     "nl": "Ik was elke ochtend {mijn gezicht}.",
+     "fr": "Je me lave {le visage} chaque matin."
+    },
+    {
+     "nl": "Waarom is {je gezicht} zo rood?",
+     "fr": "Pourquoi {ton visage} est-il si rouge ?"
+    },
+    {
+     "nl": "Ik herken {zijn gezicht}, maar niet zijn naam.",
+     "fr": "Je reconnais {son visage}, mais pas son nom."
+    },
+    {
+     "nl": "Hij verstopt {zijn gezicht} achter zijn handen.",
+     "fr": "Il cache {son visage} derrière ses mains."
+    }
+   ]
   },
   {
    "nl": "het voorhoofd",
-   "fr": "le front"
+   "fr": "le front",
+   "ph": [
+    {
+     "nl": "De moeder legt haar hand op {het voorhoofd} van haar kind.",
+     "fr": "La mère pose sa main sur {le front} de son enfant."
+    },
+    {
+     "nl": "Heeft hij een bult op {zijn voorhoofd}?",
+     "fr": "A-t-il une bosse sur {le front} ?"
+    },
+    {
+     "nl": "Het zweet loopt van {zijn voorhoofd}.",
+     "fr": "La sueur coule sur {son front}."
+    },
+    {
+     "nl": "Ze heeft rimpels op {haar voorhoofd}.",
+     "fr": "Elle a des rides sur {le front}."
+    }
+   ]
   },
   {
    "nl": "de wang",
-   "fr": "la joue"
+   "fr": "la joue",
+   "ph": [
+    {
+     "nl": "Ze geeft haar oma een kus op {de wang}.",
+     "fr": "Elle embrasse sa grand-mère sur {la joue}."
+    },
+    {
+     "nl": "{Zijn wangen} waren rood van de kou.",
+     "fr": "{Ses joues} étaient rouges à cause du froid."
+    },
+    {
+     "nl": "De kleine jongen heeft bolle {wangen}.",
+     "fr": "Le petit garçon a {des joues} bien rondes."
+    },
+    {
+     "nl": "Een traan liep over {haar wang}.",
+     "fr": "Une larme coulait sur {sa joue}."
+    }
+   ]
   },
   {
    "nl": "de kin",
-   "fr": "le menton"
+   "fr": "le menton",
+   "ph": [
+    {
+     "nl": "Mijn vader heeft een litteken op {zijn kin}.",
+     "fr": "Mon père a une cicatrice sur {le menton}."
+    },
+    {
+     "nl": "Is het kind op {zijn kin} gevallen?",
+     "fr": "L'enfant est-il tombé sur {le menton} ?"
+    },
+    {
+     "nl": "De bal raakte hem tegen {de kin}.",
+     "fr": "Le ballon l'a frappé {au menton}."
+    },
+    {
+     "nl": "Ze draagt haar sjaal tot aan {haar kin}.",
+     "fr": "Elle porte son écharpe jusqu'{au menton}."
+    }
+   ]
   },
   {
    "nl": "de lip",
-   "fr": "la lèvre"
+   "fr": "la lèvre",
+   "ph": [
+    {
+     "nl": "In de winter zijn {mijn lippen} droog.",
+     "fr": "En hiver, {mes lèvres} sont sèches."
+    },
+    {
+     "nl": "Hij heeft op {zijn lip} gebeten.",
+     "fr": "Il s'est mordu {la lèvre}."
+    },
+    {
+     "nl": "Na de verdoving bij de tandarts voel ik {mijn lip} niet.",
+     "fr": "Après l'anesthésie chez le dentiste, je ne sens plus {ma lèvre}."
+    },
+    {
+     "nl": "Hij likt over {zijn lippen} als hij de taart ziet.",
+     "fr": "Il se lèche {les lèvres} en voyant le gâteau."
+    }
+   ]
   },
   {
    "nl": "de wenkbrauw",
-   "fr": "le sourcil"
+   "fr": "le sourcil",
+   "ph": [
+    {
+     "nl": "{Haar wenkbrauwen} zijn heel donker.",
+     "fr": "{Ses sourcils} sont très foncés."
+    },
+    {
+     "nl": "Waarom trek je {je wenkbrauwen} op?",
+     "fr": "Pourquoi lèves-tu {les sourcils} ?"
+    },
+    {
+     "nl": "Ze maakt {haar wenkbrauwen} donkerder met een potlood.",
+     "fr": "Elle fonce {ses sourcils} avec un crayon."
+    },
+    {
+     "nl": "Tussen {zijn wenkbrauwen} zit een diepe rimpel.",
+     "fr": "Il a une ride profonde entre {les sourcils}."
+    }
+   ]
   },
   {
    "nl": "de wimper",
-   "fr": "le cil"
+   "fr": "le cil",
+   "ph": [
+    {
+     "nl": "Er zit {een wimper} in mijn oog.",
+     "fr": "J'ai {un cil} dans l'œil."
+    },
+    {
+     "nl": "De baby heeft lange {wimpers}.",
+     "fr": "Le bébé a de longs {cils}."
+    },
+    {
+     "nl": "Ze doet mascara op {haar wimpers}.",
+     "fr": "Elle met du mascara sur {ses cils}."
+    },
+    {
+     "nl": "Blaas op {de wimper} en doe een wens!",
+     "fr": "Souffle sur {le cil} et fais un vœu !"
+    }
+   ]
   },
   {
    "nl": "de keel",
-   "fr": "la gorge"
+   "fr": "la gorge",
+   "ph": [
+    {
+     "nl": "Als ik slik, doet {mijn keel} pijn.",
+     "fr": "Quand j'avale, {ma gorge} me fait mal."
+    },
+    {
+     "nl": "Deze snoepjes zijn goed voor {de keel}.",
+     "fr": "Ces bonbons sont bons pour {la gorge}."
+    },
+    {
+     "nl": "Er zit een visgraat in {mijn keel}.",
+     "fr": "J'ai une arête coincée dans {la gorge}."
+    },
+    {
+     "nl": "Doe je mond open, ik wil {je keel} bekijken.",
+     "fr": "Ouvre la bouche, je veux regarder {ta gorge}."
+    }
+   ]
   },
   {
    "nl": "de borst",
-   "fr": "la poitrine"
+   "fr": "la poitrine",
+   "ph": [
+    {
+     "nl": "Ik voel een pijn in {mijn borst}.",
+     "fr": "Je sens une douleur dans {la poitrine}."
+    },
+    {
+     "nl": "Heeft hij al lang pijn in {de borst}?",
+     "fr": "A-t-il mal à {la poitrine} depuis longtemps ?"
+    },
+    {
+     "nl": "Ze drukt de baby tegen {haar borst}.",
+     "fr": "Elle serre le bébé contre {sa poitrine}."
+    },
+    {
+     "nl": "Hij heeft veel haar op {zijn borst}.",
+     "fr": "Il a beaucoup de poils sur {la poitrine}."
+    }
+   ]
   },
   {
    "nl": "de heup",
-   "fr": "la hanche"
+   "fr": "la hanche",
+   "ph": [
+    {
+     "nl": "Mijn oma heeft een nieuwe {heup} gekregen.",
+     "fr": "Ma grand-mère a reçu une nouvelle {hanche}."
+    },
+    {
+     "nl": "Ze legt haar handen op {haar heupen}.",
+     "fr": "Elle pose les mains sur {les hanches}."
+    },
+    {
+     "nl": "Oma is gevallen en heeft {haar heup} gebroken.",
+     "fr": "Grand-mère est tombée et s'est cassé {la hanche}."
+    },
+    {
+     "nl": "Ze draagt de baby op {haar heup}.",
+     "fr": "Elle porte le bébé sur {sa hanche}."
+    }
+   ]
   },
   {
    "nl": "de elleboog",
-   "fr": "le coude"
+   "fr": "le coude",
+   "ph": [
+    {
+     "nl": "Zet {je ellebogen} niet op tafel.",
+     "fr": "Ne mets pas {les coudes} sur la table."
+    },
+    {
+     "nl": "Ik heb {mijn elleboog} tegen de deur gestoten.",
+     "fr": "Je me suis cogné {le coude} contre la porte."
+    },
+    {
+     "nl": "Buig {je elleboog} niet, hou je arm recht.",
+     "fr": "Ne plie pas {le coude}, garde le bras droit."
+    },
+    {
+     "nl": "Hij duwt me met {zijn elleboog} opzij.",
+     "fr": "Il me pousse sur le côté avec {son coude}."
+    }
+   ]
   },
   {
    "nl": "de pols",
-   "fr": "le poignet"
+   "fr": "le poignet",
+   "ph": [
+    {
+     "nl": "Ze draagt een horloge om {haar pols}.",
+     "fr": "Elle porte une montre {au poignet}."
+    },
+    {
+     "nl": "Is {je pols} gebroken of niet?",
+     "fr": "{Ton poignet} est-il cassé ou pas ?"
+    },
+    {
+     "nl": "Ik heb {mijn pols} verstuikt bij het tennissen.",
+     "fr": "Je me suis foulé {le poignet} en jouant au tennis."
+    },
+    {
+     "nl": "Draai {je polsen} rond om op te warmen.",
+     "fr": "Fais tourner {tes poignets} pour t'échauffer."
+    }
+   ]
   },
   {
    "nl": "de duim",
-   "fr": "le pouce"
+   "fr": "le pouce",
+   "ph": [
+    {
+     "nl": "Het kleine kind zuigt nog op {zijn duim}.",
+     "fr": "Le petit enfant suce encore {son pouce}."
+    },
+    {
+     "nl": "Ik heb met de hamer op {mijn duim} geslagen.",
+     "fr": "Je me suis tapé sur {le pouce} avec le marteau."
+    },
+    {
+     "nl": "Steek {je duim} op als alles goed is.",
+     "fr": "Lève {le pouce} si tout va bien."
+    },
+    {
+     "nl": "Mijn hand heeft vier vingers en {een duim}.",
+     "fr": "Ma main a quatre doigts et {un pouce}."
+    }
+   ]
   },
   {
    "nl": "de nagel",
-   "fr": "l'ongle"
+   "fr": "l'ongle",
+   "ph": [
+    {
+     "nl": "Je moet {je nagels} korter knippen.",
+     "fr": "Tu dois couper {tes ongles} plus court."
+    },
+    {
+     "nl": "Hij bijt nooit op {zijn nagels}.",
+     "fr": "Il ne se ronge jamais {les ongles}."
+    },
+    {
+     "nl": "Ze lakt {haar nagels} rood.",
+     "fr": "Elle se vernit {les ongles} en rouge."
+    },
+    {
+     "nl": "Er zit vuil onder {je nagels}.",
+     "fr": "Tu as de la saleté sous {les ongles}."
+    }
+   ]
   },
   {
    "nl": "de enkel",
-   "fr": "la cheville"
+   "fr": "la cheville",
+   "ph": [
+    {
+     "nl": "Ik heb {mijn enkel} verstuikt tijdens het voetbal.",
+     "fr": "Je me suis tordu {la cheville} pendant le foot."
+    },
+    {
+     "nl": "Is {je enkel} nog altijd dik?",
+     "fr": "{Ta cheville} est-elle toujours enflée ?"
+    },
+    {
+     "nl": "Mijn broek is te kort, je ziet {mijn enkels}.",
+     "fr": "Mon pantalon est trop court, on voit {mes chevilles}."
+    },
+    {
+     "nl": "Ze draagt een kettinkje om {haar enkel}.",
+     "fr": "Elle porte une chaînette à {la cheville}."
+    }
+   ]
   },
   {
    "nl": "de teen",
-   "fr": "l'orteil"
+   "fr": "l'orteil",
+   "ph": [
+    {
+     "nl": "Ik heb {mijn teen} tegen de tafel gestoten.",
+     "fr": "Je me suis cogné {l'orteil} contre la table."
+    },
+    {
+     "nl": "Kun je {je tenen} bewegen?",
+     "fr": "Peux-tu bouger {les orteils} ?"
+    },
+    {
+     "nl": "Er zit een gat in mijn sok, je ziet {mijn teen}.",
+     "fr": "Ma chaussette est trouée, on voit {mon orteil}."
+    },
+    {
+     "nl": "Een voet heeft vijf {tenen}.",
+     "fr": "Un pied a cinq {orteils}."
+    }
+   ]
   },
   {
    "nl": "de hiel",
-   "fr": "le talon"
+   "fr": "le talon",
+   "ph": [
+    {
+     "nl": "Mijn nieuwe schoenen doen pijn aan {mijn hiel}.",
+     "fr": "Mes nouvelles chaussures me font mal {au talon}."
+    },
+    {
+     "nl": "Waarom loop je op {je hielen}?",
+     "fr": "Pourquoi marches-tu sur {les talons} ?"
+    },
+    {
+     "nl": "Ik heb een blaar op {mijn hiel}.",
+     "fr": "J'ai une ampoule {au talon}."
+    },
+    {
+     "nl": "Zet {je hielen} tegen de muur om je te meten.",
+     "fr": "Mets {les talons} contre le mur pour te mesurer."
+    }
+   ]
   },
   {
    "nl": "de kuit",
-   "fr": "le mollet"
+   "fr": "le mollet",
+   "ph": [
+    {
+     "nl": "Na het lopen heb ik kramp in {mijn kuit}.",
+     "fr": "Après la course, j'ai une crampe {au mollet}."
+    },
+    {
+     "nl": "Hij heeft sterke {kuiten} van het fietsen.",
+     "fr": "Il a {des mollets} solides grâce au vélo."
+    },
+    {
+     "nl": "De hond heeft me in {mijn kuit} gebeten.",
+     "fr": "Le chien m'a mordu {au mollet}."
+    },
+    {
+     "nl": "Heb je {je kuiten} goed opgerekt voor de wedstrijd?",
+     "fr": "As-tu bien étiré {tes mollets} avant la course ?"
+    }
+   ]
   },
   {
    "nl": "de dij",
-   "fr": "la cuisse"
+   "fr": "la cuisse",
+   "ph": [
+    {
+     "nl": "De spieren van {mijn dijen} zijn moe.",
+     "fr": "Les muscles de {mes cuisses} sont fatigués."
+    },
+    {
+     "nl": "Hij heeft een blauwe plek op {zijn dij}.",
+     "fr": "Il a un bleu sur {la cuisse}."
+    },
+    {
+     "nl": "Hij slaat op {zijn dijen} van het lachen.",
+     "fr": "Il se tape sur {les cuisses} en riant."
+    },
+    {
+     "nl": "Ik eet het liefst {de dij} van de kip.",
+     "fr": "Je préfère manger {la cuisse} du poulet."
+    }
+   ]
   },
   {
    "nl": "de long",
-   "fr": "le poumon"
+   "fr": "le poumon",
+   "ph": [
+    {
+     "nl": "Roken is slecht voor {de longen}.",
+     "fr": "Fumer est mauvais pour {les poumons}."
+    },
+    {
+     "nl": "Heeft de arts naar {je longen} geluisterd?",
+     "fr": "Le médecin a-t-il écouté {tes poumons} ?"
+    },
+    {
+     "nl": "Adem diep in tot {je longen} vol lucht zitten.",
+     "fr": "Inspire profondément jusqu'à ce que {tes poumons} soient pleins d'air."
+    },
+    {
+     "nl": "De rook van de brand kwam in {zijn longen}.",
+     "fr": "La fumée de l'incendie est entrée dans {ses poumons}."
+    }
+   ]
   },
   {
    "nl": "de maag",
-   "fr": "l'estomac"
+   "fr": "l'estomac",
+   "ph": [
+    {
+     "nl": "Ik heb te veel gegeten en {mijn maag} doet pijn.",
+     "fr": "J'ai trop mangé et {mon estomac} me fait mal."
+    },
+    {
+     "nl": "{De maag} verteert het eten.",
+     "fr": "{L'estomac} digère la nourriture."
+    },
+    {
+     "nl": "Ik heb niet ontbeten, dus {mijn maag} is leeg.",
+     "fr": "Je n'ai pas pris de petit-déjeuner, donc {mon estomac} est vide."
+    },
+    {
+     "nl": "Eet niet zo snel, dat is slecht voor {je maag}.",
+     "fr": "Ne mange pas si vite, c'est mauvais pour {ton estomac}."
+    }
+   ]
   },
   {
    "nl": "de lever",
-   "fr": "le foie"
+   "fr": "le foie",
+   "ph": [
+    {
+     "nl": "Te veel alcohol is slecht voor {de lever}.",
+     "fr": "Trop d'alcool est mauvais pour {le foie}."
+    },
+    {
+     "nl": "Waar zit {de lever} in het lichaam?",
+     "fr": "Où se trouve {le foie} dans le corps ?"
+    },
+    {
+     "nl": "{De lever} is het grootste orgaan in de buik.",
+     "fr": "{Le foie} est le plus grand organe du ventre."
+    },
+    {
+     "nl": "Drink je niet te veel? Denk aan {je lever}!",
+     "fr": "Tu ne bois pas trop ? Pense à {ton foie} !"
+    }
+   ]
   },
   {
    "nl": "de nier",
-   "fr": "le rein"
+   "fr": "le rein",
+   "ph": [
+    {
+     "nl": "Een mens heeft normaal twee {nieren}.",
+     "fr": "Un être humain a normalement deux {reins}."
+    },
+    {
+     "nl": "Drink genoeg water voor {je nieren}.",
+     "fr": "Bois assez d'eau pour {tes reins}."
+    },
+    {
+     "nl": "Hij heeft een steen in {zijn nier}.",
+     "fr": "Il a un calcul dans {le rein}."
+    },
+    {
+     "nl": "Mijn vader heeft {een nier} aan zijn broer gegeven.",
+     "fr": "Mon père a donné {un rein} à son frère."
+    }
+   ]
   },
   {
    "nl": "de hersenen",
-   "fr": "le cerveau"
+   "fr": "le cerveau",
+   "ph": [
+    {
+     "nl": "{De hersenen} hebben veel slaap nodig.",
+     "fr": "{Le cerveau} a besoin de beaucoup de sommeil."
+    },
+    {
+     "nl": "Is lezen goed voor {je hersenen}?",
+     "fr": "La lecture est-elle bonne pour {ton cerveau} ?"
+    },
+    {
+     "nl": "{De hersenen} sturen het hele lichaam.",
+     "fr": "{Le cerveau} dirige tout le corps."
+    },
+    {
+     "nl": "We denken en leren met {onze hersenen}.",
+     "fr": "Nous pensons et apprenons avec {notre cerveau}."
+    }
+   ]
   },
   {
    "nl": "de zenuw",
-   "fr": "le nerf"
+   "fr": "le nerf",
+   "ph": [
+    {
+     "nl": "De tandarts heeft {de zenuw} van mijn tand verwijderd.",
+     "fr": "Le dentiste a retiré {le nerf} de ma dent."
+    },
+    {
+     "nl": "Er zit {een zenuw} geklemd in mijn rug.",
+     "fr": "J'ai {un nerf} coincé dans le dos."
+    },
+    {
+     "nl": "Dat lawaai werkt op {mijn zenuwen}.",
+     "fr": "Ce bruit me tape sur {les nerfs}."
+    },
+    {
+     "nl": "De dokter zegt dat {de zenuw} in mijn been beschadigd is.",
+     "fr": "Le médecin dit que {le nerf} de ma jambe est abîmé."
+    }
+   ]
   },
   {
    "nl": "de ader",
-   "fr": "la veine"
+   "fr": "la veine",
+   "ph": [
+    {
+     "nl": "De verpleegster zoekt {een ader} in mijn arm.",
+     "fr": "L'infirmière cherche {une veine} dans mon bras."
+    },
+    {
+     "nl": "Zie je {de aders} op zijn handen?",
+     "fr": "Vois-tu {les veines} sur ses mains ?"
+    },
+    {
+     "nl": "Het bloed stroomt door {de aders} naar het hart.",
+     "fr": "Le sang circule dans {les veines} vers le cœur."
+    },
+    {
+     "nl": "Je ziet {de ader} op zijn voorhoofd als hij boos is.",
+     "fr": "On voit {la veine} sur son front quand il est en colère."
+    }
+   ]
   },
   {
    "nl": "het gewricht",
-   "fr": "l'articulation"
+   "fr": "l'articulation",
+   "ph": [
+    {
+     "nl": "Mijn grootmoeder heeft pijn in {haar gewrichten}.",
+     "fr": "Ma grand-mère a mal {aux articulations}."
+    },
+    {
+     "nl": "Is de knie {een gewricht}?",
+     "fr": "Le genou est-il {une articulation} ?"
+    },
+    {
+     "nl": "Zwemmen is goed voor {de gewrichten}.",
+     "fr": "La natation est bonne pour {les articulations}."
+    },
+    {
+     "nl": "Hoeveel {gewrichten} heeft je hand?",
+     "fr": "Combien d'{articulations} a ta main ?"
+    }
+   ]
   },
   {
    "nl": "de kramp",
-   "fr": "la crampe"
+   "fr": "la crampe",
+   "ph": [
+    {
+     "nl": "Ik had {een kramp} in mijn kuit tijdens het zwemmen.",
+     "fr": "J'ai eu {une crampe} au mollet en nageant."
+    },
+    {
+     "nl": "Gaat {de kramp} snel weg?",
+     "fr": "{La crampe} passe-t-elle vite ?"
+    },
+    {
+     "nl": "Zwem niet direct na het eten, anders krijg je {kramp}.",
+     "fr": "Ne nage pas juste après le repas, sinon tu auras {une crampe}."
+    },
+    {
+     "nl": "Rek je been om {de kramp} te stoppen.",
+     "fr": "Étire ta jambe pour arrêter {la crampe}."
+    }
+   ]
   },
   {
    "nl": "de verkoudheid",
-   "fr": "le rhume"
+   "fr": "le rhume",
+   "ph": [
+    {
+     "nl": "Ik heb {een verkoudheid} en mijn neus loopt.",
+     "fr": "J'ai {un rhume} et j'ai le nez qui coule."
+    },
+    {
+     "nl": "{De verkoudheid} duurde een hele week.",
+     "fr": "{Le rhume} a duré toute une semaine."
+    },
+    {
+     "nl": "Is {je verkoudheid} al over? Je neus loopt niet meer.",
+     "fr": "{Ton rhume} est-il passé ? Ton nez ne coule plus."
+    },
+    {
+     "nl": "Met {deze verkoudheid} kan ik niets ruiken.",
+     "fr": "Avec {ce rhume}, je ne sens rien."
+    }
+   ]
   },
   {
    "nl": "de griep",
-   "fr": "la grippe"
+   "fr": "la grippe",
+   "ph": [
+    {
+     "nl": "De helft van de klas heeft {de griep}.",
+     "fr": "La moitié de la classe a {la grippe}."
+    },
+    {
+     "nl": "Heb je je laten vaccineren tegen {de griep}?",
+     "fr": "T'es-tu fait vacciner contre {la grippe} ?"
+    },
+    {
+     "nl": "Met {de griep} lag ik een week in bed met hoge koorts.",
+     "fr": "Avec {la grippe}, je suis resté une semaine au lit avec une forte fièvre."
+    },
+    {
+     "nl": "Oma moet oppassen, want {de griep} kan gevaarlijk zijn.",
+     "fr": "Grand-mère doit faire attention, car {la grippe} peut être dangereuse."
+    }
+   ]
   },
   {
    "nl": "de allergie",
-   "fr": "l'allergie"
+   "fr": "l'allergie",
+   "ph": [
+    {
+     "nl": "Ik heb {een allergie} voor katten.",
+     "fr": "J'ai {une allergie} aux chats."
+    },
+    {
+     "nl": "De arts vraagt of ik {allergieën} heb.",
+     "fr": "Le médecin demande si j'ai {des allergies}."
+    },
+    {
+     "nl": "Door {mijn allergie} mag ik geen noten eten.",
+     "fr": "À cause de {mon allergie}, je ne peux pas manger de noix."
+    },
+    {
+     "nl": "Ze heeft {een allergie} voor pollen, dus de lente is moeilijk.",
+     "fr": "Elle a {une allergie} au pollen, donc le printemps est difficile."
+    }
+   ]
   },
   {
    "nl": "de zalf",
-   "fr": "la pommade"
+   "fr": "la pommade",
+   "ph": [
+    {
+     "nl": "Smeer {de zalf} twee keer per dag op de wond.",
+     "fr": "Mets {la pommade} sur la blessure deux fois par jour."
+    },
+    {
+     "nl": "Heb je {een zalf} tegen jeuk?",
+     "fr": "As-tu {une pommade} contre les démangeaisons ?"
+    },
+    {
+     "nl": "Smeer wat {zalf} op je verbrande huid.",
+     "fr": "Mets un peu de {pommade} sur ta peau brûlée."
+    },
+    {
+     "nl": "Slik {deze zalf} niet in, smeer ze alleen op de huid.",
+     "fr": "N'avale pas {cette pommade}, étale-la seulement sur la peau."
+    }
+   ]
   },
   {
    "nl": "de pil",
-   "fr": "le comprimé"
+   "fr": "le comprimé",
+   "ph": [
+    {
+     "nl": "Neem {een pil} na het eten.",
+     "fr": "Prends {un comprimé} après le repas."
+    },
+    {
+     "nl": "Ik kan {die pillen} niet slikken.",
+     "fr": "Je n'arrive pas à avaler {ces comprimés}."
+    },
+    {
+     "nl": "Slik {de pil} door met een glas water.",
+     "fr": "Avale {le comprimé} avec un verre d'eau."
+    },
+    {
+     "nl": "Hoeveel {pillen} mag ik per dag nemen?",
+     "fr": "Combien de {comprimés} puis-je prendre par jour ?"
+    }
+   ]
   },
   {
    "nl": "het verband",
-   "fr": "le bandage"
+   "fr": "le bandage",
+   "ph": [
+    {
+     "nl": "De verpleegster legt {een verband} rond mijn arm.",
+     "fr": "L'infirmière met {un bandage} autour de mon bras."
+    },
+    {
+     "nl": "Mag ik {het verband} morgen verwijderen?",
+     "fr": "Puis-je enlever {le bandage} demain ?"
+    },
+    {
+     "nl": "Je moet {het verband} rond je pols elke dag vervangen.",
+     "fr": "Tu dois changer chaque jour {le bandage} autour de ton poignet."
+    },
+    {
+     "nl": "Waarom draag je {een verband} om je hoofd?",
+     "fr": "Pourquoi portes-tu {un bandage} autour de la tête ?"
+    }
+   ]
   },
   {
    "nl": "de pleister",
-   "fr": "le sparadrap"
+   "fr": "le sparadrap",
+   "ph": [
+    {
+     "nl": "Ik plak {een pleister} op mijn vinger.",
+     "fr": "Je mets {un sparadrap} sur mon doigt."
+    },
+    {
+     "nl": "Heb je nog {pleisters} in je tas?",
+     "fr": "As-tu encore {des sparadraps} dans ton sac ?"
+    },
+    {
+     "nl": "Trek {de pleister} snel los, dan doet het minder pijn.",
+     "fr": "Arrache {le sparadrap} vite, ça fait moins mal."
+    },
+    {
+     "nl": "Het is maar een klein sneetje, {een pleister} is genoeg.",
+     "fr": "Ce n'est qu'une petite coupure, {un sparadrap} suffit."
+    }
+   ]
   },
   {
    "nl": "de spuit",
-   "fr": "la piqûre"
+   "fr": "la piqûre",
+   "ph": [
+    {
+     "nl": "Het kind is bang voor {de spuit}.",
+     "fr": "L'enfant a peur de {la piqûre}."
+    },
+    {
+     "nl": "Hij heeft gisteren {een spuit} gekregen.",
+     "fr": "Il a reçu {une piqûre} hier."
+    },
+    {
+     "nl": "De verpleegster geeft me {een spuit} in mijn arm.",
+     "fr": "L'infirmière me fait {une piqûre} dans le bras."
+    },
+    {
+     "nl": "Heeft {de spuit} bij de dokter pijn gedaan?",
+     "fr": "{La piqûre} chez le médecin a-t-elle fait mal ?"
+    }
+   ]
   },
   {
    "nl": "de operatie",
-   "fr": "l'opération"
+   "fr": "l'opération",
+   "ph": [
+    {
+     "nl": "{De operatie} duurde drie uur.",
+     "fr": "{L'opération} a duré trois heures."
+    },
+    {
+     "nl": "Moet hij na {de operatie} lang rusten?",
+     "fr": "Doit-il se reposer longtemps après {l'opération} ?"
+    },
+    {
+     "nl": "Hij moet morgen {een operatie} aan zijn knie ondergaan.",
+     "fr": "Il doit subir {une opération} du genou demain."
+    },
+    {
+     "nl": "Voor {de operatie} mag je niets eten.",
+     "fr": "Avant {l'opération}, tu ne peux rien manger."
+    }
+   ]
   },
   {
    "nl": "de verpleegster",
-   "fr": "l'infirmière"
+   "fr": "l'infirmière",
+   "ph": [
+    {
+     "nl": "{De verpleegster} brengt me een glas water.",
+     "fr": "{L'infirmière} m'apporte un verre d'eau."
+    },
+    {
+     "nl": "Mijn zus werkt als {verpleegster} in het ziekenhuis.",
+     "fr": "Ma sœur travaille comme {infirmière} à l'hôpital."
+    },
+    {
+     "nl": "Druk op de knop als je {de verpleegster} nodig hebt.",
+     "fr": "Appuie sur le bouton si tu as besoin de {l'infirmière}."
+    },
+    {
+     "nl": "{Die verpleegster} werkt 's nachts op de afdeling.",
+     "fr": "{Cette infirmière} travaille la nuit dans le service."
+    }
+   ]
   },
   {
    "nl": "de patiënt",
-   "fr": "le patient"
+   "fr": "le patient",
+   "ph": [
+    {
+     "nl": "{De patiënt} wacht al een uur.",
+     "fr": "{Le patient} attend depuis une heure."
+    },
+    {
+     "nl": "Hoeveel {patiënten} heeft de dokter vandaag?",
+     "fr": "Combien de {patients} le médecin a-t-il aujourd'hui ?"
+    },
+    {
+     "nl": "De dokter onderzoekt {de patiënt} in zijn praktijk.",
+     "fr": "Le médecin examine {le patient} dans son cabinet."
+    },
+    {
+     "nl": "{Deze patiënt} mag morgen naar huis.",
+     "fr": "{Ce patient} peut rentrer chez lui demain."
+    }
+   ]
   },
   {
    "nl": "de behandeling",
-   "fr": "le traitement"
+   "fr": "le traitement",
+   "ph": [
+    {
+     "nl": "{De behandeling} duurt twee weken.",
+     "fr": "{Le traitement} dure deux semaines."
+    },
+    {
+     "nl": "Heeft {de behandeling} geholpen?",
+     "fr": "{Le traitement} a-t-il fonctionné ?"
+    },
+    {
+     "nl": "Stop niet met {de behandeling} zonder het aan de arts te vragen.",
+     "fr": "N'arrête pas {le traitement} sans demander au médecin."
+    },
+    {
+     "nl": "{De behandeling} met deze zalf werkt niet.",
+     "fr": "{Le traitement} avec cette pommade ne marche pas."
+    }
+   ]
   },
   {
    "nl": "slapen",
    "fr": "dormir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {slaap} elke nacht acht uur.",
+     "fr": "Je {dors} huit heures chaque nuit."
+    },
+    {
+     "nl": "Heb je vannacht goed {geslapen}?",
+     "fr": "As-tu bien {dormi} cette nuit ?"
+    },
+    {
+     "nl": "Ik kon niet {slapen} door het lawaai.",
+     "fr": "Je n'ai pas pu {dormir} à cause du bruit."
+    },
+    {
+     "nl": "{Slaap} lekker en tot morgen!",
+     "fr": "{Dors} bien et à demain !"
+    }
+   ]
   },
   {
    "nl": "zien",
    "fr": "voir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {zie} niet goed zonder bril.",
+     "fr": "Je ne {vois} pas bien sans lunettes."
+    },
+    {
+     "nl": "Heb je de dokter vandaag {gezien}?",
+     "fr": "As-tu {vu} le médecin aujourd'hui ?"
+    },
+    {
+     "nl": "Kun je het bord van hier goed {zien}?",
+     "fr": "Peux-tu bien {voir} le tableau d'ici ?"
+    },
+    {
+     "nl": "Ik heb haar al lang niet meer {gezien}.",
+     "fr": "Je ne l'ai pas {vue} depuis longtemps."
+    }
+   ]
   },
   {
    "nl": "horen",
    "fr": "entendre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn opa {hoort} niet goed meer.",
+     "fr": "Mon grand-père n'{entend} plus bien."
+    },
+    {
+     "nl": "Heb je dat geluid {gehoord}?",
+     "fr": "As-tu {entendu} ce bruit ?"
+    },
+    {
+     "nl": "Praat wat luider, ik {hoor} je niet.",
+     "fr": "Parle plus fort, je ne t'{entends} pas."
+    },
+    {
+     "nl": "Je zult de muziek van ver kunnen {horen}.",
+     "fr": "Tu pourras {entendre} la musique de loin."
+    }
+   ]
   },
   {
    "nl": "voelen",
    "fr": "sentir, ressentir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {voel} geen pijn meer in mijn rug.",
+     "fr": "Je ne {sens} plus de douleur dans le dos."
+    },
+    {
+     "nl": "Hoe {voel} je je vandaag?",
+     "fr": "Comment te {sens}-tu aujourd'hui ?"
+    },
+    {
+     "nl": "Na de verdoving zul je niets meer {voelen}.",
+     "fr": "Après l'anesthésie, tu ne vas plus rien {sentir}."
+    },
+    {
+     "nl": "Ik {voelde} me gisteren niet goed.",
+     "fr": "Je ne me {sentais} pas bien hier."
+    }
+   ]
   },
   {
    "nl": "ademen",
    "fr": "respirer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik kan niet goed {ademen} door mijn neus.",
+     "fr": "Je n'arrive pas à bien {respirer} par le nez."
+    },
+    {
+     "nl": "De patiënt {ademde} heel snel.",
+     "fr": "Le patient {respirait} très vite."
+    },
+    {
+     "nl": "Probeer rustig te {ademen} als je zenuwachtig bent.",
+     "fr": "Essaie de {respirer} calmement quand tu es nerveux."
+    },
+    {
+     "nl": "Vissen {ademen} onder water.",
+     "fr": "Les poissons {respirent} sous l'eau."
+    }
+   ]
   },
   {
    "nl": "hoesten",
    "fr": "tousser",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn zoon {hoest} de hele nacht.",
+     "fr": "Mon fils {tousse} toute la nuit."
+    },
+    {
+     "nl": "Heb je gisteren veel {gehoest}?",
+     "fr": "As-tu beaucoup {toussé} hier ?"
+    },
+    {
+     "nl": "{Hoest} in je elleboog, niet in je hand!",
+     "fr": "{Tousse} dans ton coude, pas dans ta main !"
+    },
+    {
+     "nl": "Als ik rook inadem, moet ik altijd {hoesten}.",
+     "fr": "Quand je respire de la fumée, je dois toujours {tousser}."
+    }
+   ]
   },
   {
    "nl": "niezen",
    "fr": "éternuer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {nies} altijd als ik een kat zie.",
+     "fr": "J'{éternue} toujours quand je vois un chat."
+    },
+    {
+     "nl": "Waarom heb je zo vaak {geniesd}?",
+     "fr": "Pourquoi as-tu {éternué} si souvent ?"
+    },
+    {
+     "nl": "Van peper moet ik altijd {niezen}.",
+     "fr": "Le poivre me fait toujours {éternuer}."
+    },
+    {
+     "nl": "Gezondheid! Je {niest} wel heel vaak vandaag.",
+     "fr": "À tes souhaits ! Tu {éternues} vraiment souvent aujourd'hui."
+    }
+   ]
   },
   {
    "nl": "bloeden",
    "fr": "saigner",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn vinger {bloedt} een beetje.",
+     "fr": "Mon doigt {saigne} un peu."
+    },
+    {
+     "nl": "Heeft de wond lang {gebloed}?",
+     "fr": "La blessure a-t-elle {saigné} longtemps ?"
+    },
+    {
+     "nl": "Druk op de wond, dan stopt ze met {bloeden}.",
+     "fr": "Appuie sur la blessure, elle arrêtera de {saigner}."
+    },
+    {
+     "nl": "Zijn neus {bloedde} na de val van zijn fiets.",
+     "fr": "Son nez {saignait} après sa chute de vélo."
+    }
+   ]
   },
   {
    "nl": "genezen",
    "fr": "guérir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De wond {geneest} heel snel.",
+     "fr": "La blessure {guérit} très vite."
+    },
+    {
+     "nl": "Is je zus al {genezen} van de griep?",
+     "fr": "Ta sœur est-elle déjà {guérie} de la grippe ?"
+    },
+    {
+     "nl": "Met deze zalf zal je huid snel {genezen}.",
+     "fr": "Avec cette pommade, ta peau va vite {guérir}."
+    },
+    {
+     "nl": "Een gebroken been {geneest} niet in één week.",
+     "fr": "Une jambe cassée ne {guérit} pas en une semaine."
+    }
+   ]
   },
   {
    "nl": "rusten",
    "fr": "se reposer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Na de operatie moet je goed {rusten}.",
+     "fr": "Après l'opération, tu dois bien {te reposer}."
+    },
+    {
+     "nl": "Ik heb de hele dag {gerust}.",
+     "fr": "Je {me suis reposé} toute la journée."
+    },
+    {
+     "nl": "Ga even {rusten}, je ziet er moe uit.",
+     "fr": "Va {te reposer} un peu, tu as l'air fatigué."
+    },
+    {
+     "nl": "Op zondag {rust} mijn vader altijd in de tuin.",
+     "fr": "Le dimanche, mon père {se repose} toujours dans le jardin."
+    }
+   ]
   },
   {
    "nl": "groeien",
    "fr": "grandir, pousser",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Kinderen {groeien} heel snel.",
+     "fr": "Les enfants {grandissent} très vite."
+    },
+    {
+     "nl": "Mijn haar is deze zomer veel {gegroeid}.",
+     "fr": "Mes cheveux ont beaucoup {poussé} cet été."
+    },
+    {
+     "nl": "Je bent dit jaar tien centimeter {gegroeid}!",
+     "fr": "Tu as {grandi} de dix centimètres cette année !"
+    },
+    {
+     "nl": "Nagels {groeien} sneller dan je denkt.",
+     "fr": "Les ongles {poussent} plus vite que tu ne le penses."
+    }
+   ]
   },
   {
    "nl": "vallen",
    "fr": "tomber",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik ben gisteren van de trap {gevallen}.",
+     "fr": "Je suis {tombé} dans l'escalier hier."
+    },
+    {
+     "nl": "Pas op, je gaat {vallen}!",
+     "fr": "Attention, tu vas {tomber} !"
+    },
+    {
+     "nl": "Hij {viel} van zijn fiets en brak zijn arm.",
+     "fr": "Il est {tombé} de son vélo et s'est cassé le bras."
+    },
+    {
+     "nl": "Laat je telefoon niet {vallen}!",
+     "fr": "Ne laisse pas {tomber} ton téléphone !"
+    }
+   ]
   },
   {
    "nl": "breken",
    "fr": "casser",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Hij heeft zijn pols {gebroken} bij het skiën.",
+     "fr": "Il s'est {cassé} le poignet en skiant."
+    },
+    {
+     "nl": "Oudere mensen {breken} gemakkelijk een been.",
+     "fr": "Les personnes âgées se {cassent} facilement une jambe."
+    },
+    {
+     "nl": "Pas op dat je je been niet {breekt} op het ijs.",
+     "fr": "Fais attention de ne pas te {casser} la jambe sur la glace."
+    },
+    {
+     "nl": "Wie heeft het glas {gebroken}?",
+     "fr": "Qui a {cassé} le verre ?"
+    }
+   ]
   },
   {
    "nl": "zweten",
    "fr": "transpirer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Als je koorts hebt, {zweet} je veel.",
+     "fr": "Quand on a de la fièvre, on {transpire} beaucoup."
+    },
+    {
+     "nl": "Ik heb vannacht veel {gezweet}.",
+     "fr": "J'ai beaucoup {transpiré} cette nuit."
+    },
+    {
+     "nl": "In de sauna {zweet} je heel veel.",
+     "fr": "Au sauna, on {transpire} énormément."
+    },
+    {
+     "nl": "Waarom {zweet} je zo? Het is niet warm.",
+     "fr": "Pourquoi {transpires}-tu autant ? Il ne fait pas chaud."
+    }
+   ]
   },
   {
    "nl": "huilen",
    "fr": "pleurer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De baby {huilt} omdat hij honger heeft.",
+     "fr": "Le bébé {pleure} parce qu'il a faim."
+    },
+    {
+     "nl": "Waarom heb je gisteren {gehuild}?",
+     "fr": "Pourquoi as-tu {pleuré} hier ?"
+    },
+    {
+     "nl": "Niet {huilen}, het is maar een klein wondje.",
+     "fr": "Ne {pleure} pas, ce n'est qu'une petite blessure."
+    },
+    {
+     "nl": "Bij die droevige film moest ik echt {huilen}.",
+     "fr": "Ce film triste m'a vraiment fait {pleurer}."
+    }
+   ]
   },
   {
    "nl": "lachen",
    "fr": "rire",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "We {lachen} altijd veel samen.",
+     "fr": "Nous {rions} toujours beaucoup ensemble."
+    },
+    {
+     "nl": "Waarom {lach} je zo hard?",
+     "fr": "Pourquoi {ris}-tu si fort ?"
+    },
+    {
+     "nl": "Ik moest {lachen} om zijn grap.",
+     "fr": "Sa blague m'a fait {rire}."
+    },
+    {
+     "nl": "Hij heeft de hele avond {gelachen}.",
+     "fr": "Il a {ri} toute la soirée."
+    }
+   ]
   },
   {
    "nl": "opstaan",
    "fr": "se lever",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik moet morgen om zes uur {opstaan}.",
+     "fr": "Je dois {me lever} à six heures demain."
+    },
+    {
+     "nl": "Ik ben vanochtend laat {opgestaan}.",
+     "fr": "Je {me suis levé} tard ce matin."
+    },
+    {
+     "nl": "Wil je {opstaan} voor die oude dame in de bus?",
+     "fr": "Veux-tu {te lever} pour cette vieille dame dans le bus ?"
+    },
+    {
+     "nl": "Toen ik {opstond}, voelde ik me duizelig.",
+     "fr": "Quand je {me suis levé}, j'avais la tête qui tournait."
+    }
+   ]
   },
   {
    "nl": "wassen",
    "fr": "laver",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn moeder {wast} de kleren van de baby.",
+     "fr": "Ma mère {lave} les vêtements du bébé."
+    },
+    {
+     "nl": "Heb je je handen al {gewassen}?",
+     "fr": "T'es-tu déjà {lavé} les mains ?"
+    },
+    {
+     "nl": "Ik moet de auto nog {wassen}.",
+     "fr": "Je dois encore {laver} la voiture."
+    },
+    {
+     "nl": "{Was} je haar niet elke dag.",
+     "fr": "Ne te {lave} pas les cheveux tous les jours."
+    }
+   ]
   },
   {
    "nl": "verzorgen",
    "fr": "soigner",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De verpleegster {verzorgt} de patiënten.",
+     "fr": "L'infirmière {soigne} les patients."
+    },
+    {
+     "nl": "Wie heeft je wond {verzorgd}?",
+     "fr": "Qui a {soigné} ta blessure ?"
+    },
+    {
+     "nl": "De dierenarts {verzorgt} de gewonde vogel.",
+     "fr": "Le vétérinaire {soigne} l'oiseau blessé."
+    },
+    {
+     "nl": "Je moet de wond goed {verzorgen}, anders gaat ze ontsteken.",
+     "fr": "Tu dois bien {soigner} la blessure, sinon elle va s'infecter."
+    }
+   ]
   },
   {
    "nl": "bewegen",
    "fr": "bouger",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik kan mijn arm niet {bewegen}.",
+     "fr": "Je ne peux pas {bouger} le bras."
+    },
+    {
+     "nl": "Heeft de patiënt zijn vingers al {bewogen}?",
+     "fr": "Le patient a-t-il déjà {bougé} les doigts ?"
+    },
+    {
+     "nl": "{Beweeg} niet, ik maak een foto!",
+     "fr": "Ne {bouge} pas, je prends une photo !"
+    },
+    {
+     "nl": "Je moet elke dag genoeg {bewegen}.",
+     "fr": "Tu dois {bouger} suffisamment chaque jour."
+    }
+   ]
   }
  ]
 }

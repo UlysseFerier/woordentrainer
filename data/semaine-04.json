@@ -5,423 +5,2223 @@
  "mots": [
   {
    "nl": "de familie",
-   "fr": "la famille"
+   "fr": "la famille",
+   "ph": [
+    {
+     "nl": "{De familie} komt zondag bij ons eten.",
+     "fr": "{La famille} vient manger chez nous dimanche."
+    },
+    {
+     "nl": "Heb je een grote {familie}?",
+     "fr": "As-tu une grande {famille} ?"
+    },
+    {
+     "nl": "Al mijn ooms en tantes horen bij {de familie} van mijn moeder.",
+     "fr": "Tous mes oncles et tantes font partie de {la famille} de ma mère."
+    },
+    {
+     "nl": "We hebben geen {familie} meer in Italië, alleen vrienden.",
+     "fr": "Nous n'avons plus de {famille} en Italie, seulement des amis."
+    }
+   ]
   },
   {
    "nl": "de ouders",
-   "fr": "les parents"
+   "fr": "les parents",
+   "ph": [
+    {
+     "nl": "Mijn {ouders} wonen op het platteland.",
+     "fr": "Mes {parents} habitent à la campagne."
+    },
+    {
+     "nl": "Hebben je {ouders} een hond?",
+     "fr": "Est-ce que tes {parents} ont un chien ?"
+    },
+    {
+     "nl": "Na de les wachtten {de ouders} aan de schoolpoort.",
+     "fr": "Après les cours, {les parents} attendaient devant l'école."
+    },
+    {
+     "nl": "Bel je {ouders} als je laat thuiskomt!",
+     "fr": "Appelle tes {parents} si tu rentres tard !"
+    }
+   ]
   },
   {
    "nl": "de vader",
-   "fr": "le père"
+   "fr": "le père",
+   "ph": [
+    {
+     "nl": "{De vader} brengt de kinderen naar school.",
+     "fr": "{Le père} emmène les enfants à l'école."
+    },
+    {
+     "nl": "Mijn {vader} werkte vroeger in een bank.",
+     "fr": "Mon {père} travaillait autrefois dans une banque."
+    },
+    {
+     "nl": "Hoe lang zijn je moeder en je {vader} al getrouwd?",
+     "fr": "Depuis combien de temps ta mère et ton {père} sont-ils mariés ?"
+    },
+    {
+     "nl": "Zijn vrouw is zwanger, dus hij wordt binnenkort {vader}.",
+     "fr": "Sa femme est enceinte, donc il sera bientôt {père}."
+    }
+   ]
   },
   {
    "nl": "de moeder",
-   "fr": "la mère"
+   "fr": "la mère",
+   "ph": [
+    {
+     "nl": "{De moeder} leest een boek voor aan haar zoon.",
+     "fr": "{La mère} lit un livre à son fils."
+    },
+    {
+     "nl": "Heb je je {moeder} al gebeld?",
+     "fr": "As-tu déjà appelé ta {mère} ?"
+    },
+    {
+     "nl": "Sarah werd vorig jaar {moeder} van een tweeling.",
+     "fr": "Sarah est devenue {mère} de jumeaux l'an dernier."
+    },
+    {
+     "nl": "Vergeet niet je {moeder} een kaartje te sturen op Moederdag!",
+     "fr": "N'oublie pas d'envoyer une carte à ta {mère} pour la fête des Mères !"
+    }
+   ]
   },
   {
    "nl": "de zoon",
-   "fr": "le fils"
+   "fr": "le fils",
+   "ph": [
+    {
+     "nl": "Hun {zoon} studeert in Leuven.",
+     "fr": "Leur {fils} étudie à Louvain."
+    },
+    {
+     "nl": "Ze heeft twee {zonen} en een dochter.",
+     "fr": "Elle a deux {fils} et une fille."
+    },
+    {
+     "nl": "Mijn vader is {de zoon} van mijn opa.",
+     "fr": "Mon père est {le fils} de mon grand-père."
+    },
+    {
+     "nl": "Wil je later {een zoon} of een dochter?",
+     "fr": "Plus tard, veux-tu {un fils} ou une fille ?"
+    }
+   ]
   },
   {
    "nl": "de dochter",
-   "fr": "la fille (enfant)"
+   "fr": "la fille (enfant)",
+   "ph": [
+    {
+     "nl": "Onze {dochter} is zes jaar oud.",
+     "fr": "Notre {fille} a six ans."
+    },
+    {
+     "nl": "Heeft de buur {een dochter}?",
+     "fr": "Le voisin a-t-il {une fille} ?"
+    },
+    {
+     "nl": "Mijn moeder is {de dochter} van mijn oma.",
+     "fr": "Ma mère est {la fille} de ma grand-mère."
+    },
+    {
+     "nl": "Na drie zonen kregen ze eindelijk {een dochter}.",
+     "fr": "Après trois fils, ils ont enfin eu {une fille}."
+    }
+   ]
   },
   {
    "nl": "de broer",
-   "fr": "le frère"
+   "fr": "le frère",
+   "ph": [
+    {
+     "nl": "Mijn {broer} speelt elke week voetbal.",
+     "fr": "Mon {frère} joue au football chaque semaine."
+    },
+    {
+     "nl": "Ik heb geen {broers}, alleen een zus.",
+     "fr": "Je n'ai pas de {frères}, seulement une sœur."
+    },
+    {
+     "nl": "De zoon van mijn ouders is mijn {broer}.",
+     "fr": "Le fils de mes parents est mon {frère}."
+    },
+    {
+     "nl": "Lisa heeft geen zus, maar wel {een broer} die Tom heet.",
+     "fr": "Lisa n'a pas de sœur, mais elle a {un frère} qui s'appelle Tom."
+    }
+   ]
   },
   {
    "nl": "de zus",
-   "fr": "la sœur"
+   "fr": "la sœur",
+   "ph": [
+    {
+     "nl": "Mijn {zus} woont in Brussel.",
+     "fr": "Ma {sœur} habite à Bruxelles."
+    },
+    {
+     "nl": "Hoeveel {zussen} en broers heb je?",
+     "fr": "Combien de {sœurs} et de frères as-tu ?"
+    },
+    {
+     "nl": "De dochter van mijn ouders is mijn {zus}.",
+     "fr": "La fille de mes parents est ma {sœur}."
+    },
+    {
+     "nl": "Ik word tante: mijn {zus} is zwanger!",
+     "fr": "Je vais être tante : ma {sœur} est enceinte !"
+    }
+   ]
   },
   {
    "nl": "de opa",
-   "fr": "le grand-père"
+   "fr": "le grand-père",
+   "ph": [
+    {
+     "nl": "Mijn {opa} vertelt graag verhalen over vroeger.",
+     "fr": "Mon {grand-père} aime raconter des histoires d'autrefois."
+    },
+    {
+     "nl": "Gisteren zijn we bij onze {opa} geweest.",
+     "fr": "Hier, nous sommes allés chez notre {grand-père}."
+    },
+    {
+     "nl": "De vader van mijn moeder is mijn {opa}.",
+     "fr": "Le père de ma mère est mon {grand-père}."
+    },
+    {
+     "nl": "Mijn {opa} is negentig, maar hij fietst nog elke dag.",
+     "fr": "Mon {grand-père} a quatre-vingt-dix ans, mais il fait encore du vélo chaque jour."
+    }
+   ]
   },
   {
    "nl": "de oma",
-   "fr": "la grand-mère"
+   "fr": "la grand-mère",
+   "ph": [
+    {
+     "nl": "{De oma} bakt een taart voor de kinderen.",
+     "fr": "{La grand-mère} fait un gâteau pour les enfants."
+    },
+    {
+     "nl": "Is je {oma} nog altijd zo actief?",
+     "fr": "Ta {grand-mère} est-elle toujours aussi active ?"
+    },
+    {
+     "nl": "De moeder van mijn vader is mijn {oma}.",
+     "fr": "La mère de mon père est ma {grand-mère}."
+    },
+    {
+     "nl": "Breng deze bloemen naar je {oma}; ze is tachtig geworden.",
+     "fr": "Apporte ces fleurs à ta {grand-mère} ; elle a eu quatre-vingts ans."
+    }
+   ]
   },
   {
    "nl": "de oom",
-   "fr": "l'oncle"
+   "fr": "l'oncle",
+   "ph": [
+    {
+     "nl": "Komt je {oom} ook naar het feest?",
+     "fr": "Ton {oncle} vient-il aussi à la fête ?"
+    },
+    {
+     "nl": "We hebben {een oom} in Canada.",
+     "fr": "Nous avons {un oncle} au Canada."
+    },
+    {
+     "nl": "De broer van mijn moeder is mijn {oom}.",
+     "fr": "Le frère de ma mère est mon {oncle}."
+    },
+    {
+     "nl": "Mijn neven zijn de kinderen van mijn {oom} Jan.",
+     "fr": "Mes cousins sont les enfants de mon {oncle} Jan."
+    }
+   ]
   },
   {
    "nl": "de tante",
-   "fr": "la tante"
+   "fr": "la tante",
+   "ph": [
+    {
+     "nl": "{De tante} van Lisa werkt in een ziekenhuis.",
+     "fr": "{La tante} de Lisa travaille dans un hôpital."
+    },
+    {
+     "nl": "Ik heb mijn {tante} lang niet gezien.",
+     "fr": "Je n'ai pas vu ma {tante} depuis longtemps."
+    },
+    {
+     "nl": "De zus van mijn vader is mijn {tante}.",
+     "fr": "La sœur de mon père est ma {tante}."
+    },
+    {
+     "nl": "Haar kinderen zijn mijn neven, want ze is mijn {tante}.",
+     "fr": "Ses enfants sont mes cousins, car c'est ma {tante}."
+    }
+   ]
   },
   {
    "nl": "de neef",
-   "fr": "le cousin, le neveu"
+   "fr": "le cousin, le neveu",
+   "ph": [
+    {
+     "nl": "Mijn {neef} is de zoon van mijn oom.",
+     "fr": "Mon {cousin} est le fils de mon oncle."
+    },
+    {
+     "nl": "Mijn zus heeft een zoon, dus ik heb {een neef}.",
+     "fr": "Ma sœur a un fils, donc j'ai {un neveu}."
+    },
+    {
+     "nl": "Hoe oud is je {neef}, het zoontje van je zus?",
+     "fr": "Quel âge a ton {neveu}, le petit garçon de ta sœur ?"
+    },
+    {
+     "nl": "Op de bruiloft zag ik al mijn {neven} en nichten.",
+     "fr": "Au mariage, j'ai vu tous mes {cousins} et cousines."
+    }
+   ]
   },
   {
    "nl": "de nicht",
-   "fr": "la cousine, la nièce"
+   "fr": "la cousine, la nièce",
+   "ph": [
+    {
+     "nl": "Mijn {nicht} is de dochter van mijn tante.",
+     "fr": "Ma {cousine} est la fille de ma tante."
+    },
+    {
+     "nl": "Komt je {nicht} morgen ook?",
+     "fr": "Ta {cousine} vient-elle aussi demain ?"
+    },
+    {
+     "nl": "Is je {nicht} Emma de dochter van je broer?",
+     "fr": "Ta {nièce} Emma est-elle la fille de ton frère ?"
+    },
+    {
+     "nl": "Ik heb geen {nichten}, alleen neven.",
+     "fr": "Je n'ai pas de {cousines}, seulement des cousins."
+    }
+   ]
   },
   {
    "nl": "het kind",
-   "fr": "l'enfant"
+   "fr": "l'enfant",
+   "ph": [
+    {
+     "nl": "{Het kind} speelt in de tuin.",
+     "fr": "{L'enfant} joue dans le jardin."
+    },
+    {
+     "nl": "Hebben jullie buren ook {kinderen}?",
+     "fr": "Vos voisins ont-ils aussi {des enfants} ?"
+    },
+    {
+     "nl": "Voor {kinderen} onder twaalf jaar is de toegang gratis.",
+     "fr": "L'entrée est gratuite pour {les enfants} de moins de douze ans."
+    },
+    {
+     "nl": "Willen jullie later {kinderen}?",
+     "fr": "Voulez-vous {des enfants} plus tard ?"
+    }
+   ]
   },
   {
    "nl": "de baby",
-   "fr": "le bébé"
+   "fr": "le bébé",
+   "ph": [
+    {
+     "nl": "{De baby} slaapt in zijn bedje.",
+     "fr": "{Le bébé} dort dans son petit lit."
+    },
+    {
+     "nl": "Wanneer wordt {de baby} geboren?",
+     "fr": "Quand {le bébé} doit-il naître ?"
+    },
+    {
+     "nl": "Ssst, maak {de baby} niet wakker!",
+     "fr": "Chut, ne réveille pas {le bébé} !"
+    },
+    {
+     "nl": "{De baby} huilde de hele nacht.",
+     "fr": "{Le bébé} a pleuré toute la nuit."
+    }
+   ]
   },
   {
    "nl": "de man",
-   "fr": "l'homme, le mari"
+   "fr": "l'homme, le mari",
+   "ph": [
+    {
+     "nl": "{De man} met de hoed is mijn buur.",
+     "fr": "{L'homme} au chapeau est mon voisin."
+    },
+    {
+     "nl": "Haar {man} kookt elke avond.",
+     "fr": "Son {mari} cuisine chaque soir."
+    },
+    {
+     "nl": "Wie is die {man} met de lange baard?",
+     "fr": "Qui est cet {homme} à la longue barbe ?"
+    },
+    {
+     "nl": "Er waren tien vrouwen en maar twee {mannen} op het feest.",
+     "fr": "À la fête, il y avait dix femmes et seulement deux {hommes}."
+    }
+   ]
   },
   {
    "nl": "de vrouw",
-   "fr": "la femme"
+   "fr": "la femme",
+   "ph": [
+    {
+     "nl": "{De vrouw} wacht op de bus.",
+     "fr": "{La femme} attend le bus."
+    },
+    {
+     "nl": "Is zijn {vrouw} ook lerares?",
+     "fr": "Sa {femme} est-elle aussi enseignante ?"
+    },
+    {
+     "nl": "Ook {vrouwen} kunnen een vrachtwagen besturen.",
+     "fr": "{Les femmes} aussi peuvent conduire un camion."
+    },
+    {
+     "nl": "Is de nieuwe dokter een man of {een vrouw}?",
+     "fr": "Le nouveau médecin, c'est un homme ou {une femme} ?"
+    }
+   ]
   },
   {
    "nl": "de jongen",
-   "fr": "le garçon"
+   "fr": "le garçon",
+   "ph": [
+    {
+     "nl": "{De jongen} fietst naar school.",
+     "fr": "{Le garçon} va à l'école à vélo."
+    },
+    {
+     "nl": "Er zaten maar drie {jongens} in de klas.",
+     "fr": "Il n'y avait que trois {garçons} dans la classe."
+    },
+    {
+     "nl": "Wordt de baby een meisje of {een jongen}?",
+     "fr": "Le bébé sera-t-il une fille ou {un garçon} ?"
+    },
+    {
+     "nl": "Mijn dochter speelt liever met {de jongens} dan met de meisjes.",
+     "fr": "Ma fille préfère jouer avec {les garçons} qu'avec les filles."
+    }
+   ]
   },
   {
    "nl": "het meisje",
-   "fr": "la fille (jeune)"
+   "fr": "la fille (jeune)",
+   "ph": [
+    {
+     "nl": "{Het meisje} draagt een rode jas.",
+     "fr": "{La fille} porte un manteau rouge."
+    },
+    {
+     "nl": "Hoeveel {meisjes} zitten er in je klas?",
+     "fr": "Combien de {filles} y a-t-il dans ta classe ?"
+    },
+    {
+     "nl": "Zie je {het meisje} met de lange vlechten?",
+     "fr": "Vois-tu {la fille} aux longues tresses ?"
+    },
+    {
+     "nl": "Op deze school zitten alleen {meisjes}, geen jongens.",
+     "fr": "Dans cette école, il n'y a que {des filles}, pas de garçons."
+    }
+   ]
   },
   {
    "nl": "de vriend",
-   "fr": "l'ami"
+   "fr": "l'ami",
+   "ph": [
+    {
+     "nl": "Mijn beste {vriend} woont in Antwerpen.",
+     "fr": "Mon meilleur {ami} habite à Anvers."
+    },
+    {
+     "nl": "Gisteren heb ik {een vriend} ontmoet in de stad.",
+     "fr": "Hier, j'ai rencontré {un ami} en ville."
+    },
+    {
+     "nl": "Ik ken Tom al twintig jaar; hij is {een vriend} voor het leven.",
+     "fr": "Je connais Tom depuis vingt ans ; c'est {un ami} pour la vie."
+    },
+    {
+     "nl": "Zonder {vrienden} is het leven saai.",
+     "fr": "Sans {amis}, la vie est ennuyeuse."
+    }
+   ]
   },
   {
    "nl": "de vriendin",
-   "fr": "l'amie"
+   "fr": "l'amie",
+   "ph": [
+    {
+     "nl": "Ze gaat met {een vriendin} naar de film.",
+     "fr": "Elle va au cinéma avec {une amie}."
+    },
+    {
+     "nl": "Heb je je {vriendin} al uitgenodigd?",
+     "fr": "As-tu déjà invité ton {amie} ?"
+    },
+    {
+     "nl": "Sophie en ik zijn al sinds de lagere school {vriendinnen}.",
+     "fr": "Sophie et moi sommes {amies} depuis l'école primaire."
+    },
+    {
+     "nl": "Zij is geen collega, maar {een vriendin} van mijn zus.",
+     "fr": "Ce n'est pas une collègue, mais {une amie} de ma sœur."
+    }
+   ]
   },
   {
    "nl": "de buur",
-   "fr": "le voisin"
+   "fr": "le voisin",
+   "ph": [
+    {
+     "nl": "{De buur} heeft een nieuwe auto.",
+     "fr": "{Le voisin} a une nouvelle voiture."
+    },
+    {
+     "nl": "Ken je je {buren} goed?",
+     "fr": "Connais-tu bien tes {voisins} ?"
+    },
+    {
+     "nl": "{De buren} maken 's nachts veel lawaai.",
+     "fr": "{Les voisins} font beaucoup de bruit la nuit."
+    },
+    {
+     "nl": "Vraag {de buur} of hij onze kat eten kan geven.",
+     "fr": "Demande {au voisin} s'il peut nourrir notre chat."
+    }
+   ]
   },
   {
    "nl": "de collega",
-   "fr": "le collègue"
+   "fr": "le collègue",
+   "ph": [
+    {
+     "nl": "Mijn {collega} drinkt veel koffie.",
+     "fr": "Mon {collègue} boit beaucoup de café."
+    },
+    {
+     "nl": "Ik ga vanavond eten met twee {collega's}.",
+     "fr": "Ce soir, je vais manger avec deux {collègues}."
+    },
+    {
+     "nl": "Op kantoor deel ik een bureau met {een collega}.",
+     "fr": "Au travail, je partage un bureau avec {un collègue}."
+    },
+    {
+     "nl": "Mijn {collega's} gaven me een cadeau voor mijn pensioen.",
+     "fr": "Mes {collègues} m'ont offert un cadeau pour ma retraite."
+    }
+   ]
   },
   {
    "nl": "de baas",
-   "fr": "le patron"
+   "fr": "le patron",
+   "ph": [
+    {
+     "nl": "{De baas} komt vandaag niet naar kantoor.",
+     "fr": "{Le patron} ne vient pas au bureau aujourd'hui."
+    },
+    {
+     "nl": "Heb je het al aan je {baas} gevraagd?",
+     "fr": "L'as-tu déjà demandé à ton {patron} ?"
+    },
+    {
+     "nl": "Op het werk beslist {de baas} alles.",
+     "fr": "Au travail, c'est {le patron} qui décide de tout."
+    },
+    {
+     "nl": "Wees op tijd, anders wordt je {baas} boos!",
+     "fr": "Sois à l'heure, sinon ton {patron} va se fâcher !"
+    }
+   ]
   },
   {
    "nl": "de gast",
-   "fr": "l'invité"
+   "fr": "l'invité",
+   "ph": [
+    {
+     "nl": "{De gasten} komen om acht uur.",
+     "fr": "{Les invités} arrivent à huit heures."
+    },
+    {
+     "nl": "Vanavond hebben we {een gast} uit Frankrijk.",
+     "fr": "Ce soir, nous avons {un invité} venu de France."
+    },
+    {
+     "nl": "Zet nog twee borden op tafel voor {de gasten}.",
+     "fr": "Mets encore deux assiettes sur la table pour {les invités}."
+    },
+    {
+     "nl": "Hoeveel {gasten} komen er op je feest?",
+     "fr": "Combien d'{invités} viennent à ta fête ?"
+    }
+   ]
   },
   {
    "nl": "het gezin",
-   "fr": "le foyer, la famille proche"
+   "fr": "le foyer, la famille proche",
+   "ph": [
+    {
+     "nl": "{Het gezin} eet elke avond samen.",
+     "fr": "{La famille} mange ensemble chaque soir."
+    },
+    {
+     "nl": "Ons {gezin} bestaat uit vier personen.",
+     "fr": "Notre {famille} compte quatre personnes."
+    },
+    {
+     "nl": "Papa, mama en de kinderen vormen samen {een gezin}.",
+     "fr": "Papa, maman et les enfants forment ensemble {une famille}."
+    },
+    {
+     "nl": "Hij werkt hard om zijn {gezin} te onderhouden.",
+     "fr": "Il travaille dur pour faire vivre sa {famille}."
+    }
+   ]
   },
   {
    "nl": "de naam",
-   "fr": "le nom"
+   "fr": "le nom",
+   "ph": [
+    {
+     "nl": "Kun je je {naam} hier schrijven?",
+     "fr": "Peux-tu écrire ton {nom} ici ?"
+    },
+    {
+     "nl": "Ik ben {de naam} van de buurvrouw vergeten.",
+     "fr": "J'ai oublié {le nom} de la voisine."
+    },
+    {
+     "nl": "Op de deur staat {de naam} van de familie.",
+     "fr": "Sur la porte, il y a {le nom} de la famille."
+    },
+    {
+     "nl": "Welke {naam} geven jullie de baby?",
+     "fr": "Quel {nom} donnez-vous au bébé ?"
+    }
+   ]
   },
   {
    "nl": "de leeftijd",
-   "fr": "l'âge"
+   "fr": "l'âge",
+   "ph": [
+    {
+     "nl": "Wat is {de leeftijd} van je opa?",
+     "fr": "Quel est {l'âge} de ton grand-père ?"
+    },
+    {
+     "nl": "Op mijn {leeftijd} speel ik geen voetbal meer.",
+     "fr": "À mon {âge}, je ne joue plus au football."
+    },
+    {
+     "nl": "Vul hier je {leeftijd} en je naam in.",
+     "fr": "Indique ici ton {âge} et ton nom."
+    },
+    {
+     "nl": "Mijn vriend en ik hebben dezelfde {leeftijd}: dertig jaar.",
+     "fr": "Mon ami et moi avons le même {âge} : trente ans."
+    }
+   ]
   },
   {
    "nl": "de verjaardag",
-   "fr": "l'anniversaire"
+   "fr": "l'anniversaire",
+   "ph": [
+    {
+     "nl": "Morgen is het mijn {verjaardag}.",
+     "fr": "Demain, c'est mon {anniversaire}."
+    },
+    {
+     "nl": "Wat heb je voor je {verjaardag} gekregen?",
+     "fr": "Qu'as-tu reçu pour ton {anniversaire} ?"
+    },
+    {
+     "nl": "Wanneer is je {verjaardag}? In maart?",
+     "fr": "C'est quand, ton {anniversaire} ? En mars ?"
+    },
+    {
+     "nl": "Ik ben {de verjaardag} van mijn zus vergeten!",
+     "fr": "J'ai oublié {l'anniversaire} de ma sœur !"
+    }
+   ]
   },
   {
    "nl": "het huwelijk",
-   "fr": "le mariage"
+   "fr": "le mariage",
+   "ph": [
+    {
+     "nl": "{Het huwelijk} vindt plaats in juni.",
+     "fr": "{Le mariage} a lieu en juin."
+    },
+    {
+     "nl": "Hun {huwelijk} duurde veertig jaar.",
+     "fr": "Leur {mariage} a duré quarante ans."
+    },
+    {
+     "nl": "Hun {huwelijk} is niet gelukkig; ze maken vaak ruzie.",
+     "fr": "Leur {mariage} n'est pas heureux ; ils se disputent souvent."
+    },
+    {
+     "nl": "Ze willen geen {huwelijk}; samenwonen is genoeg.",
+     "fr": "Ils ne veulent pas de {mariage} ; vivre ensemble leur suffit."
+    }
+   ]
   },
   {
    "nl": "de bruiloft",
-   "fr": "la noce"
+   "fr": "la noce",
+   "ph": [
+    {
+     "nl": "We zijn uitgenodigd op {de bruiloft} van mijn neef.",
+     "fr": "Nous sommes invités à {la noce} de mon cousin."
+    },
+    {
+     "nl": "Was {de bruiloft} van je neef leuk?",
+     "fr": "{La noce} de ton cousin était-elle sympa ?"
+    },
+    {
+     "nl": "Op {de bruiloft} dansten we tot drie uur 's nachts.",
+     "fr": "À {la noce}, nous avons dansé jusqu'à trois heures du matin."
+    },
+    {
+     "nl": "Kom je ook naar {de bruiloft}? De bruid is mijn zus.",
+     "fr": "Viens-tu aussi à {la noce} ? La mariée est ma sœur."
+    }
+   ]
   },
   {
    "nl": "de liefde",
-   "fr": "l'amour"
+   "fr": "l'amour",
+   "ph": [
+    {
+     "nl": "{De liefde} maakt mensen gelukkig.",
+     "fr": "{L'amour} rend les gens heureux."
+    },
+    {
+     "nl": "Hij doet alles uit {liefde} voor zijn kinderen.",
+     "fr": "Il fait tout par {amour} pour ses enfants."
+    },
+    {
+     "nl": "Het was {liefde} op het eerste gezicht.",
+     "fr": "C'était {l'amour} au premier regard."
+    },
+    {
+     "nl": "Zonder {liefde} kan een kind niet gelukkig opgroeien.",
+     "fr": "Sans {amour}, un enfant ne peut pas grandir heureux."
+    }
+   ]
   },
   {
    "nl": "het leven",
-   "fr": "la vie"
+   "fr": "la vie",
+   "ph": [
+    {
+     "nl": "{Het leven} in de stad is duur.",
+     "fr": "{La vie} en ville est chère."
+    },
+    {
+     "nl": "Ze heeft haar hele {leven} in Gent gewoond.",
+     "fr": "Elle a habité à Gand toute sa {vie}."
+    },
+    {
+     "nl": "Geniet van {het leven}, want het is kort!",
+     "fr": "Profite de {la vie}, car elle est courte !"
+    },
+    {
+     "nl": "Hoe was {het leven} vroeger zonder elektriciteit?",
+     "fr": "Comment était {la vie} autrefois sans électricité ?"
+    }
+   ]
   },
   {
    "nl": "de dood",
-   "fr": "la mort"
+   "fr": "la mort",
+   "ph": [
+    {
+     "nl": "{De dood} van zijn vader was een schok.",
+     "fr": "{La mort} de son père a été un choc."
+    },
+    {
+     "nl": "Kinderen stellen vaak vragen over {de dood}.",
+     "fr": "Les enfants posent souvent des questions sur {la mort}."
+    },
+    {
+     "nl": "Niemand ontsnapt aan {de dood}.",
+     "fr": "Personne n'échappe à {la mort}."
+    },
+    {
+     "nl": "Is hij bang voor {de dood}?",
+     "fr": "A-t-il peur de {la mort} ?"
+    }
+   ]
   },
   {
    "nl": "de mens",
-   "fr": "l'être humain"
+   "fr": "l'être humain",
+   "ph": [
+    {
+     "nl": "Elke {mens} heeft vrienden nodig.",
+     "fr": "Chaque {être humain} a besoin d'amis."
+    },
+    {
+     "nl": "{De mens} kan niet zonder water leven.",
+     "fr": "{L'être humain} ne peut pas vivre sans eau."
+    },
+    {
+     "nl": "Een hond is geen {mens}, maar een dier.",
+     "fr": "Un chien n'est pas {un être humain}, mais un animal."
+    },
+    {
+     "nl": "Op aarde leven meer dan acht miljard {mensen}.",
+     "fr": "Plus de huit milliards d'{êtres humains} vivent sur Terre."
+    }
+   ]
   },
   {
    "nl": "de persoon",
-   "fr": "la personne"
+   "fr": "la personne",
+   "ph": [
+    {
+     "nl": "Er wachten drie {personen} aan de deur.",
+     "fr": "Trois {personnes} attendent à la porte."
+    },
+    {
+     "nl": "Is zij {de persoon} die je gisteren zag?",
+     "fr": "Est-ce {la personne} que tu as vue hier ?"
+    },
+    {
+     "nl": "De tafel is gereserveerd voor vier {personen}.",
+     "fr": "La table est réservée pour quatre {personnes}."
+    },
+    {
+     "nl": "Per {persoon} kost het ticket tien euro.",
+     "fr": "Le billet coûte dix euros par {personne}."
+    }
+   ]
   },
   {
    "nl": "de jeugd",
-   "fr": "la jeunesse"
+   "fr": "la jeunesse",
+   "ph": [
+    {
+     "nl": "In mijn {jeugd} speelde ik veel buiten.",
+     "fr": "Dans ma {jeunesse}, je jouais beaucoup dehors."
+    },
+    {
+     "nl": "{De jeugd} van vandaag leest minder boeken.",
+     "fr": "{La jeunesse} d'aujourd'hui lit moins de livres."
+    },
+    {
+     "nl": "Waar heb je je {jeugd} doorgebracht?",
+     "fr": "Où as-tu passé ta {jeunesse} ?"
+    },
+    {
+     "nl": "Mijn opa had in zijn {jeugd} geen tv.",
+     "fr": "Dans sa {jeunesse}, mon grand-père n'avait pas de télé."
+    }
+   ]
   },
   {
    "nl": "het paar",
-   "fr": "le couple"
+   "fr": "le couple",
+   "ph": [
+    {
+     "nl": "{Het paar} woont al tien jaar samen.",
+     "fr": "{Le couple} vit ensemble depuis dix ans."
+    },
+    {
+     "nl": "Het jonge {paar} kocht vorig jaar een huis.",
+     "fr": "Le jeune {couple} a acheté une maison l'an dernier."
+    },
+    {
+     "nl": "Zijn ze al lang {een paar}?",
+     "fr": "Forment-ils {un couple} depuis longtemps ?"
+    },
+    {
+     "nl": "Ze zijn geen {paar} meer; ze zijn uit elkaar.",
+     "fr": "Ils ne forment plus {un couple} ; ils se sont séparés."
+    }
+   ]
   },
   {
    "nl": "de buurvrouw",
-   "fr": "la voisine"
+   "fr": "la voisine",
+   "ph": [
+    {
+     "nl": "{De buurvrouw} geeft de bloemen water.",
+     "fr": "{La voisine} arrose les fleurs."
+    },
+    {
+     "nl": "Heb je {de buurvrouw} vandaag gezien?",
+     "fr": "As-tu vu {la voisine} aujourd'hui ?"
+    },
+    {
+     "nl": "{De buurvrouw} is heel lief; ze past op onze kat.",
+     "fr": "{La voisine} est très gentille ; elle garde notre chat."
+    },
+    {
+     "nl": "Breng dit pakje naar {de buurvrouw}, mevrouw Peeters.",
+     "fr": "Apporte ce colis à {la voisine}, madame Peeters."
+    }
+   ]
   },
   {
    "nl": "de echtgenoot",
-   "fr": "l'époux"
+   "fr": "l'époux",
+   "ph": [
+    {
+     "nl": "Haar {echtgenoot} werkt als dokter.",
+     "fr": "Son {époux} travaille comme médecin."
+    },
+    {
+     "nl": "Kwam {de echtgenoot} van de lerares ook naar het feest?",
+     "fr": "{L'époux} de l'enseignante est-il aussi venu à la fête ?"
+    },
+    {
+     "nl": "Mevrouw, uw {echtgenoot} wacht op u bij de receptie.",
+     "fr": "Madame, votre {époux} vous attend à l'accueil."
+    },
+    {
+     "nl": "Na de dood van haar {echtgenoot} werd ze weduwe.",
+     "fr": "Après la mort de son {époux}, elle est devenue veuve."
+    }
+   ]
   },
   {
    "nl": "de echtgenote",
-   "fr": "l'épouse"
+   "fr": "l'épouse",
+   "ph": [
+    {
+     "nl": "Hij stelde zijn {echtgenote} voor aan de gasten.",
+     "fr": "Il a présenté son {épouse} aux invités."
+    },
+    {
+     "nl": "{De echtgenote} van de baas is erg vriendelijk.",
+     "fr": "{L'épouse} du patron est très aimable."
+    },
+    {
+     "nl": "Meneer, uw {echtgenote} heeft gebeld.",
+     "fr": "Monsieur, votre {épouse} a téléphoné."
+    },
+    {
+     "nl": "Op het formulier moet je de naam van je {echtgenote} invullen.",
+     "fr": "Sur le formulaire, tu dois indiquer le nom de ton {épouse}."
+    }
+   ]
   },
   {
    "nl": "de partner",
-   "fr": "le partenaire"
+   "fr": "le partenaire",
+   "ph": [
+    {
+     "nl": "Mag ik mijn {partner} meebrengen naar het feest?",
+     "fr": "Puis-je amener mon {partenaire} à la fête ?"
+    },
+    {
+     "nl": "Zijn {partner} woont niet in België.",
+     "fr": "Son {partenaire} n'habite pas en Belgique."
+    },
+    {
+     "nl": "Ik woon samen met mijn {partner}, maar we zijn niet getrouwd.",
+     "fr": "Je vis avec mon {partenaire}, mais nous ne sommes pas mariés."
+    },
+    {
+     "nl": "Hebt u {een partner} of bent u alleen?",
+     "fr": "Avez-vous {un partenaire} ou êtes-vous seul ?"
+    }
+   ]
   },
   {
    "nl": "de verloofde",
-   "fr": "le fiancé, la fiancée"
+   "fr": "le fiancé, la fiancée",
+   "ph": [
+    {
+     "nl": "Mijn {verloofde} komt uit Brugge.",
+     "fr": "Mon {fiancé} vient de Bruges."
+    },
+    {
+     "nl": "Ze heeft haar {verloofde} op het werk ontmoet.",
+     "fr": "Elle a rencontré son {fiancé} au travail."
+    },
+    {
+     "nl": "Volgende maand trouwt hij met zijn {verloofde}.",
+     "fr": "Le mois prochain, il se marie avec sa {fiancée}."
+    },
+    {
+     "nl": "Is dat je {verloofde}? Wanneer is de bruiloft?",
+     "fr": "C'est ta {fiancée} ? Quand a lieu la noce ?"
+    }
+   ]
   },
   {
    "nl": "het kleinkind",
-   "fr": "le petit-enfant"
+   "fr": "le petit-enfant",
+   "ph": [
+    {
+     "nl": "Mijn oma heeft vijf {kleinkinderen}.",
+     "fr": "Ma grand-mère a cinq {petits-enfants}."
+    },
+    {
+     "nl": "Wanneer wordt hun eerste {kleinkind} geboren?",
+     "fr": "Quand leur premier {petit-enfant} doit-il naître ?"
+    },
+    {
+     "nl": "Oma past elke woensdag op haar {kleinkinderen}.",
+     "fr": "Grand-mère garde ses {petits-enfants} chaque mercredi."
+    },
+    {
+     "nl": "Hebben je ouders al {een kleinkind}?",
+     "fr": "Tes parents ont-ils déjà {un petit-enfant} ?"
+    }
+   ]
   },
   {
    "nl": "de kleinzoon",
-   "fr": "le petit-fils"
+   "fr": "le petit-fils",
+   "ph": [
+    {
+     "nl": "Haar {kleinzoon} helpt haar in de tuin.",
+     "fr": "Son {petit-fils} l'aide au jardin."
+    },
+    {
+     "nl": "Opa is gisteren met zijn {kleinzoon} gaan vissen.",
+     "fr": "Hier, grand-père est allé pêcher avec son {petit-fils}."
+    },
+    {
+     "nl": "De zoon van mijn zoon is mijn {kleinzoon}.",
+     "fr": "Le fils de mon fils est mon {petit-fils}."
+    },
+    {
+     "nl": "Ze heeft geen kleindochters, alleen {kleinzonen}.",
+     "fr": "Elle n'a pas de petites-filles, seulement {des petits-fils}."
+    }
+   ]
   },
   {
    "nl": "de kleindochter",
-   "fr": "la petite-fille"
+   "fr": "la petite-fille",
+   "ph": [
+    {
+     "nl": "Mijn {kleindochter} studeert geneeskunde.",
+     "fr": "Ma {petite-fille} étudie la médecine."
+    },
+    {
+     "nl": "Hoe oud is je {kleindochter} nu?",
+     "fr": "Quel âge a ta {petite-fille} maintenant ?"
+    },
+    {
+     "nl": "De dochter van mijn zoon is mijn {kleindochter}.",
+     "fr": "La fille de mon fils est ma {petite-fille}."
+    },
+    {
+     "nl": "Opa is heel trots op zijn {kleindochter}: ze is dokter.",
+     "fr": "Grand-père est très fier de sa {petite-fille} : elle est médecin."
+    }
+   ]
   },
   {
    "nl": "de schoonmoeder",
-   "fr": "la belle-mère"
+   "fr": "la belle-mère",
+   "ph": [
+    {
+     "nl": "Mijn {schoonmoeder} kookt heel lekker.",
+     "fr": "Ma {belle-mère} cuisine très bien."
+    },
+    {
+     "nl": "Komt je {schoonmoeder} met Kerstmis?",
+     "fr": "Ta {belle-mère} vient-elle à Noël ?"
+    },
+    {
+     "nl": "De moeder van mijn vrouw is mijn {schoonmoeder}.",
+     "fr": "La mère de ma femme est ma {belle-mère}."
+    },
+    {
+     "nl": "Na het huwelijk werd zijn moeder mijn {schoonmoeder}.",
+     "fr": "Après le mariage, sa mère est devenue ma {belle-mère}."
+    }
+   ]
   },
   {
    "nl": "de schoonvader",
-   "fr": "le beau-père"
+   "fr": "le beau-père",
+   "ph": [
+    {
+     "nl": "{De schoonvader} van mijn broer is boer.",
+     "fr": "{Le beau-père} de mon frère est agriculteur."
+    },
+    {
+     "nl": "Ik heb mijn {schoonvader} geholpen met de verhuis.",
+     "fr": "J'ai aidé mon {beau-père} pour le déménagement."
+    },
+    {
+     "nl": "De vader van mijn man is mijn {schoonvader}.",
+     "fr": "Le père de mon mari est mon {beau-père}."
+    },
+    {
+     "nl": "Op de bruiloft hield mijn {schoonvader} een toespraak over zijn dochter.",
+     "fr": "À la noce, mon {beau-père} a fait un discours sur sa fille."
+    }
+   ]
   },
   {
    "nl": "de schoonzus",
-   "fr": "la belle-sœur"
+   "fr": "la belle-sœur",
+   "ph": [
+    {
+     "nl": "Mijn {schoonzus} is de vrouw van mijn broer.",
+     "fr": "Ma {belle-sœur} est la femme de mon frère."
+    },
+    {
+     "nl": "Heb je al met je {schoonzus} gepraat?",
+     "fr": "As-tu déjà parlé avec ta {belle-sœur} ?"
+    },
+    {
+     "nl": "De zus van mijn man is mijn {schoonzus}.",
+     "fr": "La sœur de mon mari est ma {belle-sœur}."
+    },
+    {
+     "nl": "Mijn broer trouwt in mei, dan krijg ik {een schoonzus}.",
+     "fr": "Mon frère se marie en mai, alors j'aurai {une belle-sœur}."
+    }
+   ]
   },
   {
    "nl": "de zwager",
-   "fr": "le beau-frère"
+   "fr": "le beau-frère",
+   "ph": [
+    {
+     "nl": "Mijn {zwager} helpt ons in de tuin.",
+     "fr": "Mon {beau-frère} nous aide au jardin."
+    },
+    {
+     "nl": "Woont je {zwager} ook in Leuven?",
+     "fr": "Ton {beau-frère} habite-t-il aussi à Louvain ?"
+    },
+    {
+     "nl": "De man van mijn zus is mijn {zwager}.",
+     "fr": "Le mari de ma sœur est mon {beau-frère}."
+    },
+    {
+     "nl": "Heb je de broer van je vrouw, je {zwager}, al gebeld?",
+     "fr": "As-tu déjà appelé le frère de ta femme, ton {beau-frère} ?"
+    }
+   ]
   },
   {
    "nl": "de stiefvader",
-   "fr": "le beau-père (remarié)"
+   "fr": "le beau-père (remarié)",
+   "ph": [
+    {
+     "nl": "Zijn {stiefvader} is heel lief voor hem.",
+     "fr": "Son {beau-père} est très gentil avec lui."
+    },
+    {
+     "nl": "Sinds vorig jaar woont ze bij haar moeder en {stiefvader}.",
+     "fr": "Depuis l'an dernier, elle habite chez sa mère et son {beau-père}."
+    },
+    {
+     "nl": "Haar moeder hertrouwde, dus ze heeft nu {een stiefvader}.",
+     "fr": "Sa mère s'est remariée, alors elle a maintenant {un beau-père}."
+    },
+    {
+     "nl": "Mijn {stiefvader} is niet mijn echte vader, maar ik hou van hem.",
+     "fr": "Mon {beau-père} n'est pas mon vrai père, mais je l'aime."
+    }
+   ]
   },
   {
    "nl": "de tweeling",
-   "fr": "les jumeaux"
+   "fr": "les jumeaux",
+   "ph": [
+    {
+     "nl": "{De tweeling} is vandaag jarig.",
+     "fr": "{Les jumeaux} fêtent leur anniversaire aujourd'hui."
+    },
+    {
+     "nl": "Mijn zus verwacht {een tweeling}.",
+     "fr": "Ma sœur attend {des jumeaux}."
+    },
+    {
+     "nl": "Ze lijken zo op elkaar, want ze zijn {een tweeling}.",
+     "fr": "Ils se ressemblent tellement, car ce sont {des jumeaux}."
+    },
+    {
+     "nl": "Kun jij {de tweeling} uit elkaar houden?",
+     "fr": "Arrives-tu à distinguer {les jumeaux} ?"
+    }
+   ]
   },
   {
    "nl": "de weduwe",
-   "fr": "la veuve"
+   "fr": "la veuve",
+   "ph": [
+    {
+     "nl": "{De weduwe} woont alleen in een groot huis.",
+     "fr": "{La veuve} habite seule dans une grande maison."
+    },
+    {
+     "nl": "Sinds wanneer is ze {weduwe}?",
+     "fr": "Depuis quand est-elle {veuve} ?"
+    },
+    {
+     "nl": "Mevrouw Peeters is {weduwe}: haar man is gestorven.",
+     "fr": "Madame Peeters est {veuve} : son mari est mort."
+    },
+    {
+     "nl": "Elke zondag bezoekt {de weduwe} het graf van haar man.",
+     "fr": "Chaque dimanche, {la veuve} se rend sur la tombe de son mari."
+    }
+   ]
   },
   {
    "nl": "de vreemdeling",
-   "fr": "l'étranger"
+   "fr": "l'étranger",
+   "ph": [
+    {
+     "nl": "{Een vreemdeling} vroeg me de weg.",
+     "fr": "{Un étranger} m'a demandé le chemin."
+    },
+    {
+     "nl": "De kinderen mogen niet met {vreemdelingen} praten.",
+     "fr": "Les enfants ne doivent pas parler {aux étrangers}."
+    },
+    {
+     "nl": "Doe de deur niet open voor {een vreemdeling}!",
+     "fr": "N'ouvre pas la porte à {un étranger} !"
+    },
+    {
+     "nl": "In dit kleine dorp vallen {vreemdelingen} meteen op.",
+     "fr": "Dans ce petit village, {les étrangers} se remarquent tout de suite."
+    }
+   ]
   },
   {
    "nl": "de vriendschap",
-   "fr": "l'amitié"
+   "fr": "l'amitié",
+   "ph": [
+    {
+     "nl": "Hun {vriendschap} begon op school.",
+     "fr": "Leur {amitié} a commencé à l'école."
+    },
+    {
+     "nl": "{Vriendschap} is belangrijker dan geld.",
+     "fr": "{L'amitié} est plus importante que l'argent."
+    },
+    {
+     "nl": "Na de ruzie was {de vriendschap} voorbij.",
+     "fr": "Après la dispute, {l'amitié} était finie."
+    },
+    {
+     "nl": "Hoe lang duurt jullie {vriendschap} al?",
+     "fr": "Depuis combien de temps dure votre {amitié} ?"
+    }
+   ]
   },
   {
    "nl": "de generatie",
-   "fr": "la génération"
+   "fr": "la génération",
+   "ph": [
+    {
+     "nl": "Drie {generaties} wonen in hetzelfde huis.",
+     "fr": "Trois {générations} vivent dans la même maison."
+    },
+    {
+     "nl": "Mijn {generatie} groeide op zonder internet.",
+     "fr": "Ma {génération} a grandi sans internet."
+    },
+    {
+     "nl": "Mijn grootouders zijn van een andere {generatie}.",
+     "fr": "Mes grands-parents sont d'une autre {génération}."
+    },
+    {
+     "nl": "Elke {generatie} heeft haar eigen muziek.",
+     "fr": "Chaque {génération} a sa propre musique."
+    }
+   ]
   },
   {
    "nl": "de bevolking",
-   "fr": "la population"
+   "fr": "la population",
+   "ph": [
+    {
+     "nl": "{De bevolking} van België groeit elk jaar.",
+     "fr": "{La population} de la Belgique augmente chaque année."
+    },
+    {
+     "nl": "Een groot deel van {de bevolking} spreekt twee talen.",
+     "fr": "Une grande partie de {la population} parle deux langues."
+    },
+    {
+     "nl": "Hoe groot is {de bevolking} van Gent?",
+     "fr": "Quelle est {la population} de Gand ?"
+    },
+    {
+     "nl": "{De bevolking} van het dorp wordt steeds ouder.",
+     "fr": "{La population} du village vieillit de plus en plus."
+    }
+   ]
   },
   {
    "nl": "de groep",
-   "fr": "le groupe"
+   "fr": "le groupe",
+   "ph": [
+    {
+     "nl": "We gaan met {een groep} vrienden op reis.",
+     "fr": "Nous partons en voyage avec {un groupe} d'amis."
+    },
+    {
+     "nl": "Wacht {de groep} nog aan het station?",
+     "fr": "{Le groupe} attend-il encore à la gare ?"
+    },
+    {
+     "nl": "De leraar verdeelt de klas in {groepen} van vier.",
+     "fr": "Le professeur divise la classe en {groupes} de quatre."
+    },
+    {
+     "nl": "Blijf bij {de groep} tijdens de wandeling!",
+     "fr": "Reste avec {le groupe} pendant la promenade !"
+    }
+   ]
   },
   {
    "nl": "de vereniging",
-   "fr": "l'association"
+   "fr": "l'association",
+   "ph": [
+    {
+     "nl": "Mijn vader is lid van {een vereniging}.",
+     "fr": "Mon père est membre d'{une association}."
+    },
+    {
+     "nl": "{De vereniging} organiseert zaterdag een feest.",
+     "fr": "{L'association} organise une fête samedi."
+    },
+    {
+     "nl": "Wil je lid worden van onze {vereniging}?",
+     "fr": "Veux-tu devenir membre de notre {association} ?"
+    },
+    {
+     "nl": "De sportclub is {een vereniging} met tweehonderd leden.",
+     "fr": "Le club de sport est {une association} de deux cents membres."
+    }
+   ]
   },
   {
    "nl": "het feest",
-   "fr": "la fête"
+   "fr": "la fête",
+   "ph": [
+    {
+     "nl": "{Het feest} begint om acht uur.",
+     "fr": "{La fête} commence à huit heures."
+    },
+    {
+     "nl": "Kom je naar mijn {feest}?",
+     "fr": "Tu viens à ma {fête} ?"
+    },
+    {
+     "nl": "Na {het feest} moesten we alles opruimen.",
+     "fr": "Après {la fête}, nous avons dû tout ranger."
+    },
+    {
+     "nl": "Geef jij {een feest} voor je verjaardag?",
+     "fr": "Organises-tu {une fête} pour ton anniversaire ?"
+    }
+   ]
   },
   {
    "nl": "het cadeau",
-   "fr": "le cadeau"
+   "fr": "le cadeau",
+   "ph": [
+    {
+     "nl": "Ik heb {een cadeau} voor je moeder gekocht.",
+     "fr": "J'ai acheté {un cadeau} pour ta mère."
+    },
+    {
+     "nl": "Vond je {het cadeau} leuk?",
+     "fr": "As-tu aimé {le cadeau} ?"
+    },
+    {
+     "nl": "Pak {het cadeau} pas morgen open!",
+     "fr": "N'ouvre {le cadeau} que demain !"
+    },
+    {
+     "nl": "Wat voor {cadeau} wil je voor je verjaardag?",
+     "fr": "Quel {cadeau} veux-tu pour ton anniversaire ?"
+    }
+   ]
   },
   {
    "nl": "de begrafenis",
-   "fr": "l'enterrement"
+   "fr": "l'enterrement",
+   "ph": [
+    {
+     "nl": "{De begrafenis} is morgen om tien uur.",
+     "fr": "{L'enterrement} a lieu demain à dix heures."
+    },
+    {
+     "nl": "Veel mensen kwamen naar {de begrafenis}.",
+     "fr": "Beaucoup de gens sont venus à {l'enterrement}."
+    },
+    {
+     "nl": "Wat trek je aan naar {de begrafenis}? Iets zwarts?",
+     "fr": "Que mets-tu pour {l'enterrement} ? Quelque chose de noir ?"
+    },
+    {
+     "nl": "Ze huilden allemaal op {de begrafenis} van hun opa.",
+     "fr": "Ils ont tous pleuré à {l'enterrement} de leur grand-père."
+    }
+   ]
   },
   {
    "nl": "de doop",
-   "fr": "le baptême"
+   "fr": "le baptême",
+   "ph": [
+    {
+     "nl": "{De doop} van de baby is zondag.",
+     "fr": "{Le baptême} du bébé a lieu dimanche."
+    },
+    {
+     "nl": "Was je op {de doop} van je nicht?",
+     "fr": "Étais-tu {au baptême} de ta nièce ?"
+    },
+    {
+     "nl": "Voor {de doop} draagt de baby witte kleren.",
+     "fr": "Pour {le baptême}, le bébé porte des vêtements blancs."
+    },
+    {
+     "nl": "Op {de doop} waren de peter en meter heel trots.",
+     "fr": "{Au baptême}, le parrain et la marraine étaient très fiers."
+    }
+   ]
   },
   {
    "nl": "de ruzie",
-   "fr": "la dispute"
+   "fr": "la dispute",
+   "ph": [
+    {
+     "nl": "Na {de ruzie} spraken ze niet meer met elkaar.",
+     "fr": "Après {la dispute}, ils ne se parlaient plus."
+    },
+    {
+     "nl": "{De ruzie} met mijn zus duurde niet lang.",
+     "fr": "{La dispute} avec ma sœur n'a pas duré longtemps."
+    },
+    {
+     "nl": "Wat was de reden van {de ruzie}?",
+     "fr": "Quelle était la raison de {la dispute} ?"
+    },
+    {
+     "nl": "Ze kregen {ruzie} over geld.",
+     "fr": "Ils ont eu {une dispute} à propos d'argent."
+    }
+   ]
   },
   {
    "nl": "de afkomst",
-   "fr": "l'origine"
+   "fr": "l'origine",
+   "ph": [
+    {
+     "nl": "Ze is van Italiaanse {afkomst}.",
+     "fr": "Elle est d'{origine} italienne."
+    },
+    {
+     "nl": "Hij praat graag over zijn {afkomst}.",
+     "fr": "Il parle volontiers de son {origine}."
+    },
+    {
+     "nl": "Wat is je {afkomst}? Ben je Belg?",
+     "fr": "Quelle est ton {origine} ? Es-tu belge ?"
+    },
+    {
+     "nl": "Je {afkomst} bepaalt niet wie je bent.",
+     "fr": "Ton {origine} ne détermine pas qui tu es."
+    }
+   ]
   },
   {
    "nl": "de volwassene",
-   "fr": "l'adulte"
+   "fr": "l'adulte",
+   "ph": [
+    {
+     "nl": "Kinderen betalen minder dan {volwassenen}.",
+     "fr": "Les enfants paient moins que {les adultes}."
+    },
+    {
+     "nl": "Is er {een volwassene} bij de kinderen?",
+     "fr": "Y a-t-il {un adulte} avec les enfants ?"
+    },
+    {
+     "nl": "Vanaf achttien jaar ben je {een volwassene}.",
+     "fr": "À partir de dix-huit ans, on est {un adulte}."
+    },
+    {
+     "nl": "Kinderen mogen niet zwemmen zonder {een volwassene}.",
+     "fr": "Les enfants ne peuvent pas nager sans {un adulte}."
+    }
+   ]
   },
   {
    "nl": "de tiener",
-   "fr": "l'adolescent"
+   "fr": "l'adolescent",
+   "ph": [
+    {
+     "nl": "Onze zoon is nu {een tiener}.",
+     "fr": "Notre fils est maintenant {un adolescent}."
+    },
+    {
+     "nl": "{Tieners} slapen vaak lang in het weekend.",
+     "fr": "{Les adolescents} dorment souvent longtemps le week-end."
+    },
+    {
+     "nl": "Toen ik {een tiener} was, had ik lang haar.",
+     "fr": "Quand j'étais {un adolescent}, j'avais les cheveux longs."
+    },
+    {
+     "nl": "Dit boek is geschreven voor {tieners} van dertien tot zeventien jaar.",
+     "fr": "Ce livre est écrit pour {les adolescents} de treize à dix-sept ans."
+    }
+   ]
   },
   {
    "nl": "de bejaarde",
-   "fr": "la personne âgée"
+   "fr": "la personne âgée",
+   "ph": [
+    {
+     "nl": "Ze helpt elke week {een bejaarde} met boodschappen.",
+     "fr": "Chaque semaine, elle aide {une personne âgée} à faire ses courses."
+    },
+    {
+     "nl": "Veel {bejaarden} wonen alleen.",
+     "fr": "Beaucoup de {personnes âgées} vivent seules."
+    },
+    {
+     "nl": "Sta op en geef je plaats aan {de bejaarde}!",
+     "fr": "Lève-toi et donne ta place à {la personne âgée} !"
+    },
+    {
+     "nl": "Mijn tante werkt in een tehuis voor {bejaarden}.",
+     "fr": "Ma tante travaille dans une maison pour {personnes âgées}."
+    }
+   ]
   },
   {
    "nl": "de heer",
-   "fr": "le monsieur"
+   "fr": "le monsieur",
+   "ph": [
+    {
+     "nl": "{De heer} met de bril is mijn leraar.",
+     "fr": "{Le monsieur} aux lunettes est mon professeur."
+    },
+    {
+     "nl": "Er staat {een heer} aan de deur.",
+     "fr": "Il y a {un monsieur} à la porte."
+    },
+    {
+     "nl": "Dames en {heren}, welkom op het feest!",
+     "fr": "Mesdames et {messieurs}, bienvenue à la fête !"
+    },
+    {
+     "nl": "Kan {de heer} Peeters naar de balie komen?",
+     "fr": "{Monsieur} Peeters peut-il venir au guichet ?"
+    }
+   ]
   },
   {
    "nl": "de dame",
-   "fr": "la dame"
+   "fr": "la dame",
+   "ph": [
+    {
+     "nl": "{De dame} in de winkel was heel vriendelijk.",
+     "fr": "{La dame} du magasin était très aimable."
+    },
+    {
+     "nl": "Kent u {de dame} van hiernaast?",
+     "fr": "Connaissez-vous {la dame} d'à côté ?"
+    },
+    {
+     "nl": "Ik hielp {een dame} met haar zware koffer.",
+     "fr": "J'ai aidé {une dame} avec sa lourde valise."
+    },
+    {
+     "nl": "Dit toilet is voor {dames}, niet voor heren.",
+     "fr": "Ces toilettes sont pour {les dames}, pas pour les messieurs."
+    }
+   ]
   },
   {
    "nl": "de gewoonte",
-   "fr": "l'habitude"
+   "fr": "l'habitude",
+   "ph": [
+    {
+     "nl": "Het is {een gewoonte} in onze familie.",
+     "fr": "C'est {une habitude} dans notre famille."
+    },
+    {
+     "nl": "Hij heeft {de gewoonte} om vroeg op te staan.",
+     "fr": "Il a {l'habitude} de se lever tôt."
+    },
+    {
+     "nl": "Uit {gewoonte} drink ik 's ochtends koffie.",
+     "fr": "Par {habitude}, je bois du café le matin."
+    },
+    {
+     "nl": "Het is niet onze {gewoonte} om schoenen te dragen in huis.",
+     "fr": "Ce n'est pas notre {habitude} de porter des chaussures à la maison."
+    }
+   ]
   },
   {
    "nl": "het gesprek",
-   "fr": "la conversation"
+   "fr": "la conversation",
+   "ph": [
+    {
+     "nl": "{Het gesprek} met mijn baas ging goed.",
+     "fr": "{La conversation} avec mon patron s'est bien passée."
+    },
+    {
+     "nl": "We hadden gisteren {een gesprek} over de vakantie.",
+     "fr": "Hier, nous avons eu {une conversation} sur les vacances."
+    },
+    {
+     "nl": "Stoor me niet, ik ben in {gesprek}!",
+     "fr": "Ne me dérange pas, je suis en {conversation} !"
+    },
+    {
+     "nl": "Hoe lang duurde {het gesprek} met de dokter?",
+     "fr": "Combien de temps a duré {la conversation} avec le médecin ?"
+    }
+   ]
   },
   {
    "nl": "de groet",
-   "fr": "le salut"
+   "fr": "le salut",
+   "ph": [
+    {
+     "nl": "Hij beantwoordde mijn {groet} niet.",
+     "fr": "Il n'a pas répondu à mon {salut}."
+    },
+    {
+     "nl": "Ze stuurt je haar {groeten}.",
+     "fr": "Elle t'envoie ses {salutations}."
+    },
+    {
+     "nl": "Ik eindig mijn brief met vriendelijke {groeten}.",
+     "fr": "Je termine ma lettre par mes meilleures {salutations}."
+    },
+    {
+     "nl": "Doe {de groeten} aan je ouders!",
+     "fr": "Transmets mes {salutations} à tes parents !"
+    }
+   ]
   },
   {
    "nl": "de knuffel",
-   "fr": "le câlin"
+   "fr": "le câlin",
+   "ph": [
+    {
+     "nl": "Geef oma {een knuffel} voor je vertrekt.",
+     "fr": "Fais {un câlin} à grand-mère avant de partir."
+    },
+    {
+     "nl": "Het kind wilde {een knuffel} voor het slapengaan.",
+     "fr": "L'enfant voulait {un câlin} avant de dormir."
+    },
+    {
+     "nl": "Na een lange dag wil ik gewoon {een knuffel}.",
+     "fr": "Après une longue journée, je veux juste {un câlin}."
+    },
+    {
+     "nl": "Waarom geef je papa geen {knuffel}?",
+     "fr": "Pourquoi ne fais-tu pas de {câlin} à papa ?"
+    }
+   ]
   },
   {
    "nl": "de kus",
-   "fr": "le baiser"
+   "fr": "le baiser",
+   "ph": [
+    {
+     "nl": "Ze gaf haar man {een kus}.",
+     "fr": "Elle a donné {un baiser} à son mari."
+    },
+    {
+     "nl": "{De kus} van de moeder troost het kind.",
+     "fr": "{Le baiser} de la mère console l'enfant."
+    },
+    {
+     "nl": "Hij gaf haar {een kus} op de mond.",
+     "fr": "Il lui a donné {un baiser} sur la bouche."
+    },
+    {
+     "nl": "Ze stuurde me {een kus} met haar hand.",
+     "fr": "Elle m'a envoyé {un baiser} de la main."
+    }
+   ]
   },
   {
    "nl": "het geheim",
-   "fr": "le secret"
+   "fr": "le secret",
+   "ph": [
+    {
+     "nl": "Kun je {een geheim} bewaren?",
+     "fr": "Sais-tu garder {un secret} ?"
+    },
+    {
+     "nl": "Ze heeft {het geheim} aan niemand verteld.",
+     "fr": "Elle n'a raconté {le secret} à personne."
+    },
+    {
+     "nl": "Vertel het aan niemand, het is {een geheim}!",
+     "fr": "Ne le dis à personne, c'est {un secret} !"
+    },
+    {
+     "nl": "Tussen ons zijn er geen {geheimen}.",
+     "fr": "Entre nous, il n'y a pas de {secrets}."
+    }
+   ]
   },
   {
    "nl": "de belofte",
-   "fr": "la promesse"
+   "fr": "la promesse",
+   "ph": [
+    {
+     "nl": "Hij houdt altijd zijn {belofte}.",
+     "fr": "Il tient toujours sa {promesse}."
+    },
+    {
+     "nl": "Vergeet {de belofte} aan je zus niet!",
+     "fr": "N'oublie pas {la promesse} faite à ta sœur !"
+    },
+    {
+     "nl": "Je hebt {een belofte} gedaan, dus hou je eraan.",
+     "fr": "Tu as fait {une promesse}, alors tiens-la."
+    },
+    {
+     "nl": "Waarom heb je je {belofte} niet gehouden?",
+     "fr": "Pourquoi n'as-tu pas tenu ta {promesse} ?"
+    }
+   ]
   },
   {
    "nl": "het vertrouwen",
-   "fr": "la confiance"
+   "fr": "la confiance",
+   "ph": [
+    {
+     "nl": "{Het vertrouwen} tussen hen is weg.",
+     "fr": "{La confiance} entre eux a disparu."
+    },
+    {
+     "nl": "Ik heb veel {vertrouwen} in mijn collega.",
+     "fr": "J'ai beaucoup de {confiance} en mon collègue."
+    },
+    {
+     "nl": "Na zijn leugen heb ik geen {vertrouwen} meer in hem.",
+     "fr": "Après son mensonge, je n'ai plus {confiance} en lui."
+    },
+    {
+     "nl": "{Vertrouwen} is de basis van elke vriendschap.",
+     "fr": "{La confiance} est la base de toute amitié."
+    }
+   ]
   },
   {
    "nl": "de hulp",
-   "fr": "l'aide"
+   "fr": "l'aide",
+   "ph": [
+    {
+     "nl": "Bedankt voor je {hulp} met de verhuis!",
+     "fr": "Merci pour ton {aide} pour le déménagement !"
+    },
+    {
+     "nl": "Heb je {hulp} nodig met je huiswerk?",
+     "fr": "As-tu besoin d'{aide} pour tes devoirs ?"
+    },
+    {
+     "nl": "Roep om {hulp} als er iets gebeurt!",
+     "fr": "Appelle à {l'aide} s'il se passe quelque chose !"
+    },
+    {
+     "nl": "Zonder {de hulp} van mijn buren was het niet gelukt.",
+     "fr": "Sans {l'aide} de mes voisins, je n'y serais pas arrivé."
+    }
+   ]
   },
   {
    "nl": "zeggen",
    "fr": "dire",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Wat {zei} je moeder over het feest?",
+     "fr": "Qu'est-ce que ta mère {a dit} de la fête ?"
+    },
+    {
+     "nl": "Je moet altijd de waarheid {zeggen}.",
+     "fr": "Tu dois toujours {dire} la vérité."
+    },
+    {
+     "nl": "{Zeg} niets tegen mama, het is een verrassing!",
+     "fr": "Ne {dis} rien à maman, c'est une surprise !"
+    },
+    {
+     "nl": "Hoe {zeg} je ‘merci’ in het Nederlands?",
+     "fr": "Comment {dit}-on « merci » en néerlandais ?"
+    }
+   ]
   },
   {
    "nl": "trouwen",
    "fr": "se marier",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn zus gaat volgend jaar {trouwen}.",
+     "fr": "Ma sœur va {se marier} l'année prochaine."
+    },
+    {
+     "nl": "Ze {trouwden} in een kleine kerk.",
+     "fr": "Ils {se sont mariés} dans une petite église."
+    },
+    {
+     "nl": "Ze zijn al twintig jaar {getrouwd}.",
+     "fr": "Ils sont {mariés} depuis vingt ans."
+    },
+    {
+     "nl": "Wil je met me {trouwen}?",
+     "fr": "Veux-tu {te marier} avec moi ?"
+    }
+   ]
   },
   {
    "nl": "scheiden",
    "fr": "divorcer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Zijn ouders willen na twintig jaar {scheiden}.",
+     "fr": "Ses parents veulent {divorcer} après vingt ans."
+    },
+    {
+     "nl": "Ze {scheidden} na tien jaar huwelijk.",
+     "fr": "Ils {ont divorcé} après dix ans de mariage."
+    },
+    {
+     "nl": "Zijn ouders zijn vorig jaar {gescheiden}.",
+     "fr": "Ses parents {ont divorcé} l'année dernière."
+    },
+    {
+     "nl": "Waarom {scheiden} ze na zo'n lang huwelijk?",
+     "fr": "Pourquoi {divorcent}-ils après un si long mariage ?"
+    }
+   ]
   },
   {
    "nl": "ontmoeten",
    "fr": "rencontrer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Waar {ontmoette} je je vriendin?",
+     "fr": "Où est-ce que tu {as rencontré} ton amie ?"
+    },
+    {
+     "nl": "Ik wil je ouders graag {ontmoeten}.",
+     "fr": "J'aimerais bien {rencontrer} tes parents."
+    },
+    {
+     "nl": "We hebben elkaar op een feest {ontmoet}.",
+     "fr": "Nous nous sommes {rencontrés} à une fête."
+    },
+    {
+     "nl": "Het was heel aangenaam u te {ontmoeten}.",
+     "fr": "C'était un plaisir de vous {rencontrer}."
+    }
+   ]
   },
   {
    "nl": "bezoeken",
    "fr": "rendre visite",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "We {bezoeken} elke zondag onze oma.",
+     "fr": "Nous {rendons visite} à notre grand-mère chaque dimanche."
+    },
+    {
+     "nl": "Ga je morgen je oom {bezoeken}?",
+     "fr": "Vas-tu {rendre visite} à ton oncle demain ?"
+    },
+    {
+     "nl": "Vorig weekend hebben we mijn tante in Brugge {bezocht}.",
+     "fr": "Le week-end dernier, nous {avons rendu visite} à ma tante à Bruges."
+    },
+    {
+     "nl": "Ik {bezocht} haar elke dag in het ziekenhuis.",
+     "fr": "Je lui {rendais visite} chaque jour à l'hôpital."
+    }
+   ]
   },
   {
    "nl": "groeten",
    "fr": "saluer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Hij {groet} altijd de buren.",
+     "fr": "Il {salue} toujours les voisins."
+    },
+    {
+     "nl": "Vergeet niet de gasten te {groeten}.",
+     "fr": "N'oublie pas de {saluer} les invités."
+    },
+    {
+     "nl": "{Groet} je ouders van mij!",
+     "fr": "{Salue} tes parents de ma part !"
+    },
+    {
+     "nl": "Toen ik binnenkwam, {groette} niemand me.",
+     "fr": "Quand je suis entré, personne ne m'{a salué}."
+    }
+   ]
   },
   {
    "nl": "kussen",
    "fr": "embrasser",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De moeder {kust} haar baby.",
+     "fr": "La mère {embrasse} son bébé."
+    },
+    {
+     "nl": "Mag ik de baby even {kussen}?",
+     "fr": "Puis-je {embrasser} le bébé ?"
+    },
+    {
+     "nl": "Na de ceremonie {kusten} de bruid en de bruidegom elkaar.",
+     "fr": "Après la cérémonie, les mariés {se sont embrassés}."
+    },
+    {
+     "nl": "In België {kus} je vrienden op de wang.",
+     "fr": "En Belgique, on {embrasse} ses amis sur la joue."
+    }
+   ]
   },
   {
    "nl": "knuffelen",
    "fr": "faire un câlin",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Het kind wil de hond {knuffelen}.",
+     "fr": "L'enfant veut {faire un câlin} au chien."
+    },
+    {
+     "nl": "Ze {knuffelde} haar zus op het station.",
+     "fr": "Elle {a fait un câlin} à sa sœur à la gare."
+    },
+    {
+     "nl": "{Knuffel} je zus maar, ze is verdrietig.",
+     "fr": "{Fais un câlin} à ta sœur, elle est triste."
+    },
+    {
+     "nl": "Mijn kinderen {knuffelen} elke avond hun teddybeer.",
+     "fr": "Chaque soir, mes enfants {font un câlin} à leur ours en peluche."
+    }
+   ]
   },
   {
    "nl": "opvoeden",
    "fr": "élever (un enfant)",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Het is niet makkelijk om kinderen {op te voeden}.",
+     "fr": "Ce n'est pas facile d'{élever} des enfants."
+    },
+    {
+     "nl": "Ze heeft haar drie kinderen alleen {opgevoed}.",
+     "fr": "Elle {a élevé} seule ses trois enfants."
+    },
+    {
+     "nl": "Een kind {opvoeden} kost veel tijd en geduld.",
+     "fr": "{Élever} un enfant demande beaucoup de temps et de patience."
+    },
+    {
+     "nl": "Ik vind het mooi hoe jij je kinderen {opvoedt}.",
+     "fr": "J'aime la façon dont tu {élèves} tes enfants."
+    }
+   ]
   },
   {
    "nl": "zorgen",
    "fr": "s'occuper de",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Wie {zorgt} voor de hond?",
+     "fr": "Qui {s'occupe} du chien ?"
+    },
+    {
+     "nl": "Morgen moet ik voor de baby {zorgen}.",
+     "fr": "Demain, je dois {m'occuper} du bébé."
+    },
+    {
+     "nl": "{Zorg} goed voor je broertje!",
+     "fr": "{Occupe-toi} bien de ton petit frère !"
+    },
+    {
+     "nl": "Toen mama ziek was, {zorgde} papa voor ons.",
+     "fr": "Quand maman était malade, papa {s'occupait} de nous."
+    }
+   ]
   },
   {
    "nl": "missen",
    "fr": "manquer, rater",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {mis} mijn familie heel erg.",
+     "fr": "Ma famille me {manque} beaucoup."
+    },
+    {
+     "nl": "We hebben de trein {gemist}.",
+     "fr": "Nous {avons raté} le train."
+    },
+    {
+     "nl": "{Mis} je je vriendin als ze weg is?",
+     "fr": "Ton amie te {manque}-t-elle quand elle est partie ?"
+    },
+    {
+     "nl": "Schiet op, anders {missen} we de bus!",
+     "fr": "Dépêche-toi, sinon on {rate} le bus !"
+    }
+   ]
   },
   {
    "nl": "verwachten",
    "fr": "attendre, s'attendre à",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ze {verwacht} een baby in mei.",
+     "fr": "Elle {attend} un bébé en mai."
+    },
+    {
+     "nl": "Ik had dat niet {verwacht}.",
+     "fr": "Je ne {m'attendais} pas à ça."
+    },
+    {
+     "nl": "We {verwachten} vijftig gasten op het feest.",
+     "fr": "Nous {attendons} cinquante invités à la fête."
+    },
+    {
+     "nl": "Wat {verwacht} je van je nieuwe job?",
+     "fr": "Qu'est-ce que tu {attends} de ton nouveau travail ?"
+    }
+   ]
   },
   {
    "nl": "uitnodigen",
    "fr": "inviter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "We willen onze buren {uitnodigen}.",
+     "fr": "Nous voulons {inviter} nos voisins."
+    },
+    {
+     "nl": "Heb je je collega's {uitgenodigd}?",
+     "fr": "As-tu {invité} tes collègues ?"
+    },
+    {
+     "nl": "Het is lief van je om me {uit te nodigen}.",
+     "fr": "C'est gentil de ta part de m'{inviter}."
+    },
+    {
+     "nl": "Ben je boos omdat ik je niet {uitnodigde}?",
+     "fr": "Es-tu fâché parce que je ne t'ai pas {invité} ?"
+    }
+   ]
   },
   {
    "nl": "beloven",
    "fr": "promettre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {beloof} je dat ik kom.",
+     "fr": "Je te {promets} que je viendrai."
+    },
+    {
+     "nl": "Hij had het zijn moeder {beloofd}.",
+     "fr": "Il l'avait {promis} à sa mère."
+    },
+    {
+     "nl": "{Beloof} me dat je voorzichtig rijdt!",
+     "fr": "{Promets}-moi de conduire prudemment !"
+    },
+    {
+     "nl": "Ze {beloofden} op tijd te komen, maar ze waren laat.",
+     "fr": "Ils {ont promis} d'arriver à l'heure, mais ils étaient en retard."
+    }
+   ]
   },
   {
    "nl": "vergeven",
    "fr": "pardonner",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Kun je me ooit {vergeven}?",
+     "fr": "Pourras-tu un jour me {pardonner} ?"
+    },
+    {
+     "nl": "Ze {vergaf} haar broer na de ruzie.",
+     "fr": "Elle {a pardonné} à son frère après la dispute."
+    },
+    {
+     "nl": "{Vergeef} me, ik was te boos.",
+     "fr": "{Pardonne}-moi, j'étais trop en colère."
+    },
+    {
+     "nl": "Ik zal hem nooit {vergeven} wat hij gedaan heeft.",
+     "fr": "Je ne lui {pardonnerai} jamais ce qu'il a fait."
+    }
+   ]
   },
   {
    "nl": "steunen",
    "fr": "soutenir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn ouders {steunen} me altijd.",
+     "fr": "Mes parents me {soutiennent} toujours."
+    },
+    {
+     "nl": "Wie heeft jou {gesteund} na de begrafenis?",
+     "fr": "Qui t'{a soutenu} après l'enterrement ?"
+    },
+    {
+     "nl": "Als je hulp nodig hebt, zal ik je altijd {steunen}.",
+     "fr": "Si tu as besoin d'aide, je te {soutiendrai} toujours."
+    },
+    {
+     "nl": "{Steun} je vriend, hij heeft het moeilijk.",
+     "fr": "{Soutiens} ton ami, il traverse un moment difficile."
+    }
+   ]
   },
   {
    "nl": "delen",
    "fr": "partager",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De kinderen {delen} een kamer.",
+     "fr": "Les enfants {partagent} une chambre."
+    },
+    {
+     "nl": "Wil je je koekje met je broer {delen}?",
+     "fr": "Veux-tu {partager} ton biscuit avec ton frère ?"
+    },
+    {
+     "nl": "{Deel} je snoep met je zus!",
+     "fr": "{Partage} tes bonbons avec ta sœur !"
+    },
+    {
+     "nl": "Vroeger {deelden} we alles: kleren, boeken en geheimen.",
+     "fr": "Autrefois, nous {partagions} tout : vêtements, livres et secrets."
+    }
+   ]
   },
   {
    "nl": "vertellen",
    "fr": "raconter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn opa {vertelt} elke avond een verhaal.",
+     "fr": "Mon grand-père {raconte} une histoire chaque soir."
+    },
+    {
+     "nl": "Wat heeft hij je {verteld}?",
+     "fr": "Qu'est-ce qu'il t'a {raconté} ?"
+    },
+    {
+     "nl": "{Vertel} eens over je reis!",
+     "fr": "{Raconte}-moi ton voyage !"
+    },
+    {
+     "nl": "Ik zal het aan niemand {vertellen}, beloofd!",
+     "fr": "Je ne le {raconterai} à personne, promis !"
+    }
+   ]
   },
   {
    "nl": "roepen",
    "fr": "appeler, crier",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De moeder {roept} de kinderen voor het eten.",
+     "fr": "La mère {appelle} les enfants pour le repas."
+    },
+    {
+     "nl": "Hoor je iemand in de tuin {roepen}?",
+     "fr": "Entends-tu quelqu'un {crier} dans le jardin ?"
+    },
+    {
+     "nl": "{Roep} de hond, hij loopt weg!",
+     "fr": "{Appelle} le chien, il s'enfuit !"
+    },
+    {
+     "nl": "Waarom {riep} je zo hard?",
+     "fr": "Pourquoi {criais}-tu si fort ?"
+    }
+   ]
   },
   {
    "nl": "praten",
    "fr": "bavarder, parler",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "We {praten} vaak over onze familie.",
+     "fr": "Nous {parlons} souvent de notre famille."
+    },
+    {
+     "nl": "Kan ik even met je {praten}?",
+     "fr": "Puis-je {parler} avec toi un instant ?"
+    },
+    {
+     "nl": "Ze {praatten} urenlang aan de telefoon.",
+     "fr": "Elles {ont parlé} pendant des heures au téléphone."
+    },
+    {
+     "nl": "{Praat} niet zo luid, de baby slaapt!",
+     "fr": "Ne {parle} pas si fort, le bébé dort !"
+    }
+   ]
   }
  ]
 }

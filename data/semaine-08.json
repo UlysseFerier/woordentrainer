@@ -5,423 +5,2223 @@
  "mots": [
   {
    "nl": "het gevoel",
-   "fr": "le sentiment"
+   "fr": "le sentiment",
+   "ph": [
+    {
+     "nl": "Hij toont zelden {zijn gevoelens}.",
+     "fr": "Il montre rarement {ses sentiments}."
+    },
+    {
+     "nl": "Waarom verberg je {je gevoelens} voor mij?",
+     "fr": "Pourquoi me caches-tu {tes sentiments} ?"
+    },
+    {
+     "nl": "Sorry, ik wilde {je gevoelens} niet kwetsen.",
+     "fr": "Désolé, je ne voulais pas blesser {tes sentiments}."
+    },
+    {
+     "nl": "Hij heeft al lang {gevoelens} voor zijn collega.",
+     "fr": "Il a depuis longtemps {des sentiments} pour sa collègue."
+    }
+   ]
   },
   {
    "nl": "de emotie",
-   "fr": "l'émotion"
+   "fr": "l'émotion",
+   "ph": [
+    {
+     "nl": "Ze kon {haar emoties} niet verbergen.",
+     "fr": "Elle n'a pas pu cacher {ses émotions}."
+    },
+    {
+     "nl": "Muziek wekt {emoties} op bij veel mensen.",
+     "fr": "La musique éveille {des émotions} chez beaucoup de gens."
+    },
+    {
+     "nl": "Ze sprak met veel {emotie} over haar overleden vader.",
+     "fr": "Elle a parlé de son défunt père avec beaucoup d'{émotion}."
+    },
+    {
+     "nl": "Laat je niet leiden door {je emoties}!",
+     "fr": "Ne te laisse pas guider par {tes émotions} !"
+    }
+   ]
   },
   {
    "nl": "de vreugde",
-   "fr": "la joie"
+   "fr": "la joie",
+   "ph": [
+    {
+     "nl": "Ze sprong op van {vreugde}.",
+     "fr": "Elle a sauté de {joie}."
+    },
+    {
+     "nl": "{De vreugde} van de kinderen was groot.",
+     "fr": "{La joie} des enfants était grande."
+    },
+    {
+     "nl": "Tranen van {vreugde} liepen over haar wangen.",
+     "fr": "Des larmes de {joie} coulaient sur ses joues."
+    },
+    {
+     "nl": "Wat een {vreugde} om jullie weer te zien!",
+     "fr": "Quelle {joie} de vous revoir !"
+    }
+   ]
   },
   {
    "nl": "het geluk",
-   "fr": "le bonheur"
+   "fr": "le bonheur",
+   "ph": [
+    {
+     "nl": "Geld brengt niet altijd {geluk}.",
+     "fr": "L'argent n'apporte pas toujours {le bonheur}."
+    },
+    {
+     "nl": "Ik wens jullie veel {geluk} samen.",
+     "fr": "Je vous souhaite beaucoup de {bonheur} ensemble."
+    },
+    {
+     "nl": "{Het geluk} zit in de kleine dingen.",
+     "fr": "{Le bonheur} est dans les petites choses."
+    },
+    {
+     "nl": "Is {geluk} voor jou belangrijker dan succes?",
+     "fr": "Pour toi, {le bonheur} est-il plus important que le succès ?"
+    }
+   ]
   },
   {
    "nl": "het verdriet",
-   "fr": "le chagrin"
+   "fr": "le chagrin",
+   "ph": [
+    {
+     "nl": "Hij had veel {verdriet} na de dood van zijn hond.",
+     "fr": "Il avait beaucoup de {chagrin} après la mort de son chien."
+    },
+    {
+     "nl": "Kun je {haar verdriet} begrijpen?",
+     "fr": "Peux-tu comprendre {son chagrin} ?"
+    },
+    {
+     "nl": "Op de begrafenis huilde ze van {verdriet}.",
+     "fr": "À l'enterrement, elle pleurait de {chagrin}."
+    },
+    {
+     "nl": "Deel {je verdriet} met iemand die je vertrouwt.",
+     "fr": "Partage {ton chagrin} avec quelqu'un en qui tu as confiance."
+    }
+   ]
   },
   {
    "nl": "de angst",
-   "fr": "la peur"
+   "fr": "la peur",
+   "ph": [
+    {
+     "nl": "Mijn zus heeft {angst} voor spinnen.",
+     "fr": "Ma sœur a {peur} des araignées."
+    },
+    {
+     "nl": "{De angst} verdween na een paar minuten.",
+     "fr": "{La peur} a disparu après quelques minutes."
+    },
+    {
+     "nl": "Hij overwon {zijn angst} en sprong in het water.",
+     "fr": "Il a vaincu {sa peur} et a sauté dans l'eau."
+    },
+    {
+     "nl": "Uit {angst} bleef ze de hele nacht wakker.",
+     "fr": "Par {peur}, elle est restée éveillée toute la nuit."
+    }
+   ]
   },
   {
    "nl": "de woede",
-   "fr": "la colère"
+   "fr": "la colère",
+   "ph": [
+    {
+     "nl": "Hij werd rood van {woede}.",
+     "fr": "Il est devenu rouge de {colère}."
+    },
+    {
+     "nl": "Ze kon {haar woede} niet meer controleren.",
+     "fr": "Elle ne pouvait plus contrôler {sa colère}."
+    },
+    {
+     "nl": "In {zijn woede} gooide hij zijn telefoon op de grond.",
+     "fr": "Dans {sa colère}, il a jeté son téléphone par terre."
+    },
+    {
+     "nl": "Waar komt {al die woede} vandaan?",
+     "fr": "D'où vient {toute cette colère} ?"
+    }
+   ]
   },
   {
    "nl": "de haat",
-   "fr": "la haine"
+   "fr": "la haine",
+   "ph": [
+    {
+     "nl": "{Haat} lost geen enkel probleem op.",
+     "fr": "{La haine} ne résout aucun problème."
+    },
+    {
+     "nl": "Er was geen {haat} in zijn woorden.",
+     "fr": "Il n'y avait pas de {haine} dans ses paroles."
+    },
+    {
+     "nl": "Liefde is sterker dan {haat}.",
+     "fr": "L'amour est plus fort que {la haine}."
+    },
+    {
+     "nl": "Oorlog begint vaak met {haat} tussen mensen.",
+     "fr": "La guerre commence souvent par {la haine} entre les gens."
+    }
+   ]
   },
   {
    "nl": "de jaloezie",
-   "fr": "la jalousie"
+   "fr": "la jalousie",
+   "ph": [
+    {
+     "nl": "{Jaloezie} kan een relatie kapotmaken.",
+     "fr": "{La jalousie} peut détruire une relation."
+    },
+    {
+     "nl": "Hij verborg {zijn jaloezie} niet.",
+     "fr": "Il ne cachait pas {sa jalousie}."
+    },
+    {
+     "nl": "Ze werd groen van {jaloezie} toen ze zijn auto zag.",
+     "fr": "Elle est devenue verte de {jalousie} en voyant sa voiture."
+    },
+    {
+     "nl": "Is {jaloezie} altijd een teken van liefde?",
+     "fr": "{La jalousie} est-elle toujours un signe d'amour ?"
+    }
+   ]
   },
   {
    "nl": "de trots",
-   "fr": "la fierté"
+   "fr": "la fierté",
+   "ph": [
+    {
+     "nl": "Ze sprak met {trots} over haar zoon.",
+     "fr": "Elle parlait de son fils avec {fierté}."
+    },
+    {
+     "nl": "{Zijn trots} is soms een probleem.",
+     "fr": "{Sa fierté} est parfois un problème."
+    },
+    {
+     "nl": "Hij straalde van {trots} na zijn eerste doelpunt.",
+     "fr": "Il rayonnait de {fierté} après son premier but."
+    },
+    {
+     "nl": "Slik {je trots} in en zeg sorry.",
+     "fr": "Ravale {ta fierté} et excuse-toi."
+    }
+   ]
   },
   {
    "nl": "de schaamte",
-   "fr": "la honte"
+   "fr": "la honte",
+   "ph": [
+    {
+     "nl": "Ze voelde {schaamte} na haar fout.",
+     "fr": "Elle a ressenti {de la honte} après son erreur."
+    },
+    {
+     "nl": "{De schaamte} was groter dan de pijn.",
+     "fr": "{La honte} était plus grande que la douleur."
+    },
+    {
+     "nl": "Ze wilde van {schaamte} door de grond zakken.",
+     "fr": "Elle aurait voulu rentrer sous terre de {honte}."
+    },
+    {
+     "nl": "Zonder {schaamte} vertelde hij over zijn fouten.",
+     "fr": "Sans {honte}, il a parlé de ses erreurs."
+    }
+   ]
   },
   {
    "nl": "de hoop",
-   "fr": "l'espoir"
+   "fr": "l'espoir",
+   "ph": [
+    {
+     "nl": "We hebben nog altijd {hoop}.",
+     "fr": "Nous avons toujours {de l'espoir}."
+    },
+    {
+     "nl": "Je mag {de hoop} niet verliezen.",
+     "fr": "Tu ne dois pas perdre {l'espoir}."
+    },
+    {
+     "nl": "Na het goede nieuws kreeg ze weer {hoop}.",
+     "fr": "Après la bonne nouvelle, elle a retrouvé {l'espoir}."
+    },
+    {
+     "nl": "Is er nog {hoop} voor de patiënt?",
+     "fr": "Y a-t-il encore {de l'espoir} pour le patient ?"
+    }
+   ]
   },
   {
    "nl": "de wens",
-   "fr": "le souhait"
+   "fr": "le souhait",
+   "ph": [
+    {
+     "nl": "Ze schreef {haar wensen} op een kaartje.",
+     "fr": "Elle a écrit {ses souhaits} sur une petite carte."
+    },
+    {
+     "nl": "Heb je nog {een wens} voor je verjaardag?",
+     "fr": "As-tu encore {un souhait} pour ton anniversaire ?"
+    },
+    {
+     "nl": "Het hotel hield rekening met al {onze wensen}.",
+     "fr": "L'hôtel a tenu compte de tous {nos souhaits}."
+    },
+    {
+     "nl": "Ik stuur je {mijn beste wensen} voor het nieuwe jaar.",
+     "fr": "Je t'envoie {mes meilleurs souhaits} pour la nouvelle année."
+    }
+   ]
   },
   {
    "nl": "de droom",
-   "fr": "le rêve"
+   "fr": "le rêve",
+   "ph": [
+    {
+     "nl": "Ik had vannacht {een droom} over mijn oma.",
+     "fr": "Cette nuit, j'ai fait {un rêve} sur ma grand-mère."
+    },
+    {
+     "nl": "{Zijn droom} is om een eigen bakkerij te openen.",
+     "fr": "{Son rêve} est d'ouvrir sa propre boulangerie."
+    },
+    {
+     "nl": "Na {een slechte droom} kon het kind niet meer slapen.",
+     "fr": "Après {un mauvais rêve}, l'enfant ne pouvait plus dormir."
+    },
+    {
+     "nl": "Geef niet op en volg {je dromen}!",
+     "fr": "N'abandonne pas et suis {tes rêves} !"
+    }
+   ]
   },
   {
    "nl": "de twijfel",
-   "fr": "le doute"
+   "fr": "le doute",
+   "ph": [
+    {
+     "nl": "Ik heb {mijn twijfels} over dat plan.",
+     "fr": "J'ai {des doutes} sur ce projet."
+    },
+    {
+     "nl": "Er is geen {twijfel} mogelijk.",
+     "fr": "Il n'y a pas de {doute} possible."
+    },
+    {
+     "nl": "Bij {twijfel} kun je altijd de dokter bellen.",
+     "fr": "En cas de {doute}, tu peux toujours appeler le médecin."
+    },
+    {
+     "nl": "Zonder {twijfel} is dit de beste pizza van de stad.",
+     "fr": "Sans aucun {doute}, c'est la meilleure pizza de la ville."
+    }
+   ]
   },
   {
    "nl": "de moed",
-   "fr": "le courage"
+   "fr": "le courage",
+   "ph": [
+    {
+     "nl": "Het vraagt {moed} om de waarheid te zeggen.",
+     "fr": "Il faut {du courage} pour dire la vérité."
+    },
+    {
+     "nl": "Hij had niet {de moed} om haar te bellen.",
+     "fr": "Il n'avait pas {le courage} de l'appeler."
+    },
+    {
+     "nl": "Verlies {de moed} niet, je kunt het!",
+     "fr": "Ne perds pas {courage}, tu peux y arriver !"
+    },
+    {
+     "nl": "Ze verzamelde al {haar moed} en sprak op het podium.",
+     "fr": "Elle a rassemblé tout {son courage} et a parlé sur scène."
+    }
+   ]
   },
   {
    "nl": "de zorg",
-   "fr": "le souci"
+   "fr": "le souci",
+   "ph": [
+    {
+     "nl": "Maak je geen {zorgen}, alles komt goed.",
+     "fr": "Ne te fais pas de {soucis}, tout ira bien."
+    },
+    {
+     "nl": "Wat zijn {je zorgen} op dit moment?",
+     "fr": "Quels sont {tes soucis} en ce moment ?"
+    },
+    {
+     "nl": "Ik heb {zorgen} over de gezondheid van mijn vader.",
+     "fr": "Je me fais {des soucis} pour la santé de mon père."
+    },
+    {
+     "nl": "Zonder {zorgen} op vakantie gaan is heerlijk.",
+     "fr": "Partir en vacances sans {soucis}, c'est merveilleux."
+    }
+   ]
   },
   {
    "nl": "de stress",
-   "fr": "le stress"
+   "fr": "le stress",
+   "ph": [
+    {
+     "nl": "Ik heb veel {stress} voor het examen.",
+     "fr": "J'ai beaucoup de {stress} avant l'examen."
+    },
+    {
+     "nl": "{De stress} op het werk is te groot.",
+     "fr": "{Le stress} au travail est trop important."
+    },
+    {
+     "nl": "Sport helpt tegen {stress}.",
+     "fr": "Le sport aide à lutter contre {le stress}."
+    },
+    {
+     "nl": "Door {de stress} kon hij niet slapen.",
+     "fr": "À cause {du stress}, il ne pouvait pas dormir."
+    }
+   ]
   },
   {
    "nl": "de rust",
-   "fr": "le calme"
+   "fr": "le calme",
+   "ph": [
+    {
+     "nl": "Na het werk heb ik nood aan {rust}.",
+     "fr": "Après le travail, j'ai besoin de {calme}."
+    },
+    {
+     "nl": "Geniet je van {de rust} op het platteland?",
+     "fr": "Profites-tu {du calme} de la campagne ?"
+    },
+    {
+     "nl": "In de bergen vond hij eindelijk {de rust} die hij zocht.",
+     "fr": "Dans les montagnes, il a enfin trouvé {le calme} qu'il cherchait."
+    },
+    {
+     "nl": "Kinderen, een beetje {rust} alstublieft!",
+     "fr": "Les enfants, un peu de {calme}, s'il vous plaît !"
+    }
+   ]
   },
   {
    "nl": "het geduld",
-   "fr": "la patience"
+   "fr": "la patience",
+   "ph": [
+    {
+     "nl": "Je moet {geduld} hebben met kinderen.",
+     "fr": "Tu dois avoir {de la patience} avec les enfants."
+    },
+    {
+     "nl": "Hij verloor {zijn geduld} in de file.",
+     "fr": "Il a perdu {patience} dans les embouteillages."
+    },
+    {
+     "nl": "Een beetje {geduld}, het eten is bijna klaar!",
+     "fr": "Un peu de {patience}, le repas est presque prêt !"
+    },
+    {
+     "nl": "Heb je {het geduld} om een puzzel van duizend stukjes te maken?",
+     "fr": "As-tu {la patience} de faire un puzzle de mille pièces ?"
+    }
+   ]
   },
   {
    "nl": "de eenzaamheid",
-   "fr": "la solitude"
+   "fr": "la solitude",
+   "ph": [
+    {
+     "nl": "Veel oude mensen lijden aan {eenzaamheid}.",
+     "fr": "Beaucoup de personnes âgées souffrent de {solitude}."
+    },
+    {
+     "nl": "{De eenzaamheid} was moeilijk na de verhuizing.",
+     "fr": "{La solitude} était difficile après le déménagement."
+    },
+    {
+     "nl": "Na de dood van zijn vrouw vocht hij tegen {de eenzaamheid}.",
+     "fr": "Après la mort de sa femme, il a lutté contre {la solitude}."
+    },
+    {
+     "nl": "Kan een hond helpen tegen {eenzaamheid}?",
+     "fr": "Un chien peut-il aider à combattre {la solitude} ?"
+    }
+   ]
   },
   {
    "nl": "het humeur",
-   "fr": "l'humeur"
+   "fr": "l'humeur",
+   "ph": [
+    {
+     "nl": "{Zijn humeur} verandert heel snel.",
+     "fr": "{Son humeur} change très vite."
+    },
+    {
+     "nl": "Hoe is {het humeur} van je vader vandaag?",
+     "fr": "Comment est {l'humeur} de ton père aujourd'hui ?"
+    },
+    {
+     "nl": "Na die goede nacht ben ik in {een goed humeur}.",
+     "fr": "Après cette bonne nuit, je suis de {bonne humeur}."
+    },
+    {
+     "nl": "Waarom ben je 's ochtends altijd in {een slecht humeur}?",
+     "fr": "Pourquoi es-tu toujours de {mauvaise humeur} le matin ?"
+    }
+   ]
   },
   {
    "nl": "de stemming",
-   "fr": "l'ambiance"
+   "fr": "l'ambiance",
+   "ph": [
+    {
+     "nl": "{De stemming} op het feest was fantastisch.",
+     "fr": "{L'ambiance} à la fête était fantastique."
+    },
+    {
+     "nl": "Hoe was {de stemming} op kantoor?",
+     "fr": "Comment était {l'ambiance} au bureau ?"
+    },
+    {
+     "nl": "De muziek bracht iedereen in {de stemming}.",
+     "fr": "La musique a mis tout le monde dans {l'ambiance}."
+    },
+    {
+     "nl": "Bederf {de stemming} niet met je klachten!",
+     "fr": "Ne gâche pas {l'ambiance} avec tes plaintes !"
+    }
+   ]
   },
   {
    "nl": "het karakter",
-   "fr": "le caractère"
+   "fr": "le caractère",
+   "ph": [
+    {
+     "nl": "{Haar karakter} lijkt op dat van haar moeder.",
+     "fr": "{Son caractère} ressemble à celui de sa mère."
+    },
+    {
+     "nl": "Ik ken {het karakter} van mijn hond goed.",
+     "fr": "Je connais bien {le caractère} de mon chien."
+    },
+    {
+     "nl": "Ze laat zich niet doen, ze heeft {een sterk karakter}.",
+     "fr": "Elle ne se laisse pas faire, elle a {un fort caractère}."
+    },
+    {
+     "nl": "Je kunt {je karakter} niet zomaar veranderen.",
+     "fr": "On ne peut pas changer {son caractère} comme ça."
+    }
+   ]
   },
   {
    "nl": "de eigenschap",
-   "fr": "la qualité, le trait"
+   "fr": "la qualité, le trait",
+   "ph": [
+    {
+     "nl": "Welke {eigenschappen} zoek je in een partner?",
+     "fr": "Quelles {qualités} cherches-tu chez un partenaire ?"
+    },
+    {
+     "nl": "Hij heeft veel goede {eigenschappen}.",
+     "fr": "Il a beaucoup de {qualités}."
+    },
+    {
+     "nl": "Geduld is {haar beste eigenschap}.",
+     "fr": "La patience est {sa meilleure qualité}."
+    },
+    {
+     "nl": "Welke {eigenschap} heb je van je vader geërfd?",
+     "fr": "Quel {trait} de caractère as-tu hérité de ton père ?"
+    }
+   ]
   },
   {
    "nl": "het gebrek",
-   "fr": "le défaut, le manque"
+   "fr": "le défaut, le manque",
+   "ph": [
+    {
+     "nl": "Iedereen heeft wel {zijn gebreken}.",
+     "fr": "Tout le monde a {ses défauts}."
+    },
+    {
+     "nl": "In onze school is er {een gebrek} aan leraren.",
+     "fr": "Dans notre école, il y a {un manque} de professeurs."
+    },
+    {
+     "nl": "Door {gebrek} aan tijd heb ik niet gekookt.",
+     "fr": "Par {manque} de temps, je n'ai pas cuisiné."
+    },
+    {
+     "nl": "{Zijn grootste gebrek} is dat hij nooit luistert.",
+     "fr": "{Son plus grand défaut}, c'est qu'il n'écoute jamais."
+    }
+   ]
   },
   {
    "nl": "de glimlach",
-   "fr": "le sourire"
+   "fr": "le sourire",
+   "ph": [
+    {
+     "nl": "Hij begroette me met {een glimlach}.",
+     "fr": "Il m'a salué avec {un sourire}."
+    },
+    {
+     "nl": "{Haar glimlach} maakt iedereen blij.",
+     "fr": "{Son sourire} rend tout le monde content."
+    },
+    {
+     "nl": "Ze kon {haar glimlach} niet onderdrukken.",
+     "fr": "Elle ne pouvait pas retenir {son sourire}."
+    },
+    {
+     "nl": "Geef me eens {een glimlach} voor de foto!",
+     "fr": "Fais-moi {un sourire} pour la photo !"
+    }
+   ]
   },
   {
    "nl": "de traan",
-   "fr": "la larme"
+   "fr": "la larme",
+   "ph": [
+    {
+     "nl": "Ze had {tranen} in haar ogen.",
+     "fr": "Elle avait {des larmes} dans les yeux."
+    },
+    {
+     "nl": "Hij veegde {een traan} van zijn wang.",
+     "fr": "Il a essuyé {une larme} sur sa joue."
+    },
+    {
+     "nl": "Ze lachte tot {de tranen} over haar wangen liepen.",
+     "fr": "Elle a ri jusqu'à ce que {les larmes} coulent sur ses joues."
+    },
+    {
+     "nl": "Droog {je tranen}, alles komt goed.",
+     "fr": "Sèche {tes larmes}, tout ira bien."
+    }
+   ]
   },
   {
    "nl": "de spanning",
-   "fr": "la tension"
+   "fr": "la tension",
+   "ph": [
+    {
+     "nl": "Er was {spanning} tussen de twee broers.",
+     "fr": "Il y avait {de la tension} entre les deux frères."
+    },
+    {
+     "nl": "{De spanning} voor de wedstrijd was groot.",
+     "fr": "{La tension} avant le match était forte."
+    },
+    {
+     "nl": "Je kon {de spanning} in de kamer voelen.",
+     "fr": "On pouvait sentir {la tension} dans la pièce."
+    },
+    {
+     "nl": "Door {de spanning} in haar nek had ze hoofdpijn.",
+     "fr": "À cause de {la tension} dans sa nuque, elle avait mal à la tête."
+    }
+   ]
   },
   {
    "nl": "de opluchting",
-   "fr": "le soulagement"
+   "fr": "le soulagement",
+   "ph": [
+    {
+     "nl": "Wat een {opluchting} dat je goed aangekomen bent!",
+     "fr": "Quel {soulagement} que tu sois bien arrivé !"
+    },
+    {
+     "nl": "Ze voelde {opluchting} na het examen.",
+     "fr": "Elle a ressenti {du soulagement} après l'examen."
+    },
+    {
+     "nl": "Tot {mijn grote opluchting} was de test negatief.",
+     "fr": "À {mon grand soulagement}, le test était négatif."
+    },
+    {
+     "nl": "Was het {een opluchting} toen de examens voorbij waren?",
+     "fr": "Était-ce {un soulagement} quand les examens étaient finis ?"
+    }
+   ]
   },
   {
    "nl": "de spijt",
-   "fr": "le regret"
+   "fr": "le regret",
+   "ph": [
+    {
+     "nl": "Hij heeft geen {spijt} van zijn keuze.",
+     "fr": "Il n'a aucun {regret} concernant son choix."
+    },
+    {
+     "nl": "{Spijt} komt altijd te laat.",
+     "fr": "{Les regrets} arrivent toujours trop tard."
+    },
+    {
+     "nl": "Hij keek met {spijt} naar zijn oude huis.",
+     "fr": "Il regardait son ancienne maison avec {regret}."
+    },
+    {
+     "nl": "De directeur betuigde {zijn spijt} aan de familie.",
+     "fr": "Le directeur a présenté {ses regrets} à la famille."
+    }
+   ]
   },
   {
    "nl": "de dankbaarheid",
-   "fr": "la gratitude"
+   "fr": "la gratitude",
+   "ph": [
+    {
+     "nl": "Hoe kan ik {mijn dankbaarheid} tonen?",
+     "fr": "Comment puis-je montrer {ma gratitude} ?"
+    },
+    {
+     "nl": "Ze keek hem aan met {dankbaarheid}.",
+     "fr": "Elle l'a regardé avec {gratitude}."
+    },
+    {
+     "nl": "Uit {dankbaarheid} gaf ze de verpleegster bloemen.",
+     "fr": "Par {gratitude}, elle a offert des fleurs à l'infirmière."
+    },
+    {
+     "nl": "Elke dag 'dank je' zeggen leert kinderen {dankbaarheid}.",
+     "fr": "Dire « merci » chaque jour apprend {la gratitude} aux enfants."
+    }
+   ]
   },
   {
    "nl": "blij",
-   "fr": "content"
+   "fr": "content",
+   "ph": [
+    {
+     "nl": "Ik ben {blij} dat je er bent.",
+     "fr": "Je suis {content} que tu sois là."
+    },
+    {
+     "nl": "Was je moeder {blij} met het cadeau?",
+     "fr": "Ta mère était-elle {contente} du cadeau ?"
+    },
+    {
+     "nl": "{Blij} je te zien, kom binnen!",
+     "fr": "{Content} de te voir, entre !"
+    },
+    {
+     "nl": "De hond is altijd {blij} als ik thuiskom.",
+     "fr": "Le chien est toujours {content} quand je rentre."
+    }
+   ]
   },
   {
    "nl": "verdrietig",
-   "fr": "triste"
+   "fr": "triste",
+   "ph": [
+    {
+     "nl": "Waarom ben je zo {verdrietig} vandaag?",
+     "fr": "Pourquoi es-tu si {triste} aujourd'hui ?"
+    },
+    {
+     "nl": "Het einde van de film was {verdrietig}.",
+     "fr": "La fin du film était {triste}."
+    },
+    {
+     "nl": "Ze werd {verdrietig} toen haar kat stierf.",
+     "fr": "Elle est devenue {triste} quand son chat est mort."
+    },
+    {
+     "nl": "Wees niet {verdrietig}, we zien elkaar snel weer.",
+     "fr": "Ne sois pas {triste}, on se revoit bientôt."
+    }
+   ]
   },
   {
    "nl": "boos",
-   "fr": "fâché"
+   "fr": "fâché",
+   "ph": [
+    {
+     "nl": "Mijn vader was {boos} op mij.",
+     "fr": "Mon père était {fâché} contre moi."
+    },
+    {
+     "nl": "Ben je nog {boos} over gisteren?",
+     "fr": "Es-tu encore {fâché} à cause d'hier ?"
+    },
+    {
+     "nl": "Wees niet {boos}, het was een ongeluk.",
+     "fr": "Ne sois pas {fâché}, c'était un accident."
+    },
+    {
+     "nl": "De buren waren {boos} door de luide muziek.",
+     "fr": "Les voisins étaient {fâchés} à cause de la musique trop forte."
+    }
+   ]
   },
   {
    "nl": "bang",
-   "fr": "effrayé"
+   "fr": "effrayé",
+   "ph": [
+    {
+     "nl": "Het kind was {bang} voor het onweer.",
+     "fr": "L'enfant était {effrayé} par l'orage."
+    },
+    {
+     "nl": "Waarom kijkt de kat zo {bang}?",
+     "fr": "Pourquoi le chat a-t-il l'air si {effrayé} ?"
+    },
+    {
+     "nl": "Wees niet {bang}, de hond bijt niet.",
+     "fr": "Ne sois pas {effrayé}, le chien ne mord pas."
+    },
+    {
+     "nl": "Ze was {bang} in het donkere bos.",
+     "fr": "Elle était {effrayée} dans la forêt sombre."
+    }
+   ]
   },
   {
    "nl": "rustig",
-   "fr": "calme"
+   "fr": "calme",
+   "ph": [
+    {
+     "nl": "Blijf {rustig}, er is geen probleem.",
+     "fr": "Reste {calme}, il n'y a pas de problème."
+    },
+    {
+     "nl": "Het was een {rustige} avond thuis.",
+     "fr": "C'était une soirée {calme} à la maison."
+    },
+    {
+     "nl": "Op zondagochtend is de stad heel {rustig}.",
+     "fr": "Le dimanche matin, la ville est très {calme}."
+    },
+    {
+     "nl": "Zoek je een {rustige} plek om te studeren?",
+     "fr": "Cherches-tu un endroit {calme} pour étudier ?"
+    }
+   ]
   },
   {
    "nl": "zenuwachtig",
-   "fr": "nerveux"
+   "fr": "nerveux",
+   "ph": [
+    {
+     "nl": "Ik ben altijd {zenuwachtig} voor een examen.",
+     "fr": "Je suis toujours {nerveux} avant un examen."
+    },
+    {
+     "nl": "Waarom was hij gisteren zo {zenuwachtig}?",
+     "fr": "Pourquoi était-il si {nerveux} hier ?"
+    },
+    {
+     "nl": "Voor zijn eerste afspraakje was hij erg {zenuwachtig}.",
+     "fr": "Avant son premier rendez-vous amoureux, il était très {nerveux}."
+    },
+    {
+     "nl": "Wees niet {zenuwachtig}, je bent goed voorbereid.",
+     "fr": "Ne sois pas {nerveux}, tu es bien préparé."
+    }
+   ]
   },
   {
    "nl": "vrolijk",
-   "fr": "joyeux"
+   "fr": "joyeux",
+   "ph": [
+    {
+     "nl": "Ze zingt altijd een {vrolijk} liedje.",
+     "fr": "Elle chante toujours une chanson {joyeuse}."
+    },
+    {
+     "nl": "De kinderen waren niet erg {vrolijk} vandaag.",
+     "fr": "Les enfants n'étaient pas très {joyeux} aujourd'hui."
+    },
+    {
+     "nl": "Wat ben je {vrolijk} vanochtend!",
+     "fr": "Que tu es {joyeux} ce matin !"
+    },
+    {
+     "nl": "Kerstmis is voor veel mensen een {vrolijk} feest.",
+     "fr": "Pour beaucoup de gens, Noël est une fête {joyeuse}."
+    }
+   ]
   },
   {
    "nl": "somber",
-   "fr": "sombre"
+   "fr": "sombre",
+   "ph": [
+    {
+     "nl": "De toekomst ziet er {somber} uit voor het bedrijf.",
+     "fr": "L'avenir s'annonce {sombre} pour l'entreprise."
+    },
+    {
+     "nl": "Het nieuws was erg {somber} vandaag.",
+     "fr": "Les nouvelles étaient très {sombres} aujourd'hui."
+    },
+    {
+     "nl": "Waarom kijk je zo {somber}?",
+     "fr": "Pourquoi as-tu l'air si {sombre} ?"
+    },
+    {
+     "nl": "Zijn gedichten zijn altijd heel {somber}.",
+     "fr": "Ses poèmes sont toujours très {sombres}."
+    }
+   ]
   },
   {
    "nl": "tevreden",
-   "fr": "satisfait"
+   "fr": "satisfait",
+   "ph": [
+    {
+     "nl": "Ben je {tevreden} met je nieuwe werk?",
+     "fr": "Es-tu {satisfait} de ton nouveau travail ?"
+    },
+    {
+     "nl": "De leraar was niet {tevreden} over mijn taak.",
+     "fr": "Le professeur n'était pas {satisfait} de mon devoir."
+    },
+    {
+     "nl": "De klanten zijn erg {tevreden} over de service.",
+     "fr": "Les clients sont très {satisfaits} du service."
+    },
+    {
+     "nl": "Na een goede maaltijd ging hij {tevreden} op de bank liggen.",
+     "fr": "Après un bon repas, il s'est allongé, {satisfait}, sur le canapé."
+    }
+   ]
   },
   {
    "nl": "teleurgesteld",
-   "fr": "déçu"
+   "fr": "déçu",
+   "ph": [
+    {
+     "nl": "Ik ben {teleurgesteld} in mijn vriend.",
+     "fr": "Je suis {déçu} par mon ami."
+    },
+    {
+     "nl": "Was je {teleurgesteld} na de wedstrijd?",
+     "fr": "Étais-tu {déçu} après le match ?"
+    },
+    {
+     "nl": "Ze keek {teleurgesteld} naar haar cadeau.",
+     "fr": "Elle a regardé son cadeau d'un air {déçu}."
+    },
+    {
+     "nl": "Je zult niet {teleurgesteld} zijn, het restaurant is top.",
+     "fr": "Tu ne seras pas {déçu}, le restaurant est super."
+    }
+   ]
   },
   {
    "nl": "verbaasd",
-   "fr": "étonné"
+   "fr": "étonné",
+   "ph": [
+    {
+     "nl": "Ik was {verbaasd} over zijn antwoord.",
+     "fr": "J'étais {étonné} par sa réponse."
+    },
+    {
+     "nl": "Waarom kijk je zo {verbaasd} naar mij?",
+     "fr": "Pourquoi me regardes-tu d'un air si {étonné} ?"
+    },
+    {
+     "nl": "Iedereen was {verbaasd} dat hij op tijd kwam.",
+     "fr": "Tout le monde était {étonné} qu'il arrive à l'heure."
+    },
+    {
+     "nl": "Wees niet {verbaasd} als het morgen sneeuwt.",
+     "fr": "Ne sois pas {étonné} s'il neige demain."
+    }
+   ]
   },
   {
    "nl": "jaloers",
-   "fr": "jaloux"
+   "fr": "jaloux",
+   "ph": [
+    {
+     "nl": "Mijn broer is {jaloers} op mijn nieuwe fiets.",
+     "fr": "Mon frère est {jaloux} de mon nouveau vélo."
+    },
+    {
+     "nl": "Ze was nooit {jaloers} in haar relatie.",
+     "fr": "Elle n'a jamais été {jalouse} dans sa relation."
+    },
+    {
+     "nl": "Ben je {jaloers} omdat ze met een ander danst?",
+     "fr": "Es-tu {jaloux} parce qu'elle danse avec un autre ?"
+    },
+    {
+     "nl": "Wees niet {jaloers} op het succes van anderen.",
+     "fr": "Ne sois pas {jaloux} du succès des autres."
+    }
+   ]
   },
   {
    "nl": "eerlijk",
-   "fr": "honnête"
+   "fr": "honnête",
+   "ph": [
+    {
+     "nl": "Wees {eerlijk}: vind je het lekker?",
+     "fr": "Sois {honnête} : tu trouves ça bon ?"
+    },
+    {
+     "nl": "Mijn buurman is een heel {eerlijke} man.",
+     "fr": "Mon voisin est un homme très {honnête}."
+    },
+    {
+     "nl": "Was je {eerlijk} tegen je ouders over je punten?",
+     "fr": "As-tu été {honnête} avec tes parents à propos de tes notes ?"
+    },
+    {
+     "nl": "Ik zal {eerlijk} zijn: je tekening is niet mooi.",
+     "fr": "Je vais être {honnête} : ton dessin n'est pas beau."
+    }
+   ]
   },
   {
    "nl": "oneerlijk",
-   "fr": "malhonnête"
+   "fr": "malhonnête",
+   "ph": [
+    {
+     "nl": "Die verkoper was {oneerlijk} tegen ons.",
+     "fr": "Ce vendeur a été {malhonnête} avec nous."
+    },
+    {
+     "nl": "Ik werk niet met {oneerlijke} mensen.",
+     "fr": "Je ne travaille pas avec des gens {malhonnêtes}."
+    },
+    {
+     "nl": "Een {oneerlijke} garagist vraagt te veel geld.",
+     "fr": "Un garagiste {malhonnête} demande trop d'argent."
+    },
+    {
+     "nl": "Het is {oneerlijk} om te liegen over de prijs.",
+     "fr": "C'est {malhonnête} de mentir sur le prix."
+    }
+   ]
   },
   {
    "nl": "vriendelijk",
-   "fr": "aimable"
+   "fr": "aimable",
+   "ph": [
+    {
+     "nl": "De dokter was erg {vriendelijk} tegen mij.",
+     "fr": "Le médecin était très {aimable} avec moi."
+    },
+    {
+     "nl": "Bedankt voor je {vriendelijke} woorden.",
+     "fr": "Merci pour tes {aimables} paroles."
+    },
+    {
+     "nl": "Wilt u zo {vriendelijk} zijn om de deur te sluiten?",
+     "fr": "Seriez-vous assez {aimable} pour fermer la porte ?"
+    },
+    {
+     "nl": "Ze is altijd {vriendelijk}, zelfs als ze moe is.",
+     "fr": "Elle est toujours {aimable}, même quand elle est fatiguée."
+    }
+   ]
   },
   {
    "nl": "aardig",
-   "fr": "sympathique"
+   "fr": "sympathique",
+   "ph": [
+    {
+     "nl": "Je nieuwe collega is heel {aardig}.",
+     "fr": "Ton nouveau collègue est très {sympathique}."
+    },
+    {
+     "nl": "Vind je je nieuwe buurvrouw niet {aardig}?",
+     "fr": "Tu ne trouves pas ta nouvelle voisine {sympathique} ?"
+    },
+    {
+     "nl": "Wat een {aardige} jongen is dat!",
+     "fr": "Quel garçon {sympathique} !"
+    },
+    {
+     "nl": "Ze was niet erg {aardig} tegen haar nieuwe klasgenote.",
+     "fr": "Elle n'a pas été très {sympathique} avec sa nouvelle camarade de classe."
+    }
+   ]
   },
   {
    "nl": "lief",
-   "fr": "gentil, doux"
+   "fr": "gentil, doux",
+   "ph": [
+    {
+     "nl": "Wat {lief} dat je me komt helpen!",
+     "fr": "C'est {gentil} de venir m'aider !"
+    },
+    {
+     "nl": "Onze hond is heel {lief} met kinderen.",
+     "fr": "Notre chien est très {gentil} avec les enfants."
+    },
+    {
+     "nl": "Wees {lief} voor je kleine broertje!",
+     "fr": "Sois {gentil} avec ton petit frère !"
+    },
+    {
+     "nl": "Wat een {lieve} kaart heb je me gestuurd!",
+     "fr": "Quelle {gentille} carte tu m'as envoyée !"
+    }
+   ]
   },
   {
    "nl": "streng",
-   "fr": "sévère"
+   "fr": "sévère",
+   "ph": [
+    {
+     "nl": "Onze leraar wiskunde is heel {streng}.",
+     "fr": "Notre professeur de maths est très {sévère}."
+    },
+    {
+     "nl": "Waren je ouders vroeger {streng}?",
+     "fr": "Tes parents étaient-ils {sévères} autrefois ?"
+    },
+    {
+     "nl": "De regels in deze school zijn heel {streng}.",
+     "fr": "Les règles dans cette école sont très {sévères}."
+    },
+    {
+     "nl": "Je moet {strenger} zijn met je hond.",
+     "fr": "Tu dois être plus {sévère} avec ton chien."
+    }
+   ]
   },
   {
    "nl": "geduldig",
-   "fr": "patient"
+   "fr": "patient",
+   "ph": [
+    {
+     "nl": "Je moet {geduldig} zijn met beginners.",
+     "fr": "Tu dois être {patient} avec les débutants."
+    },
+    {
+     "nl": "Mijn oma was altijd heel {geduldig}.",
+     "fr": "Ma grand-mère était toujours très {patiente}."
+    },
+    {
+     "nl": "Blijf {geduldig}, de resultaten komen later.",
+     "fr": "Reste {patient}, les résultats viendront plus tard."
+    },
+    {
+     "nl": "Ben jij {geduldig} genoeg om te vissen?",
+     "fr": "Es-tu assez {patient} pour pêcher ?"
+    }
+   ]
   },
   {
    "nl": "ongeduldig",
-   "fr": "impatient"
+   "fr": "impatient",
+   "ph": [
+    {
+     "nl": "Wees niet {ongeduldig}, de bus komt zo.",
+     "fr": "Ne sois pas {impatient}, le bus arrive bientôt."
+    },
+    {
+     "nl": "De kinderen werden {ongeduldig} in de auto.",
+     "fr": "Les enfants devenaient {impatients} dans la voiture."
+    },
+    {
+     "nl": "Ik word {ongeduldig} als de trein te laat is.",
+     "fr": "Je deviens {impatient} quand le train est en retard."
+    },
+    {
+     "nl": "Hij keek {ongeduldig} op zijn horloge.",
+     "fr": "Il regardait sa montre d'un air {impatient}."
+    }
+   ]
   },
   {
    "nl": "lui",
-   "fr": "paresseux"
+   "fr": "paresseux",
+   "ph": [
+    {
+     "nl": "Op zondag ben ik graag {lui}.",
+     "fr": "Le dimanche, j'aime être {paresseux}."
+    },
+    {
+     "nl": "Hij is niet dom, maar wel {lui}.",
+     "fr": "Il n'est pas bête, mais {paresseux}."
+    },
+    {
+     "nl": "Ben je te {lui} om af te wassen?",
+     "fr": "Es-tu trop {paresseux} pour faire la vaisselle ?"
+    },
+    {
+     "nl": "Wees niet zo {lui} en help me even!",
+     "fr": "Ne sois pas si {paresseux} et aide-moi un peu !"
+    }
+   ]
   },
   {
    "nl": "ijverig",
-   "fr": "travailleur"
+   "fr": "travailleur",
+   "ph": [
+    {
+     "nl": "Ze is een heel {ijverige} studente.",
+     "fr": "C'est une étudiante très {travailleuse}."
+    },
+    {
+     "nl": "Was je {ijverig} toen je op school zat?",
+     "fr": "Étais-tu {travailleur} quand tu étais à l'école ?"
+    },
+    {
+     "nl": "Mijn buurman is heel {ijverig}: hij werkt elke dag tien uur.",
+     "fr": "Mon voisin est très {travailleur} : il travaille dix heures par jour."
+    },
+    {
+     "nl": "Als je {ijverig} blijft, slaag je zeker.",
+     "fr": "Si tu restes {travailleur}, tu réussiras certainement."
+    }
+   ]
   },
   {
    "nl": "verlegen",
-   "fr": "timide"
+   "fr": "timide",
+   "ph": [
+    {
+     "nl": "Mijn zoon is {verlegen} bij vreemden.",
+     "fr": "Mon fils est {timide} avec les inconnus."
+    },
+    {
+     "nl": "Ze was vroeger erg {verlegen}.",
+     "fr": "Avant, elle était très {timide}."
+    },
+    {
+     "nl": "Wees niet {verlegen}, kom gerust binnen.",
+     "fr": "Ne sois pas {timide}, entre donc."
+    },
+    {
+     "nl": "Toen hij haar zag, werd hij helemaal {verlegen}.",
+     "fr": "Quand il l'a vue, il est devenu tout {timide}."
+    }
+   ]
   },
   {
    "nl": "brutaal",
-   "fr": "effronté"
+   "fr": "effronté",
+   "ph": [
+    {
+     "nl": "Dat kind was {brutaal} tegen de lerares.",
+     "fr": "Cet enfant a été {effronté} avec l'institutrice."
+    },
+    {
+     "nl": "Wees niet zo {brutaal} tegen je moeder!",
+     "fr": "Ne sois pas si {effronté} avec ta mère !"
+    },
+    {
+     "nl": "Wat een {brutale} vraag!",
+     "fr": "Quelle question {effrontée} !"
+    },
+    {
+     "nl": "Mijn zoon wordt steeds {brutaler} tegen zijn leraar.",
+     "fr": "Mon fils devient de plus en plus {effronté} avec son professeur."
+    }
+   ]
   },
   {
    "nl": "grappig",
-   "fr": "drôle"
+   "fr": "drôle",
+   "ph": [
+    {
+     "nl": "Je broer is echt heel {grappig}.",
+     "fr": "Ton frère est vraiment très {drôle}."
+    },
+    {
+     "nl": "Vond je de film van gisteren {grappig}?",
+     "fr": "As-tu trouvé le film d'hier {drôle} ?"
+    },
+    {
+     "nl": "Hij vertelde een heel {grappig} verhaal.",
+     "fr": "Il a raconté une histoire très {drôle}."
+    },
+    {
+     "nl": "Dat is niet {grappig}, stop ermee!",
+     "fr": "Ce n'est pas {drôle}, arrête !"
+    }
+   ]
   },
   {
    "nl": "serieus",
-   "fr": "sérieux"
+   "fr": "sérieux",
+   "ph": [
+    {
+     "nl": "Waarom ben je altijd zo {serieus}?",
+     "fr": "Pourquoi es-tu toujours si {sérieux} ?"
+    },
+    {
+     "nl": "Het was een {serieus} gesprek met mijn baas.",
+     "fr": "C'était une conversation {sérieuse} avec mon patron."
+    },
+    {
+     "nl": "Is dat een grap of ben je {serieus}?",
+     "fr": "C'est une blague ou tu es {sérieux} ?"
+    },
+    {
+     "nl": "Een {serieuze} student mist geen lessen.",
+     "fr": "Un étudiant {sérieux} ne rate pas de cours."
+    }
+   ]
   },
   {
    "nl": "slim",
-   "fr": "intelligent"
+   "fr": "intelligent",
+   "ph": [
+    {
+     "nl": "Je kleine zus is heel {slim}.",
+     "fr": "Ta petite sœur est très {intelligente}."
+    },
+    {
+     "nl": "Dat was geen {slim} idee.",
+     "fr": "Ce n'était pas une idée {intelligente}."
+    },
+    {
+     "nl": "Dolfijnen zijn zo {slim} dat ze trucjes leren.",
+     "fr": "Les dauphins sont si {intelligents} qu'ils apprennent des tours."
+    },
+    {
+     "nl": "Ze is {slim} genoeg om dat zelf op te lossen.",
+     "fr": "Elle est assez {intelligente} pour résoudre ça seule."
+    }
+   ]
   },
   {
    "nl": "dom",
-   "fr": "bête"
+   "fr": "bête",
+   "ph": [
+    {
+     "nl": "Sorry, dat was een {domme} vraag.",
+     "fr": "Désolé, c'était une question {bête}."
+    },
+    {
+     "nl": "Hij is niet {dom}, alleen een beetje verlegen.",
+     "fr": "Il n'est pas {bête}, juste un peu timide."
+    },
+    {
+     "nl": "Ik voelde me zo {dom} toen ik mijn sleutels vergat.",
+     "fr": "Je me suis senti si {bête} quand j'ai oublié mes clés."
+    },
+    {
+     "nl": "Wees niet zo {dom}, dat is gevaarlijk!",
+     "fr": "Ne sois pas si {bête}, c'est dangereux !"
+    }
+   ]
   },
   {
    "nl": "sterk",
-   "fr": "fort"
+   "fr": "fort",
+   "ph": [
+    {
+     "nl": "Mijn vader is nog altijd heel {sterk}.",
+     "fr": "Mon père est toujours très {fort}."
+    },
+    {
+     "nl": "Je moet {sterk} blijven in moeilijke tijden.",
+     "fr": "Tu dois rester {fort} dans les moments difficiles."
+    },
+    {
+     "nl": "Deze koffie is veel te {sterk} voor mij.",
+     "fr": "Ce café est beaucoup trop {fort} pour moi."
+    },
+    {
+     "nl": "Hij is zo {sterk} dat hij de kast alleen kan dragen.",
+     "fr": "Il est si {fort} qu'il peut porter l'armoire seul."
+    }
+   ]
   },
   {
    "nl": "zwak",
-   "fr": "faible"
+   "fr": "faible",
+   "ph": [
+    {
+     "nl": "Na de griep voelde ik me {zwak}.",
+     "fr": "Après la grippe, je me sentais {faible}."
+    },
+    {
+     "nl": "Wiskunde is mijn {zwakke} punt.",
+     "fr": "Les maths, c'est mon point {faible}."
+    },
+    {
+     "nl": "Het wifi-signaal is hier heel {zwak}.",
+     "fr": "Le signal wifi est très {faible} ici."
+    },
+    {
+     "nl": "Na drie dagen zonder eten was de hond erg {zwak}.",
+     "fr": "Après trois jours sans manger, le chien était très {faible}."
+    }
+   ]
   },
   {
    "nl": "dapper",
-   "fr": "courageux"
+   "fr": "courageux",
+   "ph": [
+    {
+     "nl": "De brandweerman was heel {dapper}.",
+     "fr": "Le pompier a été très {courageux}."
+    },
+    {
+     "nl": "Ze was {dapper} genoeg om hulp te vragen.",
+     "fr": "Elle a été assez {courageuse} pour demander de l'aide."
+    },
+    {
+     "nl": "Wat ben je {dapper} geweest bij de dokter!",
+     "fr": "Comme tu as été {courageux} chez le médecin !"
+    },
+    {
+     "nl": "Alleen de {dapperste} ridder durfde het kasteel binnen te gaan.",
+     "fr": "Seul le chevalier le plus {courageux} a osé entrer dans le château."
+    }
+   ]
   },
   {
    "nl": "laf",
-   "fr": "lâche"
+   "fr": "lâche",
+   "ph": [
+    {
+     "nl": "Het is {laf} om weg te lopen.",
+     "fr": "C'est {lâche} de s'enfuir."
+    },
+    {
+     "nl": "Hij was te {laf} om de waarheid te zeggen.",
+     "fr": "Il était trop {lâche} pour dire la vérité."
+    },
+    {
+     "nl": "Iemand via sms dumpen vind ik heel {laf}.",
+     "fr": "Quitter quelqu'un par SMS, je trouve ça très {lâche}."
+    },
+    {
+     "nl": "Zeg niet dat ik {laf} ben, ik ben gewoon voorzichtig!",
+     "fr": "Ne dis pas que je suis {lâche}, je suis juste prudent !"
+    }
+   ]
   },
   {
    "nl": "gierig",
-   "fr": "avare"
+   "fr": "avare",
+   "ph": [
+    {
+     "nl": "Mijn oom is erg {gierig} met geld.",
+     "fr": "Mon oncle est très {avare} avec son argent."
+    },
+    {
+     "nl": "Wees niet zo {gierig} en betaal een drankje!",
+     "fr": "Ne sois pas si {avare} et paie un verre !"
+    },
+    {
+     "nl": "Hij is zo {gierig} dat hij nooit een cadeau koopt.",
+     "fr": "Il est si {avare} qu'il n'achète jamais de cadeau."
+    },
+    {
+     "nl": "De {gierige} baas wilde de lonen niet verhogen.",
+     "fr": "Le patron {avare} ne voulait pas augmenter les salaires."
+    }
+   ]
   },
   {
    "nl": "gul",
-   "fr": "généreux"
+   "fr": "généreux",
+   "ph": [
+    {
+     "nl": "Ze is altijd heel {gul} met cadeaus.",
+     "fr": "Elle est toujours très {généreuse} avec les cadeaux."
+    },
+    {
+     "nl": "Dat was een {gulle} fooi.",
+     "fr": "C'était un pourboire {généreux}."
+    },
+    {
+     "nl": "Dank je voor je {gulle} gift aan ons goede doel.",
+     "fr": "Merci pour ton don {généreux} à notre association."
+    },
+    {
+     "nl": "Wees niet zo {gul}, je hebt zelf ook geld nodig.",
+     "fr": "Ne sois pas si {généreux}, toi aussi tu as besoin d'argent."
+    }
+   ]
   },
   {
    "nl": "koppig",
-   "fr": "têtu"
+   "fr": "têtu",
+   "ph": [
+    {
+     "nl": "Mijn hond is soms erg {koppig}.",
+     "fr": "Mon chien est parfois très {têtu}."
+    },
+    {
+     "nl": "Waarom ben je altijd zo {koppig}?",
+     "fr": "Pourquoi es-tu toujours si {têtu} ?"
+    },
+    {
+     "nl": "Ze is zo {koppig} als een ezel.",
+     "fr": "Elle est {têtue} comme une mule."
+    },
+    {
+     "nl": "Wees niet zo {koppig} en luister naar mijn advies.",
+     "fr": "Ne sois pas si {têtu} et écoute mon conseil."
+    }
+   ]
   },
   {
    "nl": "nieuwsgierig",
-   "fr": "curieux"
+   "fr": "curieux",
+   "ph": [
+    {
+     "nl": "Ik ben {nieuwsgierig} naar je nieuwe huis.",
+     "fr": "Je suis {curieux} de voir ta nouvelle maison."
+    },
+    {
+     "nl": "Katten zijn heel {nieuwsgierige} dieren.",
+     "fr": "Les chats sont des animaux très {curieux}."
+    },
+    {
+     "nl": "Wees niet zo {nieuwsgierig}, dat is privé!",
+     "fr": "Ne sois pas si {curieux}, c'est privé !"
+    },
+    {
+     "nl": "De {nieuwsgierige} buurvrouw kijkt altijd door het raam.",
+     "fr": "La voisine {curieuse} regarde toujours par la fenêtre."
+    }
+   ]
   },
   {
    "nl": "zelfverzekerd",
-   "fr": "sûr de soi"
+   "fr": "sûr de soi",
+   "ph": [
+    {
+     "nl": "Ze ziet er heel {zelfverzekerd} uit.",
+     "fr": "Elle a l'air très {sûre d'elle}."
+    },
+    {
+     "nl": "Hij was niet {zelfverzekerd} tijdens het gesprek.",
+     "fr": "Il n'était pas {sûr de lui} pendant l'entretien."
+    },
+    {
+     "nl": "Ze stapte {zelfverzekerd} het podium op.",
+     "fr": "Elle est montée sur scène, {sûre d'elle}."
+    },
+    {
+     "nl": "Door de sport ben ik {zelfverzekerder} geworden.",
+     "fr": "Grâce au sport, je suis devenu plus {sûr de moi}."
+    }
+   ]
   },
   {
    "nl": "gevoelig",
-   "fr": "sensible"
+   "fr": "sensible",
+   "ph": [
+    {
+     "nl": "Mijn zus is erg {gevoelig} voor kritiek.",
+     "fr": "Ma sœur est très {sensible} à la critique."
+    },
+    {
+     "nl": "Is je huid {gevoelig} voor de zon?",
+     "fr": "Ta peau est-elle {sensible} au soleil ?"
+    },
+    {
+     "nl": "Hij huilt bij elke film, hij is heel {gevoelig}.",
+     "fr": "Il pleure à chaque film, il est très {sensible}."
+    },
+    {
+     "nl": "Wees voorzichtig, dat is een {gevoelig} onderwerp.",
+     "fr": "Fais attention, c'est un sujet {sensible}."
+    }
+   ]
   },
   {
    "nl": "onzeker",
-   "fr": "peu sûr"
+   "fr": "peu sûr",
+   "ph": [
+    {
+     "nl": "Ik ben nog {onzeker} over mijn keuze.",
+     "fr": "Je suis encore {peu sûr} de mon choix."
+    },
+    {
+     "nl": "Ze voelde zich {onzeker} op haar nieuwe werk.",
+     "fr": "Elle se sentait {peu sûre d'elle} à son nouveau travail."
+    },
+    {
+     "nl": "Na zijn val was hij {onzeker} op de fiets.",
+     "fr": "Après sa chute, il était {peu sûr de lui} à vélo."
+    },
+    {
+     "nl": "Ze antwoordde met een {onzekere} stem.",
+     "fr": "Elle a répondu d'une voix {peu sûre}."
+    }
+   ]
   },
   {
    "nl": "beleefd",
-   "fr": "poli"
+   "fr": "poli",
+   "ph": [
+    {
+     "nl": "Wees {beleefd} en zeg dank je.",
+     "fr": "Sois {poli} et dis merci."
+    },
+    {
+     "nl": "De kinderen waren heel {beleefd} tegen de gasten.",
+     "fr": "Les enfants étaient très {polis} avec les invités."
+    },
+    {
+     "nl": "Hij vroeg heel {beleefd} of hij binnen mocht komen.",
+     "fr": "Il a demandé de façon très {polie} s'il pouvait entrer."
+    },
+    {
+     "nl": "Zijn jouw kinderen altijd zo {beleefd}?",
+     "fr": "Tes enfants sont-ils toujours aussi {polis} ?"
+    }
+   ]
   },
   {
    "nl": "onbeleefd",
-   "fr": "impoli"
+   "fr": "impoli",
+   "ph": [
+    {
+     "nl": "Het is {onbeleefd} om met volle mond te praten.",
+     "fr": "C'est {impoli} de parler la bouche pleine."
+    },
+    {
+     "nl": "Was de kelner {onbeleefd} tegen jou?",
+     "fr": "Le serveur a-t-il été {impoli} avec toi ?"
+    },
+    {
+     "nl": "Wees niet {onbeleefd} en groet de buren.",
+     "fr": "Ne sois pas {impoli} et salue les voisins."
+    },
+    {
+     "nl": "Ik vond zijn opmerking echt {onbeleefd}.",
+     "fr": "J'ai trouvé sa remarque vraiment {impolie}."
+    }
+   ]
   },
   {
    "nl": "betrouwbaar",
-   "fr": "fiable"
+   "fr": "fiable",
+   "ph": [
+    {
+     "nl": "Hij is een heel {betrouwbare} vriend.",
+     "fr": "C'est un ami très {fiable}."
+    },
+    {
+     "nl": "Is je oude auto nog {betrouwbaar}?",
+     "fr": "Ta vieille voiture est-elle encore {fiable} ?"
+    },
+    {
+     "nl": "Deze website is niet {betrouwbaar}, kijk ergens anders.",
+     "fr": "Ce site web n'est pas {fiable}, regarde ailleurs."
+    },
+    {
+     "nl": "We zoeken een {betrouwbare} babysit voor zaterdag.",
+     "fr": "Nous cherchons une baby-sitter {fiable} pour samedi."
+    }
+   ]
   },
   {
    "nl": "egoïstisch",
-   "fr": "égoïste"
+   "fr": "égoïste",
+   "ph": [
+    {
+     "nl": "Dat is heel {egoïstisch} van je.",
+     "fr": "C'est très {égoïste} de ta part."
+    },
+    {
+     "nl": "Hij denkt alleen aan zichzelf, hij is {egoïstisch}.",
+     "fr": "Il ne pense qu'à lui, il est {égoïste}."
+    },
+    {
+     "nl": "Wees niet zo {egoïstisch} en deel je snoep!",
+     "fr": "Ne sois pas si {égoïste} et partage tes bonbons !"
+    },
+    {
+     "nl": "Vind je het {egoïstisch} om alleen op reis te gaan?",
+     "fr": "Trouves-tu ça {égoïste} de partir seul en voyage ?"
+    }
+   ]
   },
   {
    "nl": "behulpzaam",
-   "fr": "serviable"
+   "fr": "serviable",
+   "ph": [
+    {
+     "nl": "Onze buren zijn altijd heel {behulpzaam}.",
+     "fr": "Nos voisins sont toujours très {serviables}."
+    },
+    {
+     "nl": "Was het personeel van het hotel {behulpzaam}?",
+     "fr": "Le personnel de l'hôtel était-il {serviable} ?"
+    },
+    {
+     "nl": "Hij is altijd {behulpzaam} als ik iets moet verhuizen.",
+     "fr": "Il est toujours {serviable} quand je dois déménager quelque chose."
+    },
+    {
+     "nl": "Wees {behulpzaam} en draag de tas van je oma.",
+     "fr": "Sois {serviable} et porte le sac de ta grand-mère."
+    }
+   ]
   },
   {
    "nl": "enthousiast",
-   "fr": "enthousiaste"
+   "fr": "enthousiaste",
+   "ph": [
+    {
+     "nl": "De kinderen waren {enthousiast} over de uitstap.",
+     "fr": "Les enfants étaient {enthousiastes} à propos de la sortie."
+    },
+    {
+     "nl": "Hij klinkt niet erg {enthousiast}.",
+     "fr": "Il ne semble pas très {enthousiaste}."
+    },
+    {
+     "nl": "Ze reageerde heel {enthousiast} op het voorstel.",
+     "fr": "Elle a réagi de manière très {enthousiaste} à la proposition."
+    },
+    {
+     "nl": "Een {enthousiaste} leraar motiveert zijn leerlingen.",
+     "fr": "Un professeur {enthousiaste} motive ses élèves."
+    }
+   ]
   },
   {
    "nl": "eenzaam",
-   "fr": "seul, solitaire"
+   "fr": "seul, solitaire",
+   "ph": [
+    {
+     "nl": "Mijn opa voelt zich vaak {eenzaam}.",
+     "fr": "Mon grand-père se sent souvent {seul}."
+    },
+    {
+     "nl": "Hij leidt een {eenzaam} leven op het platteland.",
+     "fr": "Il mène une vie {solitaire} à la campagne."
+    },
+    {
+     "nl": "Op het einde van de straat staat een {eenzaam} huisje.",
+     "fr": "Au bout de la rue se trouve une petite maison {solitaire}."
+    },
+    {
+     "nl": "Sinds zijn kinderen het huis uit zijn, is hij vaak {eenzaam}.",
+     "fr": "Depuis que ses enfants ont quitté la maison, il est souvent {seul}."
+    }
+   ]
   },
   {
    "nl": "gelukkig",
-   "fr": "heureux"
+   "fr": "heureux",
+   "ph": [
+    {
+     "nl": "Ze zijn heel {gelukkig} samen.",
+     "fr": "Ils sont très {heureux} ensemble."
+    },
+    {
+     "nl": "Was je {gelukkig} toen je klein was?",
+     "fr": "Étais-tu {heureux} quand tu étais petit ?"
+    },
+    {
+     "nl": "Na de geboorte van haar dochter was ze nooit {gelukkiger}.",
+     "fr": "Après la naissance de sa fille, elle n'avait jamais été plus {heureuse}."
+    },
+    {
+     "nl": "Wat maakt jou echt {gelukkig} in het leven?",
+     "fr": "Qu'est-ce qui te rend vraiment {heureux} dans la vie ?"
+    }
+   ]
   },
   {
    "nl": "ongelukkig",
-   "fr": "malheureux"
+   "fr": "malheureux",
+   "ph": [
+    {
+     "nl": "Hij voelt zich {ongelukkig} in zijn werk.",
+     "fr": "Il se sent {malheureux} dans son travail."
+    },
+    {
+     "nl": "Ze had een {ongelukkige} jeugd.",
+     "fr": "Elle a eu une enfance {malheureuse}."
+    },
+    {
+     "nl": "Zonder zijn vrienden zou hij {ongelukkig} zijn.",
+     "fr": "Sans ses amis, il serait {malheureux}."
+    },
+    {
+     "nl": "Waarom blijf je in die relatie als je {ongelukkig} bent?",
+     "fr": "Pourquoi restes-tu dans cette relation si tu es {malheureux} ?"
+    }
+   ]
   },
   {
    "nl": "denken",
    "fr": "penser",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {denk} vaak aan mijn oma.",
+     "fr": "Je {pense} souvent à ma grand-mère."
+    },
+    {
+     "nl": "Wat {denk} je van mijn plan?",
+     "fr": "Que {penses}-tu de mon plan ?"
+    },
+    {
+     "nl": "Ik {dacht} dat je ziek was.",
+     "fr": "Je {pensais} que tu étais malade."
+    },
+    {
+     "nl": "{Denk} aan je jas, het is koud buiten!",
+     "fr": "{Pense} à ton manteau, il fait froid dehors !"
+    }
+   ]
   },
   {
    "nl": "willen",
    "fr": "vouloir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {wil} vanavond gewoon thuisblijven.",
+     "fr": "Ce soir, je {veux} juste rester à la maison."
+    },
+    {
+     "nl": "{Wil} je een kopje koffie?",
+     "fr": "{Veux}-tu une tasse de café ?"
+    },
+    {
+     "nl": "Als kind {wilde} ik piloot worden.",
+     "fr": "Enfant, je {voulais} devenir pilote."
+    },
+    {
+     "nl": "Ze {willen} volgend jaar een groter huis kopen.",
+     "fr": "Ils {veulent} acheter une plus grande maison l'année prochaine."
+    }
+   ]
   },
   {
    "nl": "mogen",
    "fr": "avoir le droit",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Mag} je in dit restaurant roken?",
+     "fr": "Est-ce qu'on {a le droit} de fumer dans ce restaurant ?"
+    },
+    {
+     "nl": "Vanaf achttien jaar {mag} je stemmen.",
+     "fr": "À partir de dix-huit ans, on {a le droit} de voter."
+    },
+    {
+     "nl": "Na het eten {mogen} de kinderen tv kijken.",
+     "fr": "Après le repas, les enfants {ont le droit} de regarder la télé."
+    },
+    {
+     "nl": "{Mocht} je vroeger laat thuiskomen van je ouders?",
+     "fr": "Est-ce que tu {avais le droit} de rentrer tard, autrefois ?"
+    }
+   ]
   },
   {
    "nl": "houden van",
    "fr": "aimer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn ouders {houden van} klassieke muziek.",
+     "fr": "Mes parents {aiment} la musique classique."
+    },
+    {
+     "nl": "Wie {houdt van} pittig eten?",
+     "fr": "Qui {aime} la nourriture épicée ?"
+    },
+    {
+     "nl": "Ik {hou van} jou, voor altijd.",
+     "fr": "Je t'{aime}, pour toujours."
+    },
+    {
+     "nl": "Mijn opa {hield van} lange wandelingen in het bos.",
+     "fr": "Mon grand-père {aimait} les longues promenades en forêt."
+    }
+   ]
   },
   {
    "nl": "haten",
    "fr": "haïr",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Hij {haat} niemand, hij is te lief.",
+     "fr": "Il ne {hait} personne, il est trop gentil."
+    },
+    {
+     "nl": "Ze {haatte} haar vorige baas.",
+     "fr": "Elle {haïssait} son ancien patron."
+    },
+    {
+     "nl": "Ik {haat} mensen die altijd te laat komen.",
+     "fr": "Je {hais} les gens qui arrivent toujours en retard."
+    },
+    {
+     "nl": "Je mag niemand {haten}, ook je vijanden niet.",
+     "fr": "Tu ne dois {haïr} personne, même pas tes ennemis."
+    }
+   ]
   },
   {
    "nl": "hopen",
    "fr": "espérer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {hoop} dat het morgen niet regent.",
+     "fr": "J'{espère} qu'il ne pleuvra pas demain."
+    },
+    {
+     "nl": "We {hoopten} op beter weer.",
+     "fr": "Nous {espérions} un meilleur temps."
+    },
+    {
+     "nl": "Laten we {hopen} dat alles goed gaat.",
+     "fr": "{Espérons} que tout se passe bien."
+    },
+    {
+     "nl": "Ze {hoopt} na de zomer een nieuwe job te vinden.",
+     "fr": "Elle {espère} trouver un nouveau travail après l'été."
+    }
+   ]
   },
   {
    "nl": "wensen",
    "fr": "souhaiter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {wens} je een fijne verjaardag.",
+     "fr": "Je te {souhaite} un joyeux anniversaire."
+    },
+    {
+     "nl": "Ze {wenste} hem veel succes met zijn examen.",
+     "fr": "Elle lui {a souhaité} bonne chance pour son examen."
+    },
+    {
+     "nl": "We {wensen} jullie een prettige reis.",
+     "fr": "Nous vous {souhaitons} un bon voyage."
+    },
+    {
+     "nl": "Je kunt je geen betere buren {wensen}.",
+     "fr": "On ne pourrait pas {souhaiter} de meilleurs voisins."
+    }
+   ]
   },
   {
    "nl": "dromen",
    "fr": "rêver",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {droom} van een huis op het platteland.",
+     "fr": "Je {rêve} d'une maison à la campagne."
+    },
+    {
+     "nl": "Wat heb je vannacht {gedroomd}?",
+     "fr": "De quoi as-tu {rêvé} cette nuit ?"
+    },
+    {
+     "nl": "Als kind {droomde} hij ervan astronaut te worden.",
+     "fr": "Enfant, il {rêvait} de devenir astronaute."
+    },
+    {
+     "nl": "Blijf {dromen}, alles is mogelijk!",
+     "fr": "Continue à {rêver}, tout est possible !"
+    }
+   ]
   },
   {
    "nl": "twijfelen",
    "fr": "douter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {twijfel} aan zijn verhaal.",
+     "fr": "Je {doute} de son histoire."
+    },
+    {
+     "nl": "Ze heeft nooit aan zichzelf {getwijfeld}.",
+     "fr": "Elle n'a jamais {douté} d'elle-même."
+    },
+    {
+     "nl": "{Twijfel} niet aan jezelf, je kunt het!",
+     "fr": "Ne {doute} pas de toi, tu peux le faire !"
+    },
+    {
+     "nl": "Niemand {twijfelt} aan haar eerlijkheid.",
+     "fr": "Personne ne {doute} de son honnêteté."
+    }
+   ]
   },
   {
    "nl": "durven",
    "fr": "oser",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Durf} jij van die rots te springen?",
+     "fr": "{Oses}-tu sauter de ce rocher ?"
+    },
+    {
+     "nl": "Hij {durfde} niet met haar te praten.",
+     "fr": "Il n'{osait} pas lui parler."
+    },
+    {
+     "nl": "Hoe {durf} je tegen me te liegen?",
+     "fr": "Comment {oses}-tu me mentir ?"
+    },
+    {
+     "nl": "Ik zou nooit uit een vliegtuig {durven} springen.",
+     "fr": "Je n'{oserais} jamais sauter d'un avion."
+    }
+   ]
   },
   {
    "nl": "aarzelen",
    "fr": "hésiter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Aarzel} niet om me te bellen.",
+     "fr": "N'{hésite} pas à m'appeler."
+    },
+    {
+     "nl": "Ze {aarzelde} even voor ze antwoordde.",
+     "fr": "Elle {a hésité} un moment avant de répondre."
+    },
+    {
+     "nl": "Zonder te {aarzelen} sprong hij in het water.",
+     "fr": "Sans {hésiter}, il a sauté dans l'eau."
+    },
+    {
+     "nl": "Waarom sta je nog te {aarzelen} aan de deur?",
+     "fr": "Pourquoi {hésites}-tu encore devant la porte ?"
+    }
+   ]
   },
   {
    "nl": "schamen",
    "fr": "avoir honte",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {schaam} me voor mijn gedrag.",
+     "fr": "J'{ai honte} de mon comportement."
+    },
+    {
+     "nl": "Je hoeft je niet te {schamen}.",
+     "fr": "Tu n'as pas à {avoir honte}."
+    },
+    {
+     "nl": "Hij {schaamde} zich voor zijn oude kleren.",
+     "fr": "Il {avait honte} de ses vieux vêtements."
+    },
+    {
+     "nl": "Ze begon zich te {schamen} toen iedereen lachte.",
+     "fr": "Elle a commencé à {avoir honte} quand tout le monde a ri."
+    }
+   ]
   },
   {
    "nl": "bewonderen",
    "fr": "admirer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {bewonder} mijn moeder om haar moed.",
+     "fr": "J'{admire} ma mère pour son courage."
+    },
+    {
+     "nl": "We hebben het uitzicht lang {bewonderd}.",
+     "fr": "Nous avons longtemps {admiré} la vue."
+    },
+    {
+     "nl": "Wie {bewonder} jij het meest?",
+     "fr": "Qui {admires}-tu le plus ?"
+    },
+    {
+     "nl": "Toeristen komen de kathedraal {bewonderen}.",
+     "fr": "Les touristes viennent {admirer} la cathédrale."
+    }
+   ]
   },
   {
    "nl": "genieten",
    "fr": "profiter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "{Geniet} maar van je welverdiende vakantie!",
+     "fr": "{Profite} bien de tes vacances bien méritées !"
+    },
+    {
+     "nl": "We hebben echt {genoten} van het mooie weer.",
+     "fr": "Nous avons vraiment {profité} du beau temps."
+    },
+    {
+     "nl": "Hij {geniet} elke ochtend van zijn koffie op het terras.",
+     "fr": "Chaque matin, il {profite} de son café sur la terrasse."
+    },
+    {
+     "nl": "Wil je niet even {genieten} van de zon?",
+     "fr": "Tu ne veux pas {profiter} un peu du soleil ?"
+    }
+   ]
   },
   {
    "nl": "ontspannen",
    "fr": "se détendre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Na het werk wil ik me {ontspannen}.",
+     "fr": "Après le travail, je veux me {détendre}."
+    },
+    {
+     "nl": "{Ontspan} je, alles komt goed.",
+     "fr": "{Détends}-toi, tout ira bien."
+    },
+    {
+     "nl": "Ik {ontspan} me door een boek te lezen.",
+     "fr": "Je me {détends} en lisant un livre."
+    },
+    {
+     "nl": "Heb je je goed kunnen {ontspannen} op vakantie?",
+     "fr": "As-tu pu bien te {détendre} en vacances ?"
+    }
+   ]
   },
   {
    "nl": "verrassen",
    "fr": "surprendre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Hij wil zijn vriendin {verrassen} met bloemen.",
+     "fr": "Il veut {surprendre} sa copine avec des fleurs."
+    },
+    {
+     "nl": "Zijn antwoord {verraste} iedereen in de klas.",
+     "fr": "Sa réponse {a surpris} tout le monde dans la classe."
+    },
+    {
+     "nl": "Laat je {verrassen} door het menu van de chef!",
+     "fr": "Laisse-toi {surprendre} par le menu du chef !"
+    },
+    {
+     "nl": "Na al die jaren kan niets mij nog {verrassen}.",
+     "fr": "Après toutes ces années, plus rien ne peut me {surprendre}."
+    }
+   ]
   },
   {
    "nl": "troosten",
    "fr": "consoler",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De moeder {troost} haar huilende kind.",
+     "fr": "La mère {console} son enfant qui pleure."
+    },
+    {
+     "nl": "Kun je je zus even {troosten}?",
+     "fr": "Peux-tu {consoler} ta sœur un moment ?"
+    },
+    {
+     "nl": "Niemand kon het huilende meisje {troosten}.",
+     "fr": "Personne ne pouvait {consoler} la petite fille qui pleurait."
+    },
+    {
+     "nl": "Hij {troostte} zijn vriend na de ruzie met zijn vriendin.",
+     "fr": "Il {a consolé} son ami après la dispute avec sa copine."
+    }
+   ]
   },
   {
    "nl": "waarderen",
    "fr": "apprécier",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {waardeer} je hulp echt.",
+     "fr": "J'{apprécie} vraiment ton aide."
+    },
+    {
+     "nl": "Hij voelt zich niet {gewaardeerd} op zijn werk.",
+     "fr": "Il ne se sent pas {apprécié} à son travail."
+    },
+    {
+     "nl": "Ik zou het {waarderen} als je op tijd komt.",
+     "fr": "J'{apprécierais} que tu arrives à l'heure."
+    },
+    {
+     "nl": "{Waardeert} je baas al je harde werk?",
+     "fr": "Est-ce que ton patron {apprécie} tout ton travail ?"
+    }
+   ]
   },
   {
    "nl": "vertrouwen",
    "fr": "faire confiance",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Kun je je nieuwe collega {vertrouwen}?",
+     "fr": "Peux-tu {faire confiance} à ton nouveau collègue ?"
+    },
+    {
+     "nl": "Ze heeft hem nooit {vertrouwd}.",
+     "fr": "Elle ne lui a jamais {fait confiance}."
+    },
+    {
+     "nl": "Ik {vertrouw} mijn dokter, hij weet wat hij doet.",
+     "fr": "Je {fais confiance} à mon médecin, il sait ce qu'il fait."
+    },
+    {
+     "nl": "Je moet leren om anderen te {vertrouwen}.",
+     "fr": "Tu dois apprendre à {faire confiance} aux autres."
+    }
+   ]
   },
   {
    "nl": "glimlachen",
    "fr": "sourire",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ze {glimlachte} naar de baby.",
+     "fr": "Elle {a souri} au bébé."
+    },
+    {
+     "nl": "Waarom {glimlach} je zo breed vandaag?",
+     "fr": "Pourquoi {souris}-tu autant aujourd'hui ?"
+    },
+    {
+     "nl": "De verkoopster {glimlacht} altijd naar haar klanten.",
+     "fr": "La vendeuse {sourit} toujours à ses clients."
+    },
+    {
+     "nl": "Na het goede nieuws bleef ze de hele dag {glimlachen}.",
+     "fr": "Après la bonne nouvelle, elle n'a pas arrêté de {sourire} de la journée."
+    }
+   ]
   }
  ]
 }

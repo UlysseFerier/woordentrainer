@@ -5,423 +5,1023 @@
  "mots": [
   {
    "nl": "de kleren",
-   "fr": "les vêtements"
+   "fr": "les vêtements",
+   "ph": [
+    {"nl": "Ik leg {de kleren} op het bed.", "fr": "Je pose {les vêtements} sur le lit."},
+    {"nl": "Zijn {de kleren} al droog?", "fr": "{Les vêtements} sont-ils déjà secs ?"},
+    {"nl": "In mijn koffer zitten {kleren} voor een hele week.", "fr": "Dans ma valise, il y a {des vêtements} pour toute une semaine."},
+    {"nl": "Waarom liggen {je kleren} overal op de grond?", "fr": "Pourquoi {tes vêtements} traînent-ils partout par terre ?"}
+   ]
   },
   {
    "nl": "het hemd",
-   "fr": "la chemise"
+   "fr": "la chemise",
+   "ph": [
+    {"nl": "Ik strijk {het hemd} voor morgen.", "fr": "Je repasse {la chemise} pour demain."},
+    {"nl": "Is {het hemd} te klein?", "fr": "{La chemise} est-elle trop petite ?"},
+    {"nl": "Draag je {een hemd} met een das naar het huwelijk?", "fr": "Tu portes {une chemise} avec une cravate au mariage ?"},
+    {"nl": "Hij knoopte {zijn hemd} niet helemaal dicht.", "fr": "Il n'a pas boutonné {sa chemise} complètement."}
+   ]
   },
   {
    "nl": "de broek",
-   "fr": "le pantalon"
+   "fr": "le pantalon",
+   "ph": [
+    {"nl": "{De broek} is te lang.", "fr": "{Le pantalon} est trop long."},
+    {"nl": "Gisteren kocht ik {een broek} in de stad.", "fr": "Hier, j'ai acheté {un pantalon} en ville."},
+    {"nl": "Mijn benen zijn koud, want {de broek} is te dun.", "fr": "J'ai froid aux jambes, car {le pantalon} est trop fin."},
+    {"nl": "Kun je {mijn broek} inkorten? De pijpen zijn te lang.", "fr": "Peux-tu raccourcir {mon pantalon} ? Les jambes sont trop longues."}
+   ]
   },
   {
    "nl": "de jas",
-   "fr": "le manteau"
+   "fr": "le manteau",
+   "ph": [
+    {"nl": "Neem {een jas} mee, het is koud.", "fr": "Prends {un manteau}, il fait froid."},
+    {"nl": "Waar hangt {de jas} van papa?", "fr": "Où est accroché {le manteau} de papa ?"},
+    {"nl": "Hang {je jas} maar aan de kapstok.", "fr": "Accroche donc {ton manteau} au portemanteau."},
+    {"nl": "Hij ging naar buiten zonder {jas} en kreeg het koud.", "fr": "Il est sorti sans {manteau} et a eu froid."}
+   ]
   },
   {
    "nl": "de trui",
-   "fr": "le pull"
+   "fr": "le pull",
+   "ph": [
+    {"nl": "In de winter draag ik vaak {een trui}.", "fr": "En hiver, je porte souvent {un pull}."},
+    {"nl": "{De trui} is niet van wol.", "fr": "{Le pull} n'est pas en laine."},
+    {"nl": "Het is fris binnen, trek {een trui} aan.", "fr": "Il fait frais à l'intérieur, mets {un pull}."},
+    {"nl": "{De trui} is gekrompen in de wasmachine.", "fr": "{Le pull} a rétréci dans la machine à laver."}
+   ]
   },
   {
    "nl": "de rok",
-   "fr": "la jupe"
+   "fr": "la jupe",
+   "ph": [
+    {"nl": "Zij draagt vandaag {een rok}.", "fr": "Elle porte {une jupe} aujourd'hui."},
+    {"nl": "Is {de rok} niet te kort?", "fr": "{La jupe} n'est-elle pas trop courte ?"},
+    {"nl": "Draag je bij die blouse {een rok} of een broek?", "fr": "Avec ce chemisier, tu portes {une jupe} ou un pantalon ?"},
+    {"nl": "In de wind waaide {haar rok} omhoog.", "fr": "Dans le vent, {sa jupe} s'est soulevée."}
+   ]
   },
   {
    "nl": "de jurk",
-   "fr": "la robe"
+   "fr": "la robe",
+   "ph": [
+    {"nl": "Ze heeft {een jurk} gekocht voor het feest.", "fr": "Elle a acheté {une robe} pour la fête."},
+    {"nl": "Vind je {de jurk} mooi?", "fr": "Tu trouves {la robe} jolie ?"},
+    {"nl": "De bruid droeg {een jurk} van witte zijde.", "fr": "La mariée portait {une robe} de soie blanche."},
+    {"nl": "Mijn dochtertje wil alleen nog {jurken} dragen.", "fr": "Ma petite fille ne veut plus porter que {des robes}."}
+   ]
   },
   {
    "nl": "het T-shirt",
-   "fr": "le t-shirt"
+   "fr": "le t-shirt",
+   "ph": [
+    {"nl": "In de zomer draag ik {een T-shirt}.", "fr": "En été, je porte {un t-shirt}."},
+    {"nl": "{Het T-shirt} was te klein.", "fr": "{Le t-shirt} était trop petit."},
+    {"nl": "Na het sporten is {mijn T-shirt} helemaal nat.", "fr": "Après le sport, {mon t-shirt} est tout mouillé."},
+    {"nl": "Er staat een grappige tekst op {zijn T-shirt}.", "fr": "Il y a un texte drôle sur {son t-shirt}."}
+   ]
   },
   {
    "nl": "de sok",
-   "fr": "la chaussette"
+   "fr": "la chaussette",
+   "ph": [
+    {"nl": "Er zit een gat in {de sok}.", "fr": "Il y a un trou dans {la chaussette}."},
+    {"nl": "Heb je {de sokken} gewassen?", "fr": "As-tu lavé {les chaussettes} ?"},
+    {"nl": "Trek {je sokken} aan voor je schoenen.", "fr": "Mets {tes chaussettes} avant tes chaussures."},
+    {"nl": "Na de was vind ik altijd maar één {sok} terug.", "fr": "Après la lessive, je ne retrouve toujours qu'une seule {chaussette}."}
+   ]
   },
   {
    "nl": "de schoen",
-   "fr": "la chaussure"
+   "fr": "la chaussure",
+   "ph": [
+    {"nl": "{De schoenen} zijn te klein.", "fr": "{Les chaussures} sont trop petites."},
+    {"nl": "Ik heb {een schoen} verloren in het park.", "fr": "J'ai perdu {une chaussure} dans le parc."},
+    {"nl": "Veeg {je schoenen} af voor je binnenkomt.", "fr": "Essuie {tes chaussures} avant d'entrer."},
+    {"nl": "Hij poetst elke zondag {zijn schoenen}.", "fr": "Il cire {ses chaussures} chaque dimanche."}
+   ]
   },
   {
    "nl": "de laars",
-   "fr": "la botte"
+   "fr": "la botte",
+   "ph": [
+    {"nl": "Als het regent, draag ik {laarzen}.", "fr": "Quand il pleut, je porte {des bottes}."},
+    {"nl": "{De laarzen} staan bij de deur.", "fr": "{Les bottes} sont près de la porte."},
+    {"nl": "Trek {je laarzen} aan, de wei is modderig.", "fr": "Mets {tes bottes}, le pré est boueux."},
+    {"nl": "{Deze laarzen} zijn waterdicht en komen tot de knie.", "fr": "{Ces bottes} sont imperméables et montent jusqu'au genou."}
+   ]
   },
   {
    "nl": "de hoed",
-   "fr": "le chapeau"
+   "fr": "le chapeau",
+   "ph": [
+    {"nl": "Opa draagt altijd {een hoed}.", "fr": "Grand-père porte toujours {un chapeau}."},
+    {"nl": "Is {de hoed} niet te groot?", "fr": "{Le chapeau} n'est-il pas trop grand ?"},
+    {"nl": "Tegen de zon zet hij {een hoed} op.", "fr": "Contre le soleil, il met {un chapeau}."},
+    {"nl": "De wind blies {zijn hoed} van zijn hoofd.", "fr": "Le vent a fait s'envoler {son chapeau}."}
+   ]
   },
   {
    "nl": "de muts",
-   "fr": "le bonnet"
+   "fr": "le bonnet",
+   "ph": [
+    {"nl": "Zet {een muts} op, het vriest.", "fr": "Mets {un bonnet}, il gèle."},
+    {"nl": "Ik heb {de muts} zelf gebreid.", "fr": "J'ai tricoté {le bonnet} moi-même."},
+    {"nl": "Hij trekt {zijn muts} over zijn oren.", "fr": "Il tire {son bonnet} sur ses oreilles."},
+    {"nl": "Vergeet {je muts} niet, het sneeuwt!", "fr": "N'oublie pas {ton bonnet}, il neige !"}
+   ]
   },
   {
    "nl": "de sjaal",
-   "fr": "l'écharpe"
+   "fr": "l'écharpe",
+   "ph": [
+    {"nl": "Ze draagt {een sjaal} van wol.", "fr": "Elle porte {une écharpe} en laine."},
+    {"nl": "Waar heb je {de sjaal} gekocht?", "fr": "Où as-tu acheté {l'écharpe} ?"},
+    {"nl": "Zonder {sjaal} krijg ik een koude nek.", "fr": "Sans {écharpe}, j'ai froid au cou."},
+    {"nl": "Ze wikkelt {de sjaal} twee keer rond haar nek.", "fr": "Elle enroule {l'écharpe} deux fois autour de son cou."}
+   ]
   },
   {
    "nl": "de handschoen",
-   "fr": "le gant"
+   "fr": "le gant",
+   "ph": [
+    {"nl": "Ik ben {een handschoen} kwijt.", "fr": "J'ai perdu {un gant}."},
+    {"nl": "Zijn {de handschoenen} van leer?", "fr": "{Les gants} sont-ils en cuir ?"},
+    {"nl": "Trek {je handschoenen} aan, je vingers zijn koud.", "fr": "Mets {tes gants}, tu as les doigts froids."},
+    {"nl": "Waarom draag je maar één {handschoen}?", "fr": "Pourquoi tu ne portes qu'un seul {gant} ?"}
+   ]
   },
   {
    "nl": "de riem",
-   "fr": "la ceinture"
+   "fr": "la ceinture",
+   "ph": [
+    {"nl": "Zonder {riem} is de broek te groot.", "fr": "Sans {ceinture}, le pantalon est trop grand."},
+    {"nl": "Hij heeft {een riem} van leer gekocht.", "fr": "Il a acheté {une ceinture} en cuir."},
+    {"nl": "Mijn broek zakt af, ik heb {een riem} nodig.", "fr": "Mon pantalon tombe, j'ai besoin d'{une ceinture}."},
+    {"nl": "Doe {je riem} een gaatje strakker.", "fr": "Serre {ta ceinture} d'un cran."}
+   ]
   },
   {
    "nl": "de knoop",
-   "fr": "le bouton"
+   "fr": "le bouton",
+   "ph": [
+    {"nl": "Er ontbreekt {een knoop} aan mijn hemd.", "fr": "Il manque {un bouton} à ma chemise."},
+    {"nl": "Kun je {de knoop} weer vastnaaien?", "fr": "Peux-tu recoudre {le bouton} ?"},
+    {"nl": "Er is {een knoop} van mijn jas gevallen.", "fr": "{Un bouton} est tombé de mon manteau."},
+    {"nl": "Hoeveel {knopen} heeft deze jas?", "fr": "Combien de {boutons} a ce manteau ?"}
+   ]
   },
   {
    "nl": "de zak",
-   "fr": "la poche"
+   "fr": "la poche",
+   "ph": [
+    {"nl": "Deze broek heeft {vier zakken}.", "fr": "Ce pantalon a {quatre poches}."},
+    {"nl": "Wat zit er in {je zak}?", "fr": "Qu'est-ce qu'il y a dans {ta poche} ?"},
+    {"nl": "Hij stak zijn handen in {zijn zakken}.", "fr": "Il a mis les mains dans {ses poches}."},
+    {"nl": "Haal alles uit {je zakken} voor de was!", "fr": "Sors tout de {tes poches} avant la lessive !"}
+   ]
   },
   {
    "nl": "de tas",
-   "fr": "le sac"
+   "fr": "le sac",
+   "ph": [
+    {"nl": "Ik zet {de tas} op de stoel.", "fr": "Je pose {le sac} sur la chaise."},
+    {"nl": "Heb je {een tas} bij je?", "fr": "As-tu {un sac} sur toi ?"},
+    {"nl": "Ze draagt {haar tas} over haar schouder.", "fr": "Elle porte {son sac} sur l'épaule."},
+    {"nl": "Doe {de tas} dicht, anders valt alles eruit.", "fr": "Ferme {le sac}, sinon tout va tomber."}
+   ]
   },
   {
    "nl": "de bril",
-   "fr": "les lunettes"
+   "fr": "les lunettes",
+   "ph": [
+    {"nl": "Ik kan niet lezen zonder {bril}.", "fr": "Je ne peux pas lire sans {lunettes}."},
+    {"nl": "Waar heb ik {mijn bril} gelegd?", "fr": "Où ai-je mis {mes lunettes} ?"},
+    {"nl": "Hij zet {zijn bril} op om de krant te lezen.", "fr": "Il met {ses lunettes} pour lire le journal."},
+    {"nl": "{Je bril} is vuil, maak de glazen even schoon.", "fr": "{Tes lunettes} sont sales, nettoie un peu les verres."}
+   ]
   },
   {
    "nl": "het horloge",
-   "fr": "la montre"
+   "fr": "la montre",
+   "ph": [
+    {"nl": "Hij kreeg {een horloge} voor zijn verjaardag.", "fr": "Il a reçu {une montre} pour son anniversaire."},
+    {"nl": "{Het horloge} loopt niet meer.", "fr": "{La montre} ne marche plus."},
+    {"nl": "Hoe laat is het? Kijk eens op {je horloge}.", "fr": "Quelle heure est-il ? Regarde {ta montre}."},
+    {"nl": "{Mijn horloge} loopt vijf minuten voor.", "fr": "{Ma montre} avance de cinq minutes."}
+   ]
   },
   {
    "nl": "de ring",
-   "fr": "la bague"
+   "fr": "la bague",
+   "ph": [
+    {"nl": "Ze draagt {een ring} van goud.", "fr": "Elle porte {une bague} en or."},
+    {"nl": "Hij heeft {de ring} in de etalage gezien.", "fr": "Il a vu {la bague} dans la vitrine."},
+    {"nl": "Hij schuift {een ring} om haar vinger.", "fr": "Il lui passe {une bague} au doigt."},
+    {"nl": "{De ring} past niet meer om mijn vinger.", "fr": "{La bague} ne rentre plus à mon doigt."}
+   ]
   },
   {
    "nl": "de kleur",
-   "fr": "la couleur"
+   "fr": "la couleur",
+   "ph": [
+    {"nl": "Welke {kleur} vind je het mooist?", "fr": "Quelle {couleur} trouves-tu la plus belle ?"},
+    {"nl": "{De kleur} van de jurk is prachtig.", "fr": "{La couleur} de la robe est magnifique."},
+    {"nl": "Deze trui bestaat in drie {kleuren}.", "fr": "Ce pull existe en trois {couleurs}."},
+    {"nl": "Mijn T-shirt heeft {zijn kleur} verloren in de was.", "fr": "Mon t-shirt a perdu {sa couleur} au lavage."}
+   ]
   },
   {
    "nl": "rood",
-   "fr": "rouge"
+   "fr": "rouge",
+   "ph": [
+    {"nl": "Ze draagt een {rode} jurk.", "fr": "Elle porte une robe {rouge}."},
+    {"nl": "Mijn tas is niet {rood}.", "fr": "Mon sac n'est pas {rouge}."},
+    {"nl": "Bij {rood} licht moet je stoppen.", "fr": "Au feu {rouge}, il faut s'arrêter."},
+    {"nl": "Hij werd {rood} van schaamte.", "fr": "Il est devenu {rouge} de honte."}
+   ]
   },
   {
    "nl": "blauw",
-   "fr": "bleu"
+   "fr": "bleu",
+   "ph": [
+    {"nl": "Ik heb een {blauwe} broek gekocht.", "fr": "J'ai acheté un pantalon {bleu}."},
+    {"nl": "Is de lucht vandaag {blauw}?", "fr": "Le ciel est-il {bleu} aujourd'hui ?"},
+    {"nl": "Een spijkerbroek is meestal {blauw}.", "fr": "Un jean est généralement {bleu}."},
+    {"nl": "Mijn handen zijn {blauw} van de kou.", "fr": "Mes mains sont {bleues} de froid."}
+   ]
   },
   {
    "nl": "geel",
-   "fr": "jaune"
+   "fr": "jaune",
+   "ph": [
+    {"nl": "De bananen zijn {geel}.", "fr": "Les bananes sont {jaunes}."},
+    {"nl": "Hij draagt een {gele} regenjas.", "fr": "Il porte un imperméable {jaune}."},
+    {"nl": "Een citroen is {geel}.", "fr": "Un citron est {jaune}."},
+    {"nl": "Zijn de taxi's in New York echt {geel}?", "fr": "Les taxis de New York sont-ils vraiment {jaunes} ?"}
+   ]
   },
   {
    "nl": "groen",
-   "fr": "vert"
+   "fr": "vert",
+   "ph": [
+    {"nl": "Het gras is mooi {groen}.", "fr": "L'herbe est bien {verte}."},
+    {"nl": "Wil je de {groene} trui of de grijze?", "fr": "Tu veux le pull {vert} ou le gris ?"},
+    {"nl": "Bij {groen} licht mag je oversteken.", "fr": "Au feu {vert}, tu peux traverser."},
+    {"nl": "De bananen zijn nog {groen}, ze zijn niet rijp.", "fr": "Les bananes sont encore {vertes}, elles ne sont pas mûres."}
+   ]
   },
   {
    "nl": "zwart",
-   "fr": "noir"
+   "fr": "noir",
+   "ph": [
+    {"nl": "Hij draagt altijd {zwarte} kleren.", "fr": "Il porte toujours des vêtements {noirs}."},
+    {"nl": "Mijn kat is helemaal {zwart}.", "fr": "Mon chat est tout {noir}."},
+    {"nl": "Hij drinkt zijn koffie {zwart}, zonder melk.", "fr": "Il boit son café {noir}, sans lait."},
+    {"nl": "Na de brand was de muur helemaal {zwart}.", "fr": "Après l'incendie, le mur était tout {noir}."}
+   ]
   },
   {
    "nl": "wit",
-   "fr": "blanc"
+   "fr": "blanc",
+   "ph": [
+    {"nl": "Een {wit} hemd wordt snel vuil.", "fr": "Une chemise {blanche} se salit vite."},
+    {"nl": "Zijn de muren {wit} of grijs?", "fr": "Les murs sont-ils {blancs} ou gris ?"},
+    {"nl": "Na de sneeuwval is alles {wit}.", "fr": "Après la chute de neige, tout est {blanc}."},
+    {"nl": "Wil je {witte} of rode wijn?", "fr": "Tu veux du vin {blanc} ou du rouge ?"}
+   ]
   },
   {
    "nl": "grijs",
-   "fr": "gris"
+   "fr": "gris",
+   "ph": [
+    {"nl": "Vandaag is de lucht {grijs}.", "fr": "Aujourd'hui, le ciel est {gris}."},
+    {"nl": "Ik zoek een {grijze} jas.", "fr": "Je cherche un manteau {gris}."},
+    {"nl": "Opa heeft al {grijs} haar.", "fr": "Grand-père a déjà les cheveux {gris}."},
+    {"nl": "Een olifant is {grijs}.", "fr": "Un éléphant est {gris}."}
+   ]
   },
   {
    "nl": "bruin",
-   "fr": "brun"
+   "fr": "brun",
+   "ph": [
+    {"nl": "Hij heeft {bruine} schoenen.", "fr": "Il a des chaussures {brunes}."},
+    {"nl": "Was de hond {bruin} of zwart?", "fr": "Le chien était-il {brun} ou noir ?"},
+    {"nl": "Chocolade is meestal {bruin}.", "fr": "Le chocolat est généralement {brun}."},
+    {"nl": "Hij heeft {bruine} ogen, geen blauwe.", "fr": "Il a les yeux {bruns}, pas bleus."}
+   ]
   },
   {
    "nl": "oranje",
-   "fr": "orange"
+   "fr": "orange",
+   "ph": [
+    {"nl": "Ze draagt een {oranje} sjaal.", "fr": "Elle porte une écharpe {orange}."},
+    {"nl": "In de herfst worden de bladeren {oranje}.", "fr": "En automne, les feuilles deviennent {orange}."},
+    {"nl": "Wortels zijn {oranje}.", "fr": "Les carottes sont {orange}."},
+    {"nl": "Als je rood en geel mengt, krijg je {oranje}.", "fr": "Si tu mélanges le rouge et le jaune, tu obtiens de l'{orange}."}
+   ]
   },
   {
    "nl": "roze",
-   "fr": "rose"
+   "fr": "rose",
+   "ph": [
+    {"nl": "Mijn zus wil een {roze} jurk.", "fr": "Ma sœur veut une robe {rose}."},
+    {"nl": "Is dit T-shirt {roze} of rood?", "fr": "Ce t-shirt est-il {rose} ou rouge ?"},
+    {"nl": "Flamingo's zijn {roze}.", "fr": "Les flamants sont {roses}."},
+    {"nl": "Meng rood met wit en je krijgt {roze}.", "fr": "Mélange du rouge avec du blanc et tu obtiens du {rose}."}
+   ]
   },
   {
    "nl": "paars",
-   "fr": "violet"
+   "fr": "violet",
+   "ph": [
+    {"nl": "Ze heeft een {paarse} rok gekocht.", "fr": "Elle a acheté une jupe {violette}."},
+    {"nl": "Mijn lievelingskleur is {paars}.", "fr": "Ma couleur préférée, c'est le {violet}."},
+    {"nl": "Rood en blauw samen geven {paars}.", "fr": "Le rouge et le bleu ensemble donnent du {violet}."},
+    {"nl": "Een aubergine is {paars}.", "fr": "Une aubergine est {violette}."}
+   ]
   },
   {
    "nl": "de maat",
-   "fr": "la taille"
+   "fr": "la taille",
+   "ph": [
+    {"nl": "Welke {maat} heeft u?", "fr": "Quelle {taille} faites-vous ?"},
+    {"nl": "{De maat} van dit hemd is te klein.", "fr": "{La taille} de cette chemise est trop petite."},
+    {"nl": "Heeft u deze trui ook in {maat} M?", "fr": "Avez-vous ce pull aussi en {taille} M ?"},
+    {"nl": "Kijk op het etiket welke {maat} het is.", "fr": "Regarde sur l'étiquette quelle {taille} c'est."}
+   ]
   },
   {
    "nl": "de stof",
-   "fr": "le tissu"
+   "fr": "le tissu",
+   "ph": [
+    {"nl": "{De stof} van deze jurk is heel zacht.", "fr": "{Le tissu} de cette robe est très doux."},
+    {"nl": "Ze koopt {stof} om een rok te naaien.", "fr": "Elle achète {du tissu} pour coudre une jupe."},
+    {"nl": "Van welke {stof} is deze jurk gemaakt?", "fr": "En quel {tissu} cette robe est-elle faite ?"},
+    {"nl": "Met {deze stof} maakt oma nieuwe gordijnen.", "fr": "Avec {ce tissu}, grand-mère fait de nouveaux rideaux."}
+   ]
   },
   {
    "nl": "de mode",
-   "fr": "la mode"
+   "fr": "la mode",
+   "ph": [
+    {"nl": "Zij interesseert zich niet voor {mode}.", "fr": "Elle ne s'intéresse pas à {la mode}."},
+    {"nl": "Lange rokken zijn weer in {de mode}.", "fr": "Les jupes longues sont de nouveau à {la mode}."},
+    {"nl": "Ze leest elke maand een tijdschrift over {mode}.", "fr": "Elle lit chaque mois un magazine de {mode}."},
+    {"nl": "Wijde broeken waren lang uit {de mode}.", "fr": "Les pantalons larges n'étaient plus à {la mode} depuis longtemps."}
+   ]
   },
   {
    "nl": "schoon",
-   "fr": "propre"
+   "fr": "propre",
+   "ph": [
+    {"nl": "Mijn hemd is weer {schoon}.", "fr": "Ma chemise est de nouveau {propre}."},
+    {"nl": "Heb je {schone} sokken voor mij?", "fr": "As-tu des chaussettes {propres} pour moi ?"},
+    {"nl": "Is dit glas {schoon}?", "fr": "Ce verre est-il {propre} ?"},
+    {"nl": "Na de was ruiken de kleren lekker {schoon}.", "fr": "Après la lessive, les vêtements sentent bon le {propre}."}
+   ]
   },
   {
    "nl": "vuil",
-   "fr": "sale"
+   "fr": "sale",
+   "ph": [
+    {"nl": "Je broek is helemaal {vuil}.", "fr": "Ton pantalon est tout {sale}."},
+    {"nl": "Leg de {vuile} kleren in de mand.", "fr": "Mets les vêtements {sales} dans le panier."},
+    {"nl": "Doe die {vuile} schoenen uit in de gang.", "fr": "Retire ces chaussures {sales} dans le couloir."},
+    {"nl": "Het water in de rivier is erg {vuil}.", "fr": "L'eau de la rivière est très {sale}."}
+   ]
   },
   {
    "nl": "nieuw",
-   "fr": "neuf"
+   "fr": "neuf",
+   "ph": [
+    {"nl": "Ik heb {nieuwe} schoenen gekocht.", "fr": "J'ai acheté des chaussures {neuves}."},
+    {"nl": "Is die jas {nieuw}?", "fr": "Ce manteau est-il {neuf} ?"},
+    {"nl": "Deze jas is niet {nieuw}, ik kocht hem tweedehands.", "fr": "Ce manteau n'est pas {neuf}, je l'ai acheté d'occasion."},
+    {"nl": "De schoenen zijn nog {nieuw}, ze zitten nog in de doos.", "fr": "Les chaussures sont encore {neuves}, elles sont encore dans la boîte."}
+   ]
   },
   {
    "nl": "de blouse",
-   "fr": "le chemisier"
+   "fr": "le chemisier",
+   "ph": [
+    {"nl": "Ze draagt {een blouse} van zijde.", "fr": "Elle porte {un chemisier} en soie."},
+    {"nl": "{De blouse} moet nog gestreken worden.", "fr": "{Le chemisier} doit encore être repassé."},
+    {"nl": "Op kantoor draagt ze {een blouse} met een rok.", "fr": "Au bureau, elle porte {un chemisier} avec une jupe."},
+    {"nl": "Ze heeft koffie gemorst op {haar blouse}.", "fr": "Elle a renversé du café sur {son chemisier}."}
+   ]
   },
   {
    "nl": "het vest",
-   "fr": "le gilet"
+   "fr": "le gilet",
+   "ph": [
+    {"nl": "Neem {een vest} mee voor vanavond.", "fr": "Prends {un gilet} pour ce soir."},
+    {"nl": "Oma heeft {het vest} zelf gebreid.", "fr": "Grand-mère a tricoté {le gilet} elle-même."},
+    {"nl": "Doe {je vest} open als je het warm hebt.", "fr": "Ouvre {ton gilet} si tu as chaud."},
+    {"nl": "{Het vest} heeft vijf knopen.", "fr": "{Le gilet} a cinq boutons."}
+   ]
   },
   {
    "nl": "het pak",
-   "fr": "le costume"
+   "fr": "le costume",
+   "ph": [
+    {"nl": "Hij draagt {een pak} op zijn werk.", "fr": "Il porte {un costume} au travail."},
+    {"nl": "Heb je {het pak} voor de bruiloft al?", "fr": "As-tu déjà {le costume} pour le mariage ?"},
+    {"nl": "Voor het sollicitatiegesprek trekt hij {een pak} aan.", "fr": "Pour l'entretien d'embauche, il met {un costume}."},
+    {"nl": "Hij draagt een das bij {zijn pak}.", "fr": "Il porte une cravate avec {son costume}."}
+   ]
   },
   {
    "nl": "de mantel",
-   "fr": "le manteau long"
+   "fr": "le manteau long",
+   "ph": [
+    {"nl": "In de winter draagt ze {een mantel}.", "fr": "En hiver, elle porte {un manteau long}."},
+    {"nl": "{De mantel} hangt in de kast.", "fr": "{Le manteau long} est suspendu dans l'armoire."},
+    {"nl": "{Haar mantel} komt bijna tot op de grond.", "fr": "{Son manteau long} descend presque jusqu'au sol."},
+    {"nl": "Zonder {mantel} gaat ze nooit naar het theater.", "fr": "Elle ne va jamais au théâtre sans {manteau long}."}
+   ]
   },
   {
    "nl": "de spijkerbroek",
-   "fr": "le jean"
+   "fr": "le jean",
+   "ph": [
+    {"nl": "Ik draag bijna elke dag {een spijkerbroek}.", "fr": "Je porte {un jean} presque tous les jours."},
+    {"nl": "Is {de spijkerbroek} al gewassen?", "fr": "{Le jean} a-t-il déjà été lavé ?"},
+    {"nl": "{Mijn spijkerbroek} heeft een gat bij de knie.", "fr": "{Mon jean} a un trou au genou."},
+    {"nl": "Mag je op je werk {een spijkerbroek} dragen?", "fr": "As-tu le droit de porter {un jean} au travail ?"}
+   ]
   },
   {
    "nl": "het ondergoed",
-   "fr": "les sous-vêtements"
+   "fr": "les sous-vêtements",
+   "ph": [
+    {"nl": "Neem genoeg {ondergoed} mee op reis.", "fr": "Emporte assez de {sous-vêtements} en voyage."},
+    {"nl": "{Het ondergoed} ligt in de bovenste lade.", "fr": "{Les sous-vêtements} sont dans le tiroir du haut."},
+    {"nl": "{Ondergoed} kun je in de winkel niet passen.", "fr": "On ne peut pas essayer {les sous-vêtements} en magasin."},
+    {"nl": "Was {het ondergoed} op zestig graden.", "fr": "Lave {les sous-vêtements} à soixante degrés."}
+   ]
   },
   {
    "nl": "de onderbroek",
-   "fr": "le slip"
+   "fr": "le slip",
+   "ph": [
+    {"nl": "Het kind heeft {een onderbroek} nodig.", "fr": "L'enfant a besoin d'{un slip}."},
+    {"nl": "Waar zijn {de onderbroeken}?", "fr": "Où sont {les slips} ?"},
+    {"nl": "Doe eerst {je onderbroek} aan, dan je broek.", "fr": "Mets d'abord {ton slip}, puis ton pantalon."},
+    {"nl": "Het jongetje loopt rond in {zijn onderbroek}.", "fr": "Le petit garçon se promène en {slip}."}
+   ]
   },
   {
    "nl": "de beha",
-   "fr": "le soutien-gorge"
+   "fr": "le soutien-gorge",
+   "ph": [
+    {"nl": "Ze koopt {een beha} in de winkel.", "fr": "Elle achète {un soutien-gorge} au magasin."},
+    {"nl": "{De beha} past niet goed.", "fr": "{Le soutien-gorge} ne va pas bien."},
+    {"nl": "De bandjes van {mijn beha} zijn te los.", "fr": "Les bretelles de {mon soutien-gorge} sont trop lâches."},
+    {"nl": "Heeft u {deze beha} ook in het zwart?", "fr": "Avez-vous {ce soutien-gorge} aussi en noir ?"}
+   ]
   },
   {
    "nl": "de panty",
-   "fr": "le collant"
+   "fr": "le collant",
+   "ph": [
+    {"nl": "Onder haar rok draagt ze {een panty}.", "fr": "Sous sa jupe, elle porte {un collant}."},
+    {"nl": "{De panty} is gescheurd.", "fr": "{Le collant} est déchiré."},
+    {"nl": "Ik heb een ladder in {mijn panty}.", "fr": "J'ai une maille filée à {mon collant}."},
+    {"nl": "Kinderen dragen in de winter vaak {een panty}.", "fr": "En hiver, les enfants portent souvent {un collant}."}
+   ]
   },
   {
    "nl": "de kous",
-   "fr": "le bas"
+   "fr": "le bas",
+   "ph": [
+    {"nl": "Ze draagt {kousen} onder haar jurk.", "fr": "Elle porte {des bas} sous sa robe."},
+    {"nl": "{Een kous} kan snel scheuren.", "fr": "{Un bas} peut se déchirer vite."},
+    {"nl": "{Haar kousen} komen tot boven de knie.", "fr": "{Ses bas} montent au-dessus du genou."},
+    {"nl": "Vroeger droegen vrouwen {kousen} van zijde.", "fr": "Autrefois, les femmes portaient {des bas} de soie."}
+   ]
   },
   {
    "nl": "de pantoffel",
-   "fr": "la pantoufle"
+   "fr": "la pantoufle",
+   "ph": [
+    {"nl": "Thuis draag ik altijd {pantoffels}.", "fr": "À la maison, je porte toujours {des pantoufles}."},
+    {"nl": "Waar staan {mijn pantoffels}?", "fr": "Où sont {mes pantoufles} ?"},
+    {"nl": "Doe {je pantoffels} aan, de vloer is koud.", "fr": "Mets {tes pantoufles}, le sol est froid."},
+    {"nl": "Opa loopt de hele dag op {pantoffels}.", "fr": "Grand-père reste en {pantoufles} toute la journée."}
+   ]
   },
   {
    "nl": "de sandaal",
-   "fr": "la sandale"
+   "fr": "la sandale",
+   "ph": [
+    {"nl": "In de zomer loop ik op {sandalen}.", "fr": "En été, je marche en {sandales}."},
+    {"nl": "{De sandalen} zijn te klein voor het kind.", "fr": "{Les sandales} sont trop petites pour l'enfant."},
+    {"nl": "Met {sandalen} aan zie je je tenen.", "fr": "Avec {des sandales}, on voit les orteils."},
+    {"nl": "Je kunt geen {sandalen} dragen als het sneeuwt!", "fr": "Tu ne peux pas porter {de sandales} quand il neige !"}
+   ]
   },
   {
    "nl": "de sportschoen",
-   "fr": "la basket"
+   "fr": "la basket",
+   "ph": [
+    {"nl": "Om te lopen heb ik {sportschoenen} nodig.", "fr": "Pour courir, j'ai besoin de {baskets}."},
+    {"nl": "Zijn {de sportschoenen} nieuw?", "fr": "{Les baskets} sont-elles neuves ?"},
+    {"nl": "Trek {je sportschoenen} aan, we gaan joggen.", "fr": "Mets {tes baskets}, on va faire un jogging."},
+    {"nl": "In de turnzaal mag je alleen {sportschoenen} dragen.", "fr": "Dans la salle de gym, tu ne peux porter que {des baskets}."}
+   ]
   },
   {
    "nl": "de veter",
-   "fr": "le lacet"
+   "fr": "le lacet",
+   "ph": [
+    {"nl": "{Je veter} is los!", "fr": "{Ton lacet} est défait !"},
+    {"nl": "Ik heb nieuwe {veters} gekocht.", "fr": "J'ai acheté de nouveaux {lacets}."},
+    {"nl": "Kun je al {je veters} strikken?", "fr": "Sais-tu déjà nouer {tes lacets} ?"},
+    {"nl": "Deze schoenen hebben geen {veters}, maar klittenband.", "fr": "Ces chaussures n'ont pas de {lacets}, mais du velcro."}
+   ]
   },
   {
    "nl": "de zool",
-   "fr": "la semelle"
+   "fr": "la semelle",
+   "ph": [
+    {"nl": "{De zool} van mijn schoen is versleten.", "fr": "{La semelle} de ma chaussure est usée."},
+    {"nl": "Deze laarzen hebben {een zool} van rubber.", "fr": "Ces bottes ont {une semelle} en caoutchouc."},
+    {"nl": "Er zit kauwgom onder {de zool} van mijn schoen.", "fr": "Il y a du chewing-gum sous {la semelle} de ma chaussure."},
+    {"nl": "Kan de schoenmaker {de zolen} vervangen?", "fr": "Le cordonnier peut-il remplacer {les semelles} ?"}
+   ]
   },
   {
    "nl": "de hak",
-   "fr": "le talon (de chaussure)"
+   "fr": "le talon (de chaussure)",
+   "ph": [
+    {"nl": "Ze loopt niet graag op {hakken}.", "fr": "Elle n'aime pas marcher en {talons}."},
+    {"nl": "{De hak} van mijn schoen is gebroken.", "fr": "{Le talon} de ma chaussure est cassé."},
+    {"nl": "Met {hakken} ben ik tien centimeter groter.", "fr": "Avec {des talons}, je suis dix centimètres plus grande."},
+    {"nl": "{Haar hak} bleef steken tussen de stenen.", "fr": "{Son talon} est resté coincé entre les pavés."}
+   ]
   },
   {
    "nl": "de kraag",
-   "fr": "le col"
+   "fr": "le col",
+   "ph": [
+    {"nl": "{De kraag} van dit hemd is te strak.", "fr": "{Le col} de cette chemise est trop serré."},
+    {"nl": "Heeft die jas {een kraag} van bont?", "fr": "Ce manteau a-t-il {un col} en fourrure ?"},
+    {"nl": "Zet {je kraag} op tegen de wind.", "fr": "Remonte {ton col} contre le vent."},
+    {"nl": "Er zit een vlek op {de kraag} van je hemd.", "fr": "Il y a une tache sur {le col} de ta chemise."}
+   ]
   },
   {
    "nl": "de mouw",
-   "fr": "la manche"
+   "fr": "la manche",
+   "ph": [
+    {"nl": "{De mouwen} zijn te lang.", "fr": "{Les manches} sont trop longues."},
+    {"nl": "Ik wil een T-shirt zonder {mouwen}.", "fr": "Je veux un t-shirt sans {manches}."},
+    {"nl": "Hij stroopt {zijn mouwen} op om af te wassen.", "fr": "Il retrousse {ses manches} pour faire la vaisselle."},
+    {"nl": "Er zit een gat in {de mouw} van mijn trui.", "fr": "Il y a un trou dans {la manche} de mon pull."}
+   ]
   },
   {
    "nl": "de rits",
-   "fr": "la fermeture éclair"
+   "fr": "la fermeture éclair",
+   "ph": [
+    {"nl": "{De rits} van mijn jas zit vast.", "fr": "{La fermeture éclair} de mon manteau est coincée."},
+    {"nl": "Heeft die tas {een rits}?", "fr": "Ce sac a-t-il {une fermeture éclair} ?"},
+    {"nl": "Trek {de rits} van je jas dicht.", "fr": "Remonte {la fermeture éclair} de ton manteau."},
+    {"nl": "{De rits} is kapot, ik kan mijn broek niet sluiten.", "fr": "{La fermeture éclair} est cassée, je ne peux pas fermer mon pantalon."}
+   ]
   },
   {
    "nl": "de naald",
-   "fr": "l'aiguille"
+   "fr": "l'aiguille",
+   "ph": [
+    {"nl": "Ik heb {een naald} en draad nodig.", "fr": "J'ai besoin d'{une aiguille} et de fil."},
+    {"nl": "Pas op, {de naald} is scherp!", "fr": "Attention, {l'aiguille} est pointue !"},
+    {"nl": "Ik krijg de draad niet door het oog van {de naald}.", "fr": "Je n'arrive pas à passer le fil dans le chas de {l'aiguille}."},
+    {"nl": "Au! Ik heb me geprikt met {een naald}.", "fr": "Aïe ! Je me suis piqué avec {une aiguille}."}
+   ]
   },
   {
    "nl": "de draad",
-   "fr": "le fil"
+   "fr": "le fil",
+   "ph": [
+    {"nl": "Welke kleur {draad} heb je nodig?", "fr": "De quelle couleur de {fil} as-tu besoin ?"},
+    {"nl": "{De draad} is gebroken.", "fr": "{Le fil} s'est cassé."},
+    {"nl": "Steek {de draad} door de naald.", "fr": "Passe {le fil} dans l'aiguille."},
+    {"nl": "Er hangt {een draad} los aan je mouw.", "fr": "Il y a {un fil} qui pend de ta manche."}
+   ]
   },
   {
    "nl": "de wol",
-   "fr": "la laine"
+   "fr": "la laine",
+   "ph": [
+    {"nl": "Deze trui is van {wol}.", "fr": "Ce pull est en {laine}."},
+    {"nl": "Oma koopt {wol} om te breien.", "fr": "Grand-mère achète {de la laine} pour tricoter."},
+    {"nl": "Schapen geven ons {wol}.", "fr": "Les moutons nous donnent {de la laine}."},
+    {"nl": "{Wol} houdt je warm in de winter.", "fr": "{La laine} te garde au chaud en hiver."}
+   ]
   },
   {
    "nl": "het katoen",
-   "fr": "le coton"
+   "fr": "le coton",
+   "ph": [
+    {"nl": "Mijn T-shirt is van {katoen}.", "fr": "Mon t-shirt est en {coton}."},
+    {"nl": "{Katoen} is aangenaam in de zomer.", "fr": "{Le coton} est agréable en été."},
+    {"nl": "{Katoen} komt van een plant, niet van een dier.", "fr": "{Le coton} vient d'une plante, pas d'un animal."},
+    {"nl": "Lakens van {katoen} zijn fijn om in te slapen.", "fr": "Les draps en {coton} sont agréables pour dormir."}
+   ]
   },
   {
    "nl": "de zijde",
-   "fr": "la soie"
+   "fr": "la soie",
+   "ph": [
+    {"nl": "Deze sjaal is van {zijde}.", "fr": "Cette écharpe est en {soie}."},
+    {"nl": "{Zijde} is een dure stof.", "fr": "{La soie} est un tissu cher."},
+    {"nl": "{Zijde} wordt gemaakt door een rups.", "fr": "{La soie} est fabriquée par une chenille."},
+    {"nl": "Was die blouse niet te warm, ze is van {zijde}.", "fr": "Ne lave pas ce chemisier trop chaud, il est en {soie}."}
+   ]
   },
   {
    "nl": "het leer",
-   "fr": "le cuir"
+   "fr": "le cuir",
+   "ph": [
+    {"nl": "Mijn tas is van {leer}.", "fr": "Mon sac est en {cuir}."},
+    {"nl": "{Leer} gaat lang mee.", "fr": "{Le cuir} dure longtemps."},
+    {"nl": "{Leer} wordt gemaakt van de huid van koeien.", "fr": "{Le cuir} est fabriqué avec la peau des vaches."},
+    {"nl": "Die jas is niet van echt {leer}.", "fr": "Ce manteau n'est pas en vrai {cuir}."}
+   ]
   },
   {
    "nl": "het sieraad",
-   "fr": "le bijou"
+   "fr": "le bijou",
+   "ph": [
+    {"nl": "Ze draagt nooit {sieraden}.", "fr": "Elle ne porte jamais de {bijoux}."},
+    {"nl": "{Het sieraad} komt van mijn oma.", "fr": "{Le bijou} vient de ma grand-mère."},
+    {"nl": "Ze bewaart {haar sieraden} in een doosje.", "fr": "Elle range {ses bijoux} dans une petite boîte."},
+    {"nl": "Een ring en een ketting zijn {sieraden}.", "fr": "Une bague et un collier sont {des bijoux}."}
+   ]
   },
   {
    "nl": "de ketting",
-   "fr": "le collier"
+   "fr": "le collier",
+   "ph": [
+    {"nl": "Hij geeft haar {een ketting} voor haar verjaardag.", "fr": "Il lui offre {un collier} pour son anniversaire."},
+    {"nl": "Is {de ketting} van zilver?", "fr": "{Le collier} est-il en argent ?"},
+    {"nl": "Ze draagt {een ketting} met parels om haar hals.", "fr": "Elle porte {un collier} de perles autour du cou."},
+    {"nl": "Kun je {mijn ketting} achteraan vastmaken?", "fr": "Peux-tu attacher {mon collier} derrière ?"}
+   ]
   },
   {
    "nl": "de armband",
-   "fr": "le bracelet"
+   "fr": "le bracelet",
+   "ph": [
+    {"nl": "Ze draagt {een armband} om haar pols.", "fr": "Elle porte {un bracelet} au poignet."},
+    {"nl": "Ik heb {de armband} verloren.", "fr": "J'ai perdu {le bracelet}."},
+    {"nl": "Het meisje maakt {een armband} met kralen voor haar pols.", "fr": "La fillette fait {un bracelet} en perles pour son poignet."},
+    {"nl": "{De armband} rinkelt als ze haar arm beweegt.", "fr": "{Le bracelet} tinte quand elle bouge le bras."}
+   ]
   },
   {
    "nl": "de oorbel",
-   "fr": "la boucle d'oreille"
+   "fr": "la boucle d'oreille",
+   "ph": [
+    {"nl": "Ze heeft {een oorbel} verloren.", "fr": "Elle a perdu {une boucle d'oreille}."},
+    {"nl": "Draag je vandaag {oorbellen}?", "fr": "Tu portes {des boucles d'oreilles} aujourd'hui ?"},
+    {"nl": "Hij heeft {een oorbel} in zijn linkeroor.", "fr": "Il a {une boucle d'oreille} à l'oreille gauche."},
+    {"nl": "{Deze oorbellen} passen mooi bij je ketting.", "fr": "{Ces boucles d'oreilles} vont bien avec ton collier."}
+   ]
   },
   {
    "nl": "de paraplu",
-   "fr": "le parapluie"
+   "fr": "le parapluie",
+   "ph": [
+    {"nl": "Neem {een paraplu} mee, het gaat regenen.", "fr": "Prends {un parapluie}, il va pleuvoir."},
+    {"nl": "Ik heb {mijn paraplu} in de trein laten liggen.", "fr": "J'ai oublié {mon parapluie} dans le train."},
+    {"nl": "Doe {de paraplu} open, het regent!", "fr": "Ouvre {le parapluie}, il pleut !"},
+    {"nl": "Door de wind is {mijn paraplu} kapot.", "fr": "À cause du vent, {mon parapluie} est cassé."}
+   ]
   },
   {
    "nl": "de portemonnee",
-   "fr": "le porte-monnaie"
+   "fr": "le porte-monnaie",
+   "ph": [
+    {"nl": "{Mijn portemonnee} zit in mijn tas.", "fr": "{Mon porte-monnaie} est dans mon sac."},
+    {"nl": "Heb je {een portemonnee} gevonden?", "fr": "As-tu trouvé {un porte-monnaie} ?"},
+    {"nl": "Er zit geen geld meer in {mijn portemonnee}.", "fr": "Il n'y a plus d'argent dans {mon porte-monnaie}."},
+    {"nl": "Haal {je portemonnee} maar, we moeten betalen.", "fr": "Sors {ton porte-monnaie}, nous devons payer."}
+   ]
   },
   {
    "nl": "de kam",
-   "fr": "le peigne"
+   "fr": "le peigne",
+   "ph": [
+    {"nl": "Hij heeft altijd {een kam} in zijn zak.", "fr": "Il a toujours {un peigne} dans sa poche."},
+    {"nl": "Waar ligt {de kam}?", "fr": "Où est {le peigne} ?"},
+    {"nl": "{Deze kam} heeft heel fijne tanden.", "fr": "{Ce peigne} a des dents très fines."},
+    {"nl": "Hij kamt zijn haar met {een kam}.", "fr": "Il se coiffe avec {un peigne}."}
+   ]
   },
   {
    "nl": "de borstel",
-   "fr": "la brosse"
+   "fr": "la brosse",
+   "ph": [
+    {"nl": "{De borstel} ligt in de badkamer.", "fr": "{La brosse} est dans la salle de bain."},
+    {"nl": "Ik maak mijn schoenen schoon met {een borstel}.", "fr": "Je nettoie mes chaussures avec {une brosse}."},
+    {"nl": "Ze borstelt haar haar met {een borstel}.", "fr": "Elle se brosse les cheveux avec {une brosse}."},
+    {"nl": "Er zitten veel haren in {de borstel}.", "fr": "Il y a beaucoup de cheveux dans {la brosse}."}
+   ]
   },
   {
    "nl": "het parfum",
-   "fr": "le parfum"
+   "fr": "le parfum",
+   "ph": [
+    {"nl": "Welk {parfum} gebruik je?", "fr": "Quel {parfum} mets-tu ?"},
+    {"nl": "Hij koopt {parfum} voor zijn vriendin.", "fr": "Il achète {du parfum} pour sa copine."},
+    {"nl": "{Je parfum} ruikt heerlijk.", "fr": "{Ton parfum} sent délicieusement bon."},
+    {"nl": "Doe niet te veel {parfum} op.", "fr": "Ne mets pas trop de {parfum}."}
+   ]
   },
   {
    "nl": "donker",
-   "fr": "foncé"
+   "fr": "foncé",
+   "ph": [
+    {"nl": "Ik draag liever {donkere} kleuren.", "fr": "Je préfère porter des couleurs {foncées}."},
+    {"nl": "Deze kleur is te {donker} voor de zomer.", "fr": "Cette couleur est trop {foncée} pour l'été."},
+    {"nl": "Ze heeft {donker} haar, bijna zwart.", "fr": "Elle a les cheveux {foncés}, presque noirs."},
+    {"nl": "Ik wil geen lichte kleur, liever een {donkere}.", "fr": "Je ne veux pas de couleur claire, plutôt une {foncée}."}
+   ]
   },
   {
    "nl": "fel",
-   "fr": "vif"
+   "fr": "vif",
+   "ph": [
+    {"nl": "Ze houdt van {felle} kleuren.", "fr": "Elle aime les couleurs {vives}."},
+    {"nl": "Dat rood is wel heel {fel}.", "fr": "Ce rouge est vraiment très {vif}."},
+    {"nl": "Met dat {felle} geel zie je hem van ver.", "fr": "Avec ce jaune {vif}, on le voit de loin."},
+    {"nl": "Ik draag liever geen {felle} kleuren op het werk.", "fr": "Je préfère ne pas porter de couleurs {vives} au travail."}
+   ]
   },
   {
    "nl": "de streep",
-   "fr": "la rayure"
+   "fr": "la rayure",
+   "ph": [
+    {"nl": "Hij draagt een hemd met {strepen}.", "fr": "Il porte une chemise à {rayures}."},
+    {"nl": "Ik hou niet van {de strepen} op die trui.", "fr": "Je n'aime pas {les rayures} de ce pull."},
+    {"nl": "Een zebra heeft zwarte en witte {strepen}.", "fr": "Un zèbre a des {rayures} noires et blanches."},
+    {"nl": "Draag je liever {strepen} of ruiten?", "fr": "Tu préfères porter {des rayures} ou des carreaux ?"}
+   ]
   },
   {
    "nl": "de stip",
-   "fr": "le pois"
+   "fr": "le pois",
+   "ph": [
+    {"nl": "Ze heeft een jurk met {stippen}.", "fr": "Elle a une robe à {pois}."},
+    {"nl": "{De stippen} op deze rok zijn rood.", "fr": "{Les pois} sur cette jupe sont rouges."},
+    {"nl": "Ze draagt een sjaal met witte {stippen}.", "fr": "Elle porte une écharpe à {pois} blancs."},
+    {"nl": "Ik vind {stippen} leuker dan strepen.", "fr": "Je trouve {les pois} plus jolis que les rayures."}
+   ]
   },
   {
    "nl": "het patroon",
-   "fr": "le motif"
+   "fr": "le motif",
+   "ph": [
+    {"nl": "Ik vind {het patroon} van deze stof mooi.", "fr": "J'aime bien {le motif} de ce tissu."},
+    {"nl": "Heeft die sjaal {een patroon}?", "fr": "Cette écharpe a-t-elle {un motif} ?"},
+    {"nl": "Dit behang heeft {een patroon} met bloemen.", "fr": "Ce papier peint a {un motif} à fleurs."},
+    {"nl": "Ik wil een effen trui, zonder {patroon}.", "fr": "Je veux un pull uni, sans {motif}."}
+   ]
   },
   {
    "nl": "de etalage",
-   "fr": "la vitrine"
+   "fr": "la vitrine",
+   "ph": [
+    {"nl": "Ik zag een mooie jas in {de etalage}.", "fr": "J'ai vu un beau manteau dans {la vitrine}."},
+    {"nl": "{De etalage} van die winkel is altijd mooi.", "fr": "{La vitrine} de ce magasin est toujours belle."},
+    {"nl": "De winkelier zet nieuwe jassen in {de etalage}.", "fr": "Le commerçant met de nouveaux manteaux dans {la vitrine}."},
+    {"nl": "Mag ik de jurk uit {de etalage} passen?", "fr": "Puis-je essayer la robe de {la vitrine} ?"}
+   ]
   },
   {
    "nl": "kopen",
    "fr": "acheter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Ik wil een nieuwe jas {kopen}.", "fr": "Je veux {acheter} un nouveau manteau."},
+    {"nl": "Wat heb je gisteren {gekocht}?", "fr": "Qu'as-tu {acheté} hier ?"},
+    {"nl": "Morgen {koop} ik een cadeau voor mama.", "fr": "Demain, j'{achète} un cadeau pour maman."},
+    {"nl": "{Koop} geen goedkope schoenen, ze gaan niet lang mee.", "fr": "N'{achète} pas de chaussures bon marché, elles ne durent pas."}
+   ]
   },
   {
    "nl": "betalen",
    "fr": "payer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Kan ik met de kaart {betalen}?", "fr": "Puis-je {payer} par carte ?"},
+    {"nl": "Hij {betaalde} de schoenen contant.", "fr": "Il {a payé} les chaussures en liquide."},
+    {"nl": "Wie gaat de rekening {betalen}?", "fr": "Qui va {payer} l'addition ?"},
+    {"nl": "Wacht, ik heb de jas nog niet {betaald}!", "fr": "Attends, je n'ai pas encore {payé} le manteau !"}
+   ]
   },
   {
    "nl": "zoeken",
    "fr": "chercher",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Ik {zoek} een blauwe trui.", "fr": "Je {cherche} un pull bleu."},
+    {"nl": "We hebben overal naar de sleutels {gezocht}.", "fr": "Nous avons {cherché} les clés partout."},
+    {"nl": "{Zoekt} u iets, mevrouw?", "fr": "Vous {cherchez} quelque chose, madame ?"},
+    {"nl": "Hij is al een uur zijn bril aan het {zoeken}.", "fr": "Ça fait une heure qu'il {cherche} ses lunettes."}
+   ]
   },
   {
    "nl": "vinden",
    "fr": "trouver",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Ik kan mijn sjaal niet {vinden}.", "fr": "Je n'arrive pas à {trouver} mon écharpe."},
+    {"nl": "Waar heb je die ring {gevonden}?", "fr": "Où as-tu {trouvé} cette bague ?"},
+    {"nl": "Ik {vond} een euro op straat.", "fr": "J'ai {trouvé} un euro dans la rue."},
+    {"nl": "Na lang zoeken heb ik mijn sleutels eindelijk {gevonden}.", "fr": "Après avoir longtemps cherché, j'ai enfin {trouvé} mes clés."}
+   ]
   },
   {
    "nl": "dragen",
    "fr": "porter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Ze {draagt} vandaag een gele jurk.", "fr": "Elle {porte} une robe jaune aujourd'hui."},
+    {"nl": "Ik wil die hoed niet {dragen}.", "fr": "Je ne veux pas {porter} ce chapeau."},
+    {"nl": "Op het werk moet hij een das {dragen}.", "fr": "Au travail, il doit {porter} une cravate."},
+    {"nl": "{Draag} je nooit een rok?", "fr": "Tu ne {portes} jamais de jupe ?"}
+   ]
   },
   {
    "nl": "aantrekken",
    "fr": "enfiler",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Je moet een warme jas {aantrekken}.", "fr": "Tu dois {enfiler} un manteau chaud."},
+    {"nl": "Hij heeft zijn schoenen al {aangetrokken}.", "fr": "Il a déjà {enfilé} ses chaussures."},
+    {"nl": "Ik ga even een droge trui {aantrekken}.", "fr": "Je vais {enfiler} un pull sec."},
+    {"nl": "Vergeet niet je handschoenen {aan te trekken}, het vriest.", "fr": "N'oublie pas d'{enfiler} tes gants, il gèle."}
+   ]
   },
   {
    "nl": "uittrekken",
    "fr": "retirer (un vêtement)",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Je mag je schoenen hier {uittrekken}.", "fr": "Tu peux {retirer} tes chaussures ici."},
+    {"nl": "Heb je je jas al {uitgetrokken}?", "fr": "As-tu déjà {retiré} ton manteau ?"},
+    {"nl": "Wil je je trui niet {uittrekken}? Het is warm hier.", "fr": "Tu ne veux pas {retirer} ton pull ? Il fait chaud ici."},
+    {"nl": "Bij de dokter moest ik mijn hemd {uittrekken}.", "fr": "Chez le médecin, j'ai dû {retirer} ma chemise."}
+   ]
   },
   {
    "nl": "passen",
    "fr": "essayer, aller (taille)",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Mag ik deze broek {passen}?", "fr": "Puis-je {essayer} ce pantalon ?"},
+    {"nl": "Deze schoenen {passen} niet meer.", "fr": "Ces chaussures ne me {vont} plus."},
+    {"nl": "U kunt de jurk daar in de paskamer {passen}.", "fr": "Vous pouvez {essayer} la robe là-bas, dans la cabine."},
+    {"nl": "{Past} deze jas je nog?", "fr": "Ce manteau te {va} encore ?"}
+   ]
   },
   {
    "nl": "aankleden",
    "fr": "habiller",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Mama heeft de baby {aangekleed}.", "fr": "Maman a {habillé} le bébé."},
+    {"nl": "Wacht, ik moet me nog {aankleden}.", "fr": "Attends, je dois encore {m'habiller}."},
+    {"nl": "Het kind kan zich al alleen {aankleden}.", "fr": "L'enfant sait déjà {s'habiller} tout seul."},
+    {"nl": "Voor het feest gaan we ons mooi {aankleden}.", "fr": "Pour la fête, nous allons bien nous {habiller}."}
+   ]
   },
   {
    "nl": "uitkleden",
    "fr": "déshabiller",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "De dokter vraagt hem zich {uit te kleden}.", "fr": "Le médecin lui demande de se {déshabiller}."},
+    {"nl": "Heb je de kinderen al {uitgekleed}?", "fr": "As-tu déjà {déshabillé} les enfants ?"},
+    {"nl": "Ik ga me {uitkleden} en dan douchen.", "fr": "Je vais me {déshabiller} et puis prendre une douche."},
+    {"nl": "Kun je je zelf {uitkleden}, of moet ik helpen?", "fr": "Peux-tu te {déshabiller} seul, ou dois-je t'aider ?"}
+   ]
   },
   {
    "nl": "strijken",
    "fr": "repasser",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Ik moet nog drie hemden {strijken}.", "fr": "Je dois encore {repasser} trois chemises."},
+    {"nl": "Wie heeft deze broek {gestreken}?", "fr": "Qui a {repassé} ce pantalon ?"},
+    {"nl": "Mijn vader {strijkt} altijd op zondag, met de radio aan.", "fr": "Mon père {repasse} toujours le dimanche, avec la radio allumée."},
+    {"nl": "{Strijk} de zijde niet te heet!", "fr": "Ne {repasse} pas la soie trop chaud !"}
+   ]
   },
   {
    "nl": "naaien",
    "fr": "coudre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Mijn oma {naait} haar eigen kleren.", "fr": "Ma grand-mère {coud} ses propres vêtements."},
+    {"nl": "Heb je deze rok zelf {genaaid}?", "fr": "As-tu {cousu} cette jupe toi-même ?"},
+    {"nl": "Kun jij {naaien}? Mijn knoop is los.", "fr": "Tu sais {coudre} ? Mon bouton est décousu."},
+    {"nl": "Ze leert {naaien} op een naaimachine.", "fr": "Elle apprend à {coudre} sur une machine à coudre."}
+   ]
   },
   {
    "nl": "breien",
    "fr": "tricoter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Oma {breit} een sjaal voor mij.", "fr": "Grand-mère {tricote} une écharpe pour moi."},
+    {"nl": "Ik heb nooit leren {breien}.", "fr": "Je n'ai jamais appris à {tricoter}."},
+    {"nl": "Ik {brei} een muts voor de baby.", "fr": "Je {tricote} un bonnet pour le bébé."},
+    {"nl": "{Brei} je liever met wol of met katoen?", "fr": "Tu {tricotes} plutôt avec de la laine ou du coton ?"}
+   ]
   },
   {
    "nl": "kiezen",
    "fr": "choisir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Ik kan niet {kiezen} tussen de rode en de blauwe.", "fr": "Je n'arrive pas à {choisir} entre la rouge et la bleue."},
+    {"nl": "Welke kleur heb je {gekozen}?", "fr": "Quelle couleur as-tu {choisie} ?"},
+    {"nl": "{Kies} maar een kleur, ik betaal.", "fr": "{Choisis} une couleur, c'est moi qui paie."},
+    {"nl": "Tussen zoveel jurken is het moeilijk om te {kiezen}.", "fr": "Parmi tant de robes, c'est difficile de {choisir}."}
+   ]
   },
   {
    "nl": "ruilen",
    "fr": "échanger",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Kan ik deze trui {ruilen}?", "fr": "Puis-je {échanger} ce pull ?"},
+    {"nl": "We hebben onze jassen {geruild}.", "fr": "Nous avons {échangé} nos manteaux."},
+    {"nl": "Wil je van plaats {ruilen}?", "fr": "Tu veux qu'on {échange} nos places ?"},
+    {"nl": "Zonder kassabon kunt u niets {ruilen}.", "fr": "Sans ticket de caisse, vous ne pouvez rien {échanger}."}
+   ]
   },
   {
    "nl": "kosten",
    "fr": "coûter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Hoeveel {kost} deze jas?", "fr": "Combien {coûte} ce manteau ?"},
+    {"nl": "De schoenen {kostten} vijftig euro.", "fr": "Les chaussures {ont coûté} cinquante euros."},
+    {"nl": "Dat {kost} te veel, ik koop het niet.", "fr": "Ça {coûte} trop cher, je ne l'achète pas."},
+    {"nl": "Hoeveel heeft je fiets {gekost}?", "fr": "Combien a {coûté} ton vélo ?"}
+   ]
   },
   {
    "nl": "verkopen",
    "fr": "vendre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Die winkel {verkoopt} alleen schoenen.", "fr": "Ce magasin ne {vend} que des chaussures."},
+    {"nl": "Ik heb mijn oude kleren {verkocht}.", "fr": "J'ai {vendu} mes vieux vêtements."},
+    {"nl": "Ze wil haar oude fiets {verkopen}.", "fr": "Elle veut {vendre} son vieux vélo."},
+    {"nl": "Sorry, die jas is al {verkocht}.", "fr": "Désolé, ce manteau est déjà {vendu}."}
+   ]
   },
   {
    "nl": "knippen",
    "fr": "couper (aux ciseaux)",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "De kapper {knipt} mijn haar.", "fr": "Le coiffeur me {coupe} les cheveux."},
+    {"nl": "Je moet de draad nog {knippen}.", "fr": "Tu dois encore {couper} le fil."},
+    {"nl": "Kun je het prijskaartje eraf {knippen}?", "fr": "Peux-tu {couper} l'étiquette de prix ?"},
+    {"nl": "Ze heeft de stof met een schaar {geknipt}.", "fr": "Elle a {coupé} le tissu avec des ciseaux."}
+   ]
   },
   {
    "nl": "scheren",
    "fr": "raser",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Mijn vader {scheert} zich elke ochtend.", "fr": "Mon père se {rase} chaque matin."},
+    {"nl": "Heb je je vandaag niet {geschoren}?", "fr": "Tu ne t'es pas {rasé} aujourd'hui ?"},
+    {"nl": "Hij laat zijn baard groeien en wil zich niet meer {scheren}.", "fr": "Il se laisse pousser la barbe et ne veut plus se {raser}."},
+    {"nl": "{Scheer} je je met een mesje?", "fr": "Tu te {rases} avec un rasoir ?"}
+   ]
   },
   {
    "nl": "vouwen",
    "fr": "plier",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {"nl": "Kun je de handdoeken {vouwen}?", "fr": "Peux-tu {plier} les serviettes ?"},
+    {"nl": "Ik heb de truien netjes {gevouwen}.", "fr": "J'ai {plié} les pulls soigneusement."},
+    {"nl": "{Vouw} het papier in twee.", "fr": "{Plie} le papier en deux."},
+    {"nl": "Hij heeft de brief in vieren {gevouwen}.", "fr": "Il a {plié} la lettre en quatre."}
+   ]
   }
  ]
 }

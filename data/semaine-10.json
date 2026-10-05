@@ -5,423 +5,2223 @@
  "mots": [
   {
    "nl": "de natuur",
-   "fr": "la nature"
+   "fr": "la nature",
+   "ph": [
+    {
+     "nl": "Wij wandelen graag in {de natuur}.",
+     "fr": "Nous aimons nous promener dans {la nature}."
+    },
+    {
+     "nl": "Is {de natuur} hier niet prachtig?",
+     "fr": "{La nature} n'est-elle pas magnifique ici ?"
+    },
+    {
+     "nl": "Gooi je afval niet weg in {de natuur}!",
+     "fr": "Ne jette pas tes déchets dans {la nature} !"
+    },
+    {
+     "nl": "Vroeger woonde ik in de stad, ver van {de natuur}.",
+     "fr": "Avant, j'habitais en ville, loin de {la nature}."
+    }
+   ]
   },
   {
    "nl": "de boom",
-   "fr": "l'arbre"
+   "fr": "l'arbre",
+   "ph": [
+    {
+     "nl": "Er staat {een boom} voor ons huis.",
+     "fr": "Il y a {un arbre} devant notre maison."
+    },
+    {
+     "nl": "De kat zit niet meer in {de boom}.",
+     "fr": "Le chat n'est plus dans {l'arbre}."
+    },
+    {
+     "nl": "Door de storm is gisteren {een boom} op onze auto gevallen.",
+     "fr": "À cause de la tempête, {un arbre} est tombé sur notre voiture hier."
+    },
+    {
+     "nl": "Klim niet in {de boom}, de takken zijn te dun!",
+     "fr": "Ne grimpe pas dans {l'arbre}, les branches sont trop fines !"
+    }
+   ]
   },
   {
    "nl": "het blad",
-   "fr": "la feuille"
+   "fr": "la feuille",
+   "ph": [
+    {
+     "nl": "In de herfst vallen {de bladeren} van de bomen.",
+     "fr": "En automne, {les feuilles} tombent des arbres."
+    },
+    {
+     "nl": "Zie je {het blad} op het water?",
+     "fr": "Tu vois {la feuille} sur l'eau ?"
+    },
+    {
+     "nl": "{Het blad} van de eik is niet groen meer, maar bruin.",
+     "fr": "{La feuille} du chêne n'est plus verte, mais brune."
+    },
+    {
+     "nl": "Ik moet {de bladeren} van het terras vegen.",
+     "fr": "Je dois balayer {les feuilles} de la terrasse."
+    }
+   ]
   },
   {
    "nl": "de bloem",
-   "fr": "la fleur"
+   "fr": "la fleur",
+   "ph": [
+    {
+     "nl": "Ik geef mijn vriendin {een bloem}.",
+     "fr": "J'offre {une fleur} à ma copine."
+    },
+    {
+     "nl": "Welke kleur heeft {de bloem} in de tuin?",
+     "fr": "De quelle couleur est {la fleur} dans le jardin ?"
+    },
+    {
+     "nl": "Pluk {de bloemen} in het park niet!",
+     "fr": "Ne cueille pas {les fleurs} dans le parc !"
+    },
+    {
+     "nl": "Voor haar verjaardag heb ik {bloemen} gekocht.",
+     "fr": "Pour son anniversaire, j'ai acheté {des fleurs}."
+    }
+   ]
   },
   {
    "nl": "het gras",
-   "fr": "l'herbe"
+   "fr": "l'herbe",
+   "ph": [
+    {
+     "nl": "{Het gras} is nat van de regen.",
+     "fr": "{L'herbe} est mouillée par la pluie."
+    },
+    {
+     "nl": "De kinderen spelen niet op {het gras}.",
+     "fr": "Les enfants ne jouent pas sur {l'herbe}."
+    },
+    {
+     "nl": "Gisteren heeft mijn vader {het gras} gemaaid.",
+     "fr": "Hier, mon père a tondu {l'herbe}."
+    },
+    {
+     "nl": "Mogen we op {het gras} zitten om te picknicken?",
+     "fr": "Pouvons-nous nous asseoir sur {l'herbe} pour pique-niquer ?"
+    }
+   ]
   },
   {
    "nl": "het bos",
-   "fr": "la forêt"
+   "fr": "la forêt",
+   "ph": [
+    {
+     "nl": "Zondag gaan we wandelen in {het bos}.",
+     "fr": "Dimanche, nous allons nous promener dans {la forêt}."
+    },
+    {
+     "nl": "Heb je ooit een wolf in {het bos} gezien?",
+     "fr": "As-tu déjà vu un loup dans {la forêt} ?"
+    },
+    {
+     "nl": "Verdwaal niet in {het bos}!",
+     "fr": "Ne te perds pas dans {la forêt} !"
+    },
+    {
+     "nl": "Achter het dorp ligt {een bos} met veel eiken.",
+     "fr": "Derrière le village, il y a {une forêt} avec beaucoup de chênes."
+    }
+   ]
   },
   {
    "nl": "het veld",
-   "fr": "le champ"
+   "fr": "le champ",
+   "ph": [
+    {
+     "nl": "De koeien staan in {het veld}.",
+     "fr": "Les vaches sont dans {le champ}."
+    },
+    {
+     "nl": "De boer werkte gisteren de hele dag op {het veld}.",
+     "fr": "Hier, le fermier a travaillé toute la journée dans {le champ}."
+    },
+    {
+     "nl": "In de zomer is {het veld} geel van het graan.",
+     "fr": "En été, {le champ} est jaune de blé."
+    },
+    {
+     "nl": "Welke groenten groeien er op {dat veld}?",
+     "fr": "Quels légumes poussent dans {ce champ} ?"
+    }
+   ]
   },
   {
    "nl": "de wei",
-   "fr": "la prairie"
+   "fr": "la prairie",
+   "ph": [
+    {
+     "nl": "De paarden lopen in {de wei}.",
+     "fr": "Les chevaux courent dans {la prairie}."
+    },
+    {
+     "nl": "Staan er vandaag geen schapen in {de wei}?",
+     "fr": "Il n'y a pas de moutons dans {la prairie} aujourd'hui ?"
+    },
+    {
+     "nl": "Na de winter mogen de koeien weer naar {de wei}.",
+     "fr": "Après l'hiver, les vaches peuvent retourner dans {la prairie}."
+    },
+    {
+     "nl": "Wie heeft het hek van {de wei} opengelaten?",
+     "fr": "Qui a laissé ouverte la barrière de {la prairie} ?"
+    }
+   ]
   },
   {
    "nl": "de berg",
-   "fr": "la montagne"
+   "fr": "la montagne",
+   "ph": [
+    {
+     "nl": "Morgen wandelen we naar de top van {de berg}.",
+     "fr": "Demain, nous marchons jusqu'au sommet de {la montagne}."
+    },
+    {
+     "nl": "Wonen er beren in {de bergen}?",
+     "fr": "Des ours vivent-ils dans {les montagnes} ?"
+    },
+    {
+     "nl": "In de winter ligt er sneeuw op {de berg}.",
+     "fr": "En hiver, il y a de la neige sur {la montagne}."
+    },
+    {
+     "nl": "België heeft geen hoge {bergen}.",
+     "fr": "La Belgique n'a pas de hautes {montagnes}."
+    }
+   ]
   },
   {
    "nl": "de heuvel",
-   "fr": "la colline"
+   "fr": "la colline",
+   "ph": [
+    {
+     "nl": "Ons huis staat op {een heuvel}.",
+     "fr": "Notre maison se trouve sur {une colline}."
+    },
+    {
+     "nl": "Vanaf {de heuvel} zie je de hele stad.",
+     "fr": "Depuis {la colline}, on voit toute la ville."
+    },
+    {
+     "nl": "Met de fiets is {die heuvel} zwaar.",
+     "fr": "À vélo, {cette colline} est difficile."
+    },
+    {
+     "nl": "De kinderen rolden van {de heuvel} naar beneden.",
+     "fr": "Les enfants ont dévalé {la colline} en roulant."
+    }
+   ]
   },
   {
    "nl": "de rivier",
-   "fr": "la rivière"
+   "fr": "la rivière",
+   "ph": [
+    {
+     "nl": "In de zomer zwemmen wij in {de rivier}.",
+     "fr": "En été, nous nageons dans {la rivière}."
+    },
+    {
+     "nl": "Is het water van {de rivier} koud?",
+     "fr": "L'eau de {la rivière} est-elle froide ?"
+    },
+    {
+     "nl": "Over {de rivier} ligt een oude brug.",
+     "fr": "Un vieux pont passe au-dessus de {la rivière}."
+    },
+    {
+     "nl": "Hoe heet {de rivier} die door Gent stroomt?",
+     "fr": "Comment s'appelle {la rivière} qui traverse Gand ?"
+    }
+   ]
   },
   {
    "nl": "het meer",
-   "fr": "le lac"
+   "fr": "le lac",
+   "ph": [
+    {
+     "nl": "Er zwemmen eenden op {het meer}.",
+     "fr": "Des canards nagent sur {le lac}."
+    },
+    {
+     "nl": "Vorig jaar hebben we bij {een meer} gekampeerd.",
+     "fr": "L'année dernière, nous avons campé près d'{un lac}."
+    },
+    {
+     "nl": "In de winter is {het meer} soms bevroren.",
+     "fr": "En hiver, {le lac} est parfois gelé."
+    },
+    {
+     "nl": "Hoe diep is {dit meer}?",
+     "fr": "Quelle est la profondeur de {ce lac} ?"
+    }
+   ]
   },
   {
    "nl": "de zee",
-   "fr": "la mer"
+   "fr": "la mer",
+   "ph": [
+    {
+     "nl": "In de zomer gaan we naar {de zee}.",
+     "fr": "En été, nous allons à {la mer}."
+    },
+    {
+     "nl": "{De zee} is vandaag niet rustig.",
+     "fr": "{La mer} n'est pas calme aujourd'hui."
+    },
+    {
+     "nl": "Het water van {de zee} is zout.",
+     "fr": "L'eau de {la mer} est salée."
+    },
+    {
+     "nl": "Kijk, er vaart een groot schip op {de zee}!",
+     "fr": "Regarde, un grand bateau navigue sur {la mer} !"
+    }
+   ]
   },
   {
    "nl": "het strand",
-   "fr": "la plage"
+   "fr": "la plage",
+   "ph": [
+    {
+     "nl": "De kinderen spelen op {het strand}.",
+     "fr": "Les enfants jouent sur {la plage}."
+    },
+    {
+     "nl": "Was het gisteren druk op {het strand}?",
+     "fr": "Y avait-il du monde sur {la plage} hier ?"
+    },
+    {
+     "nl": "Neem je handdoek mee naar {het strand}!",
+     "fr": "Prends ta serviette pour aller à {la plage} !"
+    },
+    {
+     "nl": "We hebben een zandkasteel op {het strand} gebouwd.",
+     "fr": "Nous avons construit un château de sable sur {la plage}."
+    }
+   ]
   },
   {
    "nl": "het zand",
-   "fr": "le sable"
+   "fr": "le sable",
+   "ph": [
+    {
+     "nl": "Er zit {zand} in mijn schoenen.",
+     "fr": "Il y a {du sable} dans mes chaussures."
+    },
+    {
+     "nl": "{Het zand} op het strand is heel warm.",
+     "fr": "{Le sable} de la plage est très chaud."
+    },
+    {
+     "nl": "De kinderen bouwen een kasteel van {zand}.",
+     "fr": "Les enfants construisent un château de {sable}."
+    },
+    {
+     "nl": "Schud {het zand} uit je handdoek voor je binnenkomt.",
+     "fr": "Secoue {le sable} de ta serviette avant d'entrer."
+    }
+   ]
   },
   {
    "nl": "de steen",
-   "fr": "la pierre"
+   "fr": "la pierre",
+   "ph": [
+    {
+     "nl": "Hij gooit {een steen} in het water.",
+     "fr": "Il jette {une pierre} dans l'eau."
+    },
+    {
+     "nl": "Pas op, {de stenen} zijn glad!",
+     "fr": "Attention, {les pierres} sont glissantes !"
+    },
+    {
+     "nl": "Het oude huis is van {steen} gemaakt.",
+     "fr": "La vieille maison est faite en {pierre}."
+    },
+    {
+     "nl": "Ik ben over {een steen} gestruikeld.",
+     "fr": "J'ai trébuché sur {une pierre}."
+    }
+   ]
   },
   {
    "nl": "de aarde",
-   "fr": "la terre"
+   "fr": "la terre",
+   "ph": [
+    {
+     "nl": "{De aarde} draait rond de zon.",
+     "fr": "{La Terre} tourne autour du soleil."
+    },
+    {
+     "nl": "Na het werk in de tuin zitten mijn handen vol {aarde}.",
+     "fr": "Après le jardinage, mes mains sont pleines de {terre}."
+    },
+    {
+     "nl": "Doe wat {aarde} in de pot voor de plant.",
+     "fr": "Mets un peu de {terre} dans le pot pour la plante."
+    },
+    {
+     "nl": "Hoeveel mensen wonen er op {de aarde}?",
+     "fr": "Combien de personnes vivent sur {la Terre} ?"
+    }
+   ]
   },
   {
    "nl": "het eiland",
-   "fr": "l'île"
+   "fr": "l'île",
+   "ph": [
+    {
+     "nl": "We gaan met de boot naar {het eiland}.",
+     "fr": "Nous allons sur {l'île} en bateau."
+    },
+    {
+     "nl": "Wonen er mensen op {dat eiland}?",
+     "fr": "Des gens vivent-ils sur {cette île} ?"
+    },
+    {
+     "nl": "{Een eiland} is een stuk land met water rondom.",
+     "fr": "{Une île} est un morceau de terre entouré d'eau."
+    },
+    {
+     "nl": "Is er geen brug naar {het eiland}?",
+     "fr": "N'y a-t-il pas de pont vers {l'île} ?"
+    }
+   ]
   },
   {
    "nl": "het dier",
-   "fr": "l'animal"
+   "fr": "l'animal",
+   "ph": [
+    {
+     "nl": "Welk {dier} vind jij het mooiste?",
+     "fr": "Quel {animal} trouves-tu le plus beau ?"
+    },
+    {
+     "nl": "In de zoo zagen we veel {dieren}.",
+     "fr": "Au zoo, nous avons vu beaucoup d'{animaux}."
+    },
+    {
+     "nl": "Vind je het goed om {dieren} in een kooi te houden?",
+     "fr": "Trouves-tu ça bien de garder {des animaux} en cage ?"
+    },
+    {
+     "nl": "Je mag {de dieren} op de boerderij niet aaien.",
+     "fr": "Tu ne peux pas caresser {les animaux} de la ferme."
+    }
+   ]
   },
   {
    "nl": "de hond",
-   "fr": "le chien"
+   "fr": "le chien",
+   "ph": [
+    {
+     "nl": "{De hond} slaapt naast de deur.",
+     "fr": "{Le chien} dort à côté de la porte."
+    },
+    {
+     "nl": "Heb jij {een hond} thuis?",
+     "fr": "As-tu {un chien} à la maison ?"
+    },
+    {
+     "nl": "Laat {de hond} niet los in het park!",
+     "fr": "Ne lâche pas {le chien} dans le parc !"
+    },
+    {
+     "nl": "Elke avond wandel ik met {de hond}.",
+     "fr": "Chaque soir, je promène {le chien}."
+    }
+   ]
   },
   {
    "nl": "de kat",
-   "fr": "le chat"
+   "fr": "le chat",
+   "ph": [
+    {
+     "nl": "{De kat} drinkt melk in de keuken.",
+     "fr": "{Le chat} boit du lait dans la cuisine."
+    },
+    {
+     "nl": "Onze buren hebben geen {kat}.",
+     "fr": "Nos voisins n'ont pas de {chat}."
+    },
+    {
+     "nl": "{Onze kat} spint als je hem aait.",
+     "fr": "{Notre chat} ronronne quand on le caresse."
+    },
+    {
+     "nl": "De muizen zijn bang voor {de kat}.",
+     "fr": "Les souris ont peur {du chat}."
+    }
+   ]
   },
   {
    "nl": "het paard",
-   "fr": "le cheval"
+   "fr": "le cheval",
+   "ph": [
+    {
+     "nl": "{Het paard} eet een appel uit mijn hand.",
+     "fr": "{Le cheval} mange une pomme dans ma main."
+    },
+    {
+     "nl": "Heb je ooit op {een paard} gereden?",
+     "fr": "Es-tu déjà monté sur {un cheval} ?"
+    },
+    {
+     "nl": "Wie mag vandaag op {het paard} rijden?",
+     "fr": "Qui peut monter {le cheval} aujourd'hui ?"
+    },
+    {
+     "nl": "{De paarden} trekken een kar door het dorp.",
+     "fr": "{Les chevaux} tirent une charrette dans le village."
+    }
+   ]
   },
   {
    "nl": "de koe",
-   "fr": "la vache"
+   "fr": "la vache",
+   "ph": [
+    {
+     "nl": "{De koe} geeft elke dag melk.",
+     "fr": "{La vache} donne du lait chaque jour."
+    },
+    {
+     "nl": "Hoeveel {koeien} staan er in de wei?",
+     "fr": "Combien de {vaches} y a-t-il dans la prairie ?"
+    },
+    {
+     "nl": "Kijk, {die koe} is zwart en wit!",
+     "fr": "Regarde, {cette vache} est noire et blanche !"
+    },
+    {
+     "nl": "De boer melkt {de koeien} twee keer per dag.",
+     "fr": "Le fermier trait {les vaches} deux fois par jour."
+    }
+   ]
   },
   {
    "nl": "het schaap",
-   "fr": "le mouton"
+   "fr": "le mouton",
+   "ph": [
+    {
+     "nl": "{De schapen} eten gras op de heuvel.",
+     "fr": "{Les moutons} mangent de l'herbe sur la colline."
+    },
+    {
+     "nl": "Heeft de boer ook {een schaap}?",
+     "fr": "Le fermier a-t-il aussi {un mouton} ?"
+    },
+    {
+     "nl": "Van de wol van {een schaap} maken we truien.",
+     "fr": "Avec la laine d'{un mouton}, on fait des pulls."
+    },
+    {
+     "nl": "Tel je {schapen} als je niet kunt slapen?",
+     "fr": "Comptes-tu {les moutons} quand tu n'arrives pas à dormir ?"
+    }
+   ]
   },
   {
    "nl": "het varken",
-   "fr": "le cochon"
+   "fr": "le cochon",
+   "ph": [
+    {
+     "nl": "{Het varken} ligt in de modder.",
+     "fr": "{Le cochon} est couché dans la boue."
+    },
+    {
+     "nl": "Wij hebben geen {varkens} op de boerderij.",
+     "fr": "Nous n'avons pas de {cochons} à la ferme."
+    },
+    {
+     "nl": "Ham en spek komen van {het varken}.",
+     "fr": "Le jambon et le lard viennent {du cochon}."
+    },
+    {
+     "nl": "Heb je {de varkens} horen knorren?",
+     "fr": "As-tu entendu {les cochons} grogner ?"
+    }
+   ]
   },
   {
    "nl": "de kip",
-   "fr": "la poule"
+   "fr": "la poule",
+   "ph": [
+    {
+     "nl": "{De kip} legt elke dag een ei.",
+     "fr": "{La poule} pond un œuf chaque jour."
+    },
+    {
+     "nl": "Hoeveel {kippen} heeft jouw oma?",
+     "fr": "Combien de {poules} ta grand-mère a-t-elle ?"
+    },
+    {
+     "nl": "Hebben {de kippen} vandaag eieren gelegd?",
+     "fr": "{Les poules} ont-elles pondu des œufs aujourd'hui ?"
+    },
+    {
+     "nl": "Sluit 's avonds {de kippen} op, anders komt de vos!",
+     "fr": "Enferme {les poules} le soir, sinon le renard viendra !"
+    }
+   ]
   },
   {
    "nl": "de haan",
-   "fr": "le coq"
+   "fr": "le coq",
+   "ph": [
+    {
+     "nl": "{De haan} kraait elke ochtend om zes uur.",
+     "fr": "{Le coq} chante chaque matin à six heures."
+    },
+    {
+     "nl": "Heb je {de haan} vanochtend niet gehoord?",
+     "fr": "Tu n'as pas entendu {le coq} ce matin ?"
+    },
+    {
+     "nl": "{De haan} heeft een rode kam op zijn kop.",
+     "fr": "{Le coq} a une crête rouge sur la tête."
+    },
+    {
+     "nl": "Wie roept er 's ochtends kukeleku? {De haan}!",
+     "fr": "Qui crie cocorico le matin ? {Le coq} !"
+    }
+   ]
   },
   {
    "nl": "de vogel",
-   "fr": "l'oiseau"
+   "fr": "l'oiseau",
+   "ph": [
+    {
+     "nl": "{Een vogel} zingt in de boom.",
+     "fr": "{Un oiseau} chante dans l'arbre."
+    },
+    {
+     "nl": "Welke {vogels} zie je in de winter?",
+     "fr": "Quels {oiseaux} vois-tu en hiver ?"
+    },
+    {
+     "nl": "In de herfst vliegen {de vogels} naar het zuiden.",
+     "fr": "En automne, {les oiseaux} volent vers le sud."
+    },
+    {
+     "nl": "{Een vogel} heeft een nest in onze dakgoot gebouwd.",
+     "fr": "{Un oiseau} a construit un nid dans notre gouttière."
+    }
+   ]
   },
   {
    "nl": "de muis",
-   "fr": "la souris"
+   "fr": "la souris",
+   "ph": [
+    {
+     "nl": "Er zit {een muis} in de keuken!",
+     "fr": "Il y a {une souris} dans la cuisine !"
+    },
+    {
+     "nl": "De kat heeft gisteren {een muis} gevangen.",
+     "fr": "Le chat a attrapé {une souris} hier."
+    },
+    {
+     "nl": "{De muis} eet een stukje kaas.",
+     "fr": "{La souris} mange un morceau de fromage."
+    },
+    {
+     "nl": "De kat loopt achter {de muis} aan.",
+     "fr": "Le chat court après {la souris}."
+    }
+   ]
   },
   {
    "nl": "de eend",
-   "fr": "le canard"
+   "fr": "le canard",
+   "ph": [
+    {
+     "nl": "{De eenden} zwemmen op het meer.",
+     "fr": "{Les canards} nagent sur le lac."
+    },
+    {
+     "nl": "Mogen we brood geven aan {de eend}?",
+     "fr": "Pouvons-nous donner du pain {au canard} ?"
+    },
+    {
+     "nl": "{De eend} zegt kwak kwak.",
+     "fr": "{Le canard} fait coin-coin."
+    },
+    {
+     "nl": "Waarom heeft {een eend} geen koude poten in het water?",
+     "fr": "Pourquoi {un canard} n'a-t-il pas froid aux pattes dans l'eau ?"
+    }
+   ]
   },
   {
    "nl": "het konijn",
-   "fr": "le lapin"
+   "fr": "le lapin",
+   "ph": [
+    {
+     "nl": "{Het konijn} eet een wortel.",
+     "fr": "{Le lapin} mange une carotte."
+    },
+    {
+     "nl": "Mijn broer wil {een konijn} als huisdier.",
+     "fr": "Mon frère veut {un lapin} comme animal de compagnie."
+    },
+    {
+     "nl": "{Het konijn} heeft lange oren.",
+     "fr": "{Le lapin} a de longues oreilles."
+    },
+    {
+     "nl": "{Ons konijn} is uit zijn hok ontsnapt.",
+     "fr": "{Notre lapin} s'est échappé de son clapier."
+    }
+   ]
   },
   {
    "nl": "de kikker",
-   "fr": "la grenouille"
+   "fr": "la grenouille",
+   "ph": [
+    {
+     "nl": "{De kikker} zit op een blad in de vijver.",
+     "fr": "{La grenouille} est assise sur une feuille dans l'étang."
+    },
+    {
+     "nl": "Hoor je {de kikkers} 's avonds bij de vijver?",
+     "fr": "Entends-tu {les grenouilles} le soir près de l'étang ?"
+    },
+    {
+     "nl": "{De kikker} kwaakt de hele nacht.",
+     "fr": "{La grenouille} coasse toute la nuit."
+    },
+    {
+     "nl": "Mijn broertje heeft {een kikker} bij de vijver gevangen.",
+     "fr": "Mon petit frère a attrapé {une grenouille} près de l'étang."
+    }
+   ]
   },
   {
    "nl": "de slang",
-   "fr": "le serpent"
+   "fr": "le serpent",
+   "ph": [
+    {
+     "nl": "Mijn zus is bang voor {slangen}.",
+     "fr": "Ma sœur a peur {des serpents}."
+    },
+    {
+     "nl": "Er lag {een slang} op het pad.",
+     "fr": "Il y avait {un serpent} sur le chemin."
+    },
+    {
+     "nl": "{Die slang} is niet giftig, je mag hem aanraken.",
+     "fr": "{Ce serpent} n'est pas venimeux, tu peux le toucher."
+    },
+    {
+     "nl": "{Een slang} heeft geen poten.",
+     "fr": "{Un serpent} n'a pas de pattes."
+    }
+   ]
   },
   {
    "nl": "de spin",
-   "fr": "l'araignée"
+   "fr": "l'araignée",
+   "ph": [
+    {
+     "nl": "Er zit {een spin} in de badkamer.",
+     "fr": "Il y a {une araignée} dans la salle de bain."
+    },
+    {
+     "nl": "Heb jij {de spin} buiten gezet?",
+     "fr": "As-tu mis {l'araignée} dehors ?"
+    },
+    {
+     "nl": "{De spin} maakt een web in de hoek.",
+     "fr": "{L'araignée} fait une toile dans le coin."
+    },
+    {
+     "nl": "Ben jij bang voor {spinnen}?",
+     "fr": "As-tu peur {des araignées} ?"
+    }
+   ]
   },
   {
    "nl": "de bij",
-   "fr": "l'abeille"
+   "fr": "l'abeille",
+   "ph": [
+    {
+     "nl": "{De bijen} maken honing in de zomer.",
+     "fr": "{Les abeilles} font du miel en été."
+    },
+    {
+     "nl": "Pas op, er zit {een bij} op je arm!",
+     "fr": "Attention, il y a {une abeille} sur ton bras !"
+    },
+    {
+     "nl": "{De bij} vliegt van bloem naar bloem.",
+     "fr": "{L'abeille} vole de fleur en fleur."
+    },
+    {
+     "nl": "Zonder {bijen} is er geen honing.",
+     "fr": "Sans {abeilles}, il n'y a pas de miel."
+    }
+   ]
   },
   {
    "nl": "de vlinder",
-   "fr": "le papillon"
+   "fr": "le papillon",
+   "ph": [
+    {
+     "nl": "{Een vlinder} zit op de bloem.",
+     "fr": "{Un papillon} est posé sur la fleur."
+    },
+    {
+     "nl": "Hoeveel {vlinders} zag je in de tuin?",
+     "fr": "Combien de {papillons} as-tu vus dans le jardin ?"
+    },
+    {
+     "nl": "Uit een rups wordt later {een vlinder}.",
+     "fr": "Une chenille devient plus tard {un papillon}."
+    },
+    {
+     "nl": "Vang {de vlinder} niet met je net!",
+     "fr": "N'attrape pas {le papillon} avec ton filet !"
+    }
+   ]
   },
   {
    "nl": "de mier",
-   "fr": "la fourmi"
+   "fr": "la fourmi",
+   "ph": [
+    {
+     "nl": "Er lopen {mieren} over de tafel.",
+     "fr": "{Des fourmis} marchent sur la table."
+    },
+    {
+     "nl": "{Een mier} is klein maar heel sterk.",
+     "fr": "{Une fourmi} est petite mais très forte."
+    },
+    {
+     "nl": "{De mieren} dragen samen een kruimel naar hun nest.",
+     "fr": "{Les fourmis} portent ensemble une miette jusqu'à leur nid."
+    },
+    {
+     "nl": "Laat geen suiker liggen, anders komen {de mieren}!",
+     "fr": "Ne laisse pas traîner de sucre, sinon {les fourmis} vont venir !"
+    }
+   ]
   },
   {
    "nl": "de wolf",
-   "fr": "le loup"
+   "fr": "le loup",
+   "ph": [
+    {
+     "nl": "{De wolf} huilt in de nacht.",
+     "fr": "{Le loup} hurle dans la nuit."
+    },
+    {
+     "nl": "Zijn er nog {wolven} in België?",
+     "fr": "Y a-t-il encore {des loups} en Belgique ?"
+    },
+    {
+     "nl": "In het sprookje eet {de wolf} de grootmoeder op.",
+     "fr": "Dans le conte, {le loup} mange la grand-mère."
+    },
+    {
+     "nl": "{Een wolf} lijkt op een grote, wilde hond.",
+     "fr": "{Un loup} ressemble à un grand chien sauvage."
+    }
+   ]
   },
   {
    "nl": "de vos",
-   "fr": "le renard"
+   "fr": "le renard",
+   "ph": [
+    {
+     "nl": "{De vos} heeft een kip gestolen.",
+     "fr": "{Le renard} a volé une poule."
+    },
+    {
+     "nl": "Zie je {de vos} aan de rand van het bos?",
+     "fr": "Vois-tu {le renard} à l'orée de la forêt ?"
+    },
+    {
+     "nl": "{De vos} heeft een rode vacht en een dikke staart.",
+     "fr": "{Le renard} a un pelage roux et une queue touffue."
+    },
+    {
+     "nl": "{Een vos} sluipt 's nachts rond het kippenhok.",
+     "fr": "{Un renard} rôde la nuit autour du poulailler."
+    }
+   ]
   },
   {
    "nl": "de vleugel",
-   "fr": "l'aile"
+   "fr": "l'aile",
+   "ph": [
+    {
+     "nl": "Een vlinder heeft vier {vleugels}.",
+     "fr": "Un papillon a quatre {ailes}."
+    },
+    {
+     "nl": "De zwaan spreidt {zijn vleugels} op het water.",
+     "fr": "Le cygne déploie {ses ailes} sur l'eau."
+    },
+    {
+     "nl": "Een pinguïn heeft {vleugels}, maar kan niet vliegen.",
+     "fr": "Un manchot a {des ailes}, mais ne peut pas voler."
+    },
+    {
+     "nl": "De vogel kan niet vliegen, want {zijn vleugel} is gebroken.",
+     "fr": "L'oiseau ne peut pas voler, car {son aile} est cassée."
+    }
+   ]
   },
   {
    "nl": "de tak",
-   "fr": "la branche"
+   "fr": "la branche",
+   "ph": [
+    {
+     "nl": "De vogel zit op {een tak}.",
+     "fr": "L'oiseau est posé sur {une branche}."
+    },
+    {
+     "nl": "Is {de tak} niet te dun om op te klimmen?",
+     "fr": "{La branche} n'est-elle pas trop fine pour grimper ?"
+    },
+    {
+     "nl": "Na de storm lagen er {takken} op de weg.",
+     "fr": "Après la tempête, il y avait {des branches} sur la route."
+    },
+    {
+     "nl": "Kun jij {die tak} afzagen?",
+     "fr": "Peux-tu scier {cette branche} ?"
+    }
+   ]
   },
   {
    "nl": "de stam",
-   "fr": "le tronc"
+   "fr": "le tronc",
+   "ph": [
+    {
+     "nl": "{De stam} van deze boom is heel dik.",
+     "fr": "{Le tronc} de cet arbre est très épais."
+    },
+    {
+     "nl": "De eekhoorn klom langs {de stam} naar boven.",
+     "fr": "L'écureuil est monté le long {du tronc}."
+    },
+    {
+     "nl": "De boom is omgevallen en {de stam} ligt over het pad.",
+     "fr": "L'arbre est tombé et {le tronc} est en travers du chemin."
+    },
+    {
+     "nl": "De ringen in {de stam} tonen hoe oud de boom is.",
+     "fr": "Les cernes dans {le tronc} montrent l'âge de l'arbre."
+    }
+   ]
   },
   {
    "nl": "het zaad",
-   "fr": "la graine"
+   "fr": "la graine",
+   "ph": [
+    {
+     "nl": "In de winter eten de vogels {de zaden}.",
+     "fr": "En hiver, les oiseaux mangent {les graines}."
+    },
+    {
+     "nl": "Heb je {het zaad} al in de aarde gestopt?",
+     "fr": "As-tu déjà mis {la graine} dans la terre ?"
+    },
+    {
+     "nl": "Uit {dit zaad} groeit later een zonnebloem.",
+     "fr": "De {cette graine} poussera plus tard un tournesol."
+    },
+    {
+     "nl": "Gooi {de zaden} niet weg, we planten ze volgend jaar.",
+     "fr": "Ne jette pas {les graines}, on les plante l'an prochain."
+    }
+   ]
   },
   {
    "nl": "de knop",
-   "fr": "le bourgeon"
+   "fr": "le bourgeon",
+   "ph": [
+    {
+     "nl": "In de lente zitten er {knoppen} aan de bomen.",
+     "fr": "Au printemps, il y a {des bourgeons} sur les arbres."
+    },
+    {
+     "nl": "Zie je {de knop} aan deze tak?",
+     "fr": "Vois-tu {le bourgeon} sur cette branche ?"
+    },
+    {
+     "nl": "{De knoppen} gaan open en worden bloemen.",
+     "fr": "{Les bourgeons} s'ouvrent et deviennent des fleurs."
+    },
+    {
+     "nl": "Door de vorst zijn {de knoppen} van de rozen bevroren.",
+     "fr": "À cause du gel, {les bourgeons} des roses ont gelé."
+    }
+   ]
   },
   {
    "nl": "de struik",
-   "fr": "le buisson"
+   "fr": "le buisson",
+   "ph": [
+    {
+     "nl": "Het konijn verstopt zich achter {een struik}.",
+     "fr": "Le lapin se cache derrière {un buisson}."
+    },
+    {
+     "nl": "Wie heeft {de struik} naast de deur geplant?",
+     "fr": "Qui a planté {le buisson} à côté de la porte ?"
+    },
+    {
+     "nl": "Er groeien bessen aan {die struik}.",
+     "fr": "Des baies poussent sur {ce buisson}."
+    },
+    {
+     "nl": "Pas op, {die struik} heeft scherpe doornen!",
+     "fr": "Attention, {ce buisson} a des épines pointues !"
+    }
+   ]
   },
   {
    "nl": "het onkruid",
-   "fr": "la mauvaise herbe"
+   "fr": "la mauvaise herbe",
+   "ph": [
+    {
+     "nl": "Zaterdag haal ik {het onkruid} uit de tuin.",
+     "fr": "Samedi, j'enlève {les mauvaises herbes} du jardin."
+    },
+    {
+     "nl": "Er groeit veel {onkruid} tussen de stenen.",
+     "fr": "Beaucoup de {mauvaises herbes} poussent entre les pierres."
+    },
+    {
+     "nl": "Als je niets doet, groeit {het onkruid} overal.",
+     "fr": "Si tu ne fais rien, {les mauvaises herbes} poussent partout."
+    },
+    {
+     "nl": "Is dit een bloem of {onkruid}?",
+     "fr": "Est-ce une fleur ou {une mauvaise herbe} ?"
+    }
+   ]
   },
   {
    "nl": "de modder",
-   "fr": "la boue"
+   "fr": "la boue",
+   "ph": [
+    {
+     "nl": "De hond heeft in {de modder} gespeeld.",
+     "fr": "Le chien a joué dans {la boue}."
+    },
+    {
+     "nl": "Mijn schoenen zitten vol {modder}.",
+     "fr": "Mes chaussures sont pleines de {boue}."
+    },
+    {
+     "nl": "Na de regen ligt er veel {modder} op het pad.",
+     "fr": "Après la pluie, il y a beaucoup de {boue} sur le chemin."
+    },
+    {
+     "nl": "Trek je laarzen aan, want {de modder} is diep!",
+     "fr": "Mets tes bottes, car {la boue} est profonde !"
+    }
+   ]
   },
   {
    "nl": "de klei",
-   "fr": "l'argile"
+   "fr": "l'argile",
+   "ph": [
+    {
+     "nl": "De kinderen maken een pot van {klei}.",
+     "fr": "Les enfants font un pot en {argile}."
+    },
+    {
+     "nl": "Bevat de grond in jullie tuin veel {klei}?",
+     "fr": "La terre de votre jardin contient-elle beaucoup d'{argile} ?"
+    },
+    {
+     "nl": "{Klei} is zacht als het nat is.",
+     "fr": "{L'argile} est molle quand elle est mouillée."
+    },
+    {
+     "nl": "In deze tuin is de grond zwaar door {de klei}.",
+     "fr": "Dans ce jardin, la terre est lourde à cause de {l'argile}."
+    }
+   ]
   },
   {
    "nl": "de rots",
-   "fr": "le rocher"
+   "fr": "le rocher",
+   "ph": [
+    {
+     "nl": "De meeuw zit op {een rots}.",
+     "fr": "La mouette est posée sur {un rocher}."
+    },
+    {
+     "nl": "Mogen we op {de rotsen} klimmen?",
+     "fr": "Pouvons-nous grimper sur {les rochers} ?"
+    },
+    {
+     "nl": "De golven slaan tegen {de rotsen}.",
+     "fr": "Les vagues frappent contre {les rochers}."
+    },
+    {
+     "nl": "{Die rots} is te hoog en te steil om te beklimmen.",
+     "fr": "{Ce rocher} est trop haut et trop raide pour l'escalader."
+    }
+   ]
   },
   {
    "nl": "de grot",
-   "fr": "la grotte"
+   "fr": "la grotte",
+   "ph": [
+    {
+     "nl": "In {de grot} is het donker en koud.",
+     "fr": "Dans {la grotte}, il fait sombre et froid."
+    },
+    {
+     "nl": "Wonen er vleermuizen in {deze grot}?",
+     "fr": "Des chauves-souris vivent-elles dans {cette grotte} ?"
+    },
+    {
+     "nl": "Neem een lamp mee als je {de grot} ingaat.",
+     "fr": "Prends une lampe si tu entres dans {la grotte}."
+    },
+    {
+     "nl": "Vroeger woonden mensen in {grotten}.",
+     "fr": "Autrefois, les hommes vivaient dans {des grottes}."
+    }
+   ]
   },
   {
    "nl": "de vallei",
-   "fr": "la vallée"
+   "fr": "la vallée",
+   "ph": [
+    {
+     "nl": "Het dorp ligt in {de vallei}.",
+     "fr": "Le village se trouve dans {la vallée}."
+    },
+    {
+     "nl": "Vanaf de berg zagen we {de vallei}.",
+     "fr": "Depuis la montagne, nous avons vu {la vallée}."
+    },
+    {
+     "nl": "Tussen de twee bergen ligt {een vallei}.",
+     "fr": "Entre les deux montagnes se trouve {une vallée}."
+    },
+    {
+     "nl": "Daal je met ons af naar {de vallei}?",
+     "fr": "Tu descends avec nous dans {la vallée} ?"
+    }
+   ]
   },
   {
    "nl": "de kust",
-   "fr": "la côte"
+   "fr": "la côte",
+   "ph": [
+    {
+     "nl": "Dit weekend gaan we naar {de kust}.",
+     "fr": "Ce week-end, nous allons à {la côte}."
+    },
+    {
+     "nl": "Heb je een appartement aan {de kust}?",
+     "fr": "As-tu un appartement à {la côte} ?"
+    },
+    {
+     "nl": "Oostende en Knokke liggen aan {de kust}.",
+     "fr": "Ostende et Knokke se trouvent à {la côte}."
+    },
+    {
+     "nl": "Hoe lang is {de kust} van België?",
+     "fr": "Quelle est la longueur de {la côte} belge ?"
+    }
+   ]
   },
   {
    "nl": "de golf",
-   "fr": "la vague"
+   "fr": "la vague",
+   "ph": [
+    {
+     "nl": "{De golven} zijn vandaag erg hoog.",
+     "fr": "{Les vagues} sont très hautes aujourd'hui."
+    },
+    {
+     "nl": "{Een golf} heeft mijn zandkasteel kapotgemaakt.",
+     "fr": "{Une vague} a détruit mon château de sable."
+    },
+    {
+     "nl": "De surfers wachten op {de golven}.",
+     "fr": "Les surfeurs attendent {les vagues}."
+    },
+    {
+     "nl": "Ga niet te ver in zee, {de golven} zijn te sterk!",
+     "fr": "Ne va pas trop loin dans la mer, {les vagues} sont trop fortes !"
+    }
+   ]
   },
   {
    "nl": "de bron",
-   "fr": "la source"
+   "fr": "la source",
+   "ph": [
+    {
+     "nl": "Het water van {deze bron} is heel zuiver.",
+     "fr": "L'eau de {cette source} est très pure."
+    },
+    {
+     "nl": "Waar is {de bron} van de rivier?",
+     "fr": "Où est {la source} de la rivière ?"
+    },
+    {
+     "nl": "Hier begint de Maas: dit is {de bron}.",
+     "fr": "Ici commence la Meuse : c'est {la source}."
+    },
+    {
+     "nl": "Mogen we water drinken uit {de bron}?",
+     "fr": "Pouvons-nous boire l'eau de {la source} ?"
+    }
+   ]
   },
   {
    "nl": "de beek",
-   "fr": "le ruisseau"
+   "fr": "le ruisseau",
+   "ph": [
+    {
+     "nl": "Achter ons huis stroomt {een beek}.",
+     "fr": "Derrière notre maison coule {un ruisseau}."
+    },
+    {
+     "nl": "De kinderen zijn over {de beek} gesprongen.",
+     "fr": "Les enfants ont sauté par-dessus {le ruisseau}."
+    },
+    {
+     "nl": "{De beek} is zo smal dat je erover kunt stappen.",
+     "fr": "{Le ruisseau} est si étroit qu'on peut l'enjamber."
+    },
+    {
+     "nl": "Hoor je {de beek} niet kabbelen?",
+     "fr": "N'entends-tu pas {le ruisseau} murmurer ?"
+    }
+   ]
   },
   {
    "nl": "het moeras",
-   "fr": "le marais"
+   "fr": "le marais",
+   "ph": [
+    {
+     "nl": "In {het moeras} leven veel kikkers.",
+     "fr": "Beaucoup de grenouilles vivent dans {le marais}."
+    },
+    {
+     "nl": "Loop niet in {het moeras}, het is gevaarlijk!",
+     "fr": "Ne marche pas dans {le marais}, c'est dangereux !"
+    },
+    {
+     "nl": "De grond in {het moeras} is nat en zacht.",
+     "fr": "Dans {le marais}, le sol est mouillé et mou."
+    },
+    {
+     "nl": "Mijn laars is in {het moeras} blijven steken.",
+     "fr": "Ma botte est restée coincée dans {le marais}."
+    }
+   ]
   },
   {
    "nl": "de woestijn",
-   "fr": "le désert"
+   "fr": "le désert",
+   "ph": [
+    {
+     "nl": "In {de woestijn} regent het bijna nooit.",
+     "fr": "Dans {le désert}, il ne pleut presque jamais."
+    },
+    {
+     "nl": "Ben jij al in {een woestijn} geweest?",
+     "fr": "Es-tu déjà allé dans {un désert} ?"
+    },
+    {
+     "nl": "De Sahara is {een woestijn} in Afrika.",
+     "fr": "Le Sahara est {un désert} en Afrique."
+    },
+    {
+     "nl": "Kamelen kunnen lang zonder water in {de woestijn}.",
+     "fr": "Les chameaux peuvent rester longtemps sans eau dans {le désert}."
+    }
+   ]
   },
   {
    "nl": "de horizon",
-   "fr": "l'horizon"
+   "fr": "l'horizon",
+   "ph": [
+    {
+     "nl": "De zon verdwijnt achter {de horizon}.",
+     "fr": "Le soleil disparaît derrière {l'horizon}."
+    },
+    {
+     "nl": "Zie je dat schip aan {de horizon}?",
+     "fr": "Vois-tu ce bateau à {l'horizon} ?"
+    },
+    {
+     "nl": "Bij helder weer kun je tot aan {de horizon} kijken.",
+     "fr": "Par temps clair, on peut voir jusqu'à {l'horizon}."
+    },
+    {
+     "nl": "'s Ochtends komt de zon op boven {de horizon}.",
+     "fr": "Le matin, le soleil se lève au-dessus de {l'horizon}."
+    }
+   ]
   },
   {
    "nl": "de leeuw",
-   "fr": "le lion"
+   "fr": "le lion",
+   "ph": [
+    {
+     "nl": "{De leeuw} slaapt in de schaduw.",
+     "fr": "{Le lion} dort à l'ombre."
+    },
+    {
+     "nl": "Heb je ooit in de zoo {een leeuw} gezien?",
+     "fr": "As-tu déjà vu {un lion} au zoo ?"
+    },
+    {
+     "nl": "{De leeuw} is de koning van de dieren.",
+     "fr": "{Le lion} est le roi des animaux."
+    },
+    {
+     "nl": "Hoor je {de leeuw} brullen?",
+     "fr": "Entends-tu {le lion} rugir ?"
+    }
+   ]
   },
   {
    "nl": "de tijger",
-   "fr": "le tigre"
+   "fr": "le tigre",
+   "ph": [
+    {
+     "nl": "{De tijger} heeft oranje en zwarte strepen.",
+     "fr": "{Le tigre} a des rayures orange et noires."
+    },
+    {
+     "nl": "Leven er {tijgers} in Afrika?",
+     "fr": "Y a-t-il {des tigres} en Afrique ?"
+    },
+    {
+     "nl": "{De tijger} is de grootste kat ter wereld.",
+     "fr": "{Le tigre} est le plus grand félin du monde."
+    },
+    {
+     "nl": "In de jungle van India jaagt {een tijger} op herten.",
+     "fr": "Dans la jungle indienne, {un tigre} chasse les cerfs."
+    }
+   ]
   },
   {
    "nl": "de beer",
-   "fr": "l'ours"
+   "fr": "l'ours",
+   "ph": [
+    {
+     "nl": "{De beer} eet graag honing.",
+     "fr": "{L'ours} aime manger du miel."
+    },
+    {
+     "nl": "Er wonen geen {beren} in dit bos.",
+     "fr": "Il n'y a pas d'{ours} dans cette forêt."
+    },
+    {
+     "nl": "In de winter slaapt {de beer} in zijn hol.",
+     "fr": "En hiver, {l'ours} dort dans sa tanière."
+    },
+    {
+     "nl": "Ren niet weg als je {een beer} ziet!",
+     "fr": "Ne t'enfuis pas si tu vois {un ours} !"
+    }
+   ]
   },
   {
    "nl": "de olifant",
-   "fr": "l'éléphant"
+   "fr": "l'éléphant",
+   "ph": [
+    {
+     "nl": "{Een olifant} heeft een lange slurf.",
+     "fr": "{Un éléphant} a une longue trompe."
+    },
+    {
+     "nl": "Hoeveel weegt {de olifant} in de zoo?",
+     "fr": "Combien pèse {l'éléphant} du zoo ?"
+    },
+    {
+     "nl": "{De olifant} spuit water met zijn slurf.",
+     "fr": "{L'éléphant} projette de l'eau avec sa trompe."
+    },
+    {
+     "nl": "{Olifanten} vergeten nooit iets, zegt men.",
+     "fr": "On dit que {les éléphants} n'oublient jamais rien."
+    }
+   ]
   },
   {
    "nl": "de aap",
-   "fr": "le singe"
+   "fr": "le singe",
+   "ph": [
+    {
+     "nl": "{De aap} klimt in de boom.",
+     "fr": "{Le singe} grimpe dans l'arbre."
+    },
+    {
+     "nl": "Geef geen eten aan {de apen}!",
+     "fr": "Ne donne pas à manger {aux singes} !"
+    },
+    {
+     "nl": "{De aap} eet een banaan.",
+     "fr": "{Le singe} mange une banane."
+    },
+    {
+     "nl": "{Apen} lijken soms echt op mensen.",
+     "fr": "{Les singes} ressemblent parfois vraiment aux humains."
+    }
+   ]
   },
   {
    "nl": "de giraf",
-   "fr": "la girafe"
+   "fr": "la girafe",
+   "ph": [
+    {
+     "nl": "{De giraf} eet bladeren van hoge bomen.",
+     "fr": "{La girafe} mange les feuilles des grands arbres."
+    },
+    {
+     "nl": "Waarom heeft {een giraf} zo'n lange nek?",
+     "fr": "Pourquoi {une girafe} a-t-elle un cou si long ?"
+    },
+    {
+     "nl": "{De giraf} is het hoogste dier ter wereld.",
+     "fr": "{La girafe} est l'animal le plus grand du monde."
+    },
+    {
+     "nl": "Kan {een giraf} slapen terwijl ze staat?",
+     "fr": "{Une girafe} peut-elle dormir debout ?"
+    }
+   ]
   },
   {
    "nl": "het hert",
-   "fr": "le cerf"
+   "fr": "le cerf",
+   "ph": [
+    {
+     "nl": "In het bos zagen we {een hert}.",
+     "fr": "Dans la forêt, nous avons vu {un cerf}."
+    },
+    {
+     "nl": "{Het hert} drinkt water uit de beek.",
+     "fr": "{Le cerf} boit de l'eau dans le ruisseau."
+    },
+    {
+     "nl": "{Het hert} heeft een groot gewei.",
+     "fr": "{Le cerf} a de grands bois."
+    },
+    {
+     "nl": "Rij langzaam, er kunnen {herten} oversteken!",
+     "fr": "Roule lentement, {des cerfs} peuvent traverser !"
+    }
+   ]
   },
   {
    "nl": "de egel",
-   "fr": "le hérisson"
+   "fr": "le hérisson",
+   "ph": [
+    {
+     "nl": "Er woont {een egel} in onze tuin.",
+     "fr": "{Un hérisson} vit dans notre jardin."
+    },
+    {
+     "nl": "Waarom slaapt {de egel} in de winter?",
+     "fr": "Pourquoi {le hérisson} dort-il en hiver ?"
+    },
+    {
+     "nl": "{Een egel} heeft heel veel stekels.",
+     "fr": "{Un hérisson} a énormément de piquants."
+    },
+    {
+     "nl": "Raak {de egel} niet aan, hij prikt!",
+     "fr": "Ne touche pas {le hérisson}, il pique !"
+    }
+   ]
   },
   {
    "nl": "de eekhoorn",
-   "fr": "l'écureuil"
+   "fr": "l'écureuil",
+   "ph": [
+    {
+     "nl": "{De eekhoorn} verstopt nootjes in de grond.",
+     "fr": "{L'écureuil} cache des noisettes dans la terre."
+    },
+    {
+     "nl": "Heb je {de eekhoorn} in de boom gezien?",
+     "fr": "As-tu vu {l'écureuil} dans l'arbre ?"
+    },
+    {
+     "nl": "{Een eekhoorn} springt van tak naar tak.",
+     "fr": "{Un écureuil} saute de branche en branche."
+    },
+    {
+     "nl": "Wat eet {een eekhoorn} in de winter? Nootjes!",
+     "fr": "Que mange {un écureuil} en hiver ? Des noisettes !"
+    }
+   ]
   },
   {
    "nl": "de rat",
-   "fr": "le rat"
+   "fr": "le rat",
+   "ph": [
+    {
+     "nl": "Gisteren liep er {een rat} door de kelder.",
+     "fr": "Hier, {un rat} courait dans la cave."
+    },
+    {
+     "nl": "{Ratten} zijn slimme dieren.",
+     "fr": "{Les rats} sont des animaux intelligents."
+    },
+    {
+     "nl": "{De rat} heeft een lange, kale staart.",
+     "fr": "{Le rat} a une longue queue sans poils."
+    },
+    {
+     "nl": "{Een rat} is groter dan een muis.",
+     "fr": "{Un rat} est plus grand qu'une souris."
+    }
+   ]
   },
   {
    "nl": "de mol",
-   "fr": "la taupe"
+   "fr": "la taupe",
+   "ph": [
+    {
+     "nl": "{De mol} graaft gangen onder het gras.",
+     "fr": "{La taupe} creuse des galeries sous l'herbe."
+    },
+    {
+     "nl": "Is er {een mol} in je tuin?",
+     "fr": "Y a-t-il {une taupe} dans ton jardin ?"
+    },
+    {
+     "nl": "{Een mol} ziet bijna niets, maar ruikt heel goed.",
+     "fr": "{Une taupe} ne voit presque rien, mais sent très bien."
+    },
+    {
+     "nl": "Wie heeft die hoopjes aarde in het gras gemaakt? {Een mol}!",
+     "fr": "Qui a fait ces tas de terre dans l'herbe ? {Une taupe} !"
+    }
+   ]
   },
   {
    "nl": "de vleermuis",
-   "fr": "la chauve-souris"
+   "fr": "la chauve-souris",
+   "ph": [
+    {
+     "nl": "{De vleermuis} vliegt alleen 's nachts.",
+     "fr": "{La chauve-souris} vole seulement la nuit."
+    },
+    {
+     "nl": "Gisteren zagen we {vleermuizen} in de grot.",
+     "fr": "Hier, nous avons vu {des chauves-souris} dans la grotte."
+    },
+    {
+     "nl": "Overdag hangt {de vleermuis} ondersteboven te slapen.",
+     "fr": "Le jour, {la chauve-souris} dort la tête en bas."
+    },
+    {
+     "nl": "Is {een vleermuis} een vogel of een zoogdier?",
+     "fr": "{Une chauve-souris} est-elle un oiseau ou un mammifère ?"
+    }
+   ]
   },
   {
    "nl": "de uil",
-   "fr": "le hibou"
+   "fr": "le hibou",
+   "ph": [
+    {
+     "nl": "{De uil} jaagt 's nachts op muizen.",
+     "fr": "{Le hibou} chasse les souris la nuit."
+    },
+    {
+     "nl": "Heb jij ooit {een uil} gehoord?",
+     "fr": "As-tu déjà entendu {un hibou} ?"
+    },
+    {
+     "nl": "{De uil} roept oehoe in het donker.",
+     "fr": "{Le hibou} fait hou-hou dans le noir."
+    },
+    {
+     "nl": "{Een uil} kan zijn kop bijna helemaal omdraaien.",
+     "fr": "{Un hibou} peut tourner sa tête presque complètement."
+    }
+   ]
   },
   {
    "nl": "de duif",
-   "fr": "le pigeon"
+   "fr": "le pigeon",
+   "ph": [
+    {
+     "nl": "Er zitten veel {duiven} op het plein.",
+     "fr": "Il y a beaucoup de {pigeons} sur la place."
+    },
+    {
+     "nl": "{De duif} eet de kruimels van mijn brood.",
+     "fr": "{Le pigeon} mange les miettes de mon pain."
+    },
+    {
+     "nl": "{De duiven} op het dak koeren de hele dag.",
+     "fr": "{Les pigeons} sur le toit roucoulent toute la journée."
+    },
+    {
+     "nl": "Vroeger brachten {duiven} brieven rond.",
+     "fr": "Autrefois, {des pigeons} portaient des lettres."
+    }
+   ]
   },
   {
    "nl": "de zwaan",
-   "fr": "le cygne"
+   "fr": "le cygne",
+   "ph": [
+    {
+     "nl": "{De zwaan} zwemt op het meer.",
+     "fr": "{Le cygne} nage sur le lac."
+    },
+    {
+     "nl": "Kan {een zwaan} gevaarlijk zijn?",
+     "fr": "{Un cygne} peut-il être dangereux ?"
+    },
+    {
+     "nl": "{Een zwaan} heeft een lange, witte hals.",
+     "fr": "{Un cygne} a un long cou blanc."
+    },
+    {
+     "nl": "Kom niet te dicht bij {de zwanen} met hun jongen!",
+     "fr": "Ne t'approche pas trop {des cygnes} avec leurs petits !"
+    }
+   ]
   },
   {
    "nl": "de meeuw",
-   "fr": "la mouette"
+   "fr": "la mouette",
+   "ph": [
+    {
+     "nl": "{De meeuwen} vliegen boven het strand.",
+     "fr": "{Les mouettes} volent au-dessus de la plage."
+    },
+    {
+     "nl": "{Een meeuw} heeft mijn frietjes gestolen!",
+     "fr": "{Une mouette} a volé mes frites !"
+    },
+    {
+     "nl": "Aan zee hoor je overal {meeuwen} krijsen.",
+     "fr": "À la mer, on entend partout {des mouettes} crier."
+    },
+    {
+     "nl": "Laat je boterham niet liggen, {de meeuwen} pakken hem!",
+     "fr": "Ne laisse pas traîner ta tartine, {les mouettes} vont la prendre !"
+    }
+   ]
   },
   {
    "nl": "de wesp",
-   "fr": "la guêpe"
+   "fr": "la guêpe",
+   "ph": [
+    {
+     "nl": "Er vliegt {een wesp} rond mijn glas.",
+     "fr": "{Une guêpe} vole autour de mon verre."
+    },
+    {
+     "nl": "Ben jij ooit door {een wesp} gestoken?",
+     "fr": "As-tu déjà été piqué par {une guêpe} ?"
+    },
+    {
+     "nl": "{Een wesp} kan steken, maar maakt geen honing.",
+     "fr": "{Une guêpe} peut piquer, mais ne fait pas de miel."
+    },
+    {
+     "nl": "In de zomer komen {de wespen} op onze limonade af.",
+     "fr": "En été, {les guêpes} viennent sur notre limonade."
+    }
+   ]
   },
   {
    "nl": "de mug",
-   "fr": "le moustique"
+   "fr": "le moustique",
+   "ph": [
+    {
+     "nl": "{Een mug} heeft me gisteren gestoken.",
+     "fr": "{Un moustique} m'a piqué hier."
+    },
+    {
+     "nl": "Waarom zijn er zoveel {muggen} bij het water?",
+     "fr": "Pourquoi y a-t-il autant de {moustiques} près de l'eau ?"
+    },
+    {
+     "nl": "'s Nachts hoor ik {een mug} zoemen bij mijn oor.",
+     "fr": "La nuit, j'entends {un moustique} bourdonner près de mon oreille."
+    },
+    {
+     "nl": "Heb je spray tegen {muggen} meegebracht?",
+     "fr": "As-tu apporté du spray contre {les moustiques} ?"
+    }
+   ]
   },
   {
    "nl": "de vlieg",
-   "fr": "la mouche"
+   "fr": "la mouche",
+   "ph": [
+    {
+     "nl": "Er zit {een vlieg} op mijn boterham.",
+     "fr": "Il y a {une mouche} sur ma tartine."
+    },
+    {
+     "nl": "Doe het raam dicht, anders komen {de vliegen} binnen.",
+     "fr": "Ferme la fenêtre, sinon {les mouches} vont entrer."
+    },
+    {
+     "nl": "{De vlieg} zoemt rond de lamp.",
+     "fr": "{La mouche} bourdonne autour de la lampe."
+    },
+    {
+     "nl": "Kun jij {die vlieg} met de krant doodslaan?",
+     "fr": "Peux-tu tuer {cette mouche} avec le journal ?"
+    }
+   ]
   },
   {
    "nl": "de staart",
-   "fr": "la queue"
+   "fr": "la queue",
+   "ph": [
+    {
+     "nl": "De hond kwispelt met {zijn staart}.",
+     "fr": "Le chien remue {la queue}."
+    },
+    {
+     "nl": "{De staart} van de kat is heel lang.",
+     "fr": "{La queue} du chat est très longue."
+    },
+    {
+     "nl": "Trek de kat niet aan {zijn staart}!",
+     "fr": "Ne tire pas le chat par {la queue} !"
+    },
+    {
+     "nl": "De aap hangt met {zijn staart} aan de tak.",
+     "fr": "Le singe se suspend à la branche par {sa queue}."
+    }
+   ]
   },
   {
    "nl": "de poot",
-   "fr": "la patte"
+   "fr": "la patte",
+   "ph": [
+    {
+     "nl": "De hond heeft pijn aan {zijn poot}.",
+     "fr": "Le chien a mal à {la patte}."
+    },
+    {
+     "nl": "Hoeveel {poten} heeft een spin?",
+     "fr": "Combien de {pattes} a une araignée ?"
+    },
+    {
+     "nl": "De kat landt altijd op {zijn poten}.",
+     "fr": "Le chat retombe toujours sur {ses pattes}."
+    },
+    {
+     "nl": "Het hondje geeft me {zijn poot}.",
+     "fr": "Le petit chien me donne {la patte}."
+    }
+   ]
   },
   {
    "nl": "de veer",
-   "fr": "la plume"
+   "fr": "la plume",
+   "ph": [
+    {
+     "nl": "Ik heb {een veer} in de tuin gevonden.",
+     "fr": "J'ai trouvé {une plume} dans le jardin."
+    },
+    {
+     "nl": "{De veren} van de zwaan zijn wit.",
+     "fr": "{Les plumes} du cygne sont blanches."
+    },
+    {
+     "nl": "Een vogel heeft {veren}, geen haar.",
+     "fr": "Un oiseau a {des plumes}, pas des poils."
+    },
+    {
+     "nl": "Mijn kussen zit vol {veren}.",
+     "fr": "Mon oreiller est rempli de {plumes}."
+    }
+   ]
   },
   {
    "nl": "kijken",
    "fr": "regarder",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Wij {kijken} naar de vogels in de tuin.",
+     "fr": "Nous {regardons} les oiseaux dans le jardin."
+    },
+    {
+     "nl": "Heb je naar de olifanten {gekeken}?",
+     "fr": "As-tu {regardé} les éléphants ?"
+    },
+    {
+     "nl": "{Kijk} eens naar die mooie vlinder!",
+     "fr": "{Regarde} ce beau papillon !"
+    },
+    {
+     "nl": "Ik wil vanavond naar de sterren {kijken}.",
+     "fr": "Je veux {regarder} les étoiles ce soir."
+    }
+   ]
   },
   {
    "nl": "luisteren",
    "fr": "écouter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Ik {luister} graag naar de vogels.",
+     "fr": "J'aime {écouter} les oiseaux."
+    },
+    {
+     "nl": "{Luister} je naar het geluid van de zee?",
+     "fr": "{Écoutes}-tu le bruit de la mer ?"
+    },
+    {
+     "nl": "Je moet goed {luisteren}, dan hoor je de uil.",
+     "fr": "Tu dois bien {écouter}, alors tu entendras le hibou."
+    },
+    {
+     "nl": "Hij {luisterde} niet naar de gids in het bos.",
+     "fr": "Il n'{écoutait} pas le guide dans la forêt."
+    }
+   ]
   },
   {
    "nl": "bloeien",
    "fr": "fleurir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "In april {bloeien} de appelbomen.",
+     "fr": "En avril, les pommiers {fleurissent}."
+    },
+    {
+     "nl": "Heeft de roos al {gebloeid}?",
+     "fr": "La rose a-t-elle déjà {fleuri} ?"
+    },
+    {
+     "nl": "Deze plant zal pas in de zomer {bloeien}.",
+     "fr": "Cette plante ne va {fleurir} qu'en été."
+    },
+    {
+     "nl": "De tulpen {bloeiden} vorig jaar niet.",
+     "fr": "Les tulipes n'ont pas {fleuri} l'année dernière."
+    }
+   ]
   },
   {
    "nl": "planten",
    "fr": "planter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Wij {planten} een boom in de tuin.",
+     "fr": "Nous {plantons} un arbre dans le jardin."
+    },
+    {
+     "nl": "Wie heeft die bloemen {geplant}?",
+     "fr": "Qui a {planté} ces fleurs ?"
+    },
+    {
+     "nl": "Morgen gaan we tulpen {planten}.",
+     "fr": "Demain, nous allons {planter} des tulipes."
+    },
+    {
+     "nl": "{Plant} de boom niet te dicht bij het huis!",
+     "fr": "Ne {plante} pas l'arbre trop près de la maison !"
+    }
+   ]
   },
   {
    "nl": "zaaien",
    "fr": "semer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "In maart {zaaien} we wortelen.",
+     "fr": "En mars, nous {semons} des carottes."
+    },
+    {
+     "nl": "Heb je het gras al {gezaaid}?",
+     "fr": "As-tu déjà {semé} le gazon ?"
+    },
+    {
+     "nl": "Je moet de zaadjes niet te diep {zaaien}.",
+     "fr": "Il ne faut pas {semer} les graines trop profond."
+    },
+    {
+     "nl": "Vorige week {zaaide} de boer graan op het veld.",
+     "fr": "La semaine dernière, le fermier {a semé} du blé dans le champ."
+    }
+   ]
   },
   {
    "nl": "oogsten",
    "fr": "récolter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "In september {oogsten} we de appels.",
+     "fr": "En septembre, nous {récoltons} les pommes."
+    },
+    {
+     "nl": "Heeft de boer de aardappelen al {geoogst}?",
+     "fr": "Le fermier a-t-il déjà {récolté} les pommes de terre ?"
+    },
+    {
+     "nl": "Wanneer gaan jullie de tomaten {oogsten}?",
+     "fr": "Quand allez-vous {récolter} les tomates ?"
+    },
+    {
+     "nl": "Door de droogte {oogstte} de boer weinig graan.",
+     "fr": "À cause de la sécheresse, le fermier {a récolté} peu de blé."
+    }
+   ]
   },
   {
    "nl": "blaffen",
    "fr": "aboyer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De hond {blaft} naar de postbode.",
+     "fr": "Le chien {aboie} après le facteur."
+    },
+    {
+     "nl": "Waarom {blafte} je hond de hele nacht?",
+     "fr": "Pourquoi ton chien {aboyait}-il toute la nuit ?"
+    },
+    {
+     "nl": "Onze hond {blaft} nooit naar andere honden.",
+     "fr": "Notre chien n'{aboie} jamais après les autres chiens."
+    },
+    {
+     "nl": "Hou op met {blaffen}, Max!",
+     "fr": "Arrête d'{aboyer}, Max !"
+    }
+   ]
   },
   {
    "nl": "miauwen",
    "fr": "miauler",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De kat {miauwt} voor de deur.",
+     "fr": "Le chat {miaule} devant la porte."
+    },
+    {
+     "nl": "Hoorde je de kat niet {miauwen}?",
+     "fr": "Tu n'as pas entendu le chat {miauler} ?"
+    },
+    {
+     "nl": "Mijn kat begint te {miauwen} als hij honger heeft.",
+     "fr": "Mon chat commence à {miauler} quand il a faim."
+    },
+    {
+     "nl": "Waarom {miauwde} de poes zo hard vannacht?",
+     "fr": "Pourquoi la chatte {miaulait}-elle si fort cette nuit ?"
+    }
+   ]
   },
   {
    "nl": "bijten",
    "fr": "mordre",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Pas op, die hond {bijt}!",
+     "fr": "Attention, ce chien {mord} !"
+    },
+    {
+     "nl": "Het paard heeft mij in mijn arm {gebeten}.",
+     "fr": "Le cheval m'a {mordu} au bras."
+    },
+    {
+     "nl": "Een slang kan {bijten}, dus raak hem niet aan.",
+     "fr": "Un serpent peut {mordre}, alors ne le touche pas."
+    },
+    {
+     "nl": "{Bijt} je hond als je hem aait?",
+     "fr": "Ton chien {mord}-il quand tu le caresses ?"
+    }
+   ]
   },
   {
    "nl": "krabben",
    "fr": "griffer",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De kat {krabt} aan de deur.",
+     "fr": "Le chat {griffe} la porte."
+    },
+    {
+     "nl": "Heeft de kat je {gekrabd}?",
+     "fr": "Le chat t'a-t-il {griffé} ?"
+    },
+    {
+     "nl": "Knip de nagels van je kat, anders gaat hij {krabben}.",
+     "fr": "Coupe les griffes de ton chat, sinon il va {griffer}."
+    },
+    {
+     "nl": "Gisteren {krabde} de kat aan de nieuwe bank.",
+     "fr": "Hier, le chat {a griffé} le nouveau canapé."
+    }
+   ]
   },
   {
    "nl": "zwemmen",
    "fr": "nager",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De eenden {zwemmen} op de rivier.",
+     "fr": "Les canards {nagent} sur la rivière."
+    },
+    {
+     "nl": "Heb je vandaag in de zee {gezwommen}?",
+     "fr": "As-tu {nagé} dans la mer aujourd'hui ?"
+    },
+    {
+     "nl": "Kun jij al {zwemmen} zonder bandjes?",
+     "fr": "Sais-tu déjà {nager} sans brassards ?"
+    },
+    {
+     "nl": "{Zwem} niet te ver, de zee is gevaarlijk!",
+     "fr": "Ne {nage} pas trop loin, la mer est dangereuse !"
+    }
+   ]
   },
   {
    "nl": "springen",
    "fr": "sauter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De kikker {springt} in het water.",
+     "fr": "La grenouille {saute} dans l'eau."
+    },
+    {
+     "nl": "Het paard is over de beek {gesprongen}.",
+     "fr": "Le cheval a {sauté} par-dessus le ruisseau."
+    },
+    {
+     "nl": "Kun jij over die sloot {springen}?",
+     "fr": "Peux-tu {sauter} par-dessus ce fossé ?"
+    },
+    {
+     "nl": "{Spring} niet in het water, het is te ondiep!",
+     "fr": "Ne {saute} pas dans l'eau, ce n'est pas assez profond !"
+    }
+   ]
   },
   {
    "nl": "kruipen",
    "fr": "ramper",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De slang {kruipt} door het gras.",
+     "fr": "Le serpent {rampe} dans l'herbe."
+    },
+    {
+     "nl": "Ik zag een rups over het blad {kruipen}.",
+     "fr": "J'ai vu une chenille {ramper} sur la feuille."
+    },
+    {
+     "nl": "De baby kan nog niet lopen, alleen {kruipen}.",
+     "fr": "Le bébé ne sait pas encore marcher, seulement {ramper}."
+    },
+    {
+     "nl": "De slak {kroop} heel langzaam over de muur.",
+     "fr": "L'escargot {rampait} très lentement sur le mur."
+    }
+   ]
   },
   {
    "nl": "jagen",
    "fr": "chasser",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De vos {jaagt} 's nachts op konijnen.",
+     "fr": "Le renard {chasse} les lapins la nuit."
+    },
+    {
+     "nl": "Mag je in dit bos {jagen}?",
+     "fr": "A-t-on le droit de {chasser} dans cette forêt ?"
+    },
+    {
+     "nl": "In de herfst gaan de jagers op herten {jagen}.",
+     "fr": "En automne, les chasseurs vont {chasser} le cerf."
+    },
+    {
+     "nl": "Gisteren {joeg} de kat op een vogel.",
+     "fr": "Hier, le chat {a chassé} un oiseau."
+    }
+   ]
   },
   {
    "nl": "voeren",
    "fr": "nourrir",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Elke ochtend {voer} ik de kippen.",
+     "fr": "Chaque matin, je {nourris} les poules."
+    },
+    {
+     "nl": "Heb jij de kat al {gevoerd}?",
+     "fr": "As-tu déjà {nourri} le chat ?"
+    },
+    {
+     "nl": "Mogen we de eenden {voeren}?",
+     "fr": "Pouvons-nous {nourrir} les canards ?"
+    },
+    {
+     "nl": "Vergeet niet de vissen te {voeren}!",
+     "fr": "N'oublie pas de {nourrir} les poissons !"
+    }
+   ]
   },
   {
    "nl": "snoeien",
    "fr": "tailler",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "In de winter {snoeit} mijn vader de bomen.",
+     "fr": "En hiver, mon père {taille} les arbres."
+    },
+    {
+     "nl": "Moeten we de struiken dit jaar {snoeien}?",
+     "fr": "Devons-nous {tailler} les buissons cette année ?"
+    },
+    {
+     "nl": "Wie {snoeit} de rozen in jullie tuin?",
+     "fr": "Qui {taille} les rosiers dans votre jardin ?"
+    },
+    {
+     "nl": "Mijn buurman heeft de haag te kort {gesnoeid}.",
+     "fr": "Mon voisin a {taillé} la haie trop court."
+    }
+   ]
   },
   {
    "nl": "klimmen",
    "fr": "grimper",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De kinderen {klimmen} in de boom.",
+     "fr": "Les enfants {grimpent} dans l'arbre."
+    },
+    {
+     "nl": "Ben je ooit op een rots {geklommen}?",
+     "fr": "As-tu déjà {grimpé} sur un rocher ?"
+    },
+    {
+     "nl": "Durf jij op het dak te {klimmen}?",
+     "fr": "Oses-tu {grimper} sur le toit ?"
+    },
+    {
+     "nl": "{Klim} niet op de muur, je valt nog!",
+     "fr": "Ne {grimpe} pas sur le mur, tu vas tomber !"
+    }
+   ]
   },
   {
    "nl": "graven",
    "fr": "creuser",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De hond {graaft} een gat in de tuin.",
+     "fr": "Le chien {creuse} un trou dans le jardin."
+    },
+    {
+     "nl": "Wie heeft dit gat in het gras {gegraven}?",
+     "fr": "Qui a {creusé} ce trou dans l'herbe ?"
+    },
+    {
+     "nl": "Met een schep kun je diep {graven}.",
+     "fr": "Avec une pelle, on peut {creuser} profond."
+    },
+    {
+     "nl": "De kinderen {groeven} een kuil in het zand.",
+     "fr": "Les enfants {ont creusé} un trou dans le sable."
+    }
+   ]
   },
   {
    "nl": "vissen",
    "fr": "pêcher",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "Mijn opa {vist} elke zondag in de rivier.",
+     "fr": "Mon grand-père {pêche} chaque dimanche dans la rivière."
+    },
+    {
+     "nl": "Mogen we in dit meer {vissen}?",
+     "fr": "Pouvons-nous {pêcher} dans ce lac ?"
+    },
+    {
+     "nl": "Ga je morgen mee {vissen}?",
+     "fr": "Tu viens {pêcher} avec moi demain ?"
+    },
+    {
+     "nl": "Gisteren {viste} mijn broer de hele dag, maar hij ving niets.",
+     "fr": "Hier, mon frère {a pêché} toute la journée, mais il n'a rien pris."
+    }
+   ]
   },
   {
    "nl": "zingen",
    "fr": "chanter",
-   "v": 1
+   "v": 1,
+   "ph": [
+    {
+     "nl": "De vogels {zingen} 's ochtends in de tuin.",
+     "fr": "Les oiseaux {chantent} le matin dans le jardin."
+    },
+    {
+     "nl": "Heb je die merel horen {zingen}?",
+     "fr": "As-tu entendu ce merle {chanter} ?"
+    },
+    {
+     "nl": "Mijn moeder {zingt} altijd onder de douche.",
+     "fr": "Ma mère {chante} toujours sous la douche."
+    },
+    {
+     "nl": "Kun je een liedje over de lente {zingen}?",
+     "fr": "Peux-tu {chanter} une chanson sur le printemps ?"
+    }
+   ]
   }
  ]
 }
