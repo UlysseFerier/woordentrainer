@@ -51,13 +51,15 @@ L'identifiant doit rester stable : c'est la clé sous laquelle la progression et
 
 ## L'apprentissage (07/10/2026)
 
-Le deck s'apprend par groupes de 10 mots, le dernier groupe prenant ce qui reste. Le groupe est gardé avec la liste et ne change que lorsque ses 10 mots sont validés ; les mots marqués d'une étoile passent dans les premiers groupes. Les crans du groupe en cours sont cerclés.
+Le deck s'apprend par groupes de 10 mots, le dernier groupe prenant ce qui reste, et chaque groupe seul : aucun mot d'un autre groupe ne s'y intercale. Le groupe est gardé avec la liste ; les mots marqués d'une étoile passent dans les premiers groupes. Les crans du groupe en cours sont cerclés. Les crans sont un simple bleu qui monte, et virent au vert quand le mot est validé.
 
-Un mot se valide en trois étapes strictement successives : 3 QCM réussis, puis 2 phrases à trous, puis 2 cartes. Une erreur remet à zéro le compteur de l'étape en cours pour ce mot, jamais les étapes déjà franchies. Le score affiché (0 à 100, celui des crans, des barres comparées et de l'objectif du jour) est la part des 7 réussites obtenues.
+Un mot se valide en 3 QCM réussis, puis 2 phrases à trous, puis 2 cartes. Le groupe avance par phases : QCM uniquement tant que ses 10 mots n'ont pas leurs 3 QCM, puis phrases uniquement, puis cartes uniquement. Une erreur remet à zéro le compteur de la phase pour ce mot. Quand il ne reste qu'un ou deux mots dans la phase, une question sur deux reprend un mot du groupe qui l'a déjà franchie (même type d'exercice, sans effet sur ses compteurs), pour que le même mot ne revienne pas coup sur coup.
 
-« Au hasard » est le mode à privilégier : chaque mot y est posé à l'étape où il en est. Toutes les 5 questions, il glisse un rappel d'un mot déjà validé (le plus anciennement vu, ceux ratés en rappel en tête) ; quand il ne reste qu'un ou deux mots à valider dans le groupe, une question sur deux est un rappel. Un rappel raté ne dévalide pas le mot, il le remet en tête des rappels. Les modes QCM, Phrases et Cartes ne font progresser que les mots du groupe qui sont à cette étape ; s'il n'y en a aucun, ils tournent en entraînement libre, sans effet sur les compteurs.
+À partir du 2e groupe, une fois le groupe validé, un bilan porte sur tous les mots appris jusque-là. Il faut 5 bonnes réponses ; chaque erreur ajoute une question, 10 au plus. Réussi, il ouvre le groupe suivant ; raté (10 questions sans 5 bonnes réponses), il recommence, les mots ratés en tête. Un mot raté en bilan n'est pas dévalidé.
 
-Une fois tout le deck validé, l'app passe en révision sur l'ensemble du deck, les mots vus il y a le plus longtemps d'abord.
+« Au hasard » suit ce parcours et c'est le mode à privilégier. Les modes QCM, Phrases et Cartes ne font progresser les mots que s'ils correspondent à la phase du groupe ; sinon ils tournent en entraînement libre, sans effet sur les compteurs.
+
+Une fois tout le deck validé et le dernier bilan réussi, l'app passe en révision sur l'ensemble du deck, les mots vus il y a le plus longtemps d'abord. Le score d'un mot (0 à 100, celui des crans, des barres comparées et de l'objectif du jour) est la part des 7 réussites obtenues.
 
 La progression d'avant le 07/10/2026 a été convertie une fois en étapes franchies (arrondi vers le bas) ; un mot déjà acquis le reste.
 

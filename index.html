@@ -23,6 +23,7 @@ textarea, input { -webkit-user-select: text; user-select: text; }
   --line:#DDE5EF; --empty:#E9EFF6;
   --b1:#DCE8F7; --b2:#7FA8DC; --b3:#3D6FB8; --acc:#12408C; --acc-on:#FFFFFF; --acc-soft:#EAF1FB;
   --bad:#C0392B; --bad-soft:#FBEBE9; --bad-line:#E8B4AE;
+  --cran-bleu:#3D7FD9; --cran-vert:#2E9E5B;
   --warm:#D9821E;
   --serif:Verdana,Geneva,sans-serif; --sans:Arial,Helvetica,sans-serif;
   --vh:100svh;
@@ -33,6 +34,7 @@ body.nuit {
   --line:#1E2C40; --empty:#182437;
   --b1:#1B2C45; --b2:#3D6FB8; --b3:#5D95DD; --acc:#7FB3F0; --acc-on:#0C1420; --acc-soft:#152238;
   --bad:#E0705F; --bad-soft:#2A1714; --bad-line:#5A2A22;
+  --cran-bleu:#5D95DD; --cran-vert:#4CC07A;
   --warm:#E8A96B;
 }
 /* --vh est la hauteur de l'app, mesurée une fois et gelée. 100dvh est une
@@ -75,9 +77,9 @@ body {
 
 .crans { display: flex; gap: 1.5px; height: 34px; align-items: flex-end; margin-top: 16px; }
 .cran { flex: 1; height: 100%; background: var(--empty); border-radius: 2px; display: flex; align-items: flex-end; overflow: hidden; position: relative; }
-.cran > i { display: block; width: 100%; height: 0; background: var(--b2); transition: height .55s cubic-bezier(.3,1.3,.5,1), background .35s ease; }
-.cran.demi > i { background: var(--b3); }
-.cran.fini > i { background: var(--acc); }
+.cran > i { display: block; width: 100%; height: 0; background: var(--cran-bleu); transition: height .55s cubic-bezier(.3,1.3,.5,1), background .35s ease; }
+/* 07/10/2026 : un seul bleu qui monte, vert une fois le mot validé */
+.cran.fini > i { background: var(--cran-vert); }
 /* les mots du groupe en cours (07/10/2026) */
 .cran.grp { box-shadow: inset 0 0 0 1.5px var(--acc); }
 .cran > em { position: absolute; left: 0; right: 0; height: 2px; background: var(--acc); opacity: 0; border-radius: 2px; }
@@ -592,7 +594,8 @@ body:not([data-heat="0"]) #t-actions-vf .b, body:not([data-heat="0"]) #t-juge .b
 
 /* mots jamais ratés */
 .cran.pur > i { position: relative; }
-.cran.pur > i::after {
+.cran.pur > i::after { display: none; }
+.cran.pur-ancien > i::after {
   content: ''; position: absolute; left: 0; right: 0; top: 0; height: 2px;
   background: linear-gradient(to right, transparent, #E8B93C, #F5D77A 50%, #E8B93C, transparent);
 }
@@ -1405,7 +1408,7 @@ var T = {
     'encore': 'Encore une série', 'retour-accueil': "Revenir à l'accueil",
     'g-t': 'Réglages',
     'g-rythme': 'Rythme',
-    'g-rythme-p': "Le deck s'apprend par groupes de 10 mots. Un mot se valide en trois étapes, dans l'ordre : 3 QCM réussis, puis 2 phrases à trous, puis 2 cartes. Une erreur remet à zéro l'étape en cours pour ce mot. « Au hasard » suit ces étapes et glisse régulièrement un rappel d'un mot déjà validé : c'est le mode à privilégier. L'objectif du jour vaut le tiers des points de ton deck.",
+    'g-rythme-p': "Le deck s'apprend par groupes de 10 mots. Chaque groupe passe par trois phases : QCM uniquement (3 réussites par mot), puis phrases à trous (2), puis cartes (2). Une erreur remet à zéro la phase en cours pour ce mot. À partir du 2e groupe, un bilan de 5 à 10 questions sur tous les mots appris ouvre le groupe suivant. « Au hasard » suit ce parcours : c'est le mode à privilégier. L'objectif du jour vaut le tiers des points de ton deck.",
     'g-dir': 'Sens des questions', 'g-dir-auto': 'les deux', 'g-dir-fn': 'français vers NL', 'g-dir-nf': 'NL vers français',
     'g-app': 'Application',
     'g-app-p': "La langue de l'interface est indépendante des mots à réviser. Les sons sont générés par le téléphone, aucun fichier n'est téléchargé.",
@@ -1441,7 +1444,10 @@ var T = {
     'partage-off': 'Partage inactif, config.js vide', 'partage-on': 'Partage actif', 'vu-le': 'Vu @',
     'en-attente': '@ envoi(s) en attente', 'file-vide': 'Tout est parti.',
     'acquis-1': 'mot validé', 'groupe-fini': 'groupe terminé — dix nouveaux mots arrivent', 'groupe-n': 'groupe @',
-    'etape-ok-qcm': 'QCM réussis — place aux phrases', 'etape-ok-phrase': 'phrases réussies — place aux cartes',
+    'groupe-bilan': 'groupe validé — bilan sur tous les mots appris', 'et-bilan': 'bilan',
+    'bilan-n': 'bilan @ / @@ justes', 'bilan-q': 'question @ sur @@ max',
+    'bilan-reussi': 'bilan réussi — groupe suivant', 'bilan-rate': 'bilan raté — on le recommence',
+    'etape-ok-qcm': 'QCM du groupe réussis — place aux phrases', 'etape-ok-phrase': 'phrases du groupe réussies — place aux cartes',
     'et-qcm': 'QCM @ / @@', 'et-phrase': 'phrases @ / @@', 'et-flash': 'cartes @ / @@',
     'et-rappel': 'rappel', 'et-revision': 'révision', 'et-libre': 'entraînement libre',
     'cetait': "c'était « @ » — touche-le pour continuer",
@@ -1519,7 +1525,7 @@ var T = {
     'encore': 'Nog een reeks', 'retour-accueil': 'Terug naar het beginscherm',
     'g-t': 'Instellingen',
     'g-rythme': 'Tempo',
-    'g-rythme-p': 'Het deck wordt per groep van 10 woorden geleerd. Een woord is gekend na drie stappen, in volgorde: 3 juiste meerkeuzevragen, dan 2 invulzinnen, dan 2 kaarten. Een fout zet de lopende stap voor dat woord terug op nul. « Willekeurig » volgt die stappen en herhaalt geregeld een al gekend woord: dat is de beste modus. Het dagdoel is een derde van de punten van je deck.',
+    'g-rythme-p': 'Het deck wordt per groep van 10 woorden geleerd. Elke groep doorloopt drie fases: enkel meerkeuze (3 juist per woord), dan invulzinnen (2), dan kaarten (2). Een fout zet de lopende fase voor dat woord terug op nul. Vanaf de 2e groep opent een test van 5 tot 10 vragen over alle geleerde woorden de volgende groep. « Willekeurig » volgt dat parcours: dat is de beste modus. Het dagdoel is een derde van de punten van je deck.',
     'g-dir': 'Richting van de vragen', 'g-dir-auto': 'allebei', 'g-dir-fn': 'Frans naar NL', 'g-dir-nf': 'NL naar Frans',
     'g-app': 'App',
     'g-app-p': 'De taal van de app staat los van de woorden die je oefent. De geluiden worden door de telefoon zelf gemaakt, er wordt geen bestand gedownload.',
@@ -1555,7 +1561,10 @@ var T = {
     'partage-off': 'Delen staat uit, config.js is leeg', 'partage-on': 'Delen staat aan', 'vu-le': 'Gezien @',
     'en-attente': '@ verzending(en) in wachtrij', 'file-vide': 'Alles is vertrokken.',
     'acquis-1': 'woord gekend', 'groupe-fini': 'groep klaar — tien nieuwe woorden komen eraan', 'groupe-n': 'groep @',
-    'etape-ok-qcm': 'meerkeuze gelukt — nu de zinnen', 'etape-ok-phrase': 'zinnen gelukt — nu de kaarten',
+    'groupe-bilan': 'groep gekend — test over alle geleerde woorden', 'et-bilan': 'test',
+    'bilan-n': 'test @ / @@ juist', 'bilan-q': 'vraag @ van max. @@',
+    'bilan-reussi': 'test geslaagd — volgende groep', 'bilan-rate': 'test niet geslaagd — we beginnen opnieuw',
+    'etape-ok-qcm': 'meerkeuze van de groep gelukt — nu de zinnen', 'etape-ok-phrase': 'zinnen van de groep gelukt — nu de kaarten',
     'et-qcm': 'meerkeuze @ / @@', 'et-phrase': 'zinnen @ / @@', 'et-flash': 'kaarten @ / @@',
     'et-rappel': 'herhaling', 'et-revision': 'herhaling', 'et-libre': 'vrij oefenen',
     'cetait': 'het was « @ » — tik erop om verder te gaan',
@@ -1853,7 +1862,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'bf';
+var WT_BUILD = 'bg';
 
 function charger() {
   var e = null;
@@ -2473,25 +2482,26 @@ function validerDeck() {
     .then(function () { rendreDuo('a-duo'); }).catch(function () {});
 }
 
-/* ═══════════ apprentissage par groupes (07/10/2026) ═══════════
+/* ═══════════ apprentissage par groupes (07/10/2026, revu le soir même) ═══════════
    Règles posées par Ulysse :
-   — le deck s'apprend par groupes de 10 mots (le dernier groupe prend ce qui
-     reste) ; tant que les 10 ne sont pas validés, le groupe ne change pas ;
-   — un mot se valide en trois étapes strictement successives : 3 QCM réussis,
-     puis 2 phrases à trous, puis 2 cartes. Une erreur remet à zéro le
-     compteur de l'étape en cours pour ce mot, pas les étapes déjà franchies ;
-   — pendant un groupe, l'app fait régulièrement un rappel d'un mot déjà
-     validé, le plus anciennement vu d'abord, ceux ratés en rappel en tête ;
-   — une fois tout le deck validé, tirage de révision sur l'ensemble.
-   Le score d'un mot (0 à 100, celui des crans, des barres et de l'objectif)
-   est désormais la fraction des 7 réussites obtenues : il en découle, il ne
-   se gagne plus directement. */
+   — le deck s'apprend par groupes de 10 mots (le dernier prend ce qui reste),
+     chaque groupe SEUL : aucun mot d'un autre groupe ne s'intercale ;
+   — un mot se valide en 3 QCM, puis 2 phrases à trous, puis 2 cartes. Le
+     groupe avance par phases : QCM uniquement jusqu'à ce que les 10 mots aient
+     leurs 3 QCM, puis phrases uniquement, puis cartes uniquement. Une erreur
+     remet à zéro le compteur de la phase pour ce mot ;
+   — à partir du 2e groupe, une fois le groupe validé, un bilan de 5 à 10
+     questions porte sur TOUS les mots appris jusque-là ; réussi, il ouvre le
+     groupe suivant ;
+   — deck entièrement validé (et dernier bilan passé) : révision libre.
+   Le score d'un mot (0 à 100 : crans, barres comparées, objectif du jour)
+   est la part des 7 réussites obtenues. */
 var GROUPE = 10;
 var ETAPES = [{ k: 'q', mode: 'qcm', n: 3 }, { k: 'f', mode: 'phrase', n: 2 }, { k: 'c', mode: 'flash', n: 2 }];
-/* rappel : toutes les 5 questions, ou une sur deux quand il ne reste qu'un ou
-   deux mots à valider dans le groupe — sans quoi le même mot reviendrait
-   coup sur coup, ce qui n'est plus de la répétition mais du radotage. */
-var RAPPEL_TOUS = 5;
+/* bilan : 5 bonnes réponses pour le réussir ; chaque erreur ajoute une
+   question, 10 au plus. Arrivé à 10 sans les 5, il est raté et recommence,
+   les mots ratés en tête. */
+var BILAN_OK = 5, BILAN_MAX = 10;
 function etapesDe(m) { return aPhrases(m) ? ETAPES : ETAPES.filter(function (e) { return e.k !== 'f'; }); }
 function totalPas(m) { var t = 0; etapesDe(m).forEach(function (e) { t += e.n; }); return t; }
 function pasDe(m, p) { var t = 0; etapesDe(m).forEach(function (e) { t += Math.min(e.n, p[e.k] || 0); }); return t; }
@@ -2502,25 +2512,44 @@ function etapeDe(m, p) {
 }
 function recalculer(m, p) { p.s = Math.round(CIBLE * pasDe(m, p) / totalPas(m)); return p.s; }
 function estValide(m) { return prog(liste.id, m).s >= CIBLE; }
-/* Le groupe en cours, gardé avec la liste : il survit à la fermeture de l'app.
-   Il n'est reformé que lorsque tous ses mots sont validés — mots marqués
+/* le bilan est dû quand le groupe en cours est validé, que ce n'est pas le
+   premier, et que le bilan de ce groupe n'a pas encore été réussi */
+function bilanDu(l) {
+  var x = fiche(l.id), parNl = {};
+  motsDe(l).forEach(function (m) { parNl[m.nl] = m; });
+  var g = (x.groupe || []).filter(function (k) { return parNl[k]; });
+  if (!g.length || (x.numGroupe || 1) < 2 || x.bilanOk === x.numGroupe) return false;
+  return g.every(function (k) { return prog(l.id, parNl[k]).s >= CIBLE; });
+}
+/* Le groupe en cours, gardé avec la liste. Il n'est reformé que lorsque tous
+   ses mots sont validés et que son bilan éventuel est réussi — mots marqués
    d'une étoile d'abord, puis l'ordre du deck. */
 function groupeDe(l) {
   var x = fiche(l.id), mots = motsDe(l), parNl = {};
   mots.forEach(function (m) { parNl[m.nl] = m; });
   var g = (x.groupe || []).filter(function (k) { return parNl[k]; });
   var reste = g.filter(function (k) { return prog(l.id, parNl[k]).s < CIBLE; });
-  if (!reste.length) {
+  if (!reste.length && !bilanDu(l)) {
     var pr = prioDe(l);
     var libres = mots.filter(function (m) { return prog(l.id, m).s < CIBLE; });
     var marques = libres.filter(function (m) { return pr[m.nl]; });
     var autres = libres.filter(function (m) { return !pr[m.nl]; });
     var nv = marques.concat(autres).slice(0, GROUPE).map(function (m) { return m.nl; });
-    if (nv.length && nv.join('|') !== g.join('|')) x.numGroupe = (x.numGroupe || 0) + 1;
-    g = nv;
+    if (nv.length && nv.join('|') !== g.join('|')) { x.numGroupe = (x.numGroupe || 0) + 1; x.bilan = null; }
+    if (nv.length) g = nv;
   }
   x.groupe = g;
   return g.map(function (k) { return parNl[k]; });
+}
+/* la phase du groupe : la première étape qu'au moins un de ses mots n'a pas
+   encore franchie. Un mot déjà au-delà attend les autres. */
+function phaseDe(aFaire) {
+  var best = null, bi = 99;
+  aFaire.forEach(function (m) {
+    var e = etapeDe(m, prog(liste.id, m)), k = ETAPES.indexOf(e);
+    if (e && k < bi) { bi = k; best = e; }
+  });
+  return best;
 }
 function infoGroupe() {
   var g = groupeDe(liste), v = 0;
@@ -2536,55 +2565,54 @@ function lePlusAncien(t) {
   ok = ok.slice().sort(function (a, b) { return (prog(liste.id, a).vu || 0) - (prog(liste.id, b).vu || 0); });
   return ok[Math.random() < .7 || ok.length < 2 ? 0 : 1];
 }
-function tirerRappel(exclure) {
-  var rv = revoirDe(liste);
-  var v = motsDe(liste).filter(function (m) { return estValide(m) && !exclure[m.nl]; });
-  if (!v.length) return null;
-  var urgents = v.filter(function (m) { return rv[m.nl]; });
-  return lePlusAncien(urgents.length ? urgents : v);
-}
 function retenir(m) { recents.push(m.nl); if (recents.length > 4) recents.shift(); return m; }
+function modeLibre(m) { return session.mode === 'mix' ? modeDe(100, m) : (session.mode === 'phrase' && !aPhrases(m) ? 'qcm' : session.mode); }
 function tirerMot() {
   var tous = motsDe(liste);
   if (!tous.length) return null;
+  var x = fiche(liste.id);
   var g = groupeDe(liste);
+  /* bilan sur tous les mots appris jusqu'ici, ratés d'abord */
+  if (bilanDu(liste)) {
+    if (!x.bilan) x.bilan = { ok: 0, err: 0 };
+    var rv = revoirDe(liste);
+    var appris = tous.filter(estValide);
+    var urgents = appris.filter(function (m) { return rv[m.nl]; });
+    var mb = retenir(lePlusAncien(urgents.length ? urgents : appris));
+    return { mot: mb, bilan: true, mode: modeLibre(mb) };
+  }
   var aFaire = g.filter(function (m) { return !estValide(m); });
   /* deck entièrement validé : révision libre sur tout le deck */
   if (!aFaire.length) {
     var m0 = retenir(lePlusAncien(tous));
     return { mot: m0, sansPts: true, mode: modeDe(100, m0) };
   }
-  /* rappel d'un mot déjà validé */
-  var dans = {}; g.forEach(function (m) { dans[m.nl] = 1; });
-  var cadence = aFaire.length <= 2 ? 1 : RAPPEL_TOUS;
-  if ((session.depuisRappel || 0) >= cadence) {
-    /* d'abord les mots des groupes précédents ; ceux du groupe en cours
-       seulement s'il n'y a rien d'autre (premier groupe presque fini) */
-    var r = tirerRappel(dans) || (aFaire.length <= 2 ? tirerRappel({}) : null);
-    if (r) {
+  var phase = phaseDe(aFaire);
+  var cand = aFaire.filter(function (m) { return etapeDe(m, prog(liste.id, m)) === phase; });
+  /* Quand il ne reste qu'un ou deux mots dans la phase, une question sur deux
+     reprend un mot du groupe qui l'a déjà franchie, dans le même type
+     d'exercice et sans effet sur ses compteurs : sinon le même mot reviendrait
+     coup sur coup, ce qui n'est plus de la répétition mais du radotage. */
+  if (cand.length <= 2 && session.mode === 'mix' && (session.depuisRappel || 0) >= 1) {
+    var passes = g.filter(function (m) { return cand.indexOf(m) === -1; });
+    if (passes.length) {
       session.depuisRappel = 0;
-      retenir(r);
-      var mr = session.mode === 'mix' ? modeDe(100, r) : (session.mode === 'phrase' && !aPhrases(r) ? 'qcm' : session.mode);
-      return { mot: r, rappel: true, mode: mr };
+      var mr = retenir(lePlusAncien(passes));
+      return { mot: mr, rappel: true, mode: phase.mode === 'phrase' && !aPhrases(mr) ? 'qcm' : phase.mode };
     }
   }
   session.depuisRappel = (session.depuisRappel || 0) + 1;
-  /* « Au hasard » : chaque mot est posé à l'étape où il en est. Un mode
-     choisi (QCM, phrases, cartes) ne fait progresser que les mots qui sont à
-     cette étape ; si aucun ne l'est, il tourne en entraînement libre. */
-  var cand = aFaire, libre = false;
-  if (session.mode !== 'mix') {
-    var a = aFaire.filter(function (m) { var e = etapeDe(m, prog(liste.id, m)); return e && e.mode === session.mode; });
-    if (a.length) cand = a; else libre = true;
-  }
+  /* « Au hasard » pose la phase du groupe. Un mode choisi ne fait progresser
+     les mots que s'il correspond à la phase ; sinon entraînement libre. */
+  var libre = session.mode !== 'mix' && session.mode !== phase.mode;
+  if (libre) cand = aFaire;
   var m = retenir(lePlusAncien(cand));
-  var mode = session.mode === 'mix' ? etapeDe(m, prog(liste.id, m)).mode
-           : (session.mode === 'phrase' && !aPhrases(m) ? 'qcm' : session.mode);
-  return { mot: m, libre: libre, mode: mode };
+  return { mot: m, libre: libre, mode: libre ? modeLibre(m) : phase.mode };
 }
 /* ce qui s'affiche en haut à droite de la question */
 function libelleEtape() {
   if (!cur) return '';
+  if (cur.bilan) return tr('et-bilan');
   if (cur.rappel) return tr('et-rappel');
   if (cur.sansPts) return tr('et-revision');
   if (cur.libre) return tr('et-libre');
@@ -2594,10 +2622,30 @@ function libelleEtape() {
 function majCompte() {
   var e = document.getElementById('t-compte');
   if (!e || !liste) return;
+  var x = fiche(liste.id);
+  if (bilanDu(liste)) {
+    var b = x.bilan || { ok: 0, err: 0 };
+    e.textContent = tr('bilan-n', b.ok, BILAN_OK) + ' · ' + tr('bilan-q', b.ok + b.err, Math.min(BILAN_MAX, BILAN_OK + b.err));
+    return;
+  }
   var i = infoGroupe();
   e.textContent = i.mots.length && i.valides < i.mots.length
     ? tr('groupe-n', i.num) + ' · ' + i.valides + ' / ' + i.mots.length
     : tr('acquis-n', acquisDe(liste), tailleDeck());
+}
+/* fin de question de bilan : réussi, raté, ou on continue */
+function avancerBilan(juste) {
+  var x = fiche(liste.id), b = x.bilan || (x.bilan = { ok: 0, err: 0 });
+  if (juste) b.ok++; else b.err++;
+  var r = document.getElementById('t-retour');
+  if (b.ok >= BILAN_OK) {
+    x.bilanOk = x.numGroupe; x.bilan = null;
+    r.textContent = tr('bilan-reussi');
+    son('fete'); vibrer([20, 40, 30]);
+  } else if (b.ok + b.err >= BILAN_MAX) {
+    x.bilan = { ok: 0, err: 0 };
+    r.textContent = tr('bilan-rate');
+  }
 }
 function sens() { var d = etat.reglages.dir; return d === 'auto' ? (Math.random() < .5 ? 'fr-nl' : 'nl-fr') : d; }
 /* Jamais plus de trois questions de suite du même style : au quatrième tirage,
@@ -2669,7 +2717,7 @@ function suite() {
   /* nouveau groupe : les crans sont redessinés pour en montrer les mots */
   if ((fiche(liste.id).groupe || []).join('|') !== avantG) { crans('t-crans', liste); sauverPlusTard(); }
   majCompte();
-  cur = { mot: t.mot, sansPts: !!t.sansPts, rappel: !!t.rappel, libre: !!t.libre, sens: sens(), mode: t.mode, fait: false, perte: 0, idx: motsDe(liste).indexOf(t.mot) };
+  cur = { mot: t.mot, sansPts: !!t.sansPts, rappel: !!t.rappel, libre: !!t.libre, bilan: !!t.bilan, sens: sens(), mode: t.mode, fait: false, perte: 0, idx: motsDe(liste).indexOf(t.mot) };
   /* le CSS a besoin de savoir quel mode est à l'écran : en cartes et en
      vrai/faux les boutons se collent sous l'énoncé, en QCM la scène reste
      centrée comme avant. */
@@ -2996,33 +3044,33 @@ function appliquer(juste, mode) {
   var avantPalier = wtPalier(wtStreak);
   /* compte seulement une question posée à l'étape où en est le mot ; rappels,
      révisions et entraînement libre ne touchent pas aux compteurs */
-  var etape = (cur.rappel || cur.sansPts || cur.libre) ? null : etapeDe(cur.mot, p);
+  var etape = (cur.rappel || cur.sansPts || cur.libre || cur.bilan) ? null : etapeDe(cur.mot, p);
   if (etape && etape.mode !== mode) etape = null;
   session.n++;
   marquerJour();
   p.vu = Date.now();
   if (juste) {
     session.justes++; p.ok++;
-    if (cur.rappel) delete revoirDe(liste)[cur.mot.nl];
+    if (cur.rappel || cur.bilan) delete revoirDe(liste)[cur.mot.nl];
+    if (cur.bilan) avancerBilan(true);
     if (etape) {
       p[etape.k] = (p[etape.k] || 0) + 1;
       var g = recalculer(cur.mot, p) - avantS;
       session.gain += g; session.gagnes += g;
       if (g > 0) ajouterJour(g);
-      if (p.s >= CIBLE) {
-        var ig = infoGroupe();
-        var dernier = ig.valides >= ig.mots.length && acquisDe(liste) < motsDe(liste).length;
-        document.getElementById('t-retour').textContent = tr(dernier ? 'groupe-fini' : 'acquis-1');
-      } else {
-        var e2 = etapeDe(cur.mot, p);
-        if (e2 !== etape) document.getElementById('t-retour').textContent = tr('etape-ok-' + etape.mode);
-      }
+      /* message de fin de phase ou de groupe, sinon de mot validé */
+      var gr = groupeDe(liste).filter(function (m) { return !estValide(m); });
+      var t = document.getElementById('t-retour');
+      if (!gr.length) t.textContent = tr(bilanDu(liste) ? 'groupe-bilan' : (acquisDe(liste) < motsDe(liste).length ? 'groupe-fini' : 'acquis-1'));
+      else if (phaseDe(gr) !== etape) t.textContent = tr('etape-ok-' + etape.mode);
+      else if (p.s >= CIBLE) t.textContent = tr('acquis-1');
     }
   } else {
     p.ko++;
-    /* un rappel raté ne dévalide pas le mot : il passe en tête des rappels
-       jusqu'à ce qu'il soit réussi */
-    if (cur.rappel) revoirDe(liste)[cur.mot.nl] = 1;
+    /* un mot raté en bilan ou en reprise n'est pas dévalidé : il passe en
+       tête du prochain bilan */
+    if (cur.rappel || cur.bilan) revoirDe(liste)[cur.mot.nl] = 1;
+    if (cur.bilan) avancerBilan(false);
     cur.perte = 0;
     if (etape) {
       p[etape.k] = 0;
