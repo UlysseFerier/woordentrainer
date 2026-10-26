@@ -1,0 +1,2826 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#161b38">
+<link rel="manifest" href="manifest-rpg.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<script src="config.js"></script>
+<title>Woordentrainer RPG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --nuit:#161b38; --pierre:#262d55; --pierre2:#3a4277; --trait:#0d1024;
+  --parch:#f1e4c2; --parch2:#dcc896; --parch3:#c9b27c; --encre:#2a1c12;
+  --braise:#f2a23c; --braise2:#c4741c; --braise3:#ffd08a;
+  --sang:#dc4a3e; --seve:#5cbf64; --or:#ffd24d; --xp:#74b8ff;
+  --texte:#ece9f7; --doux:#a9adcf;
+  --px:'Pixelify Sans', 'Courier New', monospace;
+  --lex:Verdana, Arial, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:#0a0d1e;color:var(--texte);font-family:var(--px);display:flex;align-items:flex-start;justify-content:center;gap:28px;padding:20px;overflow:auto}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--xp);outline-offset:2px}
+.cache{display:none!important}
+
+/* ── le téléphone simulé ── */
+#cadre{flex:0 0 auto;transform-origin:top center}
+#tel{width:390px;height:800px;background:var(--nuit);position:relative;overflow:hidden;border-radius:30px;
+  box-shadow:0 0 0 10px #04050d,0 0 0 12px #262a44,0 30px 80px rgba(0,0,0,.7);user-select:none;-webkit-user-select:none}
+.vue{position:absolute;inset:0;display:none;flex-direction:column}
+.vue.on{display:flex}
+
+/* ── bandeau du héros ── */
+.hud{height:52px;flex:0 0 52px;display:flex;align-items:center;gap:10px;padding:0 12px;background:var(--trait);border-bottom:3px solid #000}
+.niv{font-weight:700;font-size:15px;color:var(--or);min-width:42px;line-height:1}
+.niv small{display:block;font-size:11px;color:var(--doux);font-weight:400;margin-top:3px}
+.barres{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.barre{height:12px;background:#000;position:relative;box-shadow:0 0 0 2px #3b3f63}
+.barre i{position:absolute;left:0;top:0;bottom:0;background:var(--sang);transition:width .25s steps(6)}
+.barre i::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:rgba(255,255,255,.35)}
+.barre b{position:absolute;inset:0;font-size:10px;line-height:12px;text-align:center;font-weight:600;color:#fff;text-shadow:1px 1px 0 #000}
+.barre.xp{height:5px}
+.barre.xp i{background:var(--xp)}
+.barre.xp i::after{display:none}
+.bourse{display:flex;align-items:center;gap:5px;font-weight:700;color:var(--or);font-size:16px}
+.bourse canvas{width:14px;height:14px;image-rendering:pixelated}
+.mini{background:var(--pierre2);color:var(--texte);border:0;padding:6px 8px;font-size:13px;box-shadow:inset 0 -3px 0 #262c55,0 0 0 2px #000}
+.mini:active{transform:translateY(1px)}
+.mini:disabled{opacity:.4;cursor:default}
+
+/* ── boutons pixel ── */
+.btn{font-family:var(--px);font-weight:600;font-size:19px;color:var(--encre);background:var(--braise);border:0;padding:13px 16px;position:relative;
+  box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000,inset 0 -5px 0 0 var(--braise2),inset 0 3px 0 0 var(--braise3)}
+.btn:active{transform:translateY(2px);box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000,inset 0 -2px 0 0 var(--braise2),inset 0 3px 0 0 var(--braise3)}
+.btn:disabled{background:#59597a;color:#2a2a40;box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000;cursor:default;transform:none}
+.btn.sec{background:var(--pierre2);color:var(--texte);box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000,inset 0 -5px 0 0 #252b56,inset 0 3px 0 0 #5560a0}
+.btn.sec:active{box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000,inset 0 -2px 0 0 #252b56,inset 0 3px 0 0 #5560a0}
+
+/* ── la scène de combat ── */
+.scene{position:relative;width:384px;height:288px;margin:3px auto 0;flex:0 0 auto;overflow:hidden;background:#000}
+.scene canvas{width:100%;height:100%;image-rendering:pixelated;display:block}
+.couche{position:absolute;inset:0;pointer-events:none}
+.etiq{position:absolute;top:8px;right:8px;width:170px;background:rgba(13,16,36,.88);padding:5px 7px 7px;box-shadow:0 0 0 2px #000,inset 0 0 0 1px #3b3f63}
+.etiq .nom{font-size:13px;font-weight:600;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.etiq .barre{height:9px}
+.etiq .barre b{display:none}
+.segs{display:flex;gap:3px}
+.segs span{flex:1;height:9px;background:var(--sang);box-shadow:0 0 0 1px #000}
+.segs span.casse{background:#2a2a3c}
+.nombre{position:absolute;font-family:var(--px);font-weight:700;font-size:22px;color:#fff6c8;text-shadow:2px 0 0 #000,-2px 0 0 #000,0 2px 0 #000,0 -2px 0 #000;
+  transform:translate(-50%,-50%);animation:saute .85s steps(10) forwards;white-space:nowrap}
+.nombre.fort{font-size:30px;color:#ffe066}
+.nombre.mal{color:#ff7a6a}
+.nombre.soin{color:#8af59a}
+.nombre.info{font-size:15px;color:#bfe3ff}
+@keyframes saute{0%{opacity:0;margin-top:10px}15%{opacity:1;margin-top:-14px}35%{margin-top:-10px}80%{opacity:1}100%{opacity:0;margin-top:-26px}}
+.banniere{position:absolute;left:0;right:0;bottom:16px;text-align:center;pointer-events:none}
+.banniere span{display:inline-block;background:rgba(13,16,36,.92);padding:8px 14px;font-size:16px;font-weight:600;box-shadow:0 0 0 2px #000,inset 0 0 0 1px var(--braise);max-width:340px;line-height:1.25}
+.banniere small{display:block;font-weight:400;font-size:13px;color:var(--doux);margin-top:3px}
+
+/* ── bande d'état sous la scène ── */
+.etat{height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:14px;color:var(--doux)}
+.etat .lib{color:var(--texte);font-weight:600;text-align:right}
+.crans{display:flex;gap:4px}
+.cran{width:14px;height:14px;background:#0e1129;position:relative;box-shadow:0 0 0 2px #000,inset 0 0 0 1px #3b3f63;overflow:hidden}
+.cran i{position:absolute;left:0;right:0;bottom:0;background:var(--xp)}
+.cran.ok i{background:var(--seve)}
+.cran.vise{box-shadow:0 0 0 2px var(--or)}
+
+/* ── la boîte de dialogue (questions) ── */
+.boite{flex:1;margin:4px 12px 14px;background:var(--parch);color:var(--encre);position:relative;padding:16px 16px 14px;display:flex;flex-direction:column;
+  box-shadow:0 -4px 0 0 #000,0 4px 0 0 #000,-4px 0 0 0 #000,4px 0 0 0 #000,inset 0 0 0 3px var(--parch2),inset 0 0 0 5px var(--parch)}
+.boite::after{content:'';position:absolute;left:5px;right:5px;bottom:5px;height:5px;background:var(--parch2);pointer-events:none}
+.zone{display:flex;flex-direction:column;flex:1;min-height:0}
+.langue{font-size:14px;color:#8a7350;text-align:center;margin-bottom:6px}
+.mot-q{font-family:var(--lex);font-weight:700;font-size:28px;text-align:center;margin:6px 0 18px;line-height:1.15;word-break:break-word}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:auto;margin-bottom:6px}
+.opt{font-family:var(--lex);font-weight:700;font-size:16px;color:var(--encre);background:#fbf3dc;border:0;min-height:70px;padding:8px;line-height:1.2;
+  box-shadow:0 0 0 3px var(--encre),inset 0 -4px 0 0 var(--parch3)}
+.opt:active{transform:translateY(2px)}
+.opt.juste{background:#b9eab5;box-shadow:0 0 0 3px #1f5a26,inset 0 -4px 0 0 #7cc47f}
+.opt.faux{background:#f3b3a6;box-shadow:0 0 0 3px #7a2018,inset 0 -4px 0 0 #d97c6c;text-decoration:line-through}
+.opt.pale{opacity:.35}
+.opt.attire{animation:attire .7s steps(4) infinite;background:#b9eab5;box-shadow:0 0 0 3px #1f5a26,inset 0 -4px 0 0 #7cc47f}
+@keyframes attire{50%{transform:translateY(-3px)}}
+.retour{min-height:20px;font-size:14px;text-align:center;color:#7a4a20;font-family:var(--px);margin-top:4px}
+
+.phrase{font-family:var(--lex);font-size:20px;line-height:1.55;text-align:center;margin:8px 4px 10px}
+.trou{font-family:var(--lex);font-size:18px;font-weight:700;border:0;background:#fbf3dc;color:var(--encre);min-width:86px;padding:2px 10px;margin:0 2px;
+  box-shadow:0 0 0 3px var(--encre),inset 0 -3px 0 0 var(--parch3);animation:attire 1.2s steps(4) infinite}
+.cible{background:#b9eab5;padding:0 4px;box-shadow:0 0 0 2px #1f5a26}
+.rate .cible{background:#f6d38a;box-shadow:0 0 0 2px #8a5a10}
+.barre-x{text-decoration:line-through;color:#a03020;margin-right:6px}
+.trad{font-family:var(--lex);font-size:15px;line-height:1.45;text-align:center;color:#6d5a3e}
+.trad b{color:var(--encre)}
+.menu{position:absolute;z-index:5;background:var(--trait);padding:6px;display:flex;flex-direction:column;gap:6px;box-shadow:0 0 0 3px #000,0 6px 0 0 rgba(0,0,0,.4)}
+.menu button{font-family:var(--lex);font-weight:700;font-size:16px;background:var(--parch);color:var(--encre);border:0;padding:10px 18px;min-width:150px;box-shadow:inset 0 -3px 0 var(--parch3)}
+.menu button:active{transform:translateY(1px)}
+.suite{align-self:center;margin-top:14px}
+
+.carte{flex:1;margin:4px 6px 12px;background:#fbf3dc;box-shadow:0 0 0 3px var(--encre),inset 0 -6px 0 0 var(--parch2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;text-align:center}
+.carte.retourne{animation:retourne .24s steps(6)}
+@keyframes retourne{50%{transform:scaleX(0)}}
+.carte .mot-q{margin:4px 0}
+.carte .ex{font-family:var(--lex);font-size:14px;line-height:1.45;color:#6d5a3e;margin-top:14px}
+.carte .ex span{display:block}
+.carte .ex span+span{margin-top:6px;color:var(--encre)}
+.juge{display:flex;gap:14px;justify-content:center}
+.juge .btn{flex:1;font-size:16px;padding:13px 4px;white-space:nowrap}
+.btn.non{background:#e58b7c;box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000,inset 0 -5px 0 0 #b2564a,inset 0 3px 0 0 #ffc0b4}
+.btn.oui{background:#8fd88f;box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000,inset 0 -5px 0 0 #4f9b52,inset 0 3px 0 0 #c9f5c4}
+
+/* ── le camp ── */
+.camp-scene{height:216px}
+.carte-region{margin:10px 14px 0;display:flex;align-items:flex-start;justify-content:space-between;position:relative}
+.carte-region::before{content:'';position:absolute;left:50px;right:50px;top:32px;height:4px;background:repeating-linear-gradient(90deg,#5a6197 0 8px,transparent 8px 14px)}
+.etape{width:104px;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;background:none;border:0;color:var(--texte);padding:0}
+.etape .tuile{width:68px;height:68px;background:var(--pierre);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px #000,inset 0 0 0 2px #4a5290}
+.etape .tuile canvas{image-rendering:pixelated}
+.etape.ferme .tuile{filter:grayscale(1) brightness(.45)}
+.etape.cible .tuile{box-shadow:0 0 0 3px #000,inset 0 0 0 2px var(--or),0 0 0 6px rgba(255,210,77,.25)}
+.etape.fait .tuile{background:#1f3a35;box-shadow:0 0 0 3px #000,inset 0 0 0 2px var(--seve)}
+.etape .t{font-size:15px;font-weight:600;margin-top:8px}
+.etape .s{font-size:12px;color:var(--doux);margin-top:2px;text-align:center}
+.bloc{margin:16px 14px 0}
+.bloc h3{font-size:14px;font-weight:400;color:var(--doux);margin:0 0 8px;display:flex;justify-content:space-between}
+.bloc h3 b{color:var(--texte);font-weight:600}
+.camp-actions{margin:auto 14px 10px;display:flex;flex-direction:column;gap:16px}
+.ligne{display:flex;gap:14px}
+.ligne .btn{flex:1}
+.echeance{text-align:center;font-size:13px;color:var(--doux);margin:0 14px 14px;line-height:1.35}
+.echeance b{color:var(--braise3);font-weight:600}
+
+/* ── marchand ── */
+.titre-vue{font-size:22px;font-weight:700;margin:14px 16px 4px}
+.sous{font-size:13px;color:var(--doux);margin:0 16px 8px;line-height:1.35}
+.rayon{margin:4px 14px 0}
+.rayon h4{font-size:13px;font-weight:400;color:var(--doux);margin:8px 0 6px}
+.article{display:flex;align-items:center;gap:10px;height:46px;background:var(--pierre);margin-bottom:5px;padding:0 8px;box-shadow:0 0 0 2px #000}
+.article canvas{width:30px;height:30px;image-rendering:pixelated;flex:0 0 30px}
+.article .n{flex:1;font-size:15px;line-height:1.1}
+.article .n small{display:block;color:var(--doux);font-size:12px;margin-top:2px}
+.article .mini{min-width:86px;font-size:13px}
+.article .mini.prix{background:var(--braise);color:var(--encre);box-shadow:inset 0 -3px 0 var(--braise2),0 0 0 2px #000}
+.article .mini.porte{background:#1f3a35;color:var(--seve);box-shadow:0 0 0 2px #000}
+.pied{margin:auto 14px 14px}
+.pied .btn{width:100%}
+
+/* ── semaine & coffre ── */
+.formu{margin:6px 16px 0}
+.formu label{display:block;font-size:13px;color:var(--doux);margin:10px 0 5px}
+.formu input{width:100%;font-family:var(--lex);font-size:15px;padding:10px;border:0;background:var(--parch);color:var(--encre);box-shadow:0 0 0 3px #000,inset 0 -3px 0 var(--parch2)}
+.liste-autre{margin:6px 0 0;padding:0;list-style:none}
+.liste-autre li{font-family:var(--lex);font-size:14px;background:var(--pierre);padding:9px 10px;margin-bottom:6px;box-shadow:0 0 0 2px #000}
+.note{font-size:12px;color:#7d82ad;margin-top:6px;line-height:1.35}
+.cadeaux{margin:12px 16px 0;display:flex;flex-direction:column;gap:12px}
+.cadeau{font-family:var(--lex);font-weight:700;font-size:16px;text-align:left;background:var(--parch);color:var(--encre);border:0;padding:14px;box-shadow:0 0 0 3px #000,inset 0 -4px 0 var(--parch2)}
+.cadeau:active{transform:translateY(2px)}
+.cadeau.pris{background:#b9eab5;box-shadow:0 0 0 3px #1f5a26,inset 0 -4px 0 #7cc47f}
+.texte-coffre{margin:12px 16px 0;font-size:15px;line-height:1.4;text-align:center}
+
+/* ── voile (messages) ── */
+#voile{position:absolute;inset:0;background:rgba(5,6,16,.72);display:flex;align-items:center;justify-content:center;z-index:20;padding:22px}
+#voile .boite{flex:0 0 auto;width:100%;margin:0;padding:22px 20px 20px}
+#voile h2{font-family:var(--px);font-size:24px;margin:0 0 10px;text-align:center}
+#voile p{font-family:var(--lex);font-size:15px;line-height:1.5;margin:0 0 8px;text-align:center}
+#voile .btns{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+
+/* ── outils du prototype (hors téléphone) ── */
+#outils{width:300px;flex:0 0 300px;font-family:var(--lex);font-size:13px;color:#c9cbe4;background:#121630;padding:16px;box-shadow:0 0 0 2px #23284a}
+#outils h2{font-family:var(--px);font-size:18px;margin:0 0 4px;color:var(--texte)}
+#outils p{margin:0 0 10px;line-height:1.4;color:#9599bf}
+#outils fieldset{border:0;padding:0;margin:0 0 14px}
+#outils legend{font-family:var(--px);font-size:14px;color:var(--braise3);margin-bottom:6px}
+#outils button{font-family:var(--lex);font-size:12px;background:#2a3060;color:#e6e7f7;border:0;padding:7px 9px;margin:0 4px 6px 0;box-shadow:0 0 0 1px #000}
+#outils button.on{background:var(--braise);color:var(--encre)}
+#outils input[type=text]{width:100%;font-size:12px;padding:5px;margin-bottom:4px;background:#1c2148;border:1px solid #333a70;color:#e6e7f7}
+#outils table{border-collapse:collapse;width:100%;font-size:12px}
+#outils td,#outils th{padding:3px 4px;border-bottom:1px solid #22274b;text-align:left}
+#outils th{color:#8f93bb;font-weight:400}
+#outils td.n{text-align:center;font-variant-numeric:tabular-nums}
+#outils tr.g td{color:var(--or)}
+
+/* ── v3 : carte du donjon, épreuves ── */
+.titre-carte{font-size:18px;font-weight:700;text-align:center;margin:8px 0 2px}
+.carte-donjon{height:384px}
+.dj-info{min-height:34px;margin:0 14px;font-family:var(--lex);font-size:13px;line-height:1.35;color:var(--doux);text-align:center}
+.dj-info b{color:var(--braise3)}
+.legende{display:grid;grid-template-columns:repeat(4,1fr);gap:8px 4px;margin:0 12px;font-size:12px;color:var(--doux)}
+.legende div{display:flex;align-items:center;gap:5px}
+.legende canvas{image-rendering:pixelated}
+.chrono{height:8px;background:#3a2a1a;margin:-4px 0 12px;box-shadow:0 0 0 2px var(--encre)}
+.chrono i{display:block;height:100%;background:var(--braise);width:100%}
+.chrono.urgent i{background:var(--sang)}
+.mot-q.petit{font-size:22px;margin:2px 0 12px}
+.arts{display:flex;gap:12px;justify-content:center;margin-bottom:12px}
+.cases{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:2px 0 12px;min-height:40px}
+.case{width:28px;height:38px;background:#efe2c0;box-shadow:0 0 0 2px var(--encre);font-family:var(--lex);font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center}
+.case.art{width:auto;min-width:44px;padding:0 6px}
+.case.plein{background:#fff}
+.espace{width:12px}
+.tuiles{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:auto;margin-bottom:4px}
+.tuile{font-family:var(--lex);font-weight:700;font-size:19px;min-width:44px;height:48px;padding:0 10px;border:0;background:#fbf3dc;color:var(--encre);box-shadow:0 0 0 3px var(--encre),inset 0 -4px 0 var(--parch3)}
+.tuile:active{transform:translateY(2px)}
+.tuile:disabled{opacity:.25;cursor:default}
+.tuile.ok{background:#b9eab5;box-shadow:0 0 0 3px #1f5a26,inset 0 -4px 0 #7cc47f;opacity:1}
+.tuile.ko{background:#f3b3a6;box-shadow:0 0 0 3px #7a2018,inset 0 -4px 0 #d97c6c;opacity:1}
+.tuile.sel{background:var(--braise3);box-shadow:0 0 0 3px #8a5a10,inset 0 -4px 0 var(--braise2)}
+.tuile.cible-t{text-decoration:underline;text-underline-offset:4px}
+.secoue{animation:secoue .3s steps(6)}
+@keyframes secoue{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.vies{display:flex;gap:6px;justify-content:center;align-items:center;font-size:13px;color:#8a7350;margin-bottom:10px}
+.vies i{width:12px;height:12px;background:var(--sang);box-shadow:0 0 0 2px var(--encre)}
+.vies i.perdu{background:#d8c8a8}
+.clavier{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-top:auto}
+.clavier .tuile{min-width:0;height:38px;font-size:17px;padding:0}
+.paires{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:auto 0}
+.paires>div{display:flex;flex-direction:column;gap:12px}
+.paires .tuile{font-size:15px;height:56px;padding:0 6px}
+.ligne-pc{min-height:64px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-content:flex-start;font-family:var(--lex);font-weight:700;font-size:17px;margin:12px 0}
+.ligne-pc span{background:#fff;padding:5px 7px;box-shadow:0 0 0 2px var(--encre)}
+.ligne-pc span.c{text-decoration:underline;text-underline-offset:4px}
+.combo{position:absolute;left:10px;bottom:10px;display:flex;gap:6px;align-items:center;pointer-events:none}
+.combo i{width:9px;height:9px;transform:rotate(45deg);background:#2a2a40;box-shadow:0 0 0 2px #000}
+.combo i.on{background:var(--braise);box-shadow:0 0 0 2px #000,0 0 6px var(--braise)}
+#b-heroique{position:absolute;left:8px;bottom:30px;font-size:15px;padding:8px 10px;animation:attire .8s steps(4) infinite}
+.btn.petit{font-family:var(--lex);font-size:14px;font-weight:700;text-align:left;line-height:1.35;padding:11px 12px}
+.reliques{display:flex;gap:8px;flex-wrap:wrap;min-height:27px;cursor:pointer}
+.reliques canvas{image-rendering:pixelated}
+.segs span.vide{background:#2a2a3c}
+.segs span.vert{background:var(--seve)}
+
+/* ── v5 : camp à deux, carte en tuiles, deck ── */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 14px 0}
+.joueur{background:var(--pierre);padding:9px 10px 10px;box-shadow:0 0 0 2px #000,inset 0 0 0 1px #4a5290}
+.joueur.moi{box-shadow:0 0 0 2px #000,inset 0 0 0 1px var(--braise)}
+.jn{font-size:16px;font-weight:700;margin-bottom:6px}
+.jn small{font-size:12px;font-weight:400;color:var(--braise3)}
+.jl{display:flex;justify-content:space-between;font-size:12px;color:var(--doux);margin-top:6px}
+.jl b{color:var(--texte);font-weight:600}
+.barre.fine{height:6px;margin-top:3px}
+.barre.fine i::after{display:none}
+.barre.vert i{background:var(--seve)}
+.barre.bleu i{background:var(--xp)}
+.dpad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:52px 52px;gap:8px;justify-content:center;margin:2px auto 14px}
+.dpad .btn{padding:0;font-size:20px}
+.dpad .petit-camp{font-size:15px}
+.deck{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 14px 0}
+.puce{font-family:var(--lex);text-align:left;background:var(--pierre);color:var(--texte);border:0;padding:6px 10px;min-height:46px;box-shadow:0 0 0 2px #000}
+.puce b{display:block;font-size:14px}
+.puce small{display:block;font-size:12px;color:var(--doux);margin-top:1px}
+.puce.pris{background:#1f3a35;box-shadow:0 0 0 2px #000,inset 0 0 0 2px var(--seve)}
+.aide-carte{font-size:13px;color:var(--doux);text-align:center;margin:2px 16px 0;font-family:var(--lex)}
+
+/* ── version de test : plein écran, deck à défiler, choix du joueur ── */
+body{touch-action:manipulation}
+#cadre{position:relative;overflow:visible}
+#tel{transform-origin:top left;position:absolute;left:0;top:0}
+body.mobile{padding:0;gap:0;align-items:center;justify-content:center;height:100vh;height:100dvh;overflow:hidden;background:var(--nuit)}
+body.mobile #tel{border-radius:0;box-shadow:none}
+#v-deck .deck{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;align-content:start;padding:2px 2px 12px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.puce b,.puce small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vue{overflow:hidden}
+.titre-vue{overflow-wrap:anywhere}
+.dk-choix span{min-width:0;font-size:14px}
+html,body.mobile{overflow:hidden;max-width:100vw}
+body.mobile #cadre{margin:0 auto}
+.dk-h{grid-column:1/-1;font-size:13px;font-weight:400;color:var(--doux);margin:8px 0 0}
+.dk-choix{display:flex;align-items:center;gap:10px;margin:2px 16px 4px;font-size:15px;font-weight:600}
+.dk-choix span{flex:1;text-align:center}
+.dk-choix .mini{font-size:18px;padding:4px 12px}
+.qui{display:flex;gap:18px;justify-content:center;margin-top:40px}
+.qui-b{display:flex;flex-direction:column;align-items:center;gap:12px;background:var(--pierre);border:0;color:var(--texte);padding:18px 22px;font-family:var(--px);font-size:18px;font-weight:600;box-shadow:0 0 0 3px #000,inset 0 0 0 2px #4a5290}
+.qui-b canvas{width:88px;height:100px;image-rendering:pixelated}
+.qui-b:active{transform:translateY(2px)}
+.liste-autre li.vide{color:var(--doux);font-style:italic}
+@media (max-width:760px){body{flex-direction:column;align-items:center}#outils{width:390px}}
+@media (prefers-reduced-motion:reduce){.nombre,.trou,.opt.attire,.carte.retourne{animation-duration:.01s}}
+</style>
+</head>
+<body>
+<div id="cadre">
+<div id="tel">
+
+  <section class="vue on" id="v-charge"><div class="titre-vue" style="margin:auto;text-align:center">Le donjon s'éveille…</div></section>
+  <section class="vue" id="v-qui">
+    <div class="titre-vue" style="text-align:center;margin-top:90px">Qui joue sur ce téléphone ?<br><small style="font-size:16px;color:var(--doux);font-weight:400">Wie speelt er op deze telefoon?</small></div>
+    <div class="qui"><button class="qui-b" id="qui-ulysse"><canvas width="22" height="25"></canvas><span>Ulysse</span></button><button class="qui-b" id="qui-jasmien"><canvas width="22" height="25"></canvas><span>Jasmien</span></button></div>
+  </section>
+
+  <!-- début de semaine : le deck -->
+  <section class="vue" id="v-deck">
+    <div class="titre-vue">Tes mots de la semaine</div>
+    <div class="dk-choix"><button class="mini" id="dk-prec" aria-label="Liste précédente">‹</button><span id="dk-nom"></span><button class="mini" id="dk-suiv" aria-label="Liste suivante">›</button></div>
+    <p class="sous" id="dk-sous"></p>
+    <div class="deck" id="dk-liste"></div>
+    <div class="pied"><button class="btn" id="dk-go" disabled>Choisis au moins 4 mots</button></div>
+  </section>
+
+  <!-- semaine : les cadeaux -->
+  <section class="vue" id="v-semaine">
+    <div class="titre-vue">Nouvelle semaine</div>
+    <p class="sous" id="s-echeance"></p>
+    <div class="formu">
+      <label for="c1" id="s-lab">Tes trois idées de cadeau</label>
+      <input id="c1" maxlength="60" placeholder="Une idée de cadeau">
+      <input id="c2" maxlength="60" placeholder="Une deuxième" style="margin-top:8px">
+      <input id="c3" maxlength="60" placeholder="Une troisième" style="margin-top:8px">
+      <label id="s-lab2">Ce qu'on te propose</label>
+      <ul class="liste-autre" id="s-autre"></ul>
+      <div class="note" id="s-note">Dans le prototype, ces trois cadeaux sont simulés. Tu peux les changer dans les outils à droite.</div>
+    </div>
+    <div class="pied"><button class="btn" id="s-go" disabled>Partir à l'aventure</button></div>
+  </section>
+
+  <!-- le camp -->
+  <section class="vue" id="v-camp">
+    <div class="hud" id="hud-camp"></div>
+    <div class="scene camp-scene"><canvas id="cv-camp" width="96" height="54"></canvas></div>
+    <div class="duo" id="duo"></div>
+    <div class="bloc">
+      <h3><span>Reliques</span><b id="camp-nrel"></b></h3>
+      <div class="reliques" id="camp-rel"></div>
+    </div>
+    <div class="camp-actions">
+      <button class="btn" id="camp-go"></button>
+      <div class="ligne">
+        <button class="btn sec" id="camp-marchand">Marchand</button>
+        <button class="btn sec" id="camp-son">Son : oui</button>
+      </div>
+    </div>
+    <div class="echeance" id="camp-echeance"></div>
+  </section>
+
+  <!-- le combat -->
+  <section class="vue" id="v-combat">
+    <div class="hud" id="hud-combat"></div>
+    <div class="scene" id="scene-combat">
+      <canvas id="cv-combat" width="96" height="72"></canvas>
+      <div class="etiq" id="etiq"><div class="nom" id="e-nom"></div><div id="e-barre"></div></div>
+      <div class="couche" id="couche"></div>
+      <div class="combo cache" id="combo"></div>
+      <button class="btn cache" id="b-heroique">Frappe héroïque</button>
+    </div>
+    <div class="etat"><div class="crans" id="cb-crans"></div><div class="lib" id="cb-lib"></div></div>
+    <div class="boite" id="boite">
+      <div class="chrono cache" id="chrono"><i></i></div>
+      <div class="zone cache" id="z-qcm">
+        <div class="langue" id="q-lang"></div>
+        <div class="mot-q" id="q-mot"></div>
+        <div class="opts" id="q-opts"></div>
+      </div>
+      <div class="zone cache" id="z-phrase">
+        <div class="langue">Touche le trou et choisis le mot</div>
+        <div class="phrase" id="p-phrase"></div>
+        <div class="trad" id="p-trad"></div>
+      </div>
+      <div class="zone cache" id="z-rune">
+        <div class="langue" id="r-consigne"></div>
+        <div class="mot-q petit" id="r-prompt"></div>
+        <div class="arts" id="r-art"></div>
+        <div class="cases" id="r-cases"></div>
+        <div class="tuiles" id="r-tuiles"></div>
+      </div>
+      <div class="zone cache" id="z-myst">
+        <div class="langue" id="m-consigne"></div>
+        <div class="mot-q petit" id="m-prompt"></div>
+        <div class="cases" id="m-cases"></div>
+        <div class="vies" id="m-vies"></div>
+        <div class="clavier" id="m-clavier"></div>
+      </div>
+      <div class="zone cache" id="z-paires">
+        <div class="langue">Relie chaque mot à sa traduction</div>
+        <div class="paires"><div id="pa-g"></div><div id="pa-d"></div></div>
+      </div>
+      <div class="zone cache" id="z-parch">
+        <div class="langue">Remets la phrase dans l'ordre</div>
+        <div class="trad" id="pc-trad"></div>
+        <div class="ligne-pc" id="pc-ligne"></div>
+        <div class="tuiles" id="pc-tuiles"></div>
+      </div>
+      <button class="btn suite cache" id="b-suite">Question suivante</button>
+      <div class="retour" id="retour"></div>
+      <div class="menu cache" id="p-menu"></div>
+    </div>
+  </section>
+
+  <!-- la carte du donjon -->
+  <section class="vue" id="v-donjon">
+    <div class="hud" id="hud-donjon"></div>
+    <div class="titre-carte" id="dj-titre"></div>
+    <div class="scene carte-donjon"><canvas id="cv-donjon" width="192" height="192"></canvas></div>
+    <div class="etat"><div class="crans" id="dj-crans"></div><div class="lib" id="dj-lib"></div></div>
+    <div class="dj-info" id="dj-info"></div>
+    <div class="pied"><button class="btn sec" id="dj-camp">Retour au camp</button></div>
+  </section>
+
+  <!-- le marchand -->
+  <section class="vue" id="v-marchand">
+    <div class="hud" id="hud-marchand"></div>
+    <div class="titre-vue">Marchand</div>
+    <p class="sous">Le stuff ne joue que sur le combat. Les questions restent les mêmes.</p>
+    <div class="rayon" id="rayon"></div>
+    <div class="pied"><button class="btn sec" id="m-retour">Retour au camp</button></div>
+  </section>
+
+  <!-- le coffre -->
+  <section class="vue" id="v-coffre">
+    <div class="titre-vue">Le coffre du dragon</div>
+    <div class="scene camp-scene" id="scene-coffre"><canvas id="cv-coffre" width="96" height="54"></canvas></div>
+    <p class="texte-coffre" id="k-texte"></p>
+    <div class="cadeaux" id="k-cadeaux"></div>
+    <div class="pied"><button class="btn sec cache" id="k-retour">Retour au camp</button></div>
+  </section>
+
+  <div id="voile" class="cache"><div class="boite"><div id="v-corps"></div><div class="btns" id="v-btns"></div></div></div>
+</div>
+</div>
+
+<aside id="outils">
+  <h2>Outils du prototype</h2>
+  <p>Hors du téléphone, pour tester vite. Rien de tout ça n'existera dans la vraie app.</p>
+  <fieldset><legend>Qui joue</legend>
+    <button id="o-ulysse">Ulysse</button><button id="o-jasmien">Jasmien</button>
+    <p style="margin-top:4px">Les phrases à trous sont en néerlandais pour Ulysse, en français pour Jasmien.</p>
+  </fieldset>
+  <fieldset><legend>Raccourcis</legend>
+    <button id="o-valider">Valider le groupe en cours</button>
+    <button id="o-or">+200 or</button>
+    <button id="o-dimanche">Passer à dimanche minuit</button>
+    <button id="o-autre-mot">L'autre : +1 mot</button><button id="o-autre-explo">L'autre : +10 % d'exploration</button><button id="o-autre-dragon">Dragon de l'autre : non</button>
+    <button id="o-semaine">Nouvelle semaine</button>
+    <button id="o-reset">Tout effacer</button>
+  </fieldset>
+  <fieldset><legend id="o-leg-cad">Cadeaux proposés par l'autre</legend>
+    <input type="text" id="o-k1"><input type="text" id="o-k2"><input type="text" id="o-k3">
+  </fieldset>
+  <fieldset><legend>Algorithme (mots)</legend>
+    <table><thead><tr><th>mot</th><th>QCM</th><th>phr.</th><th>rappel</th></tr></thead><tbody id="o-mots"></tbody></table>
+    <p id="o-algo" style="margin-top:8px"></p>
+  </fieldset>
+</aside>
+
+<script>
+'use strict';
+/* ═════════ langue de l'interface ═════════
+   Français pour Ulysse, néerlandais pour Jasmien. Les textes sont écrits en
+   français dans le code ; T() renvoie leur traduction quand c'est Jasmien qui
+   joue. Les {0}, {1}… sont remplacés par les valeurs passées après le texte.
+   Les questions, elles, suivent la langue apprise (néerlandais pour Ulysse,
+   français pour Jasmien) et ne passent jamais par ici. */
+var NL = {
+  "Le donjon s'éveille…": 'De kerker ontwaakt…',
+  'Qui joue sur ce téléphone ?': 'Wie speelt er op deze telefoon?',
+  'Tes mots de la semaine': 'Jouw woorden van de week',
+  'Choisis au moins 4 mots': 'Kies minstens 4 woorden',
+  'Nouvelle semaine': 'Nieuwe week',
+  'Tes trois idées de cadeau': 'Jouw drie cadeau-ideeën',
+  "Ce qu'on te propose": 'Wat je voorgesteld krijgt',
+  "Partir à l'aventure": 'Op avontuur',
+  'Reliques': 'Relikwieën',
+  'Marchand': 'Handelaar',
+  'Frappe héroïque': 'Heldenslag',
+  'Touche le trou et choisis le mot': 'Tik op het gat en kies het woord',
+  'Relie chaque mot à sa traduction': 'Verbind elk woord met zijn vertaling',
+  "Remets la phrase dans l'ordre": 'Zet de zin in de juiste volgorde',
+  'Question suivante': 'Volgende vraag',
+  'Continuer': 'Verder',
+  'Retour au camp': 'Terug naar het kamp',
+  'Le stuff ne joue que sur le combat. Les questions restent les mêmes.': 'Je uitrusting telt alleen in gevechten. De vragen blijven dezelfde.',
+  'Le coffre du dragon': 'De schatkist van de draak',
+  'Mots': 'Woorden', 'Verbes': 'Werkwoorden',
+  'Une idée de cadeau': 'Een cadeau-idee', 'Une deuxième': 'Een tweede', 'Une troisième': 'Een derde',
+  'Att. {0}': 'Aanv. {0}', 'Déf. {0}': 'Verd. {0}', '{0} / {1} PV': '{0} / {1} LP',
+  'Potion {0}': 'Drankje {0}', 'Fuir': 'Vluchten',
+  'Le gardien interdit les potions': 'De wachter verbiedt drankjes',
+  'Boire une potion, sans perdre ton tour': 'Een drankje drinken, zonder je beurt te verliezen',
+  'toi': 'jij', 'Mots appris': 'Geleerde woorden', 'Donjon exploré': 'Kerker verkend', 'Dragon': 'Draak',
+  'vaincu': 'verslagen', 'enfui': 'gevlucht', "il t'attend": 'wacht op jou', "il l'attend": 'wacht op hem', 'pas encore': 'nog niet',
+  'Pas encore entré{0} dans le donjon de cette semaine.': 'Nog niet in de kerker van deze week geweest.',
+  'Ouvrir le coffre du dragon': 'De schatkist van de draak openen',
+  'Commencer une nouvelle semaine': 'Een nieuwe week beginnen',
+  "Reprendre l'exploration": 'Verder verkennen',
+  'Entrer dans le donjon': 'De kerker in',
+  'Son : oui': 'Geluid: aan', 'Son : non': 'Geluid: uit',
+  'Dragon vaincu cette semaine.': 'Draak verslagen deze week.',
+  '{0} a aussi bouclé ses mots.': '{0} heeft ook al zijn woorden geleerd.',
+  'Le dragon s\'est enfui dimanche à minuit. Le coffre est perdu.': 'De draak is zondag om middernacht gevlucht. De schatkist is verloren.',
+  'Le dragon s\'enfuit <b>dimanche à minuit</b>, {0}.': 'De draak vlucht <b>zondag om middernacht</b>, {0}.',
+  "c'est pour aujourd'hui ou demain": 'vandaag of morgen al',
+  'dans {0} jours': 'over {0} dagen',
+  '{0} relique': '{0} relikwie', '{0} reliques': '{0} relikwieën', "aucune pour l'instant": 'nog geen',
+  'Tes reliques': 'Jouw relikwieën', 'Fermer': 'Sluiten',
+  "L'antre du dragon": 'Het hol van de draak', 'Zone {0} sur {1}': 'Zone {0} van {1}',
+  'Tous tes mots sont appris': 'Al je woorden zijn geleerd',
+  "Groupe appris : le gardien t'attend": 'Groep geleerd: de wachter wacht op je',
+  'Groupe appris : la porte est ouverte': 'Groep geleerd: de deur is open',
+  'Reconnaissance': 'Herkennen', 'Contexte': 'Context', 'Rappel': 'Onthouden',
+  'coup léger': 'lichte slag', 'coup moyen': 'gewone slag', 'coup fort': 'harde slag',
+  'Une porte gardée.': 'Een bewaakte deur.', 'Une porte scellée.': 'Een verzegelde deur.',
+  "Elle s'ouvrira quand les mots de cette zone seront appris.": 'Ze gaat open als de woorden van deze zone geleerd zijn.',
+  'Nouvelle zone.': 'Nieuwe zone.', "De nouveaux mots t'attendent.": 'Nieuwe woorden wachten op je.',
+  "L'antre est vide.": 'Het hol is leeg.', "Le dragon s'est enfui dimanche à minuit.": 'De draak is zondag om middernacht gevlucht.',
+  'Gelée verte': 'Groene slijmbal', 'Champignon grincheux': 'Knorrige paddenstoel', 'Gobelin': 'Kobold', 'Chauve-souris': 'Vleermuis',
+  'Squelette': 'Skelet', 'Gelée de crypte': 'Gruftslijm', 'Gobelin chef': 'Koboldleider', 'Squelette maudit': 'Vervloekt skelet',
+  'Gardien de pierre': 'Stenen wachter', 'Cendregueule, le dragon': 'Asmuil, de draak',
+  'Salle des énigmes': 'Raadselkamer', 'Le pont branlant': 'De wankele brug', 'Coffre verrouillé': 'Gesloten kist', 'Fontaine claire': 'Heldere bron',
+  'Bilan : {0} sur {1}, encore {2} questions au plus': 'Toets: {0} van {1}, nog hoogstens {2} vragen',
+  'Révision': 'Herhaling', "Rappel d'un mot": 'Herhaling van een woord', '{0} {1} sur {2}': '{0} {1} van {2}',
+  'Un élite te barre la route': 'Een elite verspert je de weg', 'Un monstre errant rôde': 'Er zwerft een monster rond',
+  'Plus coriace, mais il garde une relique.': 'Taaier, maar hij bewaakt een relikwie.',
+  'Le gardien bloque la sortie': 'De wachter verspert de uitgang',
+  'Il tombe en {0} bonnes réponses, sur tous les mots appris. Pas de potion ici.': 'Hij valt na {0} goede antwoorden, over al je geleerde woorden. Geen drankjes hier.',
+  "Cendregueule sort de l'ombre": 'Asmuil komt uit de schaduw',
+  "Révision de tous tes mots. Ses blessures restent d'un combat à l'autre.": 'Herhaling van al je woorden. Zijn wonden blijven van het ene gevecht naar het andere.',
+  "Cinq questions avant qu'il ne cède. Trop lent ou faux : tu chutes.": 'Vijf vragen voor hij het begeeft. Te traag of fout: je valt.',
+  'Un coffre verrouillé': 'Een gesloten kist', 'Trois serrures, une bonne réponse chacune. Gare aux pièges.': 'Drie sloten, telkens één goed antwoord. Pas op voor vallen.',
+  'Une fontaine claire': 'Een heldere bron', 'Trois questions. Chaque bonne réponse te soigne.': 'Drie vragen. Elk goed antwoord geneest je.',
+  'La salle des énigmes': 'De raadselkamer',
+  'Le parchemin est déchiré : remets les phrases en ordre.': 'De perkamentrol is verscheurd: zet de zinnen in de juiste volgorde.',
+  'La stèle demande les mots eux-mêmes, lettre par lettre.': 'De steen vraagt de woorden zelf, letter voor letter.',
+  'Relie les mots à leur traduction.': 'Verbind de woorden met hun vertaling.',
+  "C'était « {0} ».": 'Het was ‘{0}’.', "C'était « {0} ». Touche-la pour continuer.": 'Het was ‘{0}’. Tik erop om verder te gaan.',
+  'néerlandais': 'het Nederlands', 'français': 'het Frans',
+  'Reforme le mot en {0}': 'Vorm het woord in {0}', 'Reforme le mot en {0}, article compris': 'Vorm het woord in {0}, met lidwoord',
+  'Trouve le mot en {0}, lettre par lettre': 'Vind het woord in {0}, letter per letter',
+  'Erreurs permises': 'Toegestane fouten',
+  'Le mot était « {0} ».': 'Het woord was ‘{0}’.',
+  'Juste à la fin, mais avec une erreur en route : « {0} ».': 'Uiteindelijk juist, maar met een fout onderweg: ‘{0}’.',
+  'La phrase : « {0} ».': 'De zin: ‘{0}’.',
+  '« {0} » appris': '‘{0}’ geleerd', '+{0} or': '+{0} goud',
+  'Une planche de plus': 'Weer een plank verder', 'Une serrure cède': 'Een slot springt open',
+  'Phase contexte': 'Fase context', 'Phase rappel': 'Fase onthouden',
+  'Les mots se jouent en phrases. Coups à {0}.': 'De woorden komen nu in zinnen. Slagen van {0}.',
+  'Il faut maintenant écrire les mots. Coups à {0}.': 'Nu schrijf je de woorden zelf. Slagen van {0}.',
+  'Bloqué': 'Geblokkeerd', 'Trop lent ! {0}': 'Te traag! {0}',
+  "Le gardien s'effondre": 'De wachter stort in', 'Dans ses gravats, trois reliques.': 'In het puin liggen drie relikwieën.',
+  "L'élite est vaincu": 'De elite is verslagen', 'Il gardait trois reliques. Tu en prends une.': 'Hij bewaakte drie relikwieën. Je neemt er één.',
+  'Frappe héroïque !': 'Heldenslag!', '+1 potion': '+1 drankje',
+  'Au fond du coffre…': 'Onderin de kist…', 'Une relique scintille parmi les pièces.': 'Tussen de munten glinstert een relikwie.',
+  'Le pont est franchi': 'De brug is over', 'La fontaine se tarit': 'De bron droogt op',
+  "Le gardien s'est effondré.": 'De wachter is ingestort.',
+  "La porte est ouverte, de nouveaux mots t'attendent derrière.": 'De deur is open, erachter wachten nieuwe woorden.',
+  'Tous les mots sont appris.': 'Alle woorden zijn geleerd.', 'Les mots de cette zone sont appris.': 'De woorden van deze zone zijn geleerd.',
+  "L'antre du dragon est ouverte, tout au fond.": 'Het hol van de draak is open, helemaal achteraan.',
+  "Le gardien de la porte s'est réveillé.": 'De wachter van de deur is wakker geworden.',
+  "La porte vers la suite s'est ouverte.": 'De deur naar het vervolg is opengegaan.',
+  'Une relique reste active pour toujours.': 'Een relikwie blijft voor altijd actief.',
+  "Le gardien t'a repoussé": 'De wachter heeft je teruggeslagen', 'Tu es à terre': 'Je ligt neer',
+  'Dix questions sans cinq bonnes réponses : le bilan recommence, les mots ratés en tête.': 'Tien vragen zonder vijf goede antwoorden: de toets begint opnieuw, met de gemiste woorden eerst.',
+  'Tes mots appris, ton or et tes reliques sont gardés.': 'Je geleerde woorden, je goud en je relikwieën blijven bewaard.',
+  'Le dragon garde ses blessures : il lui reste {0} PV.': 'De draak houdt zijn wonden: hij heeft nog {0} LP.',
+  'Tes mots, ton or et tes reliques sont gardés.': 'Je woorden, je goud en je relikwieën blijven bewaard.',
+  'Retour au camp. Le donjon, tes mots appris, ton or et tes reliques sont gardés.': 'Terug naar het kamp. De kerker, je geleerde woorden, je goud en je relikwieën blijven bewaard.',
+  'Cendregueule est vaincu': 'Asmuil is verslagen', '+100 or.': '+100 goud.',
+  'Son coffre est à toi : tu y choisis ton cadeau parmi ceux de {0}.': 'Zijn schatkist is van jou: kies je cadeau uit de ideeën van {0}.',
+  'Ouvrir le coffre': 'De kist openen',
+  'Rentrer au camp ?': 'Terug naar het kamp?', 'Quitter la salle ?': 'De kamer verlaten?',
+  'Le dragon garde ses blessures.': 'De draak houdt zijn wonden.',
+  "La salle reste à faire. Tes PV ne remontent qu'au camp.": 'De kamer blijft open. Je LP herstellen alleen in het kamp.',
+  'Rentrer au camp': 'Terug naar het kamp', 'Retour à la carte': 'Terug naar de kaart', 'Rester': 'Blijven',
+  '« Approche, voyageur. »': '‘Kom dichterbij, reiziger.’', 'Tu as {0} or.': 'Je hebt {0} goud.',
+  'Petite potion, 10 or': 'Klein drankje, 10 goud', 'Grande potion, 30 or': 'Groot drankje, 30 goud',
+  '{0} ({1}) : 120 or': '{0} ({1}): 120 goud', 'Reprendre la route': 'Verder trekken',
+  'Un marchand ambulant': 'Een rondtrekkende handelaar', "Pas assez d'or pour ça.": 'Niet genoeg goud daarvoor.', 'Affaire conclue.': 'Afgesproken.',
+  'Une statue ancienne': 'Een oud standbeeld',
+  "Une statue couverte de mousse tend une main ouverte. On dit qu'elle bénit ceux qui donnent.": 'Een met mos begroeid standbeeld steekt een open hand uit. Men zegt dat het wie geeft, zegent.',
+  'Offrir 20 or': '20 goud offeren', 'Passer son chemin': 'Doorlopen',
+  'La statue reste muette': 'Het standbeeld zwijgt', 'Il te faut 20 or.': 'Je hebt 20 goud nodig.',
+  "La statue s'illumine": 'Het standbeeld licht op', '+5 PV max, pour toujours.': '+5 max LP, voor altijd.',
+  'Un aventurier blessé': 'Een gewonde avonturier', 'Adossé au mur, il te demande une potion.': 'Tegen de muur geleund vraagt hij je om een drankje.',
+  'Lui donner une potion': 'Hem een drankje geven', 'Tes poches sont vides': 'Je zakken zijn leeg',
+  "Tu n'as pas de potion à lui donner.": 'Je hebt geen drankje om te geven.', 'Il te remercie': 'Hij bedankt je', 'Il te glisse 40 or.': 'Hij stopt je 40 goud toe.',
+  'Un puits qui murmure': 'Een fluisterende put', 'Une voix au fond du puits réclame une pièce.': 'Een stem onderin de put vraagt om een munt.',
+  'Jeter 15 or': '15 goud ingooien', 'Rien ne se passe': 'Er gebeurt niets', 'Il te faut 15 or.': 'Je hebt 15 goud nodig.',
+  'Le puits te répond': 'De put antwoordt', 'Trois reliques remontent dans le seau.': 'Er komen drie relikwieën boven in de emmer.',
+  'Le puits ricane': 'De put grinnikt', 'Un courant glacé te frappe : -8 PV.': 'Een ijzige luchtstroom raakt je: -8 LP.',
+  'Armes, attaque actuelle {0}': 'Wapens, huidige aanval {0}', '+{0} attaque': '+{0} aanval',
+  'Équipée': 'Uitgerust', 'Équiper': 'Uitrusten', '{0} or': '{0} goud',
+  'Armures, défense actuelle {0}': 'Harnassen, huidige verdediging {0}', '+{0} défense': '+{0} verdediging',
+  'Portée': 'Gedragen', 'Porter': 'Dragen',
+  'Potions, à boire sans perdre ton tour': 'Drankjes, te drinken zonder je beurt te verliezen',
+  '{0} (tu en as {1})': '{0} (je hebt er {1})', 'rend {0} PV': 'geeft {0} LP terug',
+  'Épée rouillée': 'Roestig zwaard', 'Épée courte': 'Kort zwaard', 'Épée longue': 'Lang zwaard', 'Lame runique': 'Runenkling', 'Lame du vent': 'Windkling',
+  'Tunique': 'Tuniek', 'Gambison': 'Gambeson', 'Cotte de mailles': 'Maliënkolder', 'Armure de plates': 'Plaatharnas', 'Armure dragonne': 'Drakenharnas',
+  'Petite potion': 'Klein drankje', 'Grande potion': 'Groot drankje',
+  'Écho du savoir': 'Echo van kennis', 'chaque mot appris frappe gratuitement le monstre, ou rapporte 10 or hors combat': 'elk geleerd woord geeft het monster een gratis slag, of buiten gevechten 10 goud',
+  'Calice de source': 'Bronkelk', 'les fontaines soignent deux fois plus': 'bronnen genezen dubbel zoveel',
+  'Sablier fêlé': 'Gebarsten zandloper', '+3 secondes par question sur les ponts': '+3 seconden per vraag op bruggen',
+  'Œil du sphinx': 'Oog van de sfinx', "les énigmes rapportent le double d'or": 'raadsels leveren dubbel goud op',
+  'Gantelet de braise': 'Gloeiende handschoen', 'la jauge de combo se remplit en 5 au lieu de 6': 'de combometer is vol na 5 in plaats van 6',
+  'Bourse du voleur': 'Dievenbuidel', "+50 % d'or, mais 10 PV max en moins": '+50 % goud, maar 10 max LP minder',
+  'Plume du scribe': 'Schrijversveer', 'chaque phrase réussie soigne 3 PV': 'elke juiste zin geneest 3 LP',
+  'Rune de garde': 'Wachtrune', 'le premier coup reçu dans chaque salle est annulé': 'de eerste klap in elke kamer wordt tegengehouden',
+  'Croc de dragon': 'Drakentand', '+4 attaque': '+4 aanval',
+  'Amulette de vie': 'Levensamulet', '+15 PV max': '+15 max LP',
+  'Cœur de golem': 'Golemhart', 'la frappe héroïque soigne aussi 12 PV': 'de heldenslag geneest ook 12 LP',
+  'Lanterne du cartographe': 'Lantaarn van de kaartmaker',
+  "le plan entier des donjons est visible dès l'entrée, sans dévoiler le contenu des salles": 'het hele plan van de kerker is meteen zichtbaar, zonder te tonen wat er in de kamers is',
+  '{0} a aussi bouclé ses mots : vous recevez chacun la Relique du duo (+3 attaque, +2 défense).': '{0} heeft ook al zijn woorden geleerd: jullie krijgen allebei het duorelikwie (+3 aanval, +2 verdediging).',
+  'Si {0} boucle aussi ses mots avant dimanche minuit, vous recevrez chacun la Relique du duo.': 'Als {0} ook al zijn woorden leert voor zondag middernacht, krijgen jullie allebei het duorelikwie.',
+  "Semaine {0}. Le dragon s'enfuira le {1} à minuit.": 'Week {0}. De draak vlucht op {1} om middernacht.',
+  'Tes trois idées de cadeau pour {0}': 'Jouw drie cadeau-ideeën voor {0}', 'Ce que {0} te propose': 'Wat {0} je voorstelt',
+  "{0} n'a pas encore donné ses idées. Tu les découvriras au coffre du dragon.": '{0} heeft zijn ideeën nog niet gegeven. Je ontdekt ze bij de schatkist van de draak.',
+  'Touche les mots que tu ne connais pas encore.': 'Tik op de woorden die je nog niet kent.',
+  'Valider mes {0} mots': 'Mijn {0} woorden bevestigen',
+  "Touche le coffre pour l'ouvrir.": 'Tik op de kist om ze te openen.',
+  'Ton cadeau de la semaine : « {0} ». {1} en sera {2}.': 'Jouw cadeau van de week: ‘{0}’. {1} krijgt het te horen.',
+  "{0} n'a pas encore donné ses trois idées de cadeau. Reviens au coffre dès que c'est fait.": '{0} heeft zijn drie cadeau-ideeën nog niet gegeven. Kom terug naar de kist zodra dat gebeurd is.',
+  "Choisis ton cadeau parmi ceux que {0} t'a proposés.": 'Kies je cadeau uit wat {0} je voorstelde.',
+  'Choisir ce cadeau ?': 'Dit cadeau kiezen?', '« {0} »': '‘{0}’',
+  'Ce choix est définitif pour la semaine.': 'Deze keuze is definitief voor deze week.',
+  'Je le prends': 'Ik neem het', 'Réfléchir encore': 'Nog even nadenken'
+};
+var THEMES_NL = {
+  'semaine-01': 'het huis en het dagelijks leven', 'semaine-02': 'eten en drinken', 'semaine-03': 'het lichaam en de gezondheid',
+  'semaine-04': 'de familie en de mensen', 'semaine-05': 'de tijd en de kalender', 'semaine-06': 'de stad en onderweg',
+  'semaine-07': 'het werk en de school', 'semaine-08': 'gevoelens en karakter', 'semaine-09': 'kleren en kleuren', 'semaine-10': 'de natuur en de dieren'
+};
+function enNl() { return !!(etat && etat.moi === 'jasmien'); }
+function T(fr) {
+  var s = enNl() && NL[fr] != null ? NL[fr] : fr;
+  for (var i = 1; i < arguments.length; i++) s = s.split('{' + (i - 1) + '}').join(arguments[i]);
+  return s;
+}
+function nomListe(li) {
+  var n = String(li.titre || '').replace(/^Liste\s*/i, '');
+  if (enNl()) return 'Lijst ' + n + ', ' + (THEMES_NL[li.id] || li.theme);
+  return li.titre + ', ' + li.theme.charAt(0).toLowerCase() + li.theme.slice(1);
+}
+/* les textes écrits en dur dans la page : on garde l'original français de
+   chaque nœud et on le remplace par sa traduction */
+var ORIG_TXT = new WeakMap();
+function traduireDOM() {
+  var w = document.createTreeWalker(document.getElementById('tel'), NodeFilter.SHOW_TEXT), n;
+  while ((n = w.nextNode())) {
+    var o = ORIG_TXT.has(n) ? ORIG_TXT.get(n) : n.nodeValue.trim();
+    if (!o || NL[o] == null) continue;
+    ORIG_TXT.set(n, o); n.nodeValue = T(o);
+  }
+  ['c1', 'c2', 'c3'].forEach(function (id, i) { document.getElementById(id).placeholder = T(['Une idée de cadeau', 'Une deuxième', 'Une troisième'][i]); });
+}
+/* la liste de la semaine : imposée pour la semaine du 26/10/2026 (liste 6) */
+var LISTES_IMPOSEES = { '2026-11-01': 'semaine-06' };
+function listeImposee() { var k = new Date(etat.semaine.fin).toISOString().slice(0, 10); return LISTES_IMPOSEES[k] || null; }
+
+/* ═════════ les 10 mots du prototype (liste 1) ═════════ */
+/* les listes du dépôt (data/), comme l'app ; si la page est ouverte hors du
+   site (fichier sur le PC), une liste d'essai embarquée prend le relais */
+var SECOURS = { id: 'essai', titre: 'Liste d\'essai', theme: 'La maison et le quotidien', mots: [{"nl": "het huis", "fr": "la maison", "ph": [{"nl": "{Het huis} van mijn ouders is oud.", "fr": "{La maison} de mes parents est vieille."}, {"nl": "Hebben jullie {een huis} gekocht?", "fr": "Vous avez acheté {une maison} ?"}, {"nl": "Ze bouwen {een huis} naast de kerk.", "fr": "Ils construisent {une maison} à côté de l'église."}, {"nl": "Wij hebben geen {huis}, maar een appartement.", "fr": "Nous n'avons pas de {maison}, mais un appartement."}]}, {"nl": "de deur", "fr": "la porte", "ph": [{"nl": "Wil je {de deur} sluiten, alsjeblieft?", "fr": "Tu veux bien fermer {la porte}, s'il te plaît ?"}, {"nl": "{De deur} van de keuken was niet op slot.", "fr": "{La porte} de la cuisine n'était pas fermée à clé."}, {"nl": "Er wordt op {de deur} geklopt.", "fr": "On frappe à {la porte}."}, {"nl": "Laat {de deur} niet open, anders loopt de kat weg.", "fr": "Ne laisse pas {la porte} ouverte, sinon le chat s'enfuit."}]}, {"nl": "het raam", "fr": "la fenêtre", "ph": [{"nl": "Ik doe {het raam} open, het is warm.", "fr": "J'ouvre {la fenêtre}, il fait chaud."}, {"nl": "Is {het raam} in de slaapkamer nog open?", "fr": "Est-ce que {la fenêtre} de la chambre est encore ouverte ?"}, {"nl": "Door {het raam} zie ik de tuin.", "fr": "Par {la fenêtre}, je vois le jardin."}, {"nl": "Wie heeft {het raam} met een bal gebroken?", "fr": "Qui a cassé {la fenêtre} avec un ballon ?"}]}, {"nl": "de keuken", "fr": "la cuisine", "ph": [{"nl": "We eten vaak samen in {de keuken}.", "fr": "Nous mangeons souvent ensemble dans {la cuisine}."}, {"nl": "{De keuken} was gisteren erg vuil.", "fr": "{La cuisine} était très sale hier."}, {"nl": "Mama kookt het avondeten in {de keuken}.", "fr": "Maman prépare le dîner dans {la cuisine}."}, {"nl": "In {de keuken} staan een fornuis en een koelkast.", "fr": "Dans {la cuisine}, il y a une cuisinière et un frigo."}]}, {"nl": "de kamer", "fr": "la pièce, la chambre", "ph": [{"nl": "Dit huis heeft vijf {kamers}.", "fr": "Cette maison a cinq {pièces}."}, {"nl": "Mijn broer slaapt in {de kamer} naast de badkamer.", "fr": "Mon frère dort dans {la chambre} à côté de la salle de bain."}, {"nl": "{Mijn kamer} is klein maar gezellig.", "fr": "{Ma chambre} est petite mais accueillante."}, {"nl": "Ga naar {je kamer} en doe je huiswerk!", "fr": "Va dans {ta chambre} et fais tes devoirs !"}]}, {"nl": "de tafel", "fr": "la table", "ph": [{"nl": "Het eten staat op {de tafel}.", "fr": "Le repas est sur {la table}."}, {"nl": "Kun je {de tafel} dekken?", "fr": "Tu peux mettre {la table} ?"}, {"nl": "Na het eten ruim ik {de tafel} af.", "fr": "Après le repas, je débarrasse {la table}."}, {"nl": "Vier stoelen staan rond {de tafel}.", "fr": "Quatre chaises sont autour de {la table}."}]}, {"nl": "de stoel", "fr": "la chaise", "ph": [{"nl": "Er staat {een stoel} bij het raam.", "fr": "Il y a {une chaise} près de la fenêtre."}, {"nl": "We hebben niet genoeg {stoelen} voor iedereen.", "fr": "Nous n'avons pas assez de {chaises} pour tout le monde."}, {"nl": "Hij staat op {een stoel} om de lamp te vervangen.", "fr": "Il monte sur {une chaise} pour changer la lampe."}, {"nl": "Schuif {je stoel} wat dichter bij de tafel.", "fr": "Rapproche un peu {ta chaise} de la table."}]}, {"nl": "het bed", "fr": "le lit", "ph": [{"nl": "Ik ga vanavond vroeg naar {bed}.", "fr": "Ce soir, je vais tôt {au lit}."}, {"nl": "Heb je {het bed} al opgemaakt?", "fr": "Tu as déjà fait {le lit} ?"}, {"nl": "{Het bed} is te kort voor mijn lange broer.", "fr": "{Le lit} est trop court pour mon grand frère."}, {"nl": "Spring niet op {het bed}, kinderen!", "fr": "Ne sautez pas sur {le lit}, les enfants !"}]}, {"nl": "de kast", "fr": "l'armoire", "ph": [{"nl": "Mijn kleren hangen in {de kast}.", "fr": "Mes vêtements sont pendus dans {l'armoire}."}, {"nl": "Is er nog plaats in {de kast}?", "fr": "Il y a encore de la place dans {l'armoire} ?"}, {"nl": "{De kast} in de slaapkamer is te klein voor al mijn kleren.", "fr": "{L'armoire} de la chambre est trop petite pour tous mes vêtements."}, {"nl": "Kun je de truien boven in {de kast} leggen?", "fr": "Tu peux ranger les pulls en haut dans {l'armoire} ?"}]}, {"nl": "de tuin", "fr": "le jardin", "ph": [{"nl": "De kinderen spelen in {de tuin}.", "fr": "Les enfants jouent dans {le jardin}."}, {"nl": "Hebben jullie {een tuin} achter het huis?", "fr": "Vous avez {un jardin} derrière la maison ?"}, {"nl": "Opa plant tomaten en bloemen in {de tuin}.", "fr": "Papy plante des tomates et des fleurs dans {le jardin}."}, {"nl": "Het gras in {de tuin} moet gemaaid worden.", "fr": "L'herbe {du jardin} doit être tondue."}]}, {"nl": "de sleutel", "fr": "la clé", "ph": [{"nl": "Ik kan {mijn sleutel} niet vinden.", "fr": "Je ne trouve pas {ma clé}."}, {"nl": "{De sleutel} ligt op de tafel in de gang.", "fr": "{La clé} est sur la table du couloir."}, {"nl": "Vergeet {je sleutel} niet als je weggaat!", "fr": "N'oublie pas {ta clé} quand tu pars !"}, {"nl": "Met {deze sleutel} open je de garage.", "fr": "Avec {cette clé}, tu ouvres le garage."}]}, {"nl": "de vloer", "fr": "le sol", "ph": [{"nl": "Er ligt water op {de vloer}.", "fr": "Il y a de l'eau sur {le sol}."}, {"nl": "We hebben {de vloer} vorige week gepoetst.", "fr": "Nous avons nettoyé {le sol} la semaine dernière."}, {"nl": "Gooi je kleren niet op {de vloer}!", "fr": "Ne jette pas tes vêtements sur {le sol} !"}, {"nl": "{De vloer} van de badkamer is glad als hij nat is.", "fr": "{Le sol} de la salle de bain est glissant quand il est mouillé."}]}, {"nl": "het dak", "fr": "le toit", "ph": [{"nl": "De kat zit op {het dak}.", "fr": "Le chat est sur {le toit}."}, {"nl": "{Het dak} lekt als het regent.", "fr": "{Le toit} fuit quand il pleut."}, {"nl": "Er ligt sneeuw op {het dak}.", "fr": "Il y a de la neige sur {le toit}."}, {"nl": "Morgen komt een man om {het dak} te repareren.", "fr": "Demain, un homme vient pour réparer {le toit}."}]}, {"nl": "de trap", "fr": "l'escalier", "ph": [{"nl": "Ik ben gisteren van {de trap} gevallen.", "fr": "Je suis tombé dans {l'escalier} hier."}, {"nl": "Is {de trap} niet te steil voor de hond?", "fr": "{L'escalier} n'est pas trop raide pour le chien ?"}, {"nl": "Loop niet zo snel op {de trap}!", "fr": "Ne cours pas comme ça dans {l'escalier} !"}, {"nl": "De slaapkamers zijn boven, neem {de trap} links.", "fr": "Les chambres sont en haut, prends {l'escalier} à gauche."}]}, {"nl": "de muur", "fr": "le mur", "ph": [{"nl": "Er hangt een klok aan {de muur}.", "fr": "Il y a une horloge accrochée {au mur}."}, {"nl": "We hebben {de muren} wit geverfd.", "fr": "Nous avons peint {les murs} en blanc."}, {"nl": "Het schilderij aan {de muur} is van mijn oma.", "fr": "Le tableau accroché {au mur} appartient à ma grand-mère."}, {"nl": "Leun niet tegen {de muur}, de verf is nat.", "fr": "Ne t'appuie pas contre {le mur}, la peinture est fraîche."}]}, {"nl": "het licht", "fr": "la lumière", "ph": [{"nl": "Doe {het licht} uit, alsjeblieft.", "fr": "Éteins {la lumière}, s'il te plaît."}, {"nl": "Er is niet genoeg {licht} in deze kamer.", "fr": "Il n'y a pas assez de {lumière} dans cette pièce."}, {"nl": "Kun je {het licht} aandoen? Ik zie niets.", "fr": "Tu peux allumer {la lumière} ? Je ne vois rien."}, {"nl": "Waarom brandt {het licht} nog in de gang?", "fr": "Pourquoi {la lumière} est-elle encore allumée dans le couloir ?"}]}, {"nl": "zijn", "fr": "être", "v": 1, "ph": [{"nl": "Ik {ben} moe na het werk.", "fr": "Je {suis} fatigué après le travail."}, {"nl": "{Waren} jullie gisteren de hele dag thuis?", "fr": "Vous {étiez} à la maison toute la journée hier ?"}, {"nl": "{Is} de koffie al klaar?", "fr": "Le café {est} déjà prêt ?"}, {"nl": "Mijn ouders {zijn} heel vriendelijk.", "fr": "Mes parents {sont} très gentils."}]}, {"nl": "hebben", "fr": "avoir", "v": 1, "ph": [{"nl": "Wij {hebben} een kleine tuin.", "fr": "Nous {avons} un petit jardin."}, {"nl": "Ik {had} geen tijd om af te wassen.", "fr": "Je n'{avais} pas le temps de faire la vaisselle."}, {"nl": "{Heb} je een pen voor mij?", "fr": "Tu {as} un stylo pour moi ?"}, {"nl": "Mijn buren {hebben} twee honden en een kat.", "fr": "Mes voisins {ont} deux chiens et un chat."}]}, {"nl": "blijven", "fr": "rester", "v": 1, "ph": [{"nl": "Ik {blijf} vandaag de hele dag thuis.", "fr": "Je {reste} à la maison toute la journée aujourd'hui."}, {"nl": "Kun je nog even {blijven}?", "fr": "Tu peux {rester} encore un peu ?"}, {"nl": "{Blijf} hier, ik kom zo terug!", "fr": "{Reste} ici, je reviens tout de suite !"}, {"nl": "Hoe lang zijn jullie in Spanje {gebleven}?", "fr": "Combien de temps êtes-vous {restés} en Espagne ?"}]}, {"nl": "wonen", "fr": "habiter", "v": 1, "ph": [{"nl": "Wij {wonen} in een klein huis.", "fr": "Nous {habitons} dans une petite maison."}, {"nl": "Waar {woonde} je vroeger?", "fr": "Où est-ce que tu {habitais} avant ?"}, {"nl": "Mijn oma {woont} alleen in een groot huis.", "fr": "Ma grand-mère {habite} seule dans une grande maison."}, {"nl": "Ik wil later op het platteland {wonen}.", "fr": "Plus tard, je veux {habiter} à la campagne."}]}] };
+var LISTES = [], LISTE = [], MOTS = [], PAR_NL = {}, LISTE_COMMUNE = null;
+function poserListe(id) {
+  var l = LISTES.filter(function (x) { return x.id === id; })[0] || LISTES[0];
+  etat.listeId = l.id; LISTE = l.mots; PAR_NL = {}; LISTE.forEach(function (m) { PAR_NL[m.nl] = m; });
+  return l;
+}
+function chargerListes() {
+  return fetch('data/index.json', { cache: 'no-cache' }).then(function (r) { return r.json(); })
+    .then(function (idx) {
+      return Promise.all(idx.semaines.map(function (x) {
+        return fetch(x.fichier, { cache: 'no-cache' }).then(function (r) { return r.json(); })
+          .then(function (j) { return { id: x.id, titre: x.titre, theme: x.theme, mots: j.mots || [] }; });
+      }));
+    })
+    .then(function (ls) { LISTES = ls.filter(function (l) { return l.mots.length; }); if (!LISTES.length) throw 0; })
+    .catch(function () { LISTES = [SECOURS]; });
+}
+function chargerDeck() { MOTS = LISTE.filter(function (m) { return etat.deck && etat.deck.indexOf(m.nl) !== -1; }); }
+
+/* ═════════ algorithme d'apprentissage — repris de l'app (build bg) ═════════
+   Seule différence : groupes de 5 au lieu de 10, pour que 10 mots
+   montrent deux donjons et un gardien. */
+var GROUPE = 10, CIBLE = 100;
+var ETAPES = [{ k: 'q', mode: 'qcm', n: 3 }, { k: 'f', mode: 'phrase', n: 2 }, { k: 'c', mode: 'rappel', n: 2 }];
+var BILAN_OK = 5, BILAN_MAX = 10, SUITE_MAX = 3;
+var CLE = 'woordentrainer-rpg-v1';
+var etat, session = { derniers: [], depuisRappel: 0 }, recents = [], cur = null;
+
+function finDeSemaine(d) {
+  var f = new Date(d); f.setHours(23, 59, 59, 999);
+  f.setDate(f.getDate() + ((7 - f.getDay()) % 7));
+  return f.getTime();
+}
+function neuf(ancien) {
+  var h = ancien ? ancien.heros : { niv: 1, xp: 0, or: 0, arme: 0, armure: 0, armes: [0], armures: [0], potions: { p: 2, g: 0 }, pv: 50, relique: false, reliques: [], bonusPv: 0 };
+  return {
+    v: 5, semNum: ancien ? ancien.semNum : 1, deck: null, donjon: null, autre: { mots: 0, total: 12, explo: 0, dragon: false }, listeId: null, moi: ancien ? ancien.moi : null, son: ancien ? ancien.son : true, vuAide: ancien ? ancien.vuAide : false,
+    heros: h, mots: {}, fiche: { groupe: [], numGroupe: 0, bilanOk: 0, bilan: null, revoir: {} },
+    boss: { pv: null, mort: false, enfui: false },
+    semaine: { debut: Date.now(), fin: finDeSemaine(Date.now()), mes: ['', '', ''], ses: ancien ? ancien.semaine.ses : ['Un resto au choix', 'Un massage de vingt minutes', 'Une soirée jeu de ton choix'], ok: false, choisi: null, ouvert: false },
+    autreFini: ancien ? ancien.autreFini : false
+  };
+}
+function charger() { try { var t = localStorage.getItem(CLE); if (t) return JSON.parse(t); } catch (e) {} return null; }
+function sauver() { try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch (e) {} majOutils(); pousserPlusTard(); }
+
+/* ═════════ le lien entre vous deux (Supabase, table rpg) ═════════
+   Même config.js que l'app, mais une table à part : le test ne touche jamais
+   aux données de l'app actuelle. Sans config, tout marche en local et la
+   fiche de l'autre se règle dans les outils (?outils=1). */
+function cfg() { var c = window.WT_CONFIG || {}; return (c.url && c.cle) ? c : null; }
+function api(chemin, opts) {
+  var c = cfg(); if (!c) return Promise.reject('inactif');
+  opts = opts || {};
+  var h = { 'apikey': c.cle, 'Content-Type': 'application/json' };
+  if (c.cle.indexOf('sb_') !== 0) h['Authorization'] = 'Bearer ' + c.cle;
+  for (var k in (opts.headers || {})) h[k] = opts.headers[k];
+  opts.headers = h; opts.cache = 'no-store';
+  return fetch(c.url.replace(/\/+$/, '') + '/rest/v1/' + chemin, opts);
+}
+var DISTANT = {};
+function cleSemaine() { return new Date(etat.semaine.fin).toISOString().slice(0, 10); }
+function autreId() { return etat.moi === 'ulysse' ? 'jasmien' : 'ulysse'; }
+function autreDistant() { var a = DISTANT[autreId()]; return a && a.semaine === cleSemaine() ? a : null; }
+function tirerDistant() {
+  if (!cfg()) return Promise.resolve();
+  return api('rpg?select=*').then(function (r) { return r.json(); })
+    .then(function (l) { if (Array.isArray(l)) l.forEach(function (x) { DISTANT[x.id] = x; }); }).catch(function () {});
+}
+function lireListeCommune() {
+  if (!cfg()) return Promise.resolve(null);
+  return api('duo?select=id,liste&id=eq.semaine').then(function (r) { return r.json(); })
+    .then(function (l) { return Array.isArray(l) && l[0] ? l[0].liste : null; }).catch(function () { return null; });
+}
+var pousseTimer = null;
+function pousserPlusTard() { if (!cfg() || !etat || !etat.moi) return; clearTimeout(pousseTimer); pousseTimer = setTimeout(pousserDistant, 3000); }
+function pousserDistant() {
+  if (!cfg() || !etat.moi || !etat.deck) return Promise.resolve();
+  var l = { id: etat.moi, semaine: cleSemaine(), liste: etat.listeId, mots: MOTS.filter(estValide).length, total: MOTS.length,
+    explo: exploration(), dragon: !!etat.boss.mort, enfui: !!etat.boss.enfui, cadeaux: etat.semaine.mes,
+    choisi: etat.semaine.choisiTexte || null, maj: new Date().toISOString() };
+  return api('rpg', { method: 'POST', headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' }, body: JSON.stringify([l]) }).catch(function () {});
+}
+/* les trois idées de cadeau de l'autre pour cette semaine (simulées sans Supabase) */
+function sesCadeaux() {
+  if (!cfg()) return etat.semaine.ses;
+  var a = autreDistant();
+  return a && Array.isArray(a.cadeaux) && a.cadeaux.filter(Boolean).length === 3 ? a.cadeaux : null;
+}
+
+function prog(m) { return etat.mots[m.nl] || (etat.mots[m.nl] = { q: 0, f: 0, c: 0, s: 0, vu: 0, ok: 0, ko: 0 }); }
+function aPhrases(m) { return !!(m && m.ph && m.ph.length); }
+function etapesDe(m) { return aPhrases(m) ? ETAPES : ETAPES.filter(function (e) { return e.k !== 'f'; }); }
+function totalPas(m) { var t = 0; etapesDe(m).forEach(function (e) { t += e.n; }); return t; }
+function pasDe(m, p) { var t = 0; etapesDe(m).forEach(function (e) { t += Math.min(e.n, p[e.k] || 0); }); return t; }
+function etapeDe(m, p) { var l = etapesDe(m); for (var i = 0; i < l.length; i++) if ((p[l[i].k] || 0) < l[i].n) return l[i]; return null; }
+function recalculer(m, p) { p.s = Math.round(CIBLE * pasDe(m, p) / totalPas(m)); return p.s; }
+function estValide(m) { return prog(m).s >= CIBLE; }
+function groupeCourant() { return (etat.fiche.groupe || []).map(function (k) { return PAR_NL[k]; }).filter(Boolean); }
+function bilanDu() {
+  var x = etat.fiche, g = groupeCourant();
+  if (!g.length || (x.numGroupe || 1) < 2 || x.bilanOk === x.numGroupe) return false;
+  return g.every(estValide);
+}
+function groupeDe() {
+  var x = etat.fiche, g = groupeCourant().map(function (m) { return m.nl; });
+  var reste = g.filter(function (k) { return !estValide(PAR_NL[k]); });
+  if (!reste.length && !bilanDu()) {
+    var nv = MOTS.filter(function (m) { return !estValide(m); }).slice(0, GROUPE).map(function (m) { return m.nl; });
+    if (nv.length && nv.join('|') !== g.join('|')) { x.numGroupe = (x.numGroupe || 0) + 1; x.bilan = null; }
+    if (nv.length) g = nv;
+  }
+  x.groupe = g;
+  return g.map(function (k) { return PAR_NL[k]; });
+}
+function phaseDe(aFaire) {
+  var best = null, bi = 99;
+  aFaire.forEach(function (m) { var e = etapeDe(m, prog(m)), k = ETAPES.indexOf(e); if (e && k < bi) { bi = k; best = e; } });
+  return best;
+}
+function lePlusAncien(t) {
+  var ok = t.filter(function (m) { return recents.indexOf(m.nl) === -1; });
+  if (!ok.length) ok = t;
+  ok = ok.slice().sort(function (a, b) { return (prog(a).vu || 0) - (prog(b).vu || 0); });
+  return ok[Math.random() < .7 || ok.length < 2 ? 0 : 1];
+}
+function retenir(m) { recents.push(m.nl); if (recents.length > 4) recents.shift(); return m; }
+/* révision et bilan : tirage pondéré, jamais plus de trois fois le même style */
+function modeDe(m) {
+  var poids = { rappel: 20, qcm: 40, phrase: 40 };
+  if (!aPhrases(m)) delete poids.phrase;
+  var d = session.derniers;
+  if (d.length >= SUITE_MAX) {
+    var dernier = d[d.length - 1], memes = true;
+    for (var i = d.length - SUITE_MAX; i < d.length; i++) if (d[i] !== dernier) memes = false;
+    if (memes) delete poids[dernier];
+  }
+  var noms = Object.keys(poids), total = 0, k;
+  for (k = 0; k < noms.length; k++) total += poids[noms[k]];
+  var t = Math.random() * total, r = noms[noms.length - 1];
+  for (k = 0; k < noms.length; k++) { t -= poids[noms[k]]; if (t < 0) { r = noms[k]; break; } }
+  d.push(r); if (d.length > SUITE_MAX) d.shift();
+  return r;
+}
+function tirerMot() {
+  var x = etat.fiche, g = groupeDe();
+  if (bilanDu()) {
+    if (!x.bilan) x.bilan = { ok: 0, err: 0 };
+    var appris = MOTS.filter(estValide);
+    var urgents = appris.filter(function (m) { return x.revoir[m.nl]; });
+    var mb = retenir(lePlusAncien(urgents.length ? urgents : appris));
+    return { mot: mb, bilan: true, mode: modeDe(mb) };
+  }
+  var aFaire = g.filter(function (m) { return !estValide(m); });
+  if (!aFaire.length) { var m0 = retenir(lePlusAncien(MOTS)); return { mot: m0, sansPts: true, mode: modeDe(m0) }; }
+  var phase = phaseDe(aFaire);
+  var cand = aFaire.filter(function (m) { return etapeDe(m, prog(m)) === phase; });
+  if (cand.length <= 2 && session.depuisRappel >= 1) {
+    var passes = g.filter(function (m) { return cand.indexOf(m) === -1; });
+    if (passes.length) {
+      session.depuisRappel = 0;
+      var mr = retenir(lePlusAncien(passes));
+      return { mot: mr, rappel: true, mode: phase.mode === 'phrase' && !aPhrases(mr) ? 'qcm' : phase.mode };
+    }
+  }
+  session.depuisRappel++;
+  var m = retenir(lePlusAncien(cand));
+  return { mot: m, mode: phase.mode };
+}
+function avancerBilan(juste) {
+  var x = etat.fiche, b = x.bilan || (x.bilan = { ok: 0, err: 0 });
+  if (juste) b.ok++; else b.err++;
+  if (b.ok >= BILAN_OK) { x.bilanOk = x.numGroupe; x.bilan = null; return 'ok'; }
+  if (b.ok + b.err >= BILAN_MAX) { x.bilan = { ok: 0, err: 0 }; return 'rate'; }
+  return null;
+}
+/* compteurs uniquement : rappels, bilans et révisions n'y touchent pas */
+function appliquerAlgo(juste, mode) {
+  var p = prog(cur.mot), r = { valide: false, finPhase: null, bilan: null };
+  var etape = (cur.rappel || cur.sansPts || cur.bilan) ? null : etapeDe(cur.mot, p);
+  if (etape && etape.mode !== mode) etape = null;
+  var avant = estValide(cur.mot);
+  p.vu = Date.now();
+  if (juste) {
+    p.ok++;
+    if (cur.rappel || cur.bilan) delete etat.fiche.revoir[cur.mot.nl];
+    if (cur.bilan) r.bilan = avancerBilan(true);
+    if (etape) {
+      p[etape.k] = (p[etape.k] || 0) + 1;
+      recalculer(cur.mot, p);
+      var gr = groupeCourant().filter(function (m) { return !estValide(m); });
+      var ph = gr.length ? phaseDe(gr) : null;
+      if (ph && ph !== etape) r.finPhase = ph.mode;
+      if (!avant && estValide(cur.mot)) r.valide = true;
+    }
+  } else {
+    p.ko++;
+    if (cur.rappel || cur.bilan) etat.fiche.revoir[cur.mot.nl] = 1;
+    if (cur.bilan) r.bilan = avancerBilan(false);
+    if (etape) { p[etape.k] = 0; recalculer(cur.mot, p); }
+  }
+  return r;
+}
+function groupeFini() { var g = groupeCourant(); return g.length > 0 && g.every(estValide); }
+function deckFini() { return MOTS.every(estValide) && !bilanDu(); }
+function nbDonjons() { return Math.ceil(MOTS.length / GROUPE); }
+
+/* ═════════ règles du jeu ═════════ */
+var BASE = { qcm: 12, phrase: 18, rappel: 24 };
+var FORCE = { qcm: 'coup léger', phrase: 'coup moyen', rappel: 'coup fort' };
+var NOM_PHASE = { qcm: 'Reconnaissance', phrase: 'Contexte', rappel: 'Rappel' };
+var ARMES = [
+  { nom: 'Épée rouillée', atk: 0, prix: 0, lame: ['#cfa57a', '#8d6a48'] },
+  { nom: 'Épée courte', atk: 2, prix: 30, lame: ['#f4f8ff', '#b9c6d8'] },
+  { nom: 'Épée longue', atk: 5, prix: 90, lame: ['#dff0ff', '#8fb4e0'] },
+  { nom: 'Lame runique', atk: 9, prix: 200, lame: ['#a8fbff', '#3fc6d8'] },
+  { nom: 'Lame du vent', atk: 14, prix: 400, lame: ['#d9ffe4', '#6fe39a'] }
+];
+var ARMURES = [
+  { nom: 'Tunique', def: 0, prix: 0, pal: { S: '#c8ccd8', s: '#8f96aa', d: '#5a6178', B: '#3d63c9', b: '#27408a' } },
+  { nom: 'Gambison', def: 1, prix: 25, pal: { S: '#d8c4a0', s: '#a88e66', d: '#6e5a3e', B: '#7a5a3a', b: '#4f3a25' } },
+  { nom: 'Cotte de mailles', def: 3, prix: 80, pal: { S: '#e3e8f0', s: '#a9b6c8', d: '#66738c', B: '#3d63c9', b: '#27408a' } },
+  { nom: 'Armure de plates', def: 5, prix: 180, pal: { S: '#ffffff', s: '#c9d4e4', d: '#7d8aa4', B: '#b8362f', b: '#7a2222' } },
+  { nom: 'Armure dragonne', def: 8, prix: 380, pal: { S: '#ff9a7a', s: '#c8463a', d: '#7a2430', B: '#2a2a3a', b: '#15151f' } }
+];
+var POTIONS = [{ id: 'p', nom: 'Petite potion', soin: 20, prix: 10, c: '#e24a4a' }, { id: 'g', nom: 'Grande potion', soin: 50, prix: 30, c: '#b04ae2' }];
+var RELIQUES = [
+  { id: 'echo', nom: 'Écho du savoir', desc: 'chaque mot appris frappe gratuitement le monstre, ou rapporte 10 or hors combat', c: '#74b8ff' },
+  { id: 'calice', nom: 'Calice de source', desc: 'les fontaines soignent deux fois plus', c: '#5fd0e0' },
+  { id: 'sablier', nom: 'Sablier fêlé', desc: '+3 secondes par question sur les ponts', c: '#f2c060' },
+  { id: 'sphinx', nom: 'Œil du sphinx', desc: 'les énigmes rapportent le double d\'or', c: '#c08af2' },
+  { id: 'gantelet', nom: 'Gantelet de braise', desc: 'la jauge de combo se remplit en 5 au lieu de 6', c: '#f2702c' },
+  { id: 'bourse', nom: 'Bourse du voleur', desc: '+50 % d\'or, mais 10 PV max en moins', c: '#ffd24d' },
+  { id: 'plume', nom: 'Plume du scribe', desc: 'chaque phrase réussie soigne 3 PV', c: '#e8e4d0' },
+  { id: 'bouclier', nom: 'Rune de garde', desc: 'le premier coup reçu dans chaque salle est annulé', c: '#8fa0c8' },
+  { id: 'croc', nom: 'Croc de dragon', desc: '+4 attaque', c: '#e24a4a' },
+  { id: 'amulette', nom: 'Amulette de vie', desc: '+15 PV max', c: '#5cbf64' },
+  { id: 'coeur', nom: 'Cœur de golem', desc: 'la frappe héroïque soigne aussi 12 PV', c: '#c3c9dc' },
+  { id: 'lanterne', nom: 'Lanterne du cartographe', desc: 'le plan entier des donjons est visible dès l\'entrée, sans dévoiler le contenu des salles', c: '#ffe680' }
+];
+function H() { return etat.heros; }
+function aRel(id) { return H().reliques.indexOf(id) !== -1; }
+function comboMax() { return aRel('gantelet') ? 5 : 6; }
+function pvMax() { return 50 + (aRel('amulette') ? 15 : 0) - (aRel('bourse') ? 10 : 0) + (H().bonusPv || 0); }
+function attaque() { return ARMES[H().arme].atk + (H().relique ? 3 : 0) + (aRel('croc') ? 4 : 0); }
+function defense() { return ARMURES[H().armure].def + (H().relique ? 2 : 0); }
+function degats(mode) { var b = BASE[mode] + attaque(); return Math.max(1, Math.round(b * (0.9 + Math.random() * 0.2))); }
+function autre() { return etat.moi === 'ulysse' ? 'Jasmien' : 'Ulysse'; }
+function autreElle() { return etat.moi === 'ulysse' ? 'prévenue' : 'prévenu'; }
+
+/* ═════════ pixel art ═════════ */
+var PAL_K = '#140f24';
+function sprite(def, pal) {
+  pal = Object.assign({}, def.pal, pal || {});
+  var rows = def.r.slice(), mw = 0;
+  rows.forEach(function (r) { mw = Math.max(mw, r.length); });
+  rows = rows.map(function (r) { while (r.length < mw) r += '.'; return r; });
+  if (def.miroir) rows = rows.map(function (r) { return r + r.split('').reverse().join(''); });
+  var w = rows[0].length, h = rows.length, o = def.sansContour ? 0 : 1;
+  var c = document.createElement('canvas'); c.width = w + 2 * o; c.height = h + 2 * o;
+  var x = c.getContext('2d');
+  function plein(i, j) { return j >= 0 && j < h && i >= 0 && i < w && rows[j][i] !== '.'; }
+  for (var j = -o; j < h + o; j++) for (var i = -o; i < w + o; i++) {
+    if (plein(i, j)) {
+      var col = pal[rows[j][i]] || '#f0f';
+      if (def.relief && (def.plat || '').indexOf(rows[j][i]) === -1 && col.charAt(0) === '#') {
+        if (!plein(i, j - 1)) col = melange(col, '#ffffff', .22);
+        else if (!plein(i, j + 1) || !plein(i + 1, j)) col = melange(col, '#000000', .25);
+      }
+      x.fillStyle = col; x.fillRect(i + o, j + o, 1, 1);
+    }
+    else if (o && (plein(i - 1, j) || plein(i + 1, j) || plein(i, j - 1) || plein(i, j + 1))) { x.fillStyle = def.contour || PAL_K; x.fillRect(i + o, j + o, 1, 1); }
+  }
+  return c;
+}
+function melange(h, t, a) {
+  function rgb(c) { c = c.replace('#', ''); return [0, 2, 4].map(function (k) { return parseInt(c.substr(k, 2), 16); }); }
+  var u = rgb(h), v = rgb(t);
+  return 'rgb(' + u.map(function (n, i) { return Math.round(n + (v[i] - n) * a); }).join(',') + ')';
+}
+function teinte(src, col) {
+  var c = document.createElement('canvas'); c.width = src.width; c.height = src.height;
+  var x = c.getContext('2d'); x.drawImage(src, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = col; x.fillRect(0, 0, c.width, c.height);
+  return c;
+}
+var DEF = {
+  heros: { relief: true, plat: 'ekw', pal: { k: '#1b1430', r: '#e0483e', R: '#9e2b33', g: '#f4c542', h: '#7a4a2a', H: '#4e2c16', w: '#f4f8ff', W: '#b9c6d8', f: '#f2c08f', e: '#2a1a14', C: '#b8364a', c: '#7e2236' }, r: [
+    '........rR..........',
+    '.......rrR..........',
+    '......rrR...........',
+    '.....dsSSs..........',
+    '....dsSSSSs.........',
+    '....dsSSSSSs........',
+    '....dsSdffffs.......',
+    '....dsdfefefd.......',
+    '....ddsffffd........',
+    '.....dddsdd.........',
+    '...CCdsBBBBsd......w',
+    '..CCcsSBgBBSsd....wW',
+    '..CCcsSBBBBSshh..wW.',
+    '..CCcdsBBBBsdhhgwW..',
+    '..CCc.dBBBBd.hHg....',
+    '..CCc.HhhghhH.g.....',
+    '..CCc.bBBBBBb.......',
+    '..Ccc.bBBbBBb.......',
+    '...cc.dS..dS........',
+    '......sd..sd........',
+    '......sd..sd........',
+    '.....Ssd.Ssd........',
+    '.....ddd.ddd........'] },
+  gelee: { miroir: true, relief: true, plat: 'Wk', pal: { G: '#5fcf6a', g: '#b4f5ac', d: '#2f8f47', W: '#ffffff', k: '#14301e' }, r: [
+    '......GG', '....GGGG', '...GgGGG', '..GgggGG', '..GggGGG', '.GGGGGGG', '.GGkWGGG', '.GGkkGGG', 'GGGGGGGG', 'GGGGGGkk', 'dGGGGGGG', '.ddddddd'] },
+  champi: { miroir: true, relief: true, plat: 'Wk', pal: { R: '#d8433b', r: '#8e2730', W: '#fff6e0', s: '#f1e4c2', S: '#c9b27c', k: '#2a1a14' }, r: [
+    '.....RRR', '...RRRRR', '..RWWRRR', '.RRWWRRR', '.RRRRRRW', 'RWRRRRRR', 'RRRRRRRR', 'rrrrrrrr', '..ssssss', '..sskWss', '..sskkss', '..ssssss', '...sssSk', '...ssssS', '..sS.sss', '.sss..ss'] },
+  chauve: { miroir: true, relief: true, plat: 'yfk', pal: { p: '#4b2f78', P: '#8a5cc7', y: '#ffe36b', f: '#ffffff', k: '#1a0f2a' }, r: [
+    'p.......', 'pp....p.', 'pPp...pp', 'pPPp.pPP', 'pPPPpPyk', '.pPPPPPP', '..pPPPPP', '...pp.Pf', '......pP', '.......p'] },
+  gobelin: { relief: true, plat: 'WRks', pal: { G: '#79b84a', g: '#a8dc6d', d: '#4b7d2c', W: '#fff6b0', R: '#d04a3a', k: '#1c140f', b: '#8a5a33', B: '#5e3b20', s: '#c9d0dc' }, r: [
+    '................',
+    '......GGGGG.....',
+    '..G..GgGGGGG..G.',
+    '..GGGGgGGGGGGGG.',
+    '...GGRWGGRWGGG..',
+    '....GGGGGGGGG...',
+    '....GGkkkkGGG...',
+    '....GGkWkWGG....',
+    '.....GGGGGG.....',
+    '...bbBbbbbBbb...',
+    's..GbbbbbbbbG...',
+    'sGGGbbbBbbbbGG..',
+    '.s.gbbbbbbbbGG..',
+    '....BBBBBBBB....',
+    '....GGd..dGG....',
+    '...GGGd..dGGG...'] },
+  squelette: { miroir: true, relief: true, plat: 'kr', pal: { W: '#ece6d2', w: '#a9a18a', k: '#1a1520', r: '#ff5a4a' }, r: [
+    '.....WWW', '....WWWW', '...WWWWW', '...WkkWW', '...WkrWW', '...WWWWk', '....WkWk', '.....WWW', '...w...W', '..wWWw.W', '..W...wW', '.W.wWWwW', '.W....wW', 'W.....wW', '....wWWW', '....W..w', '....W...', '...WW...'] },
+  golem: { miroir: true, relief: true, plat: 'y', pal: { S: '#8d93a8', s: '#5f6478', L: '#c3c9dc', y: '#ffb93c', m: '#5d9a52' }, r: [
+    '........ssss', '.......sLLLS', '......sLSSSS', '......sSyySS', '......sSSSSS', '......sSSSss', '.......sSSSS', '..sssssssSSS', '.sLLLSSsSSSS', 'sLSSSSSsSmSS', 'sSSSSSsSSSSy', 'sSSmSSsSSSSy', 'sSSSSSsSSSSS', 'ssSSSssSSSSS', '.sSSSs.sSSSm', '.sSSSs.sSSSS', '.sLLSs.sSSSs', '.sssss.sSSSs', '.......sSSS.', '......sSSSS.', '......sSSSS.', '......sssss.'] },
+  dragon: { miroir: true, relief: true, plat: 'ykW', pal: { R: '#d2463a', r: '#8e2730', o: '#f2a94a', O: '#ffd27a', y: '#fff07a', k: '#1a0c14', W: '#f3ead2', m: '#5c2240', M: '#8c3a63' }, r: [
+    '....W...........',
+    '....WW..........',
+    '.....WW.........',
+    '......WRR.......',
+    '......RRRRRRRRRR',
+    'm....RRRRRRRRRRR',
+    'mM...RRyyRRRRRRR',
+    'mMM..RRykRRRRRRR',
+    'mMMM.RRRRRRRRRRR',
+    'mMMMM.RRRRRRRRRR',
+    'mMMMMM.rRRRRRRRR',
+    'mMMMMMM.RRRRRRRR',
+    'mMMMMMMM..RrRRRR',
+    'mMMMMMMm..RWRWRW',
+    'mMMMMMmm...RRRRR',
+    'mMMMMmm...RRRooo',
+    'mMMMmm...RRRRoOO',
+    'mMMmm...RRRRRooo',
+    'mMmm...RRRRRRoOO',
+    'mm....RRRRRRRooo',
+    'm....RRRRRRRRRoo',
+    '.....RRRRRRRRRRo',
+    '....RRRRrRRRRRRR',
+    '...WRRR.RRRRRRRR',
+    '...W.R..RRRRRRRR',
+    '........RRRRrRRR',
+    '.......RRRR..RRR',
+    '......WRWRW..RRR'] },
+  piece: { pal: { g: '#ffd24d', G: '#c9951f', O: '#fff3b0' }, r: ['.gggg.', 'gOgggG', 'gOgggG', 'gOgggG', 'gOgggG', '.GGGG.'] },
+  epee: { pal: { w: '#f4f8ff', W: '#b9c6d8', g: '#f4c542', h: '#7a4a2a' }, r: ['........ww', '.......wW.', '......wW..', '.....wW...', '..g.wW....', '...gW.....', '...hg.....', '..h..g....', '.h........', 'h.........'] },
+  armure: { relief: true, pal: { S: '#e3e8f0', s: '#a9b6c8', d: '#66738c' }, r: ['.ss....ss.', 'sSSssssSSs', 'sSSSSSSSSs', '.sSSddSSs.', '.sSSSSSSs.', '.sSSddSSs.', '.sSSSSSSs.', '.sdSSSSds.', '..ssssss..'] },
+  potion: { pal: { h: '#8a5a33', s: '#cfe6f5', P: '#e24a4a', W: '#ffffff' }, r: ['...hh...', '...hh...', '...ss...', '..sPPs..', '.sPPPPs.', 'sPPWPPPs', 'sPPPPPPs', 'sPPPPPPs', '.sPPPPs.', '..ssss..'] },
+  couvercle: { miroir: true, relief: true, plat: 'gG', pal: { b: '#a8642f', B: '#5e341a', g: '#f4c542', G: '#b88a1e' }, r: ['..BBBBBBBB', '.BbbbbbbbB', 'BbbbbbbbbG', 'BbbbbbbbbG', 'GGGGGGGGgg'] },
+  caisse: { miroir: true, relief: true, plat: 'gGk', pal: { b: '#a8642f', B: '#5e341a', g: '#f4c542', G: '#b88a1e', k: '#2a1408' }, r: ['BbbbbbbbGg', 'BbbbbbbbGk', 'BbbbbbbbbG', 'BbbbbbbbbG', 'GGGGGGGGGG'] },
+  nuage: { sansContour: true, pal: { W: '#ffffff', w: '#dbe9f6' }, r: ['.....WWWW.......', '...WWWWWWWW.WW..', '.WWWWWWWWWWWWWWW', 'WWWWWWWWWWWWWWWW', '.wwwwwwwwwwwwww.'] }
+};
+DEF['ic-combat'] = { pal: { w: '#e8eef5', g: '#f4c542', h: '#a8784a' }, r: ['w......w', '.w....w.', '..w..w..', '...ww...', '...ww...', '..g..g..', '.h....h.', 'h......h'] };
+DEF['ic-elite'] = { pal: { W: '#ece6d2', k: '#1a1520', r: '#ff5a4a' }, r: ['.WWWWWW.', 'WWWWWWWW', 'WkkWWkkW', 'WkrWWrkW', 'WWWkkWWW', '.WWWWWW.', '.WkWkWk.', '..WWWW..'] };
+DEF['ic-enigme'] = { pal: { s: '#5f6478', S: '#8d93a8', b: '#7fd0ff' }, r: ['..ssss..', '.sSSSSs.', '.sSbbSs.', '.sbSSbs.', '.sSbbSs.', '.sSSbSs.', '.sSSSSs.', 'ssssssss'] };
+DEF['ic-pont'] = { pal: { h: '#c99a62', H: '#7a4e2e', k: '#c9b27c' }, r: ['k......k', 'k......k', 'hHhHhHhH', 'HhHhHhHh', 'k......k', 'k......k'] };
+DEF['ic-coffre'] = { pal: { b: '#a8642f', B: '#5e341a', g: '#f4c542' }, r: ['.BBBBBB.', 'BbbbbbbB', 'gggggggg', 'BbbgbbbB', 'BbbbbbbB', 'BBBBBBBB'] };
+DEF['ic-fontaine'] = { pal: { b: '#5fb0e8', W: '#d8f4ff' }, r: ['...b....', '...bb...', '..bbbb..', '.bbWbbb.', '.bWbbbb.', '.bbbbbb.', '..bbbb..'] };
+DEF['ic-marchand'] = { pal: { h: '#7a4a2a', H: '#c9955a', g: '#ffd24d' }, r: ['..hhhh..', '...hh...', '.hHHHHh.', 'hHHgHHHh', 'hHgggHHh', 'hHHgHHHh', '.hhhhhh.'] };
+DEF['ic-evenement'] = { pal: { p: '#c9b27c', P: '#f1e4c2', k: '#7a2018' }, r: ['pppppppp', '.PPPkPP.', '.PPPkPP.', '.PPPkPP.', '.PPPPPP.', '.PPPkPP.', 'pppppppp'] };
+DEF['ic-escalier'] = { pal: { s: '#b9bfd2', S: '#7d8399' }, r: ['......ss', '......SS', '....ssss', '....SSSS', '..ssssss', '..SSSSSS', 'ssssssss'] };
+DEF['ic-gardien'] = { pal: { s: '#5f6478', S: '#8d93a8', y: '#ffb93c' }, r: ['.ssssss.', 'sSSSSSSs', 'sSySSySs', 'sSSSSSSs', 'sSsSSsSs', '.ssssss.'] };
+DEF['ic-inconnu'] = { pal: { y: '#c9cbe8' }, r: ['.yyyy.', 'yy..yy', '....yy', '...yy.', '..yy..', '......', '..yy..'] };
+DEF['ic-boss'] = { pal: { W: '#e2463a', k: '#1a0c14', r: '#ffe07a' }, r: ['W......W', 'WW.WW.WW', '.WWWWWW.', 'WkrWWrkW', 'WWWWWWWW', '.WkWkWk.', '..WWWW..'] };
+DEF['mini'] = { miroir: true, pal: { r: '#e0483e', s: '#8f96aa', S: '#c8ccd8', k: '#1b1430', B: '#3d63c9', b: '#27408a', d: '#3a2a1a' }, r: ['...r', '..sS', '.sSS', '.skk', 'BsBB', 'B.BB', '..bb', '..d.'] };
+DEF['heroine'] = { relief: true, plat: 'ekw', pal: { k: '#1b1430', H: '#c9772e', h: '#f0a050', g: '#f4c542', w: '#f4f8ff', W: '#b9c6d8', f: '#f2c08f', e: '#2a1a14', C: '#2f8a7a', c: '#1f5a50', S: '#e3e8f0', s: '#a9b6c8', d: '#66738c', B: '#7a4ab8', b: '#4e2c80' }, r: [
+    '....................',
+    '......HHHH..........',
+    '.....HHhHHH.........',
+    '....HHhHHHHH........',
+    '....HHHffffH........',
+    '...HHHffffff........',
+    '...HHHfefeff........',
+    '...HHHffffff........',
+    '..HHH.fffff.........',
+    '..HH.dddsdd.........',
+    '..HCCdsBBBBsd......w',
+    '..CCcsSBgBBSsd....wW',
+    '..CCcsSBBBBSshh..wW.',
+    '..CCcdsBBBBsdhhgwW..',
+    '..CCc.dBBBBd.hHg....',
+    '..CCc.HhhghhH.g.....',
+    '..CCc.bBBBBBb.......',
+    '..Ccc.bBBbBBb.......',
+    '...cc.dS..dS........',
+    '......sd..sd........',
+    '......sd..sd........',
+    '.....Ssd.Ssd........',
+    '.....ddd.ddd........'] };
+DEF['porte-scellee'] = { pal: { B: '#6b4630', b: '#9a6a3a', k: '#2a1408', g: '#ffd24d' }, r: ['.BBBBBB.', 'BbbbbbbB', 'BbkbbkbB', 'BbbbbbbB', 'BbbbgbbB', 'BbkbbkbB', 'BbbbbbbB', 'BBBBBBBB'] };
+DEF['porte-gardien'] = { pal: { s: '#5f6478', S: '#8d93a8', y: '#ffb93c' }, r: ['.ssssss.', 'sSSSSSSs', 'sSyyyySs', 'sSySSySs', 'sSyyyySs', 'sSSySSSs', 'sSSySSSs', 'ssssssss'] };
+DEF['porte-ouverte'] = { pal: { B: '#9a6a3a' }, r: ['BBBBBBBB', 'B......B', 'B......B', 'B......B', 'B......B', 'B......B', 'B......B', 'BBBBBBBB'] };
+DEF['pion'] = { pal: { r: '#e0483e', S: '#e8eef5' }, r: ['.rr..', '.SSS.', 'SSSSS', '.SSS.'] };
+DEF['relique'] = { relief: true, plat: 'W', pal: { g: '#f4c542', R: '#74b8ff', W: '#ffffff' }, r: ['...gg...', '..g..g..', '..gggg..', '.gRRRRg.', 'gRRWRRRg', 'gRRRRRRg', '.gRRRRg.', '..gRRg..', '...gg...'] };
+DEF['stele'] = { miroir: true, relief: true, plat: 'b', pal: { s: '#5f6478', S: '#8d93a8', b: '#7fd0ff', k: '#2a2d44' }, r: ['....sss', '...sSSS', '..sSSSS', '..sSSbS', '..sSbbS', '..sSSbb', '..sSSSS', '..sSbSS', '..sSbbb', '..sSSSS', '..sSSbS', '..sSbbS', '..sSSSS', '..sSSSS', '.ssSSSS', 'ssssSSS', 'kkkkkkk'] };
+DEF['fontaine'] = { miroir: true, relief: true, plat: 'bW', pal: { b: '#5fb0e8', W: '#d8f4ff', s: '#6a7088', S: '#9aa0b8' }, r: ['.........b', '........bW', '........bb', '........sS', '........sS', '.......sSS', '..ssssssSS', '.sWbbbbbbb', 'sSbWbbbWbb', 'sSSSSSSSSS', '.sSSSSSSSS', '..ssssssss'] };
+var SPR = {}, SPR_BLANC = {};
+function spr(nom, pal, cle) {
+  cle = cle || nom;
+  if (!SPR[cle]) { SPR[cle] = sprite(DEF[nom], pal); SPR_BLANC[cle] = teinte(SPR[cle], '#ffffff'); }
+  return SPR[cle];
+}
+function sprHeros() {
+  var a = ARMES[H().arme], b = ARMURES[H().armure], fille = etat.moi === 'jasmien';
+  var pal = Object.assign({}, b.pal, { w: a.lame[0], W: a.lame[1] });
+  if (fille) { delete pal.B; delete pal.b; if (H().armure === 0) { delete pal.S; delete pal.s; delete pal.d; } }
+  return spr(fille ? 'heroine' : 'heros', pal, (fille ? 'heroine-' : 'heros-') + H().arme + '-' + H().armure);
+}
+function sprAutre() { return etat.moi === 'jasmien' ? spr('heros', ARMURES[2].pal, 'heros-autre') : spr('heroine', null, 'heroine-autre'); }
+function sprMini() {
+  var b = ARMURES[H().armure].pal, fille = etat.moi === 'jasmien';
+  return spr('mini', { S: b.S, s: b.s, B: fille ? '#7a4ab8' : b.B, b: fille ? '#4e2c80' : b.b, r: fille ? '#c9772e' : '#e0483e' }, 'mini-' + etat.moi + '-' + H().armure);
+}
+function blanc(cle) { return SPR_BLANC[cle]; }
+var BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
+function lueur(x, cx, cy, r, col, force) {
+  x.fillStyle = col;
+  for (var j = Math.floor(cy - r); j <= cy + r; j++) for (var i = Math.floor(cx - r); i <= cx + r; i++) {
+    var d = Math.hypot(i - cx, (j - cy) * 1.3) / r;
+    if (d < 1 && BAYER[(j + 64) % 4][(i + 64) % 4] / 16 < (1 - d) * force) x.fillRect(i, j, 1, 1);
+  }
+}
+function toile(w, h) { var c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+
+/* décors pré-rendus */
+var DECORS = {};
+function alea0(s) { var g = s; return function () { g = (g * 9301 + 49297) % 233280; return g / 233280; }; }
+function rond(x, cx, cy, r, col) { x.fillStyle = col; for (var j = -r; j <= r; j++) for (var i = -r; i <= r; i++) if (i * i + j * j <= r * r + r * .6) x.fillRect(cx + i, cy + j, 1, 1); }
+function fabriquerDecor(g) { return g === 'foret' ? decorForet() : g === 'antre' ? decorAntre() : decorCrypte(g === 'gardien'); }
+function decorForet() {
+  var c = toile(96, 72), x = c.getContext('2d'), al = alea0(11);
+  ['#d8efc4', '#c2e4b0', '#a8d59a', '#8cc286', '#74ae74', '#5e9a64'].forEach(function (col, i) { x.fillStyle = col; x.fillRect(0, i * 8, 96, 8); });
+  /* troncs lointains */
+  for (var t = 0; t < 9; t++) { var tx = Math.floor(al() * 96); x.fillStyle = '#5f8e66'; x.fillRect(tx, 0, 2, 48); x.fillStyle = '#6fa076'; x.fillRect(tx, 0, 1, 48); }
+  /* feuillage lointain */
+  for (var f = 0; f < 22; f++) rond(x, Math.floor(al() * 100) - 2, Math.floor(al() * 10) + 2, 5 + Math.floor(al() * 4), al() < .5 ? '#4f8a56' : '#5a9a5e');
+  /* rais de lumière */
+  for (var j = 0; j < 50; j++) for (var i = 0; i < 96; i++) { var b = ((i + j * .6) % 26); if (b < 4 && BAYER[j % 4][i % 4] < 2) { x.fillStyle = 'rgba(255,252,210,.55)'; x.fillRect(i, j, 1, 1); } }
+  /* gros troncs */
+  [[2, 7], [30, 4], [86, 8]].forEach(function (k) { x.fillStyle = '#4a2f1e'; x.fillRect(k[0], 0, k[1], 50); x.fillStyle = '#6b4630'; x.fillRect(k[0] + 1, 0, 2, 50); x.fillStyle = '#3a2216'; x.fillRect(k[0] + k[1] - 1, 0, 1, 50); });
+  /* canopée proche */
+  for (var f2 = 0; f2 < 18; f2++) { var cx = Math.floor(al() * 100) - 2, cy = Math.floor(al() * 6); rond(x, cx, cy, 6 + Math.floor(al() * 3), '#2f6a3a'); rond(x, cx - 1, cy - 1, 4, '#3f8a4a'); rond(x, cx - 2, cy - 2, 2, '#5aa858'); }
+  /* sol */
+  ['#79b858', '#6cae50', '#62a448', '#5a9a44', '#52903e'].forEach(function (col, i) { x.fillStyle = col; x.fillRect(0, 48 + i * 5, 96, 5); });
+  x.fillStyle = '#b08a58';
+  for (var y = 48; y < 72; y++) { var w = Math.round(6 + (y - 48) * 1.3); x.fillRect(48 - w, y, w * 2, 1); }
+  x.fillStyle = '#c9a46a'; for (var y2 = 50; y2 < 72; y2 += 3) { var w2 = Math.round(3 + (y2 - 48) * .9); x.fillRect(48 - w2 + Math.floor(al() * w2), y2, 2, 1); }
+  /* touffes, fleurs */
+  for (var h = 0; h < 70; h++) {
+    var gx = Math.floor(al() * 96), gy = 49 + Math.floor(al() * 22);
+    if (Math.abs(gx - 48) < 8 + (gy - 48) * 1.3) continue;
+    x.fillStyle = al() < .5 ? '#3f7a34' : '#8fd46a'; x.fillRect(gx, gy, 1, 2); x.fillRect(gx + 1, gy - 1, 1, 2);
+    if (al() < .15) { x.fillStyle = ['#ffffff', '#ffe066', '#ff7a8a'][Math.floor(al() * 3)]; x.fillRect(gx + 2, gy - 1, 1, 1); }
+  }
+  /* buissons de bord */
+  [[-2, 50, 7], [6, 52, 5], [94, 50, 7], [88, 53, 5]].forEach(function (k) { rond(x, k[0], k[1], k[2], '#2f6a3a'); rond(x, k[0] - 1, k[1] - 2, k[2] - 2, '#3f8a4a'); rond(x, k[0] - 2, k[1] - 3, 2, '#5aa858'); });
+  return c;
+}
+function decorCrypte(porte) {
+  var c = toile(96, 72), x = c.getContext('2d'), al = alea0(7);
+  var mur = ['#2b3157', '#2f3660', '#283052'];
+  x.fillStyle = '#181c38'; x.fillRect(0, 0, 96, 46);
+  for (var r = 0; r < 12; r++) for (var b = -1; b < 13; b++) {
+    var bx = b * 8 + (r % 2 ? 4 : 0), by = r * 4;
+    x.fillStyle = mur[Math.floor(al() * 3)]; x.fillRect(bx, by, 7, 3);
+    x.fillStyle = '#3a427a'; x.fillRect(bx, by, 7, 1);
+    if (r > 6 && al() < .3) { x.fillStyle = '#3f6a4a'; x.fillRect(bx + Math.floor(al() * 5), by + 2, 2, 1); }
+    if (al() < .06) { x.fillStyle = '#181c38'; x.fillRect(bx + 3, by + 1, 1, 2); }
+  }
+  /* toile d'araignée */
+  x.fillStyle = 'rgba(220,225,240,.55)';
+  for (var i = 0; i < 12; i++) { x.fillRect(i, 0, 1, 1); x.fillRect(0, i, 1, 1); x.fillRect(i, i, 1, 1); }
+  [4, 8].forEach(function (k) { for (var t = 0; t <= k; t++) x.fillRect(t, k - t, 1, 1); });
+  /* bannière */
+  x.fillStyle = '#5a3a22'; x.fillRect(36, 3, 13, 1);
+  x.fillStyle = '#8e2730'; x.fillRect(37, 4, 11, 16);
+  x.fillStyle = '#b8364a'; x.fillRect(38, 4, 9, 15);
+  x.fillStyle = '#f4c542'; x.fillRect(37, 4, 1, 16); x.fillRect(47, 4, 1, 16); x.fillRect(41, 8, 3, 1); x.fillRect(42, 7, 1, 5); x.fillRect(40, 13, 5, 1);
+  x.fillStyle = '#8e2730'; x.fillRect(38, 20, 3, 1); x.fillRect(44, 20, 3, 1); x.fillRect(41, 19, 3, 1);
+  /* chaînes */
+  x.fillStyle = '#6a7088'; for (var k2 = 2; k2 < 22; k2 += 2) x.fillRect(88 + (k2 % 4 ? 1 : 0), k2, 1, 1);
+  x.fillStyle = '#121530'; x.fillRect(0, 44, 96, 3);
+  x.fillStyle = '#2e2c4a'; x.fillRect(0, 47, 96, 25);
+  [47, 49, 52, 56, 61, 67].forEach(function (y) { x.fillStyle = '#1c1a34'; x.fillRect(0, y, 96, 1); x.fillStyle = '#3b3960'; x.fillRect(0, y + 1, 96, 1); });
+  x.fillStyle = '#1c1a34';
+  for (var k = -6; k <= 6; k++) for (var y2 = 47; y2 < 72; y2++) { var px = Math.round(48 + k * 8 * (y2 - 30) / 17); if (px >= 0 && px < 96) x.fillRect(px, y2, 1, 1); }
+  /* crânes et os */
+  [[4, 66], [88, 63]].forEach(function (s) { x.fillStyle = '#d8d2bc'; x.fillRect(s[0], s[1], 3, 2); x.fillRect(s[0] + 1, s[1] + 2, 1, 1); x.fillStyle = '#1a1520'; x.fillRect(s[0], s[1] + 1, 1, 1); x.fillRect(s[0] + 2, s[1] + 1, 1, 1); x.fillStyle = '#b8b09a'; x.fillRect(s[0] + 4, s[1] + 2, 4, 1); });
+  if (porte) {
+    x.fillStyle = '#120f1e'; x.fillRect(58, 14, 30, 33); x.fillRect(61, 11, 24, 3); x.fillRect(64, 9, 18, 2);
+    x.fillStyle = '#4a3020'; x.fillRect(61, 15, 24, 32);
+    x.fillStyle = '#3a2418'; for (var p = 61; p < 85; p += 4) x.fillRect(p, 15, 1, 32);
+    x.fillStyle = '#6a7088'; x.fillRect(61, 22, 24, 2); x.fillRect(61, 37, 24, 2);
+  }
+  [[16, 18], [porte ? 52 : 80, 18]].forEach(function (t) {
+    lueur(x, t[0] + 1, t[1], 16, 'rgba(255,190,120,.22)', .85);
+    lueur(x, t[0] + 1, t[1], 8, 'rgba(255,210,140,.3)', .9);
+    x.fillStyle = '#5a3a22'; x.fillRect(t[0], t[1], 3, 2); x.fillStyle = '#2a1a10'; x.fillRect(t[0] + 1, t[1] + 2, 1, 4);
+  });
+  return c;
+}
+function decorAntre() {
+  var c = toile(96, 72), x = c.getContext('2d'), al = alea0(23);
+  x.fillStyle = '#24121a'; x.fillRect(0, 0, 96, 72);
+  for (var b = 0; b < 60; b++) rond(x, Math.floor(al() * 96), Math.floor(al() * 44), 2 + Math.floor(al() * 4), al() < .5 ? '#2f1720' : '#3a1c26');
+  /* stalactites */
+  for (var s = 0; s < 14; s++) {
+    var sx = Math.floor(al() * 96), sh = 4 + Math.floor(al() * 10);
+    for (var j = 0; j < sh; j++) { var w = Math.max(0, Math.round((1 - j / sh) * 3)); x.fillStyle = '#45222c'; x.fillRect(sx - w, j, w * 2 + 1, 1); x.fillStyle = '#5a2e38'; x.fillRect(sx - w, j, 1, 1); }
+  }
+  /* lave au fond */
+  x.fillStyle = '#c23a2a'; x.fillRect(0, 40, 96, 6);
+  x.fillStyle = '#f2702c'; x.fillRect(0, 41, 96, 4);
+  x.fillStyle = '#ffb03c'; for (var l = 0; l < 96; l += 5) x.fillRect(l + Math.floor(al() * 3), 42, 2, 1);
+  lueur(x, 48, 44, 40, 'rgba(255,120,60,.22)', .45);
+  /* rive et sol */
+  x.fillStyle = '#1a0c12'; x.fillRect(0, 46, 96, 2);
+  x.fillStyle = '#2e1a1e'; x.fillRect(0, 48, 96, 24);
+  for (var r = 0; r < 40; r++) { x.fillStyle = al() < .5 ? '#3a2226' : '#24121a'; x.fillRect(Math.floor(al() * 96), 48 + Math.floor(al() * 24), 2 + Math.floor(al() * 3), 1); }
+  x.fillStyle = '#f2702c';
+  [[8, 58, 14], [56, 66, 18], [30, 70, 10], [76, 54, 9]].forEach(function (f) { for (var i = 0; i < f[2]; i++) x.fillRect(f[0] + i, f[1] + ((i * 7) % 3) - 1, 1, 1); });
+  /* trésor */
+  x.fillStyle = '#b88a1e'; for (var o = 0; o < 8; o++) x.fillRect(86 + o - Math.floor(o / 2), 46 - Math.min(o, 7 - o), 2, Math.min(o, 7 - o) + 1);
+  x.fillStyle = '#ffd24d'; x.fillRect(88, 44, 1, 1); x.fillRect(90, 43, 1, 1); x.fillRect(91, 45, 1, 1);
+  /* os */
+  x.fillStyle = '#d8d2bc'; x.fillRect(14, 64, 5, 1); x.fillRect(13, 63, 1, 1); x.fillRect(19, 65, 1, 1); x.fillRect(70, 60, 3, 2);
+  return c;
+}
+function decorCamp() {
+  var c = toile(96, 54), x = c.getContext('2d'), al = alea0(5);
+  ['#5ab0e8', '#6cbaec', '#80c6f0', '#96d1f3', '#acdcf6', '#c2e6f8'].forEach(function (col, i) { x.fillStyle = col; x.fillRect(0, i * 5, 96, 5); });
+  rond(x, 80, 8, 5, '#fff6c0'); rond(x, 80, 8, 3, '#ffe680');
+  /* collines */
+  for (var i = 0; i < 96; i++) { var h1 = Math.round(26 + Math.sin(i / 11) * 3 + Math.sin(i / 5) * 1); x.fillStyle = '#8fc4b0'; x.fillRect(i, h1, 1, 40); }
+  for (var i2 = 0; i2 < 96; i2++) { var h2 = Math.round(31 + Math.sin(i2 / 8 + 2) * 2); x.fillStyle = '#6aa88a'; x.fillRect(i2, h2, 1, 40); }
+  /* arbres */
+  function feuillu(cx, base, r) { x.fillStyle = '#5a3a26'; x.fillRect(cx, base - 4, 2, 5); rond(x, cx + 1, base - 4 - r, r, '#3f8a4a'); rond(x, cx, base - 5 - r, r - 2, '#5aa858'); rond(x, cx - 1, base - 6 - r, 1, '#7cc25a'); }
+  function pin(px, base, haut) { for (var k = 0; k < haut; k++) { var w = Math.floor((k % 5) * 0.6 + k * 0.25); x.fillStyle = '#2f6e44'; x.fillRect(px - w, base - haut + k, w * 2 + 1, 1); x.fillStyle = '#4a9058'; x.fillRect(px - w, base - haut + k, 1, 1); } x.fillStyle = '#4a2f1e'; x.fillRect(px, base, 1, 2); }
+  pin(70, 36, 14); pin(78, 37, 18); feuillu(88, 38, 5); pin(93, 36, 12); feuillu(4, 37, 5); pin(22, 35, 10);
+  /* prairie */
+  ['#7cc25a', '#72b852', '#68ae4a', '#5fa444'].forEach(function (col, k) { x.fillStyle = col; x.fillRect(0, 36 + k * 5, 96, 6); });
+  x.fillStyle = '#d2b07a';
+  for (var y = 40; y < 54; y++) { var px = Math.round(62 + (y - 40) * 1.6); x.fillRect(px, y, 6 + Math.floor((y - 40) / 3), 1); }
+  for (var t = 0; t < 70; t++) {
+    var gx = Math.floor(al() * 96), gy = 37 + Math.floor(al() * 17);
+    x.fillStyle = al() < .5 ? '#4a8e3a' : '#9ad870'; x.fillRect(gx, gy, 1, 1); x.fillRect(gx + 1, gy - 1, 1, 1);
+    if (al() < .2) { x.fillStyle = ['#ffffff', '#ffe066', '#ff7a8a', '#b48ae8'][Math.floor(al() * 4)]; x.fillRect(gx, gy - 1, 1, 1); }
+  }
+  /* tente rayée */
+  for (var r = 0; r < 16; r++) for (var q = -r; q <= r; q++) { x.fillStyle = (Math.floor((q + 20) / 3) % 2) ? '#d8433b' : '#f1e4c2'; if (q > r - 2 && q > 0) x.fillStyle = (Math.floor((q + 20) / 3) % 2) ? '#a8302a' : '#c9b27c'; x.fillRect(13 + q, 30 + r, 1, 1); }
+  x.fillStyle = '#3a2216'; for (var r2 = 7; r2 < 16; r2++) x.fillRect(13 - Math.floor((r2 - 7) / 2), 30 + r2, Math.floor((r2 - 7) / 2) + 1, 1);
+  x.fillStyle = '#5a3a26'; x.fillRect(13, 27, 1, 4); x.fillStyle = '#f4c542'; x.fillRect(14, 27, 3, 2);
+  /* bûches, pierres */
+  x.fillStyle = '#6b4630'; x.fillRect(47, 46, 11, 2); x.fillStyle = '#4a2f1e'; x.fillRect(49, 47, 8, 2);
+  x.fillStyle = '#9a9aa8'; [44, 46, 58, 60].forEach(function (s) { x.fillRect(s, 47, 2, 2); });
+  /* panneau */
+  x.fillStyle = '#6b4630'; x.fillRect(84, 40, 1, 8); x.fillStyle = '#a8784a'; x.fillRect(80, 40, 9, 3); x.fillStyle = '#4a2f1e'; x.fillRect(81, 41, 6, 1);
+  return c;
+}
+
+/* ═════════ moteur de scène ═════════ */
+var SC = {
+  heros: { x: 12, base: 60, lunge: null, rouge: 0, ko: false },
+  ennemi: null,
+  parts: [], secousse: null, eclair: 0, decor: 'donjon'
+};
+var cvC = document.getElementById('cv-combat'), cxC = cvC.getContext('2d');
+var cvK = document.getElementById('cv-camp'), cxK = cvK.getContext('2d');
+var cvF = document.getElementById('cv-coffre'), cxF = cvF.getContext('2d');
+[cxC, cxK, cxF].forEach(function (x) { x.imageSmoothingEnabled = false; });
+function maintenant() { return performance.now(); }
+function prog01(a, now) { return a ? Math.min(1, (now - a.t0) / a.dur) : 1; }
+function particulesDe(src, ox, oy, n) {
+  var d = src.getContext('2d').getImageData(0, 0, src.width, src.height).data;
+  for (var j = 0; j < src.height; j++) for (var i = 0; i < src.width; i++) {
+    var k = (j * src.width + i) * 4;
+    if (d[k + 3] > 0 && Math.random() < (n || 1)) {
+      SC.parts.push({ x: ox + i, y: oy + j, vx: (i - src.width / 2) * 0.03 + (Math.random() - .5) * .5, vy: -Math.random() * 1.2 - .2, g: .05, vie: 40 + Math.random() * 30, c: 'rgb(' + d[k] + ',' + d[k + 1] + ',' + d[k + 2] + ')' });
+    }
+  }
+}
+function etincelles(x, y, n, cols, force) {
+  for (var i = 0; i < n; i++) {
+    var a = Math.random() * Math.PI * 2, v = (Math.random() * 1.2 + .4) * (force || 1);
+    SC.parts.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - .4, g: .06, vie: 14 + Math.random() * 14, c: cols[i % cols.length] });
+  }
+}
+function secouer(amp, dur) { SC.secousse = { t0: maintenant(), dur: dur || 220, amp: amp }; }
+function ennemiBoite() {
+  var e = SC.ennemi; if (!e) return null;
+  var s = spr(e.spr, e.pal, e.cle);
+  return { s: s, x: e.x, y: e.base - s.height };
+}
+function dessinerCombat(now) {
+  var x = cxC;
+  x.setTransform(1, 0, 0, 1, 0, 0);
+  var sx = 0, sy = 0;
+  if (SC.secousse) {
+    var p = prog01(SC.secousse, now);
+    if (p >= 1) SC.secousse = null;
+    else { var a = Math.round(SC.secousse.amp * (1 - p)); sx = Math.round((Math.random() * 2 - 1) * a); sy = Math.round((Math.random() * 2 - 1) * a); }
+  }
+  x.setTransform(1, 0, 0, 1, sx, sy);
+  if (!DECORS[SC.decor]) DECORS[SC.decor] = fabriquerDecor(SC.decor);
+  x.drawImage(DECORS[SC.decor], 0, 0);
+  /* flammes des torches */
+  var torches = SC.decor === 'gardien' ? [[16, 18], [52, 18]] : SC.decor === 'crypte' ? [[16, 18], [80, 18]] : [];
+  var pas = Math.floor(now / 110);
+  if (SC.decor === 'foret' && Math.random() < .03) SC.parts.push({ x: Math.random() * 96, y: -1, vx: .15, vy: .25, g: 0, vie: 260, c: Math.random() < .5 ? '#e0a23c' : '#9ad870', feuille: true });
+  if (SC.decor === 'antre') {
+    for (var lb = 0; lb < 96; lb += 7) { if ((pas + lb) % 9 < 2) { x.fillStyle = '#ffe080'; x.fillRect(lb + (pas % 3), 41, 2, 1); } }
+    if (Math.random() < .04) SC.parts.push({ x: Math.random() * 96, y: 41, vx: 0, vy: -.3, g: .01, vie: 30, c: '#ff9a3c' });
+  }
+  torches.forEach(function (t, n) {
+    var h = 3 + ((pas + n * 3) % 3);
+    x.fillStyle = '#c23a2a'; x.fillRect(t[0], t[1] - h, 3, h);
+    x.fillStyle = '#ff9a3c'; x.fillRect(t[0] + ((pas + n) % 2), t[1] - h + 1, 2, h - 1);
+    x.fillStyle = '#fff2a0'; x.fillRect(t[0] + 1, t[1] - 2, 1, 2);
+  });
+  if (C && C.famille === 'pont') dessinerPont(x, now);
+  /* héros */
+  var hs = sprHeros(), hx = SC.heros.x, hy = SC.heros.base - hs.height;
+  var bob = Math.floor(now / 420) % 2;
+  if (SC.heros.lunge) {
+    var pl = prog01(SC.heros.lunge, now);
+    hx += Math.round(pl < .35 ? (pl / .35) * 20 : (1 - (pl - .35) / .65) * 20);
+    if (pl >= 1) SC.heros.lunge = null;
+  }
+  if (SC.heros.chute) { var pch = prog01(SC.heros.chute, now); hy += Math.round((pch < .5 ? pch : 1 - pch) * 18); if (pch >= 1) SC.heros.chute = null; }
+  if (!SC.heros.chute) ombre(x, hx + hs.width / 2, SC.heros.base + 1, 7);
+  if (SC.heros.ko) {
+    x.save(); x.translate(hx + hs.width, SC.heros.base - 1); x.rotate(Math.PI / 2);
+    x.globalAlpha = .7; x.drawImage(hs, -hs.height + 1, -hs.width); x.restore();
+  } else {
+    x.drawImage(now < SC.heros.rouge ? teinteRouge(hs) : hs, hx, hy + bob);
+  }
+  /* ennemi */
+  var e = SC.ennemi;
+  if (e && !e.mort) {
+    var es = spr(e.spr, e.pal, e.cle), ex = e.x, ey = e.base - es.height;
+    if (e.entree) { var pe = prog01(e.entree, now); ex += Math.round((1 - easeOut(pe)) * 50); if (pe >= 1) e.entree = null; }
+    if (e.fuite) { var pf = prog01(e.fuite, now); ex += Math.round(easeIn(pf) * 70); }
+    if (e.recul) { var pr = prog01(e.recul, now); ex += Math.round((1 - pr) * e.recul.amp); if (pr >= 1) e.recul = null; }
+    if (e.charge) { var pc = prog01(e.charge, now); ex -= Math.round(pc < .3 ? (pc / .3) * 16 : (1 - (pc - .3) / .7) * 16); if (pc >= 1) e.charge = null; }
+    var eb = e.prop ? 0 : (Math.floor(now / 380) + 1) % 2;
+    ombre(x, ex + es.width / 2, e.base + 1, Math.max(6, es.width / 2.4));
+    if (e.coffre) { var cv0 = spr('couvercle'); x.drawImage(cv0, ex, e.ouvert ? ey - cv0.height - 5 : ey - cv0.height + 1); }
+    if (e.spr === 'fontaine' && Math.random() < .2) SC.parts.push({ x: ex + es.width / 2 + (Math.random() - .5) * 2, y: ey + 1, vx: (Math.random() - .5) * .5, vy: -.5, g: .05, vie: 22, c: '#bfe8ff' });
+    if (e.spr === 'stele' && Math.random() < .08) SC.parts.push({ x: ex + 3 + Math.random() * (es.width - 6), y: ey + 4 + Math.random() * 12, vx: 0, vy: -.15, g: 0, vie: 30, c: '#bfe8ff' });
+    x.drawImage(now < e.flash ? blanc(e.cle) : es, ex, ey + (e.flotte ? Math.round(Math.sin(now / 260) * 2) - 3 : eb));
+  }
+  /* coup d'épée */
+  if (SC.taille) {
+    var ps = prog01(SC.taille, now);
+    if (ps >= 1) SC.taille = null;
+    else {
+      var b = ennemiBoite(), ep = SC.taille.ep, n = Math.floor(ps * 4);
+      if (b) {
+        var cx0 = b.x + b.s.width / 2, cy0 = b.y + b.s.height / 2, L = Math.max(b.s.width, b.s.height) * .7;
+        for (var i = -L; i <= L * (Math.min(1, ps * 2) * 2 - 1); i++) {
+          var px = Math.round(cx0 + i * .8), py = Math.round(cy0 - i * .6);
+          x.fillStyle = n % 2 ? '#fff6c8' : '#ffffff'; x.fillRect(px, py, ep, ep);
+          if (ep > 1) { x.fillStyle = '#ffd24d'; x.fillRect(px + ep, py, 1, 1); }
+        }
+      }
+    }
+  }
+  /* particules */
+  for (var k = SC.parts.length - 1; k >= 0; k--) {
+    var q = SC.parts[k];
+    q.x += q.vx; q.y += q.vy; q.vy += q.g; q.vie--;
+    if (q.feuille) q.vx = Math.sin((q.vie + q.y) / 12) * .35;
+    if (q.vie <= 0 || q.y > 72) { SC.parts.splice(k, 1); continue; }
+    x.fillStyle = q.c; x.fillRect(Math.round(q.x), Math.round(q.y), 1, 1);
+  }
+  if (now < SC.eclair) { x.setTransform(1, 0, 0, 1, 0, 0); x.fillStyle = 'rgba(255,255,255,.28)'; x.fillRect(0, 0, 96, 72); }
+}
+var ROUGES = new Map();
+function teinteRouge(s) { if (!ROUGES.has(s)) ROUGES.set(s, teinte(s, '#ff5a4a')); return ROUGES.get(s); }
+function ombre(x, cx, cy, r) {
+  x.fillStyle = 'rgba(0,0,0,.35)';
+  for (var i = -r; i <= r; i++) { var hh = Math.round(Math.sqrt(1 - (i * i) / (r * r)) * 1.5); x.fillRect(Math.round(cx + i), cy - hh, 1, hh * 2 + 1); }
+}
+function easeOut(p) { return 1 - Math.pow(1 - p, 3); }
+function easeIn(p) { return p * p; }
+var feuPas = -1, feuH = [];
+function dessinerCamp(now) {
+  var x = cxK;
+  if (!DECORS.camp) DECORS.camp = decorCamp();
+  x.drawImage(DECORS.camp, 0, 0);
+  var nu = spr('nuage');
+  [[0, 4, 90000], [40, 12, 130000], [70, 2, 110000]].forEach(function (n) { var px = Math.round(((n[0] + now * 96 / n[2]) % 130) - 20); x.drawImage(nu, px, n[1]); });
+  var pas = Math.floor(now / 90);
+  if (pas !== feuPas) {
+    feuPas = pas; feuH = [];
+    for (var i = -2; i <= 2; i++) feuH.push(Math.max(1, (3 - Math.abs(i)) * 2 + Math.floor(Math.random() * 3) - 1));
+    if (Math.random() < .35) SC.parts.push({ x: 52 + Math.random() * 2 - 1, y: 40, vx: .05 + Math.random() * .1, vy: -.18 - Math.random() * .1, g: 0, vie: 70, c: Math.random() < .5 ? 'rgba(220,220,230,.8)' : 'rgba(190,190,205,.7)', camp: true });
+  }
+  feuH.forEach(function (h, i) {
+    for (var j = 0; j < h; j++) { var f = j / h; x.fillStyle = f < .3 ? '#fff2a0' : f < .6 ? '#ffc23c' : '#f2702c'; x.fillRect(50 + i, 46 - j, 1, 1); }
+  });
+  var hs = sprHeros(), bob = Math.floor(now / 520) % 2;
+  ombre(x, 24 + hs.width / 2, 49, 6);
+  x.drawImage(hs, 24, 49 - hs.height + bob);
+  var as = sprAutre(), bob2 = Math.floor(now / 560 + 1) % 2;
+  ombre(x, 58 + as.width / 2, 49, 6);
+  x.save(); x.translate(58 + as.width, 0); x.scale(-1, 1); x.drawImage(as, 0, 49 - as.height + bob2); x.restore();
+  for (var k = SC.parts.length - 1; k >= 0; k--) {
+    var q = SC.parts[k]; if (!q.camp) continue;
+    q.x += q.vx; q.y += q.vy; q.vie--;
+    if (q.vie <= 0) { SC.parts.splice(k, 1); continue; }
+    x.fillStyle = q.c; x.fillRect(Math.round(q.x), Math.round(q.y), q.vie > 40 ? 1 : 2, q.vie > 40 ? 1 : 2);
+  }
+}
+var COFFRE = { ouvre: null, ouvert: false };
+function dessinerCoffre(now) {
+  var x = cxF;
+  if (!DECORS.antreCamp) { var d = fabriquerDecor('antre'), c = toile(96, 54); c.getContext('2d').drawImage(d, 0, -18); DECORS.antreCamp = c; }
+  x.drawImage(DECORS.antreCamp, 0, 0);
+  var cv = spr('couvercle'), cs = spr('caisse'), bx = 48 - cs.width / 2, by = 40;
+  var dx = 0;
+  if (COFFRE.ouvre && !COFFRE.ouvert) { var p = prog01(COFFRE.ouvre, now); dx = p < 1 ? Math.round(Math.sin(now / 25) * 1.5) : 0; if (p >= 1) { COFFRE.ouvert = true; etincellesCoffre(); } }
+  if (COFFRE.ouvert) {
+    lueur(x, 48, by - 4, 22, 'rgba(255,220,120,.35)', .9);
+    x.fillStyle = 'rgba(255,230,150,.5)';
+    for (var r = 0; r < 26; r++) { var w = Math.floor(r * .55) + 3; if (Math.floor(now / 140 + r) % 3) x.fillRect(48 - w, by - r, w * 2, 1); }
+  }
+  ombre(x, 48, by + cs.height - 1, 12);
+  x.drawImage(cs, bx + dx, by);
+  x.drawImage(cv, bx + dx, COFFRE.ouvert ? by - cv.height - 5 : by - cv.height + 1);
+  for (var k = SC.parts.length - 1; k >= 0; k--) {
+    var q = SC.parts[k]; if (!q.coffre) continue;
+    q.x += q.vx; q.y += q.vy; q.vy += q.g; q.vie--;
+    if (q.vie <= 0) { SC.parts.splice(k, 1); continue; }
+    x.fillStyle = q.c; x.fillRect(Math.round(q.x), Math.round(q.y), 1, 1);
+  }
+}
+function etincellesCoffre() {
+  for (var i = 0; i < 60; i++) { var a = -Math.PI / 2 + (Math.random() - .5) * 1.6, v = Math.random() * 1.6 + .6; SC.parts.push({ x: 48, y: 38, vx: Math.cos(a) * v, vy: Math.sin(a) * v, g: .04, vie: 40 + Math.random() * 30, c: ['#ffd24d', '#fff3b0', '#f2a23c'][i % 3], coffre: true }); }
+  son('niveau');
+}
+function dessinerPont(x, now) {
+  x.fillStyle = '#05060c'; x.fillRect(0, 50, 96, 22);
+  for (var j = 50; j < 72; j++) for (var i = 0; i < 96; i++) if (BAYER[j % 4][i % 4] < (j - 50) / 3) { x.fillStyle = '#000'; x.fillRect(i, j, 1, 1); }
+  x.fillStyle = '#3a2a1a'; x.fillRect(0, 49, 96, 1);
+  var restant = C.total - C.n;
+  x.fillStyle = '#c9b27c'; x.fillRect(0, 54, 96, 1);
+  for (var p = 0; p < 24; p++) {
+    var px = p * 4, apres = px > 30 ? Math.floor((px - 30) / 13) : -1;
+    if (apres >= restant) continue;
+    x.fillStyle = p % 2 ? '#8a5a33' : '#a8784a'; x.fillRect(px, 57, 3, 3); x.fillStyle = '#4e2c16'; x.fillRect(px, 60, 3, 1);
+  }
+  x.fillStyle = '#c9b27c'; for (var q = 0; q < 96; q += 8) x.fillRect(q, 54, 1, 4);
+}
+function boucle() {
+  var now = maintenant(), v = vueActive;
+  if (v === 'combat') dessinerCombat(now);
+  else if (v === 'camp') dessinerCamp(now);
+  else if (v === 'coffre') dessinerCoffre(now);
+  else if (v === 'donjon') dessinerDonjon(now);
+  if (v === 'combat') majChrono(now);
+  requestAnimationFrame(boucle);
+}
+
+/* ═════════ son (WebAudio, très court) ═════════ */
+var AC = null;
+function ac() { if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } if (AC && AC.state === 'suspended') AC.resume(); return AC; }
+function bip(f1, f2, dur, type, vol, quand) {
+  var a = ac(); if (!a || !etat.son) return;
+  var t = a.currentTime + (quand || 0), o = a.createOscillator(), g = a.createGain();
+  o.type = type || 'square'; o.frequency.setValueAtTime(f1, t); o.frequency.exponentialRampToValueAtTime(Math.max(30, f2), t + dur);
+  g.gain.setValueAtTime(vol || .08, t); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+  o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + .02);
+}
+function bruit(dur, vol, quand) {
+  var a = ac(); if (!a || !etat.son) return;
+  var t = a.currentTime + (quand || 0), n = Math.floor(a.sampleRate * dur), buf = a.createBuffer(1, n, a.sampleRate), d = buf.getChannelData(0);
+  for (var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+  var s = a.createBufferSource(), g = a.createGain(); s.buffer = buf; g.gain.value = vol || .1; s.connect(g); g.connect(a.destination); s.start(t);
+}
+function son(n, force) {
+  if (n === 'coup') { bruit(.06 + force * .03, .08 + force * .04); bip(320 - force * 50, 90, .12 + force * .04, 'square', .06); if (force > 2) bip(110, 40, .25, 'sawtooth', .07, .02); }
+  else if (n === 'mal') { bip(180, 60, .22, 'sawtooth', .08); bruit(.08, .06); }
+  else if (n === 'or') { bip(988, 988, .07, 'square', .04); bip(1319, 1319, .12, 'square', .04, .07); }
+  else if (n === 'niveau') { [523, 659, 784, 1047].forEach(function (f, i) { bip(f, f, .14, 'square', .045, i * .09); }); }
+  else if (n === 'mort') { bruit(.35, .08); bip(400, 50, .4, 'square', .05); }
+  else if (n === 'clic') { bip(660, 660, .03, 'square', .025); }
+  else if (n === 'soin') { bip(440, 880, .25, 'triangle', .07); }
+}
+
+/* ═════════ utilitaires d'interface ═════════ */
+function $(id) { return document.getElementById(id); }
+function ech(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function mel(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function attendre(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+var vueActive = null;
+function voir(n) {
+  vueActive = n;
+  ['charge', 'qui', 'deck', 'semaine', 'camp', 'donjon', 'combat', 'marchand', 'coffre'].forEach(function (v) { $('v-' + v).classList.toggle('on', v === n); });
+}
+function modal(titre, textes, boutons) {
+  return new Promise(function (res) {
+    $('v-corps').innerHTML = '<h2>' + ech(T(titre)) + '</h2>' + textes.map(function (t) { return '<p>' + ech(T(t)) + '</p>'; }).join('');
+    var z = $('v-btns'); z.innerHTML = '';
+    (boutons || [{ t: 'Continuer' }]).forEach(function (b, i) {
+      var e = document.createElement('button'); e.className = 'btn' + (b.sec ? ' sec' : '') + (b.petit ? ' sec petit' : ''); e.textContent = T(b.t);
+      e.onclick = function () { son('clic'); $('voile').classList.add('cache'); res(i); };
+      z.appendChild(e);
+    });
+    $('voile').classList.remove('cache');
+  });
+}
+function nombre(txt, sx, sy, cls) {
+  var d = document.createElement('div'); d.className = 'nombre ' + (cls || ''); d.textContent = T(txt);
+  d.style.left = (sx * 4) + 'px'; d.style.top = (sy * 4) + 'px';
+  $('couche').appendChild(d); setTimeout(function () { d.remove(); }, 900);
+}
+var banTimer = null;
+function banniere(t, s, ms) {
+  var c = $('couche'), old = c.querySelector('.banniere'); if (old) old.remove();
+  var d = document.createElement('div'); d.className = 'banniere';
+  d.innerHTML = '<span>' + ech(T(t)) + (s ? '<small>' + ech(T(s)) + '</small>' : '') + '</span>';
+  c.appendChild(d); clearTimeout(banTimer); banTimer = setTimeout(function () { d.remove(); }, ms || 1800);
+  return attendre(ms || 1800);
+}
+function cransHTML(liste, vise) {
+  return liste.map(function (m) {
+    var s = prog(m).s;
+    return '<div class="cran' + (s >= CIBLE ? ' ok' : '') + (vise && vise.indexOf(m) !== -1 ? ' vise' : '') + '" title="' + ech(m.nl) + '"><i style="height:' + s + '%"></i></div>';
+  }).join('');
+}
+function hud(id, combat) {
+  var h = H(), z = $(id), pv = h.pv;
+  var potions = h.potions.p + h.potions.g;
+  z.innerHTML =
+    '<div class="niv">' + T('Att. {0}', attaque()) + '<small>' + T('Déf. {0}', defense()) + '</small></div>' +
+    '<div class="barres"><div class="barre"><i style="width:' + Math.max(0, 100 * pv / pvMax()) + '%"></i><b>' + T('{0} / {1} PV', Math.max(0, pv), pvMax()) + '</b></div>' +
+    '</div>' +
+    '<div class="bourse"><canvas width="8" height="8" data-piece></canvas>' + h.or + '</div>' +
+    (combat ? '<button class="mini" id="b-potion"' + (potions && C && C.famille !== 'gardien' && h.pv < pvMax() && !C.verrou ? '' : ' disabled') + ' title="' + T(C && C.famille === 'gardien' ? 'Le gardien interdit les potions' : 'Boire une potion, sans perdre ton tour') + '">' + T('Potion {0}', potions) + '</button><button class="mini" id="b-fuir">' + T('Fuir') + '</button>' : '');
+  var pc = z.querySelector('[data-piece]'); pc.getContext('2d').drawImage(spr('piece'), 0, 0);
+  if (combat) { $('b-potion').onclick = boirePotion; $('b-fuir').onclick = fuir; }
+}
+
+/* ═════════ le camp ═════════ */
+function iconeTuile(nom, cle, echelle, pal) {
+  var s = spr(nom, pal, cle), c = document.createElement('canvas');
+  c.width = s.width; c.height = s.height; c.getContext('2d').drawImage(s, 0, 0);
+  c.style.width = (s.width * echelle) + 'px'; c.style.height = (s.height * echelle) + 'px';
+  return c;
+}
+function verifierFuite() {
+  if (!etat.boss.mort && !etat.boss.enfui && Date.now() > etat.semaine.fin) { etat.boss.enfui = true; sauver(); return true; }
+  return false;
+}
+function infoAutre() {
+  if (!cfg()) return etat.autre;
+  var a = autreDistant();
+  return a ? { mots: a.mots || 0, total: a.total || 0, explo: a.explo || 0, dragon: !!a.dragon, enfui: !!a.enfui, choisi: a.choisi } : null;
+}
+function autreFini() { var a = infoAutre(); return !!a && a.total > 0 && a.mots >= a.total; }
+function exploration() {
+  var d = etat.donjon; if (!d) return 0;
+  var p = d.lieux.filter(function (l) { return l.type === 'piece'; }), v = p.filter(function (l) { return l.visite; });
+  return p.length ? Math.round(100 * v.length / p.length) : 0;
+}
+function carteJoueur(nom, appris, total, explo, dragon, moi) {
+  return '<div class="joueur' + (moi ? ' moi' : '') + '"><div class="jn">' + ech(nom) + (moi ? ' <small>' + T('toi') + '</small>' : '') + '</div>' +
+    '<div class="jl"><span>' + T('Mots appris') + '</span><b>' + appris + ' / ' + total + '</b></div><div class="barre fine vert"><i style="width:' + (total ? 100 * appris / total : 0) + '%"></i></div>' +
+    '<div class="jl"><span>' + T('Donjon exploré') + '</span><b>' + explo + ' %</b></div><div class="barre fine bleu"><i style="width:' + explo + '%"></i></div>' +
+    '<div class="jl"><span>' + T('Dragon') + '</span><b>' + T(dragon) + '</b></div></div>';
+}
+function camp(soigner) {
+  if (soigner !== false) H().pv = pvMax();
+  C = null; cur = null; combo = 0; session = { derniers: [], depuisRappel: 0 }; recents = [];
+  verifierFuite();
+  voir('camp');
+  hud('hud-camp', false);
+  rendreDuo();
+  if (cfg()) tirerDistant().then(rendreDuo);
+  majReliquesCamp();
+  var go = $('camp-go'); go.disabled = false;
+  if (etat.boss.mort && !etat.semaine.ouvert) { go.textContent = T('Ouvrir le coffre du dragon'); go.onclick = ouvrirCoffreVue; }
+  else if (etat.boss.mort || etat.boss.enfui) { go.textContent = T('Commencer une nouvelle semaine'); go.onclick = nouvelleSemaine; }
+  else { go.textContent = T(etat.donjon ? 'Reprendre l\'exploration' : 'Entrer dans le donjon'); go.onclick = ouvrirDonjon; }
+  $('camp-son').textContent = T(etat.son ? 'Son : oui' : 'Son : non');
+  var e = $('camp-echeance');
+  if (etat.boss.mort) e.innerHTML = T('Dragon vaincu cette semaine.') + (autreFini() ? ' ' + T('{0} a aussi bouclé ses mots.', ech(autre())) : '');
+  else if (etat.boss.enfui) e.innerHTML = T('Le dragon s\'est enfui dimanche à minuit. Le coffre est perdu.');
+  else {
+    var j = Math.max(0, Math.ceil((etat.semaine.fin - Date.now()) / 864e5));
+    e.innerHTML = T('Le dragon s\'enfuit <b>dimanche à minuit</b>, {0}.', j <= 1 ? T('c\'est pour aujourd\'hui ou demain') : T('dans {0} jours', j));
+  }
+  majOutils();
+}
+function rendreDuo() {
+  if (vueActive !== 'camp') return;
+  var appris = MOTS.filter(estValide).length;
+  var monDragon = etat.boss.mort ? 'vaincu' : etat.boss.enfui ? 'enfui' : deckFini() ? 'il t\'attend' : 'pas encore';
+  var moiNom = etat.moi === 'ulysse' ? 'Ulysse' : 'Jasmien';
+  var a = infoAutre();
+  $('duo').innerHTML = carteJoueur(moiNom, appris, MOTS.length, exploration(), monDragon, true) +
+    (a ? carteJoueur(autre(), a.mots, a.total, a.explo, a.dragon ? 'vaincu' : a.enfui ? 'enfui' : (a.total && a.mots >= a.total ? 'il l\'attend' : 'pas encore'), false)
+       : '<div class="joueur"><div class="jn">' + ech(autre()) + '</div><div class="jl"><span>' + T('Pas encore entré{0} dans le donjon de cette semaine.', etat.moi === 'ulysse' ? 'e' : '') + '</span></div></div>');
+}
+setInterval(function () { if (vueActive === 'camp' && cfg()) tirerDistant().then(rendreDuo); }, 30000);
+function iconeRelique(r) { return iconeTuile('relique', 'relique-' + r.id, 3, { R: r.c }); }
+function majReliquesCamp() {
+  var z = $('camp-rel'); z.innerHTML = '';
+  var l = H().reliques.map(function (id) { return RELIQUES.filter(function (r) { return r.id === id; })[0]; }).filter(Boolean);
+  $('camp-nrel').textContent = l.length ? T(l.length > 1 ? '{0} reliques' : '{0} relique', l.length) : T('aucune pour l\'instant');
+  l.forEach(function (r) { var c = iconeRelique(r); c.title = T(r.nom); z.appendChild(c); });
+  z.onclick = function () { if (l.length) modal('Tes reliques', l.map(function (r) { return T(r.nom) + ' : ' + T(r.desc); }), [{ t: 'Fermer' }]); };
+}
+
+var SALLES = {
+  combat: { ic: 'ic-combat' }, elite: { ic: 'ic-elite' }, enigme: { ic: 'ic-enigme' }, pont: { ic: 'ic-pont' },
+  coffre: { ic: 'ic-coffre' }, fontaine: { ic: 'ic-fontaine' }, marchand: { ic: 'ic-marchand' }, evenement: { ic: 'ic-evenement' }
+};
+/* ═════════ le donjon : un seul par semaine, plan vu de dessus ═════════
+   Des pièces bien séparées, de tailles variées, sur une trame irrégulière, et
+   des couloirs qui sont des lieux à part entière. On va d'un lieu au lieu
+   voisin en le touchant. Une zone par groupe de 10 mots ; le plan affiche la
+   zone où l'on se trouve. On passe d'une zone à la suivante par un couloir à
+   porte (scellée après la zone 1, gardée ensuite : le gardien est le bilan).
+   Au bout de la dernière zone, l'antre du dragon. */
+var CW = 192, EV_PAR_MOT = 2.2;
+var DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+function rnd(n) { return Math.floor(Math.random() * n); }
+function genererDonjon(n) {
+  for (var essai = 0; essai < 300; essai++) { var d = essayerDonjon(n); if (d) return d; }
+  return null;
+}
+function essayerDonjon(n) {
+  var nz = Math.max(1, Math.ceil(n / GROUPE)), occ = {}, pieces = [], aretes = [];
+  var zb = null, Lz = 99;
+  function cle(x, y) { return x + ',' + y; }
+  function poser(x, y, zone, extra) {
+    var p = Object.assign({ gx: x, gy: y, zone: zone }, extra || {}); p.id = pieces.length; pieces.push(p); occ[cle(x, y)] = p.id;
+    if (zb) { zb.x0 = Math.min(zb.x0, x); zb.y0 = Math.min(zb.y0, y); zb.x1 = Math.max(zb.x1, x); zb.y1 = Math.max(zb.y1, y); }
+    return p;
+  }
+  /* chaque zone tient dans un carré de côté Lz : sinon ses pièces rapetissent à l'écran */
+  function dansCadre(c) { return !zb || (Math.max(zb.x1, c[0]) - Math.min(zb.x0, c[0]) < Lz && Math.max(zb.y1, c[1]) - Math.min(zb.y0, c[1]) < Lz); }
+  function libres(p) { return DIRS.map(function (v) { return [p.gx + v[0], p.gy + v[1]]; }).filter(function (c) { return occ[cle(c[0], c[1])] == null && dansCadre(c); }); }
+  function libresBrut(p) { return DIRS.map(function (v) { return [p.gx + v[0], p.gy + v[1]]; }).filter(function (c) { return occ[cle(c[0], c[1])] == null; }); }
+  function liees(a, b) { return aretes.some(function (e) { return (e.a === a && e.b === b) || (e.a === b && e.b === a); }); }
+  function distances(depuis, zone) {
+    var dist = {}, f = [depuis.id]; dist[depuis.id] = 0;
+    while (f.length) {
+      var a = f.shift();
+      aretes.forEach(function (e) {
+        if (e.porte) return;
+        var b = e.a === a ? e.b : e.b === a ? e.a : null;
+        if (b == null || dist[b] != null || pieces[b].zone !== zone) return;
+        dist[b] = dist[a] + 1; f.push(b);
+      });
+    }
+    return dist;
+  }
+  var sortie = null, infos = [];
+  for (var z = 1; z <= nz; z++) {
+    var mots = Math.min(GROUPE, n - (z - 1) * GROUPE), nev = Math.ceil(EV_PAR_MOT * mots);
+    var cible = nev + Math.max(2, Math.round(nev * .25)) + (z === 1 ? 1 : 0), zp = [];
+    Lz = Math.ceil(Math.sqrt(cible * 1.7));
+    if (z === 1) { zb = { x0: 0, y0: 0, x1: 0, y1: 0 }; zp.push(poser(0, 0, 1, { depart: true })); }
+    else {
+      var c0 = libresBrut(sortie); if (!c0.length) return null; c0 = c0[rnd(c0.length)];
+      zb = { x0: c0[0], y0: c0[1], x1: c0[0], y1: c0[1] };
+      var f0 = poser(c0[0], c0[1], z); aretes.push({ a: sortie.id, b: f0.id, porte: { zone: z - 1, type: z - 1 >= 2 ? 'gardien' : 'sceau' } }); zp.push(f0);
+    }
+    for (var essais = 0; zp.length < cible && essais < 1500; essais++) {
+      var base = Math.random() < .5 ? zp[zp.length - 1] : zp[rnd(zp.length)], cs = libres(base);
+      if (!cs.length) continue;
+      var c = cs[rnd(cs.length)];
+      /* pas de pâté : jamais plus de deux lieux déjà posés autour d'une nouvelle pièce */
+      if (DIRS.filter(function (v) { return occ[cle(c[0] + v[0], c[1] + v[1])] != null; }).length > 2) continue;
+      var np = poser(c[0], c[1], z); aretes.push({ a: base.id, b: np.id }); zp.push(np);
+    }
+    if (zp.length < cible) return null;
+    var nb = 0, maxB = Math.ceil(cible / 8);
+    zp.forEach(function (p) {
+      DIRS.forEach(function (v) {
+        var q = occ[cle(p.gx + v[0], p.gy + v[1])];
+        if (q == null || q <= p.id || nb >= maxB || pieces[q].zone !== z || liees(p.id, q) || Math.random() > .3) return;
+        aretes.push({ a: p.id, b: q }); nb++;
+      });
+    });
+    /* la sortie de la zone : la pièce la plus éloignée de son entrée qui touche une case libre */
+    var dist = distances(zp[0], z);
+    var tri = zp.filter(function (p) { return libresBrut(p).length; }).sort(function (a, b) { return (dist[b.id] || 0) - (dist[a.id] || 0); });
+    if (!tri.length) return null;
+    sortie = tri[0];
+    infos.push({ z: z, nev: nev, pieces: zp });
+  }
+  zb = null;
+  var ca = libresBrut(sortie); if (!ca.length) return null; ca = ca[rnd(ca.length)];
+  var antre = poser(ca[0], ca[1], nz, { antre: true });
+  aretes.push({ a: sortie.id, b: antre.id, porte: { zone: nz, type: nz >= 2 ? 'gardien' : 'sceau', finale: true } });
+  var d = { lieux: [], adj: [], pos: 0, prev: 0, nz: nz, vues: {} };
+  pieces.forEach(function (p) {
+    var grand = p.depart || p.antre;
+    d.lieux.push({ id: p.id, type: 'piece', zone: p.zone, gx: p.gx, gy: p.gy, depart: !!p.depart, antre: !!p.antre,
+      fw: grand ? .78 : .42 + Math.random() * .24, fh: grand ? .78 : .42 + Math.random() * .24,
+      jx: grand ? 0 : (Math.random() - .5) * .16, jy: grand ? 0 : (Math.random() - .5) * .16, ev: null, vu: false, visite: false });
+    d.adj.push([]);
+  });
+  aretes.forEach(function (e) {
+    var co = { type: 'couloir', zone: pieces[e.a].zone, a: e.a, b: e.b, horiz: pieces[e.a].gy === pieces[e.b].gy, vu: false, visite: false, ev: null };
+    if (e.porte) co.porte = e.porte;
+    co.id = d.lieux.length; d.lieux.push(co); d.adj.push([e.a, e.b]);
+    d.adj[e.a].push(co.id); d.adj[e.b].push(co.id);
+  });
+  infos.forEach(function (zi) {
+    var hotes = mel(zi.pieces.filter(function (p) { return !p.depart; })).map(function (p) { return d.lieux[p.id]; });
+    var types = ['elite', Math.random() < .5 ? 'marchand' : 'evenement'];
+    while (types.length < zi.nev) { var u = Math.random(); types.push(u < .45 ? 'combat' : u < .65 ? 'enigme' : u < .75 ? 'pont' : u < .88 ? 'coffre' : 'fontaine'); }
+    mel(types).forEach(function (t, k) { if (hotes[k]) hotes[k].ev = { t: t, zone: zi.z, fait: false, connu: false }; });
+  });
+  d.lieux[0].visite = true; devoiler(d, 0);
+  return d;
+}
+/* ── mise en page d'une zone : ses pièces, plus les pièces voisines par une porte ── */
+function zoneDe(d, l) { return l.type === 'piece' ? l.zone : d.lieux[l.a].zone; }
+function vueZone(d, z) {
+  if (d.vues[z]) return d.vues[z];
+  var dans = {};
+  d.lieux.forEach(function (l) {
+    if (l.type === 'piece' && l.zone === z) dans[l.id] = 1;
+    if (l.type === 'couloir' && l.porte && (d.lieux[l.a].zone === z || d.lieux[l.b].zone === z)) { dans[l.a] = 1; dans[l.b] = 1; }
+  });
+  var x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  Object.keys(dans).forEach(function (k) { var p = d.lieux[k]; x0 = Math.min(x0, p.gx); y0 = Math.min(y0, p.gy); x1 = Math.max(x1, p.gx); y1 = Math.max(y1, p.gy); });
+  var cols = x1 - x0 + 1, rows = y1 - y0 + 1, pas = Math.min(40, Math.floor(186 / Math.max(cols, rows)));
+  return (d.vues[z] = { dans: dans, x0: x0, y0: y0, pas: pas, ox: (CW - cols * pas) >> 1, oy: (CW - rows * pas) >> 1 });
+}
+function rectLieu(d, l, v) {
+  if (l.type === 'piece') {
+    var w = Math.min(v.pas - 8, Math.round(v.pas * l.fw)), h = Math.min(v.pas - 8, Math.round(v.pas * l.fh));
+    var cx = v.ox + (l.gx - v.x0) * v.pas + v.pas / 2 + Math.round(l.jx * v.pas), cy = v.oy + (l.gy - v.y0) * v.pas + v.pas / 2 + Math.round(l.jy * v.pas);
+    return { x: Math.round(cx - w / 2), y: Math.round(cy - h / 2), w: w, h: h };
+  }
+  var a = rectLieu(d, d.lieux[l.a], v), b = rectLieu(d, d.lieux[l.b], v), ep = Math.max(5, Math.round(v.pas * .26));
+  if (l.horiz) {
+    var g = a.x < b.x ? a : b, dr = a.x < b.x ? b : a;
+    var lo = Math.max(g.y, dr.y) + 1, hi = Math.min(g.y + g.h, dr.y + dr.h) - ep - 1;
+    var yc = Math.round(Math.max(lo, Math.min(hi, (g.y + g.h / 2 + dr.y + dr.h / 2) / 2 - ep / 2)));
+    return { x: g.x + g.w, y: yc, w: dr.x - g.x - g.w, h: ep };
+  }
+  var hb = a.y < b.y ? a : b, bs = a.y < b.y ? b : a;
+  var lo2 = Math.max(hb.x, bs.x) + 1, hi2 = Math.min(hb.x + hb.w, bs.x + bs.w) - ep - 1;
+  var xc = Math.round(Math.max(lo2, Math.min(hi2, (hb.x + hb.w / 2 + bs.x + bs.w / 2) / 2 - ep / 2)));
+  return { x: xc, y: hb.y + hb.h, w: ep, h: bs.y - hb.y - hb.h };
+}
+function visibleDans(d, l, v) { return l.type === 'piece' ? !!v.dans[l.id] : !!(v.dans[l.a] && v.dans[l.b]); }
+/* voir un lieu, c'est voir aussi ce qui le touche : depuis une pièce, ses
+   couloirs et les pièces au bout, mais rien derrière une porte */
+function devoiler(d, id) {
+  var l = d.lieux[id]; l.vu = true;
+  d.adj[id].forEach(function (v) {
+    var c = d.lieux[v]; c.vu = true;
+    if (l.type === 'piece' && c.type === 'couloir' && !c.porte) d.adj[v].forEach(function (w) { d.lieux[w].vu = true; });
+  });
+}
+function porteOuverte(p) {
+  var n = etat.fiche.numGroupe || 1;
+  if (n > p.zone) return true;
+  return n === p.zone && groupeFini() && !bilanDu();
+}
+function zoneEpuisee() {
+  var d = etat.donjon, n = etat.fiche.numGroupe || 1;
+  return d.lieux.every(function (l) { return !l.ev || l.ev.zone !== n || l.ev.fait; });
+}
+function ouvrirDonjon() {
+  ac();
+  if (!etat.donjon) etat.donjon = genererDonjon(MOTS.length);
+  if (!groupeCourant().length) groupeDe();
+  sauver();
+  C = null; cur = null;
+  voir('donjon'); hud('hud-donjon', false);
+  majDonjon();
+}
+function majDonjon() {
+  var d = etat.donjon, z = zoneDe(d, d.lieux[d.pos]);
+  $('dj-titre').textContent = d.lieux[d.pos].antre ? T('L\'antre du dragon') : T('Zone {0} sur {1}', z, d.nz);
+  $('dj-crans').innerHTML = cransHTML(groupeCourant(), groupeCourant());
+  var ph = phaseCourante();
+  $('dj-lib').textContent = T(deckFini() ? 'Tous tes mots sont appris' : groupeFini() ? (bilanDu() ? 'Groupe appris : le gardien t\'attend' : 'Groupe appris : la porte est ouverte') : NOM_PHASE[ph]);
+  majOutils();
+}
+function aller(id) {
+  var d = etat.donjon;
+  if (!d || vueActive !== 'donjon' || !$('voile').classList.contains('cache')) return;
+  if (d.adj[d.pos].indexOf(id) === -1) return;
+  var l = d.lieux[id], p = l.porte;
+  if (p && !porteOuverte(p)) {
+    l.vu = true;
+    if (p.type === 'gardien' && (etat.fiche.numGroupe || 1) === p.zone && bilanDu()) { d.prev = d.pos; sauver(); ouvrirSalle('gardien', p); return; }
+    son('clic');
+    banniereCarte(p.type === 'gardien' ? 'Une porte gardée.' : 'Une porte scellée.', 'Elle s\'ouvrira quand les mots de cette zone seront appris.');
+    return;
+  }
+  d.prev = d.pos; d.pos = id; l.visite = true; devoiler(d, id);
+  bip(330 + rnd(40), 300, .04, 'triangle', .03);
+  if (p && (etat.fiche.numGroupe || 1) === p.zone && groupeFini() && !bilanDu() && !p.finale) {
+    groupeDe(); banniereCarte('Nouvelle zone.', 'De nouveaux mots t\'attendent.');
+  }
+  sauver(); majDonjon(); hud('hud-donjon', false);
+  if (l.ev && !l.ev.fait) { l.ev.connu = true; sauver(); entrerSalle(l.ev); return; }
+  if (l.antre && !etat.boss.mort) {
+    if (verifierFuite()) { banniereCarte('L\'antre est vide.', 'Le dragon s\'est enfui dimanche à minuit.'); return; }
+    if (deckFini()) { lancerBoss(); return; }
+  }
+  if (!groupeFini() && zoneEpuisee() && Math.random() < .3) ouvrirSalle('combat', { t: 'combat', fait: true });
+}
+var cvD = document.getElementById('cv-donjon'), cxD = cvD.getContext('2d'); cxD.imageSmoothingEnabled = false;
+cvD.addEventListener('click', function (ev) {
+  var d = etat.donjon; if (!d) return;
+  var v = vueZone(d, zoneDe(d, d.lieux[d.pos]));
+  var r = cvD.getBoundingClientRect(), px = (ev.clientX - r.left) * CW / r.width, py = (ev.clientY - r.top) * CW / r.height;
+  /* le lieu voisin le plus proche du doigt, avec 14 px de marge : seuls les voisins comptent */
+  var best = null, bd = 1e9;
+  d.adj[d.pos].forEach(function (id) {
+    var l = d.lieux[id]; if (!l.vu || !visibleDans(d, l, v)) return;
+    var q = rectLieu(d, l, v), dx = Math.max(q.x - px, 0, px - (q.x + q.w)), dy = Math.max(q.y - py, 0, py - (q.y + q.h)), dd = dx * dx + dy * dy;
+    if (dd < bd) { bd = dd; best = id; }
+  });
+  if (best != null && bd <= 196) aller(best);
+});
+var banCarte = null;
+function banniereCarte(t, s) { $('dj-info').innerHTML = '<b>' + ech(T(t)) + '</b> ' + ech(T(s || '')); clearTimeout(banCarte); banCarte = setTimeout(function () { $('dj-info').innerHTML = ''; }, 3600); }
+function dessinerDonjon(now) {
+  var d = etat.donjon; if (!d) return;
+  var x = cxD, clign = Math.floor(now / 420) % 2, voisins = {}, v = vueZone(d, zoneDe(d, d.lieux[d.pos]));
+  d.adj[d.pos].forEach(function (id) { voisins[id] = 1; });
+  if (!DECORS.fondCarte) {
+    var f = toile(CW, CW), fx = f.getContext('2d'); fx.fillStyle = '#0b0d1e'; fx.fillRect(0, 0, CW, CW);
+    for (var j = 0; j < CW; j += 6) for (var i = (j / 6) % 2 ? 3 : 0; i < CW; i += 6) { fx.fillStyle = '#10132a'; fx.fillRect(i, j, 5, 5); }
+    DECORS.fondCarte = f;
+  }
+  x.drawImage(DECORS.fondCarte, 0, 0);
+  d.lieux.forEach(function (l) {
+    if (l.type !== 'couloir' || !l.vu || !visibleDans(d, l, v)) return;
+    var q = rectLieu(d, l, v), ici = l.id === d.pos;
+    x.fillStyle = '#05060f'; x.fillRect(q.x - (l.horiz ? 0 : 1), q.y - (l.horiz ? 1 : 0), q.w + (l.horiz ? 0 : 2), q.h + (l.horiz ? 2 : 0));
+    x.fillStyle = ici ? '#8a84c0' : l.visite ? '#4f5590' : '#2c3160'; x.fillRect(q.x, q.y, q.w, q.h);
+    if (voisins[l.id] && clign) {
+      x.fillStyle = '#ffd24d';
+      if (l.horiz) { x.fillRect(q.x, q.y - 1, q.w, 1); x.fillRect(q.x, q.y + q.h, q.w, 1); }
+      else { x.fillRect(q.x - 1, q.y, 1, q.h); x.fillRect(q.x + q.w, q.y, 1, q.h); }
+    }
+    if (l.porte) {
+      var s = spr(porteOuverte(l.porte) ? 'porte-ouverte' : l.porte.type === 'gardien' ? 'porte-gardien' : 'porte-scellee');
+      x.drawImage(s, Math.round(q.x + q.w / 2 - s.width / 2), Math.round(q.y + q.h / 2 - s.height / 2));
+    }
+  });
+  d.lieux.forEach(function (l) {
+    if (l.type !== 'piece' || !l.vu || !visibleDans(d, l, v)) return;
+    var q = rectLieu(d, l, v), ici = l.id === d.pos, autreZone = l.zone !== zoneDe(d, d.lieux[d.pos]) && !l.antre;
+    x.fillStyle = '#05060f'; x.fillRect(q.x - 1, q.y - 1, q.w + 2, q.h + 2);
+    var fond = l.antre ? (l.visite ? '#6a3038' : '#3a2228') : ici ? '#4d5698' : l.visite ? (l.ev && l.ev.fait ? '#21393a' : '#363e74') : '#20244a';
+    x.globalAlpha = autreZone ? .55 : 1;
+    x.fillStyle = fond; x.fillRect(q.x, q.y, q.w, q.h);
+    x.fillStyle = 'rgba(255,255,255,.12)'; x.fillRect(q.x, q.y, q.w, 1); x.fillRect(q.x, q.y, 1, q.h);
+    x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(q.x, q.y + q.h - 1, q.w, 1); x.fillRect(q.x + q.w - 1, q.y, 1, q.h);
+    x.globalAlpha = 1;
+    if (voisins[l.id] && clign) { x.fillStyle = '#ffd24d'; x.fillRect(q.x - 1, q.y - 1, q.w + 2, 1); x.fillRect(q.x - 1, q.y + q.h, q.w + 2, 1); x.fillRect(q.x - 1, q.y - 1, 1, q.h + 2); x.fillRect(q.x + q.w, q.y - 1, 1, q.h + 2); }
+    var s = null, alpha = 1;
+    if (l.depart) s = spr('ic-escalier');
+    else if (l.antre && !etat.boss.mort) s = spr('ic-boss');
+    else if (l.ev && l.ev.connu) { s = spr(SALLES[l.ev.t].ic); alpha = l.ev.fait ? .4 : 1; }
+    else if (!l.visite) { s = spr('ic-inconnu'); alpha = clign ? 1 : .65; }
+    if (s && !ici) { x.globalAlpha = alpha; x.drawImage(s, Math.round(q.x + q.w / 2 - s.width / 2), Math.round(q.y + q.h / 2 - s.height / 2)); x.globalAlpha = 1; }
+  });
+  var qh = rectLieu(d, d.lieux[d.pos], v), mini = sprMini();
+  x.drawImage(mini, Math.round(qh.x + qh.w / 2 - mini.width / 2), Math.round(qh.y + qh.h / 2 - mini.height / 2) + (clign ? 0 : -1));
+}
+
+/* ═════════ les salles ═════════ */
+var C = null, combo = 0;
+var MOBS = {
+  1: [{ nom: 'Gelée verte', spr: 'gelee' }, { nom: 'Champignon grincheux', spr: 'champi' }, { nom: 'Gobelin', spr: 'gobelin' }, { nom: 'Chauve-souris', spr: 'chauve', flotte: true }],
+  2: [{ nom: 'Squelette', spr: 'squelette' }, { nom: 'Chauve-souris', spr: 'chauve', flotte: true }, { nom: 'Gelée de crypte', spr: 'gelee', pal: { G: '#7a8ad8', g: '#c8d0ff', d: '#46509a', k: '#141830' }, cle: 'gelee-c' }, { nom: 'Gobelin', spr: 'gobelin' }]
+};
+var ELITES = {
+  1: { nom: 'Gobelin chef', spr: 'gobelin', pal: { G: '#c0584a', g: '#ec9070', d: '#7a2a22' }, cle: 'gobelin-e' },
+  2: { nom: 'Squelette maudit', spr: 'squelette', pal: { W: '#b8e8cc', w: '#5e9a7c', r: '#7fffb0' }, cle: 'squelette-e' }
+};
+var NOM_SALLE = { enigme: 'Salle des énigmes', pont: 'Le pont branlant', coffre: 'Coffre verrouillé', fontaine: 'Fontaine claire' };
+function bossPvMax() { return 800; }
+function sem() { return etat.semNum || 1; }
+function estCombat() { return !!C && ['combat', 'elite', 'gardien', 'boss'].indexOf(C.famille) !== -1; }
+function creerMob(elite) {
+  var d = Math.min(2, C.d), t;
+  if (elite) t = ELITES[d];
+  else { var liste = MOBS[d].filter(function (m) { return m.nom !== etat.dernierMob; }); t = liste[Math.floor(Math.random() * liste.length)]; etat.dernierMob = t.nom; }
+  var pv = Math.round((55 + 15 * (C.d - 1)) * (1 + .25 * (sem() - 1)) * (elite ? 1.9 : 1));
+  return { nom: t.nom, spr: t.spr, pal: t.pal, cle: t.cle || t.spr, flotte: t.flotte, pv: pv, pvMax: pv, atk: 7 + (C.d - 1) * 2 + 2 * (sem() - 1) + (elite ? 3 : 0), or: (8 + C.d * 3 + Math.floor(Math.random() * 5)) * (elite ? 2 : 1), x: 0, base: 60, flash: 0 };
+}
+function placer(e) { var s = spr(e.spr, e.pal, e.cle); e.x = Math.round(70 - s.width / 2); return e; }
+function majEtiquette() {
+  if (!C) return;
+  var f = C.famille, h = '', i;
+  if (estCombat()) {
+    var e = SC.ennemi; if (!e) return;
+    $('e-nom').textContent = T(e.nom);
+    if (f === 'gardien') {
+      for (i = 0; i < BILAN_OK; i++) h += '<span class="' + (i >= e.pv ? 'vide' : '') + '"></span>';
+      $('e-barre').innerHTML = '<div class="segs">' + h + '</div>';
+    } else $('e-barre').innerHTML = '<div class="barre"><i style="width:' + Math.max(0, 100 * e.pv / e.pvMax) + '%"></i><b></b></div>';
+    return;
+  }
+  $('e-nom').textContent = T(NOM_SALLE[f]);
+  var tot = f === 'coffre' ? 3 : C.total, fait = f === 'coffre' ? C.ok : C.n;
+  for (i = 0; i < tot; i++) h += '<span class="' + (i < fait ? 'vert' : 'vide') + '"></span>';
+  $('e-barre').innerHTML = '<div class="segs">' + h + '</div>';
+}
+function phaseCourante() {
+  if (groupeFini()) return null;
+  var a = groupeCourant().filter(function (m) { return !estValide(m); }), p = phaseDe(a);
+  return p ? p.mode : null;
+}
+function majBande() {
+  if (!C) return;
+  var g = C.famille === 'boss' ? MOTS : C.famille === 'gardien' ? MOTS.filter(estValide) : groupeCourant();
+  $('cb-crans').innerHTML = cransHTML(g.length > 10 ? g.slice(0, 10) : g, cur ? [cur.mot] : []);
+  var lib = '';
+  if (C.famille === 'gardien') { var b = etat.fiche.bilan || { ok: 0, err: 0 }; lib = T('Bilan : {0} sur {1}, encore {2} questions au plus', b.ok, BILAN_OK, BILAN_MAX - b.ok - b.err); }
+  else if (cur) {
+    var suf = estCombat() ? ', ' + T(FORCE[cur.mode]) : '';
+    if (cur.sansPts) lib = T('Révision') + suf;
+    else if (cur.rappel) lib = T('Rappel d\'un mot') + suf;
+    else { var p = prog(cur.mot), e = etapeDe(cur.mot, p); lib = e ? T('{0} {1} sur {2}', T(NOM_PHASE[e.mode]), p[e.k] || 0, e.n) + suf : T(NOM_PHASE[cur.mode]) + suf; }
+  }
+  $('cb-lib').textContent = lib;
+}
+function majCombo() {
+  var z = $('combo'), mx = comboMax(), h = '';
+  for (var i = 0; i < mx; i++) h += '<i class="' + (i < combo ? 'on' : '') + '"></i>';
+  z.innerHTML = h;
+  z.classList.toggle('cache', !C);
+  var pret = C && estCombat() && C.famille !== 'gardien' && combo >= mx && !C.verrou && SC.ennemi && !SC.ennemi.mort;
+  $('b-heroique').classList.toggle('cache', !pret);
+}
+function tirer() {
+  if (C.famille === 'gardien' || C.famille === 'boss') return tirerMot();
+  if (!groupeCourant().length || groupeFini()) {
+    var l = MOTS.filter(estValide); var m = retenir(lePlusAncien(l.length ? l : MOTS));
+    return { mot: m, sansPts: true, mode: modeDe(m) };
+  }
+  return tirerMot();
+}
+async function entrerSalle(k) {
+  k.connu = true; sauver();
+  if (k.t === 'marchand') { await marchandAmbulant(); k.fait = true; sauver(); return ouvrirDonjon(); }
+  if (k.t === 'evenement') { await evenementSalle(); k.fait = true; sauver(); if (H().pv <= 0) { retourPrecedent(); camp(); return; } return ouvrirDonjon(); }
+  return ouvrirSalle(k.t, k);
+}
+async function ouvrirSalle(famille, cell) {
+  ac();
+  C = { famille: famille, cell: cell, verrou: true, n: 0, ok: 0, total: 0, garde: aRel('bouclier'), d: etat.fiche.numGroupe || 1 };
+  SC.decor = famille === 'boss' ? 'antre' : famille === 'gardien' ? 'gardien' : 'crypte';
+  SC.heros.ko = false; SC.heros.lunge = null; SC.heros.chute = null; SC.heros.base = famille === 'pont' ? 57 : 60;
+  SC.ennemi = null; SC.taille = null; SC.parts = SC.parts.filter(function (p) { return p.camp; });
+  $('couche').innerHTML = ''; $('etiq').classList.remove('cache');
+  voir('combat'); cacherQuestions(); majCombo();
+  if (famille === 'combat' || famille === 'elite') {
+    await apparition(creerMob(famille === 'elite'), famille === 'elite' ? 'Un élite te barre la route' : (cell && cell.fait ? 'Un monstre errant rôde' : null), famille === 'elite' ? 'Plus coriace, mais il garde une relique.' : null);
+  } else if (famille === 'gardien') {
+    H().pv = pvMax();
+    var b = etat.fiche.bilan || { ok: 0, err: 0 };
+    await apparition({ nom: 'Gardien de pierre', spr: 'golem', cle: 'golem', pv: BILAN_OK - b.ok, pvMax: BILAN_OK, atk: 0, or: 60, x: 0, base: 61, flash: 0 }, 'Le gardien bloque la sortie', T('Il tombe en {0} bonnes réponses, sur tous les mots appris. Pas de potion ici.', BILAN_OK));
+  } else if (famille === 'boss') {
+    if (etat.boss.pv == null) etat.boss.pv = bossPvMax();
+    await apparition({ nom: 'Cendregueule, le dragon', spr: 'dragon', cle: 'dragon', pv: etat.boss.pv, pvMax: bossPvMax(), atk: 13 + 2 * (sem() - 1), or: 0, x: 0, base: 63, flash: 0 }, 'Cendregueule sort de l\'ombre', 'Révision de tous tes mots. Ses blessures restent d\'un combat à l\'autre.');
+  } else {
+    var ph = phaseCourante();
+    C.total = famille === 'pont' ? 5 : famille === 'enigme' ? 2 : 3;
+    var accroche = {
+      pont: ['Le pont branlant', 'Cinq questions avant qu\'il ne cède. Trop lent ou faux : tu chutes.'],
+      coffre: ['Un coffre verrouillé', 'Trois serrures, une bonne réponse chacune. Gare aux pièges.'],
+      fontaine: ['Une fontaine claire', 'Trois questions. Chaque bonne réponse te soigne.'],
+      enigme: ['La salle des énigmes', ph === 'phrase' ? 'Le parchemin est déchiré : remets les phrases en ordre.' : ph === 'rappel' ? 'La stèle demande les mots eux-mêmes, lettre par lettre.' : 'Relie les mots à leur traduction.']
+    }[famille];
+    var props = { coffre: { spr: 'caisse', cle: 'caisse', coffre: true }, fontaine: { spr: 'fontaine', cle: 'fontaine' }, enigme: { spr: 'stele', cle: 'stele' } }[famille];
+    if (props) { var pe = { nom: '', spr: props.spr, cle: props.cle, prop: true, coffre: !!props.coffre, pv: 1, pvMax: 1, x: 0, base: 60, flash: 0 }; placer(pe); pe.entree = { t0: maintenant(), dur: 1 }; SC.ennemi = pe; }
+    majEtiquette(); hud('hud-combat', true);
+    await banniere(accroche[0], accroche[1], 2000);
+  }
+  prochaine();
+}
+async function apparition(e, titre, sous) {
+  placer(e); e.entree = { t0: maintenant(), dur: 420 };
+  if (e.spr === 'dragon') e.x = Math.round(64 - spr('dragon').width / 2);
+  SC.ennemi = e; majEtiquette(); hud('hud-combat', true);
+  await attendre(430);
+  if (titre) await banniere(titre, sous, 2100);
+}
+function cacherQuestions() {
+  ['z-qcm', 'z-phrase', 'z-rune', 'z-myst', 'z-paires', 'z-parch', 'p-menu', 'b-suite', 'chrono'].forEach(function (i) { $(i).classList.add('cache'); });
+  $('retour').textContent = '';
+}
+function salleFinie() { if (!C || estCombat()) return false; return C.famille === 'coffre' ? C.ok >= 3 : C.n >= C.total; }
+function prochaine() {
+  if (!C) return;
+  cacherQuestions();
+  if (salleFinie()) { finSalle(); return; }
+  if (C.famille === 'enigme') {
+    var ph = phaseCourante();
+    if (ph === 'qcm' || ph === null) { montrerPaires(); C.verrou = false; majCombo(); return; }
+    var t = tirer();
+    poserQuestion(t, ph === 'phrase' ? 'parchemin' : (C.n % 2 ? 'mystere' : 'rune'));
+    return;
+  }
+  poserQuestion(tirer());
+}
+function formeDe(mode) {
+  if (mode !== 'rappel') return mode;
+  return (C.famille === 'pont' || Math.random() < .65) ? 'rune' : 'mystere';
+}
+function poserQuestion(t, forcee) {
+  cur = { mot: t.mot, mode: t.mode, bilan: !!t.bilan, rappel: !!t.rappel, sansPts: !!t.sansPts, sens: Math.random() < .5 ? 'nl-fr' : 'fr-nl', fait: false };
+  cur.forme = forcee || formeDe(t.mode);
+  ({ qcm: montrerQCM, phrase: montrerPhrase, rune: montrerRune, mystere: montrerMyst, parchemin: montrerParch })[cur.forme]();
+  if (C.famille === 'pont') demarrerChrono({ qcm: 8, phrase: 15, rune: 20, mystere: 25, parchemin: 20 }[cur.forme] + (aRel('sablier') ? 3 : 0));
+  C.verrou = false;
+  majBande(); majCombo(); hud('hud-combat', true); sauver();
+}
+function langueApprise() { return etat.moi === 'ulysse' ? 'nl' : 'fr'; }
+function nomLangue(l) { return l === 'nl' ? 'néerlandais' : 'français'; }
+function decouper(txt, l) {
+  var t = String(txt).split(',')[0].trim();
+  if (l === 'fr' && /^l['’]/i.test(t)) return { art: 'l\'', coeur: t.slice(2) };
+  var arts = l === 'nl' ? ['de', 'het'] : ['le', 'la', 'les'], sp = t.split(' ');
+  if (sp.length > 1 && arts.indexOf(sp[0].toLowerCase()) !== -1) return { art: sp[0].toLowerCase(), coeur: sp.slice(1).join(' ') };
+  return { art: null, coeur: t };
+}
+function formeEntiere(d) { return d.art ? d.art + (d.art === 'l\'' ? '' : ' ') + d.coeur : d.coeur; }
+function tuile(txt, cls) { var b = document.createElement('button'); b.type = 'button'; b.className = 'tuile ' + (cls || ''); b.textContent = txt; return b; }
+function secouerEl(el) { el.classList.remove('secoue'); void el.offsetWidth; el.classList.add('secoue'); }
+function libre() { return !cur || cur.fait || !C || C.verrou; }
+
+/* QCM */
+var DISTRACTEURS = {};
+function montrerQCM() {
+  var m = cur.mot, nl = cur.sens === 'nl-fr', q = nl ? m.nl : m.fr, r = nl ? m.fr : m.nl;
+  $('q-lang').textContent = nl ? 'nederlands' : 'français';
+  $('q-mot').textContent = q;
+  var autres = MOTS.map(function (x) { return nl ? x.fr : x.nl; }).filter(function (x) { return x !== r; });
+  var vus = DISTRACTEURS[m.nl] || [];
+  var choisis = mel(autres.filter(function (x) { return vus.indexOf(x) === -1; })).concat(mel(autres.filter(function (x) { return vus.indexOf(x) !== -1; }))).slice(0, 3);
+  DISTRACTEURS[m.nl] = choisis;
+  cur.bonne = r;
+  var z = $('q-opts'); z.innerHTML = '';
+  mel([r].concat(choisis)).forEach(function (o) {
+    var b = document.createElement('button'); b.className = 'opt'; b.textContent = o;
+    b.onclick = function () { repQCM(b, o === r, r); };
+    z.appendChild(b);
+  });
+  $('z-qcm').classList.remove('cache');
+}
+async function repQCM(b, juste, r) {
+  if (libre()) return;
+  var tous = $('q-opts').querySelectorAll('.opt');
+  if (juste) {
+    b.classList.add('juste'); tous.forEach(function (x) { if (x !== b) x.classList.add('pale'); });
+    var s = await repondre(true);
+    if (s === 'suite') { await attendre(150); prochaine(); }
+  } else {
+    b.classList.add('faux');
+    tous.forEach(function (x) { if (x.textContent === r) x.classList.add('attire'); else if (x !== b) x.classList.add('pale'); });
+    $('retour').textContent = T(C.famille === 'pont' ? 'C\'était « {0} ».' : 'C\'était « {0} ». Touche-la pour continuer.', r);
+    var s2 = await repondre(false);
+    if (s2 !== 'suite') return;
+    if (C.famille === 'pont') { setTimeout(prochaine, 1200); return; }
+    tous.forEach(function (x) { if (x.textContent === r) x.onclick = function () { son('clic'); prochaine(); }; else x.onclick = null; });
+  }
+}
+/* phrases à trou */
+function morceaux(t) { var x = /^([^{]*)\{([^}]*)\}(.*)$/.exec(String(t || '')); return x ? { av: x[1], mot: x[2], ap: x[3] } : { av: String(t || ''), mot: '', ap: '' }; }
+function phraseHTML(t, trou) { var x = morceaux(t); return ech(x.av) + (trou ? '<button class="trou" type="button" id="p-trou">?</button>' : '<b>' + ech(x.mot) + '</b>') + ech(x.ap); }
+function majuscule(t) { return t ? t.charAt(0).toUpperCase() + t.slice(1) : t; }
+function minuscule(t) { return t ? t.charAt(0).toLowerCase() + t.slice(1) : t; }
+function formeLeurre(x, rl, enTete) {
+  var f, debut = false;
+  if (aPhrases(x)) { var k = morceaux(x.ph[Math.floor(Math.random() * x.ph.length)][rl]); f = k.mot; debut = !k.av.trim(); } else f = x[rl];
+  if (enTete) return majuscule(f);
+  return debut ? minuscule(f) : f;
+}
+function montrerPhrase() {
+  var m = cur.mot;
+  cur.ph = m.ph[Math.floor(Math.random() * m.ph.length)];
+  cur.rl = langueApprise();
+  var x = morceaux(cur.ph[cur.rl]), enTete = !x.av.trim();
+  cur.reponse = x.mot;
+  $('p-phrase').className = 'phrase';
+  $('p-phrase').innerHTML = phraseHTML(cur.ph[cur.rl], true);
+  $('p-trad').innerHTML = phraseHTML(cur.ph[cur.rl === 'nl' ? 'fr' : 'nl']);
+  var pool = MOTS.filter(function (y) { return y !== m; }), vus = DISTRACTEURS['ph:' + m.nl] || [];
+  function frais(t) { return mel(t.filter(function (y) { return vus.indexOf(y.nl) === -1; })).concat(mel(t.filter(function (y) { return vus.indexOf(y.nl) !== -1; }))); }
+  var ordre = frais(pool.filter(function (y) { return !!y.v === !!m.v; })).concat(frais(pool.filter(function (y) { return !!y.v !== !!m.v; })));
+  var choisis = [], sources = [], deja = [cur.reponse.toLowerCase()];
+  for (var i = 0; i < ordre.length && choisis.length < 3; i++) {
+    var f = formeLeurre(ordre[i], cur.rl, enTete);
+    if (!f || deja.indexOf(f.toLowerCase()) !== -1) continue;
+    deja.push(f.toLowerCase()); choisis.push(f); sources.push(ordre[i].nl);
+  }
+  DISTRACTEURS['ph:' + m.nl] = sources;
+  cur.opts = mel([cur.reponse].concat(choisis));
+  $('p-trou').onclick = ouvrirTrou;
+  $('z-phrase').classList.remove('cache');
+}
+function ouvrirTrou() {
+  if (libre()) return;
+  var menu = $('p-menu');
+  if (!menu.classList.contains('cache')) { menu.classList.add('cache'); return; }
+  son('clic');
+  menu.innerHTML = '';
+  cur.opts.forEach(function (o) {
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = o;
+    b.onclick = function (e) { e.stopPropagation(); repPhrase(o); };
+    menu.appendChild(b);
+  });
+  menu.classList.remove('cache');
+  var bo = $('boite'), hote = bo.getBoundingClientRect(), t = $('p-trou').getBoundingClientRect(), echl = hote.width / bo.offsetWidth;
+  var w = menu.offsetWidth, h = menu.offsetHeight;
+  var g = (t.left - hote.left + t.width / 2) / echl - w / 2;
+  g = Math.max(8, Math.min(g, bo.offsetWidth - w - 8));
+  var haut = (t.bottom - hote.top) / echl + 6;
+  if (haut + h > bo.offsetHeight - 4) haut = (t.top - hote.top) / echl - h - 6;
+  menu.style.left = g + 'px'; menu.style.top = Math.max(4, haut) + 'px';
+}
+function repPhrase(choix) {
+  if (libre()) return;
+  $('p-menu').classList.add('cache');
+  var juste = choix === cur.reponse, x = morceaux(cur.ph[cur.rl]);
+  $('p-phrase').innerHTML = ech(x.av) + (juste ? '' : '<s class="barre-x">' + ech(choix) + '</s>') + '<b class="cible">' + ech(x.mot) + '</b>' + ech(x.ap);
+  $('p-phrase').classList.toggle('rate', !juste);
+  repondreForme(juste);
+}
+/* porte runique : l'article, puis les lettres dans l'ordre */
+function montrerRune() {
+  var L = langueApprise(), A = L === 'nl' ? 'fr' : 'nl', m = cur.mot, d = decouper(m[L], L);
+  cur.r = { art: d.art, coeur: d.coeur, lettres: Array.from(d.coeur), pos: 0, artOk: !d.art, rate: false };
+  cur.solution = formeEntiere(d);
+  $('r-consigne').textContent = T(d.art ? 'Reforme le mot en {0}, article compris' : 'Reforme le mot en {0}', T(nomLangue(L)));
+  $('r-prompt').textContent = m[A];
+  var za = $('r-art'); za.innerHTML = '';
+  if (d.art) {
+    var opts = L === 'nl' ? ['de', 'het'] : ['le', 'la', 'l\''];
+    if (opts.indexOf(d.art) === -1) opts.push(d.art);
+    opts.forEach(function (o) { var b = tuile(o, 'art-t'); b.onclick = function () { choisirArt(b, o); }; za.appendChild(b); });
+  }
+  var tz = $('r-tuiles'); tz.innerHTML = '';
+  var lt = cur.r.lettres.filter(function (ch) { return !/[\s'\-’]/.test(ch); }), ordre = mel(lt);
+  if (lt.length > 2) for (var k = 0; k < 4 && ordre.join('') === lt.join(''); k++) ordre = mel(lt);
+  ordre.forEach(function (ch) { var b = tuile(ch); b.onclick = function () { choisirLettre(b, ch); }; tz.appendChild(b); });
+  sauterNonLettres(); majCases();
+  $('z-rune').classList.remove('cache');
+}
+function sauterNonLettres() { var r = cur.r; while (r.pos < r.lettres.length && /[\s'\-’]/.test(r.lettres[r.pos])) r.pos++; }
+function majCases() {
+  var r = cur.r, h = '';
+  if (r.art) h += '<span class="case art' + (r.artOk ? ' plein' : '') + '">' + (r.artOk ? ech(r.art) : '?') + '</span>';
+  r.lettres.forEach(function (ch, i) {
+    if (/\s/.test(ch)) h += '<span class="espace"></span>';
+    else if (/['\-’]/.test(ch)) h += '<span class="case plein">' + ech(ch) + '</span>';
+    else h += '<span class="case' + (i < r.pos ? ' plein' : '') + '">' + (i < r.pos ? ech(ch) : '') + '</span>';
+  });
+  $('r-cases').innerHTML = h;
+}
+function choisirArt(b, o) {
+  if (libre() || cur.r.artOk) return;
+  if (o === cur.r.art) { b.classList.add('ok'); son('clic'); }
+  else {
+    cur.r.rate = true; b.classList.add('ko'); secouerEl(b); bip(200, 120, .1, 'square', .05);
+    $('r-art').querySelectorAll('.tuile').forEach(function (x) { if (x.textContent === cur.r.art) x.classList.add('ok'); });
+  }
+  cur.r.artOk = true; majCases(); verifierRune();
+}
+function choisirLettre(b, ch) {
+  if (libre() || b.disabled) return;
+  var r = cur.r;
+  if (r.pos < r.lettres.length && ch.toLowerCase() === r.lettres[r.pos].toLowerCase()) {
+    b.disabled = true; r.pos++; sauterNonLettres(); majCases(); bip(500 + r.pos * 40, 500 + r.pos * 40, .04, 'square', .03); verifierRune();
+  } else { r.rate = true; secouerEl(b); bip(200, 120, .1, 'square', .05); }
+}
+function verifierRune() {
+  var r = cur.r;
+  if (r.pos >= r.lettres.length && r.artOk) repondreForme(!r.rate, r.rate ? T('Juste à la fin, mais avec une erreur en route : « {0} ».', cur.solution) : null);
+}
+/* mot mystère : un pendu à partir de la traduction */
+function montrerMyst() {
+  var L = langueApprise(), A = L === 'nl' ? 'fr' : 'nl', m = cur.mot, d = decouper(m[L], L);
+  cur.y = { art: d.art, coeur: d.coeur, trouve: {}, fautes: 0, max: 5 };
+  cur.solution = formeEntiere(d);
+  $('m-consigne').textContent = T('Trouve le mot en {0}, lettre par lettre', T(nomLangue(L)));
+  $('m-prompt').textContent = m[A];
+  var lettresMot = Array.from(d.coeur.toLowerCase()).filter(function (c) { return !/[\s'\-’]/.test(c); });
+  var clav = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  lettresMot.forEach(function (c) { if (clav.indexOf(c) === -1) clav.push(c); });
+  if (L === 'fr') ['é', 'è'].forEach(function (c) { if (clav.indexOf(c) === -1) clav.push(c); });
+  var z = $('m-clavier'); z.innerHTML = '';
+  clav.forEach(function (c) { var b = tuile(c); b.onclick = function () { essayerLettre(b, c); }; z.appendChild(b); });
+  majMyst();
+  $('z-myst').classList.remove('cache');
+}
+function majMyst(tout) {
+  var y = cur.y, h = '';
+  if (y.art) h += '<span class="case art plein">' + ech(y.art) + '</span>';
+  Array.from(y.coeur).forEach(function (ch) {
+    var l = ch.toLowerCase();
+    if (/\s/.test(ch)) h += '<span class="espace"></span>';
+    else if (/['\-’]/.test(ch)) h += '<span class="case plein">' + ech(ch) + '</span>';
+    else h += '<span class="case' + (y.trouve[l] || tout ? ' plein' : '') + '">' + (y.trouve[l] || tout ? ech(ch) : '') + '</span>';
+  });
+  $('m-cases').innerHTML = h;
+  var v = T('Erreurs permises') + ' ';
+  for (var i = 0; i < y.max; i++) v += '<i class="' + (i < y.fautes ? 'perdu' : '') + '"></i>';
+  $('m-vies').innerHTML = v;
+}
+function essayerLettre(b, c) {
+  if (libre() || b.disabled) return;
+  var y = cur.y, lettres = Array.from(y.coeur.toLowerCase());
+  b.disabled = true;
+  if (lettres.indexOf(c) !== -1) { y.trouve[c] = 1; b.classList.add('ok'); bip(660, 660, .05, 'square', .03); }
+  else { y.fautes++; b.classList.add('ko'); bip(200, 120, .1, 'square', .05); }
+  var fini = lettres.every(function (l) { return /[\s'\-’]/.test(l) || y.trouve[l]; });
+  if (fini) { majMyst(); repondreForme(true); }
+  else if (y.fautes > y.max) { majMyst(true); repondreForme(false, T('Le mot était « {0} ».', cur.solution)); }
+  else majMyst();
+}
+/* paires à associer */
+function tirerPaires() {
+  var base = [], g = groupeCourant();
+  if (phaseCourante() === 'qcm') base = mel(g.filter(function (m) { var e = etapeDe(m, prog(m)); return e && e.mode === 'qcm'; })).slice(0, 4);
+  /* compléments : le groupe d'abord, puis les mots déjà appris, jamais un mot d'un autre groupe à apprendre */
+  var reste = mel(g.filter(function (m) { return base.indexOf(m) === -1; }))
+    .concat(mel(MOTS.filter(function (m) { return base.indexOf(m) === -1 && g.indexOf(m) === -1 && estValide(m); })))
+    .concat(mel(MOTS.filter(function (m) { return base.indexOf(m) === -1 && g.indexOf(m) === -1 && !estValide(m); })));
+  while (base.length < 4) base.push(reste.shift());
+  return base;
+}
+function montrerPaires() {
+  var mots = tirerPaires(), L = langueApprise(), A = L === 'nl' ? 'fr' : 'nl';
+  C.paires = { mots: mots, sel: null, faits: 0, revision: phaseCourante() !== 'qcm' };
+  cur = { mot: mots[0], mode: 'qcm', forme: 'paires', fait: false };
+  var g = $('pa-g'), d = $('pa-d'); g.innerHTML = ''; d.innerHTML = '';
+  mel(mots).forEach(function (m) { var b = tuile(m[L]); b.dataset.nl = m.nl; b.onclick = function () { choisirGauche(b, m); }; g.appendChild(b); });
+  mel(mots).forEach(function (m) { var b = tuile(m[A]); b.dataset.nl = m.nl; b.onclick = function () { choisirDroite(b, m); }; d.appendChild(b); });
+  $('z-paires').classList.remove('cache');
+  majBande(); hud('hud-combat', true);
+}
+function choisirGauche(b, m) {
+  if (!C || C.verrou || b.disabled) return;
+  $('pa-g').querySelectorAll('.tuile').forEach(function (x) { x.classList.remove('sel'); });
+  b.classList.add('sel'); C.paires.sel = { b: b, m: m }; son('clic');
+}
+async function choisirDroite(b, m) {
+  var P = C && C.paires;
+  if (!P || C.verrou || b.disabled || !P.sel) { if (P && !P.sel) secouerEl(b); return; }
+  var s = P.sel, juste = s.m === m;
+  P.sel = null; s.b.classList.remove('sel');
+  cur = { mot: s.m, mode: 'qcm', forme: 'paires', fait: false, sansPts: P.revision || groupeCourant().indexOf(s.m) === -1 };
+  if (juste) {
+    P.faits++;
+    s.b.disabled = true; b.disabled = true; s.b.classList.add('ok'); b.classList.add('ok');
+    var derniere = P.faits === P.mots.length;
+    C.verrou = true;
+    if (!derniere) await repondre(true, { pasDeSuite: true });
+    else { bip(880, 880, .06, 'square', .03); prog(s.m).vu = Date.now(); }
+    if (!C) return;
+    C.verrou = false;
+    if (derniere) { C.n++; majEtiquette(); await attendre(500); prochaine(); }
+  } else {
+    secouerEl(b); secouerEl(s.b);
+    C.verrou = true;
+    var r = await repondre(false, { pasDeSuite: true });
+    if (r === 'suite' && C) C.verrou = false;
+  }
+}
+/* parchemin déchiré : remettre la phrase en ordre */
+function montrerParch() {
+  var m = cur.mot, L = langueApprise(), A = L === 'nl' ? 'fr' : 'nl';
+  var ph = m.ph[Math.floor(Math.random() * m.ph.length)], x = morceaux(ph[L]);
+  function decoupe(s) { return s.trim().split(/\s+/).filter(Boolean); }
+  var toks = decoupe(x.av).map(function (t) { return { t: t }; }).concat([{ t: x.mot, c: true }]).concat(decoupe(x.ap).map(function (t) { return { t: t }; }));
+  for (var i = toks.length - 1; i > 0; i--) if (/^[.,!?;:…»«]+$/.test(toks[i].t)) { toks[i - 1].t += (toks[i].t === '?' || toks[i].t === '!' || toks[i].t === ':' || toks[i].t === ';' ? ' ' : '') + toks[i].t; toks.splice(i, 1); }
+  while (toks.length > 6) {
+    var best = -1, bl = 1e9;
+    for (var k = 0; k < toks.length - 1; k++) { if (toks[k].c || toks[k + 1].c) continue; var l = toks[k].t.length + toks[k + 1].t.length; if (l < bl) { bl = l; best = k; } }
+    if (best < 0) break;
+    toks[best].t += ' ' + toks[best + 1].t; toks.splice(best + 1, 1);
+  }
+  cur.p = { att: toks, pos: 0, rate: false };
+  cur.solution = ph[L].replace(/[{}]/g, '');
+  $('pc-trad').innerHTML = phraseHTML(ph[A]);
+  $('pc-ligne').innerHTML = '';
+  var z = $('pc-tuiles'); z.innerHTML = '';
+  var ordre = mel(toks);
+  for (var n = 0; n < 4 && ordre.map(function (o) { return o.t; }).join('|') === toks.map(function (o) { return o.t; }).join('|'); n++) ordre = mel(toks);
+  ordre.forEach(function (o) { var b = tuile(o.t, o.c ? 'cible-t' : ''); b.onclick = function () { choisirMorceau(b, o); }; z.appendChild(b); });
+  $('z-parch').classList.remove('cache');
+}
+function choisirMorceau(b, o) {
+  if (libre() || b.disabled) return;
+  var p = cur.p;
+  if (o.t === p.att[p.pos].t) {
+    b.disabled = true; b.classList.add('cache');
+    var s = document.createElement('span'); s.textContent = o.t; if (o.c) s.className = 'c'; $('pc-ligne').appendChild(s);
+    p.pos++; bip(520 + p.pos * 50, 520 + p.pos * 50, .04, 'square', .03);
+    if (p.pos >= p.att.length) repondreForme(!p.rate, p.rate ? T('La phrase : « {0} ».', cur.solution) : null);
+  } else { p.rate = true; secouerEl(b); bip(200, 120, .1, 'square', .05); }
+}
+
+/* ═════════ résolution d'une réponse ═════════ */
+async function repondreForme(juste, sol) {
+  if (!juste && sol) $('retour').textContent = sol;
+  var r = await repondre(juste);
+  if (r !== 'suite') return;
+  if (C.famille === 'pont') { setTimeout(prochaine, juste ? 450 : 1400); return; }
+  var b = $('b-suite'); b.textContent = T(salleFinie() ? 'Continuer' : 'Question suivante');
+  b.classList.remove('cache'); b.onclick = function () { son('clic'); prochaine(); };
+}
+async function repondre(juste, opts) {
+  opts = opts || {};
+  if (!C) return 'fin';
+  C.verrou = true; cur.fait = true; arreterChrono(); majCombo();
+  hud('hud-combat', true);
+  var avantBilan = etat.fiche.bilan ? { ok: etat.fiche.bilan.ok, err: etat.fiche.bilan.err } : { ok: 0, err: 0 };
+  var info = opts.sansAlgo ? { valide: false } : appliquerAlgo(juste, cur.mode);
+  if (juste) combo = Math.min(comboMax(), combo + 1);
+  else combo = Math.floor(combo / 2);
+  sauver(); majBande(); majCombo();
+  if (juste && cur.mode === 'phrase' && aRel('plume')) soigner(3);
+  if (info.valide) {
+    nombre(T('« {0} » appris', cur.mot[langueApprise()]), 48, 22, 'info');
+    if (aRel('echo') && !estCombat()) gagnerOr(10);
+  }
+  var r = await consequence(juste, info, avantBilan, opts);
+  if (r === 'suite' && C) { C.verrou = !!opts.pasDeSuite; majCombo(); hud('hud-combat', true); }
+  return r;
+}
+async function consequence(juste, info, avantBilan, opts) {
+  var f = C.famille, e = SC.ennemi;
+  if (estCombat()) {
+    if (juste) {
+      var dmg = degats(cur.mode), force = cur.mode === 'rappel' ? 3 : cur.mode === 'phrase' ? 2 : 1;
+      await frappeHeros(dmg, force);
+      if (f === 'gardien') e.pv = info.bilan === 'ok' ? 0 : BILAN_OK - (etat.fiche.bilan ? etat.fiche.bilan.ok : 0);
+      else e.pv = Math.max(0, e.pv - dmg);
+      if (f === 'boss') { etat.boss.pv = e.pv; sauver(); }
+      majEtiquette();
+      if (info.valide && aRel('echo') && e.pv > 0 && f !== 'gardien') {
+        await attendre(150); var d2 = 10 + attaque();
+        await frappeHeros(d2, 2); e.pv = Math.max(0, e.pv - d2); if (f === 'boss') etat.boss.pv = e.pv; majEtiquette();
+      }
+      if (e.pv <= 0) return await ennemiAbattu();
+      if (info.finPhase) await bannierePhase(info.finPhase);
+      await niveauEnAttente();
+      return 'suite';
+    }
+    var subi;
+    if (f === 'gardien') {
+      var restant = BILAN_MAX - avantBilan.ok - avantBilan.err;
+      subi = info.bilan === 'rate' ? H().pv : Math.max(1, Math.ceil(H().pv / Math.max(1, restant)));
+    } else subi = Math.max(1, e.atk - defense() + Math.floor(Math.random() * 3) - 1);
+    if (f !== 'gardien') subi = absorber(subi);
+    await frappeEnnemi(subi);
+    H().pv = Math.max(0, H().pv - subi);
+    hud('hud-combat', true);
+    if (H().pv <= 0) { await ko(); return 'fin'; }
+    return 'suite';
+  }
+  /* salles d'épreuve */
+  if (cur.forme !== 'paires') C.n++;
+  if (f === 'pont') {
+    if (juste) { gagnerOr(2); nombre('Une planche de plus', 48, 30, 'info'); }
+    else await chute(opts.timeout);
+  } else if (f === 'coffre') {
+    if (juste) { C.ok++; son('or'); nombre('Une serrure cède', 70, 30, 'info'); }
+    else await piege(4 + sem());
+  } else if (f === 'fontaine') {
+    if (juste) soigner(aRel('calice') ? 16 : 8);
+  } else if (f === 'enigme') {
+    if (!juste) await piege(3 + sem());
+  }
+  majEtiquette(); hud('hud-combat', true);
+  if (H().pv <= 0) { await ko(); return 'fin'; }
+  if (info.finPhase) await bannierePhase(info.finPhase);
+  await niveauEnAttente();
+  return 'suite';
+}
+function bannierePhase(ph) {
+  var t = ph === 'phrase' ? 'Phase contexte' : 'Phase rappel';
+  var s = ph === 'phrase' ? T('Les mots se jouent en phrases. Coups à {0}.', BASE.phrase + attaque()) : T('Il faut maintenant écrire les mots. Coups à {0}.', BASE.rappel + attaque());
+  return banniere(t, s, 1900);
+}
+function absorber(n) { if (C && C.garde) { C.garde = false; nombre('Bloqué', SC.heros.x + 10, 30, 'info'); son('clic'); return 0; } return n; }
+async function piege(n) {
+  n = absorber(n); if (!n) return;
+  son('mal'); SC.heros.rouge = maintenant() + 160; secouer(2, 180);
+  var hs = sprHeros(); nombre('-' + n, SC.heros.x + hs.width / 2, SC.heros.base - hs.height - 2, 'mal');
+  H().pv = Math.max(0, H().pv - n); await attendre(300);
+}
+async function chute(lent) {
+  var n = absorber(5 + sem());
+  SC.heros.chute = { t0: maintenant(), dur: 500 };
+  for (var i = 0; i < 6; i++) SC.parts.push({ x: 40 + Math.random() * 20, y: 58, vx: (Math.random() - .5) * .4, vy: .2, g: .08, vie: 40, c: '#8a5a33' });
+  son('mal'); secouer(3, 250);
+  if (lent) $('retour').textContent = T('Trop lent ! {0}', $('retour').textContent || '');
+  if (n) { var hs = sprHeros(); nombre('-' + n, SC.heros.x + hs.width / 2, SC.heros.base - hs.height - 2, 'mal'); H().pv = Math.max(0, H().pv - n); }
+  await attendre(520);
+}
+function soigner(n) {
+  var h = H(), avant = h.pv; h.pv = Math.min(pvMax(), h.pv + n); if (h.pv === avant) return;
+  son('soin'); var hs = sprHeros();
+  etincelles(SC.heros.x + hs.width / 2, SC.heros.base - hs.height / 2, 10, ['#8af59a', '#d7ffd9'], .6);
+  nombre('+' + (h.pv - avant), SC.heros.x + hs.width / 2, SC.heros.base - hs.height - 2, 'soin');
+  hud('hud-combat', true);
+}
+async function ennemiAbattu() {
+  var f = C.famille, e = SC.ennemi;
+  await mortEnnemi();
+  if (f === 'boss') { etat.boss.mort = true; etat.boss.pv = 0; H().or += 100; sauver(); await attendre(400); finBoss(); return 'fin'; }
+  if (f === 'gardien') { gagnerOr(e.or); await attendre(300); await choixRelique('Le gardien s\'effondre', 'Dans ses gravats, trois reliques.'); await finSalle(); return 'fin'; }
+  gagnerOr(e.or);
+  await attendre(400);
+  if (f === 'elite') await choixRelique('L\'élite est vaincu', 'Il gardait trois reliques. Tu en prends une.');
+  await finSalle();
+  return 'fin';
+}
+async function heroique() {
+  if (!C || C.verrou || !estCombat() || C.famille === 'gardien' || combo < comboMax() || !SC.ennemi || SC.ennemi.mort) return;
+  C.verrou = true; combo = 0; majCombo();
+  var e = SC.ennemi, dmg = 3 * (BASE.phrase + attaque());
+  SC.eclair = maintenant() + 140; son('niveau');
+  await banniere('Frappe héroïque !', null, 500);
+  await frappeHeros(dmg, 3); secouer(5, 400);
+  e.pv = Math.max(0, e.pv - dmg); if (C.famille === 'boss') { etat.boss.pv = e.pv; sauver(); }
+  majEtiquette();
+  if (aRel('coeur')) soigner(12);
+  if (e.pv <= 0) { await ennemiAbattu(); return; }
+  C.verrou = false; majCombo(); hud('hud-combat', true);
+}
+async function finSalle() {
+  if (!C) return;
+  var f = C.famille, k = C.cell;
+  cacherQuestions();
+  if (f === 'coffre') {
+    SC.ennemi && (SC.ennemi.ouvert = true); etincelles(70, 48, 30, ['#ffd24d', '#fff3b0'], 1); son('niveau');
+    gagnerOr(20 + Math.floor(Math.random() * 15));
+    if (Math.random() < .5) { H().potions.p++; nombre('+1 potion', 70, 26, 'soin'); }
+    await attendre(800);
+    if (Math.random() < .3) await choixRelique('Au fond du coffre…', 'Une relique scintille parmi les pièces.');
+  } else if (f === 'enigme') { gagnerOr(aRel('sphinx') ? 30 : 15); await attendre(500); }
+  else if (f === 'pont') { gagnerOr(10); await banniere('Le pont est franchi', null, 1100); }
+  else if (f === 'fontaine') { await banniere('La fontaine se tarit', null, 1000); }
+  if (k) k.fait = true;
+  sauver();
+  await niveauEnAttente();
+  var gardien = f === 'gardien';
+  ouvrirDonjon();
+  if (gardien) banniereCarte('Le gardien s\'est effondré.', 'La porte est ouverte, de nouveaux mots t\'attendent derrière.');
+  else if (groupeFini() && etat.annonce !== (etat.fiche.numGroupe || 1)) {
+    etat.annonce = etat.fiche.numGroupe || 1; sauver();
+    banniereCarte(deckFini() ? 'Tous les mots sont appris.' : 'Les mots de cette zone sont appris.', deckFini() ? 'L\'antre du dragon est ouverte, tout au fond.' : bilanDu() ? 'Le gardien de la porte s\'est réveillé.' : 'La porte vers la suite s\'est ouverte.');
+  }
+}
+async function choixRelique(titre, texte) {
+  var dispo = RELIQUES.filter(function (r) { return H().reliques.indexOf(r.id) === -1; });
+  if (!dispo.length) { gagnerOr(50); return; }
+  var trois = mel(dispo).slice(0, 3);
+  var i = await modal(titre, [texte, 'Une relique reste active pour toujours.'], trois.map(function (r) { return { t: T(r.nom) + ' : ' + T(r.desc), petit: true }; }));
+  prendreRelique(trois[i].id);
+}
+function prendreRelique(id) { H().reliques.push(id); if (id === 'amulette') H().pv += 15; son('niveau'); sauver(); }
+function frappeHeros(dmg, force) {
+  return (async function () {
+    var e = SC.ennemi;
+    SC.heros.lunge = { t0: maintenant(), dur: 300 };
+    await attendre(100);
+    son('coup', force);
+    SC.taille = { t0: maintenant(), dur: 160, ep: force };
+    e.flash = maintenant() + 90 + force * 30; e.recul = { t0: maintenant(), dur: 220, amp: 2 + force * 2 };
+    var b = ennemiBoite();
+    etincelles(b.x + b.s.width / 2, b.y + b.s.height / 2, 5 + force * 5, ['#ffffff', '#fff3b0', '#ffd24d'], .7 + force * .25);
+    if (force === 3) { secouer(3, 260); SC.eclair = maintenant() + 70; }
+    nombre(String(dmg), b.x + b.s.width / 2, b.y - 2, force === 3 ? 'fort' : '');
+    await attendre(260);
+  })();
+}
+async function frappeEnnemi(dmg) {
+  var e = SC.ennemi;
+  e.charge = { t0: maintenant(), dur: 360 };
+  await attendre(110);
+  son('mal');
+  if (dmg) { SC.heros.rouge = maintenant() + 160; secouer(2, 200); }
+  var hs = sprHeros();
+  if (dmg) etincelles(SC.heros.x + hs.width / 2, SC.heros.base - hs.height / 2, 10, ['#ff5a4a', '#ffb0a0', '#a02020'], .8);
+  if (dmg) nombre('-' + dmg, SC.heros.x + hs.width / 2 + 2, SC.heros.base - hs.height - 2, 'mal');
+  await attendre(280);
+}
+async function mortEnnemi() {
+  var b = ennemiBoite(), e = SC.ennemi;
+  son('mort');
+  particulesDe(b.s, b.x, b.y, e.spr === 'dragon' ? .7 : 1);
+  e.mort = true; secouer(e.spr === 'dragon' ? 4 : 2, 300); majCombo();
+  await attendre(e.spr === 'dragon' ? 900 : 550);
+}
+function gagnerOr(n) { n = Math.round(n * (aRel('bourse') ? 1.5 : 1)); H().or += n; son('or'); if (vueActive === 'combat') nombre(T('+{0} or', n), 70, 34, 'info'); sauver(); }
+/* plus de niveaux ni d'expérience (26/10/2026) : seul l'or fait progresser */
+async function niveauEnAttente() {}
+async function ko() {
+  SC.heros.ko = true; son('mort');
+  await attendre(700);
+  var f = C.famille;
+  await modal(f === 'gardien' ? 'Le gardien t\'a repoussé' : 'Tu es à terre',
+    f === 'gardien' ? ['Dix questions sans cinq bonnes réponses : le bilan recommence, les mots ratés en tête.', 'Tes mots appris, ton or et tes reliques sont gardés.']
+      : f === 'boss' ? [T('Le dragon garde ses blessures : il lui reste {0} PV.', etat.boss.pv), 'Tes mots, ton or et tes reliques sont gardés.']
+        : ['Retour au camp. Le donjon, tes mots appris, ton or et tes reliques sont gardés.'],
+    [{ t: 'Retour au camp' }]);
+  retourPrecedent(); camp();
+}
+async function finDonjon() {
+  await niveauEnAttente();
+  var d = etat.fiche.numGroupe || 1, fini = deckFini();
+  etat.sortis = etat.sortis || {}; etat.sortis[d] = true; sauver();
+  await modal((d === 1 ? 'Le bois' : 'La crypte') + ' est derrière toi', fini ? ['Tous les mots de la semaine sont appris.', 'Le dragon t\'attend dans son antre. Tu ne l\'attaques qu\'en révision.'] : ['Les ' + groupeCourant().length + ' mots de ce donjon sont appris. Le suivant est ouvert.'], [{ t: 'Retour au camp' }]);
+  camp();
+}
+async function finBoss() {
+  await niveauEnAttente();
+  await modal('Cendregueule est vaincu', ['+100 or.', T('Son coffre est à toi : tu y choisis ton cadeau parmi ceux de {0}.', autre())], [{ t: 'Ouvrir le coffre' }]);
+  ouvrirCoffreVue();
+}
+function retourPrecedent() { var d = etat.donjon; if (d && C && C.famille !== 'gardien' && !(C.cell && C.cell.fait && C.famille === 'combat')) { d.pos = d.prev; sauver(); } }
+function lancerBoss() { if (verifierFuite()) { camp(); return; } ouvrirSalle('boss', null); }
+async function boirePotion() {
+  if (!C || C.verrou || C.famille === 'gardien') return;
+  var h = H(), id = h.potions.p ? 'p' : h.potions.g ? 'g' : null;
+  if (!id || h.pv >= pvMax()) return;
+  var p = POTIONS.filter(function (x) { return x.id === id; })[0];
+  h.potions[id]--; soigner(p.soin); sauver(); hud('hud-combat', true);
+}
+async function fuir() {
+  if (!C || C.verrou) return;
+  var boss = C.famille === 'boss';
+  var r = await modal(boss ? 'Rentrer au camp ?' : 'Quitter la salle ?', [boss ? 'Le dragon garde ses blessures.' : 'La salle reste à faire. Tes PV ne remontent qu\'au camp.'], [{ t: boss ? 'Rentrer au camp' : 'Retour à la carte' }, { t: 'Rester', sec: true }]);
+  if (r !== 0) return;
+  arreterChrono();
+  retourPrecedent();
+  if (boss) camp(); else ouvrirDonjon();
+}
+function demarrerChrono(s) { C.chrono = { t0: maintenant(), dur: s * 1000 }; $('chrono').classList.remove('cache', 'urgent'); }
+function arreterChrono() { if (C) C.chrono = null; $('chrono').classList.add('cache'); }
+function majChrono(now) {
+  if (!C || !C.chrono) return;
+  var p = (now - C.chrono.t0) / C.chrono.dur, i = $('chrono').firstElementChild;
+  i.style.width = Math.max(0, 100 * (1 - p)) + '%';
+  $('chrono').classList.toggle('urgent', p > .7);
+  if (p >= 1 && cur && !cur.fait && !C.verrou) {
+    C.chrono = null;
+    $('retour').textContent = T('C\'était « {0} ».', cur.forme === 'qcm' ? cur.bonne : cur.forme === 'phrase' ? cur.reponse : cur.solution);
+    $('p-menu').classList.add('cache');
+    repondre(false, { timeout: true, sansAlgo: true }).then(function (r) { if (r === 'suite') setTimeout(prochaine, 1300); });
+  }
+}
+
+/* ═════════ marchand ambulant, événements ═════════ */
+async function marchandAmbulant() {
+  var rel = mel(RELIQUES.filter(function (r) { return H().reliques.indexOf(r.id) === -1; }))[0], msg = '« Approche, voyageur. »';
+  for (;;) {
+    var opts = [{ t: 'Petite potion, 10 or' }, { t: 'Grande potion, 30 or' }];
+    if (rel) opts.push({ t: T('{0} ({1}) : 120 or', T(rel.nom), T(rel.desc)), petit: true });
+    opts.push({ t: 'Reprendre la route', sec: true });
+    var i = await modal('Un marchand ambulant', [msg, T('Tu as {0} or.', H().or)], opts);
+    if (i === opts.length - 1) return;
+    var prix = i === 0 ? 10 : i === 1 ? 30 : 120;
+    if (H().or < prix) { msg = 'Pas assez d\'or pour ça.'; continue; }
+    H().or -= prix; son('or');
+    if (i === 0) H().potions.p++; else if (i === 1) H().potions.g++; else { prendreRelique(rel.id); rel = null; }
+    msg = 'Affaire conclue.'; sauver();
+  }
+}
+async function evenementSalle() {
+  var h = H(), ev = Math.floor(Math.random() * 3);
+  if (ev === 0) {
+    var r = await modal('Une statue ancienne', ['Une statue couverte de mousse tend une main ouverte. On dit qu\'elle bénit ceux qui donnent.'], [{ t: 'Offrir 20 or' }, { t: 'Passer son chemin', sec: true }]);
+    if (r === 0) { if (h.or < 20) await modal('La statue reste muette', ['Il te faut 20 or.'], [{ t: 'Continuer' }]); else { h.or -= 20; h.bonusPv = (h.bonusPv || 0) + 5; h.pv += 5; son('niveau'); await modal('La statue s\'illumine', ['+5 PV max, pour toujours.'], [{ t: 'Continuer' }]); } }
+  } else if (ev === 1) {
+    var r2 = await modal('Un aventurier blessé', ['Adossé au mur, il te demande une potion.'], [{ t: 'Lui donner une potion' }, { t: 'Passer son chemin', sec: true }]);
+    if (r2 === 0) { if (!(h.potions.p + h.potions.g)) await modal('Tes poches sont vides', ['Tu n\'as pas de potion à lui donner.'], [{ t: 'Continuer' }]); else { if (h.potions.p) h.potions.p--; else h.potions.g--; h.or += 40; son('or'); await modal('Il te remercie', ['Il te glisse 40 or.'], [{ t: 'Continuer' }]); } }
+  } else {
+    var r3 = await modal('Un puits qui murmure', ['Une voix au fond du puits réclame une pièce.'], [{ t: 'Jeter 15 or' }, { t: 'Passer son chemin', sec: true }]);
+    if (r3 === 0) {
+      if (h.or < 15) await modal('Rien ne se passe', ['Il te faut 15 or.'], [{ t: 'Continuer' }]);
+      else { h.or -= 15; if (Math.random() < .5) await choixRelique('Le puits te répond', 'Trois reliques remontent dans le seau.'); else { h.pv = Math.max(1, h.pv - 8); await modal('Le puits ricane', ['Un courant glacé te frappe : -8 PV.'], [{ t: 'Continuer' }]); } }
+    }
+  }
+  sauver();
+}
+
+/* ═════════ marchand du camp ═════════ */
+function marchand() {
+  voir('marchand'); hud('hud-marchand', false);
+  var z = $('rayon'), h = H(); z.innerHTML = '';
+  function ligne(icone, nom, detail, bouton, cls, fn, desact) {
+    var d = document.createElement('div'); d.className = 'article';
+    d.appendChild(icone);
+    d.insertAdjacentHTML('beforeend', '<div class="n">' + ech(nom) + '<small>' + ech(detail) + '</small></div>');
+    var b = document.createElement('button'); b.className = 'mini ' + (cls || ''); b.textContent = bouton; b.disabled = !!desact;
+    if (fn) b.onclick = function () { fn(); son('or'); marchand(); };
+    d.appendChild(b); return d;
+  }
+  function icone(nom, pal, cle) { var s = spr(nom, pal, cle), c = document.createElement('canvas'); c.width = s.width; c.height = s.height; c.getContext('2d').drawImage(s, 0, 0); return c; }
+  function rayon(t) { var e = document.createElement('h4'); e.textContent = t; z.appendChild(e); }
+  rayon(T('Armes, attaque actuelle {0}', attaque()));
+  ARMES.forEach(function (a, i) {
+    if (!i) return;
+    var ic = icone('epee', { w: a.lame[0], W: a.lame[1] }, 'epee-' + i), a_ = h.armes.indexOf(i) !== -1;
+    z.appendChild(h.arme === i ? ligne(ic, T(a.nom), T('+{0} attaque', a.atk), T('Équipée'), 'porte', null, true)
+      : a_ ? ligne(ic, T(a.nom), T('+{0} attaque', a.atk), T('Équiper'), '', function () { h.arme = i; sauver(); })
+        : ligne(ic, T(a.nom), T('+{0} attaque', a.atk), T('{0} or', a.prix), 'prix', function () { h.or -= a.prix; h.armes.push(i); if (a.atk > ARMES[h.arme].atk) h.arme = i; sauver(); }, h.or < a.prix));
+  });
+  rayon(T('Armures, défense actuelle {0}', defense()));
+  ARMURES.forEach(function (a, i) {
+    if (!i) return;
+    var ic = icone('armure', { S: a.pal.S, s: a.pal.s, d: a.pal.d }, 'armure-' + i), a_ = h.armures.indexOf(i) !== -1;
+    z.appendChild(h.armure === i ? ligne(ic, T(a.nom), T('+{0} défense', a.def), T('Portée'), 'porte', null, true)
+      : a_ ? ligne(ic, T(a.nom), T('+{0} défense', a.def), T('Porter'), '', function () { h.armure = i; sauver(); })
+        : ligne(ic, T(a.nom), T('+{0} défense', a.def), T('{0} or', a.prix), 'prix', function () { h.or -= a.prix; h.armures.push(i); if (a.def > ARMURES[h.armure].def) h.armure = i; sauver(); }, h.or < a.prix));
+  });
+  rayon(T('Potions, à boire sans perdre ton tour'));
+  POTIONS.forEach(function (p) {
+    z.appendChild(ligne(icone('potion', { P: p.c }, 'potion-' + p.id), T('{0} (tu en as {1})', T(p.nom), h.potions[p.id]), T('rend {0} PV', p.soin), T('{0} or', p.prix), 'prix', function () { h.or -= p.prix; h.potions[p.id]++; sauver(); }, h.or < p.prix || h.potions[p.id] >= 9));
+  });
+}
+
+/* ═════════ semaine, coffre ═════════ */
+function vueSemaine() {
+  voir('semaine');
+  var f = new Date(etat.semaine.fin);
+  $('s-echeance').textContent = T('Semaine {0}. Le dragon s\'enfuira le {1} à minuit.', sem(), f.toLocaleDateString(enNl() ? 'nl-BE' : 'fr-BE', { weekday: 'long', day: 'numeric', month: 'long' }));
+  $('s-lab').textContent = T('Tes trois idées de cadeau pour {0}', autre());
+  $('s-lab2').textContent = T('Ce que {0} te propose', autre());
+  $('s-note').classList.toggle('cache', !!cfg());
+  ['c1', 'c2', 'c3'].forEach(function (id, i) { $(id).value = etat.semaine.mes[i] || ''; $(id).oninput = majSemaine; });
+  var ses = sesCadeaux();
+  $('s-autre').innerHTML = ses ? ses.map(function (k) { return '<li>' + ech(k) + '</li>'; }).join('') : '<li class="vide">' + T('{0} n\'a pas encore donné ses idées. Tu les découvriras au coffre du dragon.', ech(autre())) + '</li>';
+  majSemaine();
+  $('s-go').onclick = function () { etat.semaine.mes = ['c1', 'c2', 'c3'].map(function (id) { return $(id).value.trim(); }); etat.semaine.ok = true; sauver(); son('clic'); camp(); };
+}
+function vueDeck() {
+  voir('deck');
+  var choisis = (etat.deckBrouillon || []).slice(), z = $('dk-liste'), L = langueApprise(), A = L === 'nl' ? 'fr' : 'nl';
+  if (!etat.listeId) poserListe(listeImposee() || LISTE_COMMUNE || LISTES[0].id);
+  var li = LISTES.filter(function (x) { return x.id === etat.listeId; })[0] || LISTES[0], k0 = LISTES.indexOf(li);
+  $('dk-nom').textContent = nomListe(li);
+  $('dk-prec').style.visibility = LISTES.length > 1 ? '' : 'hidden'; $('dk-suiv').style.visibility = LISTES.length > 1 ? '' : 'hidden';
+  $('dk-prec').onclick = function () { poserListe(LISTES[(k0 - 1 + LISTES.length) % LISTES.length].id); etat.deckBrouillon = []; son('clic'); vueDeck(); };
+  $('dk-suiv').onclick = function () { poserListe(LISTES[(k0 + 1) % LISTES.length].id); etat.deckBrouillon = []; son('clic'); vueDeck(); };
+  $('dk-sous').textContent = T('Touche les mots que tu ne connais pas encore.');
+  function maj() {
+    $('dk-go').disabled = choisis.length < 4;
+    $('dk-go').textContent = choisis.length < 4 ? T('Choisis au moins 4 mots') : T('Valider mes {0} mots', choisis.length);
+    etat.deckBrouillon = choisis;
+  }
+  z.innerHTML = ''; z.scrollTop = 0;
+  var noms = LISTE.filter(function (m) { return !m.v; }), verbes = LISTE.filter(function (m) { return m.v; });
+  [['Mots', noms], ['Verbes', verbes]].forEach(function (g) {
+    if (!g[1].length) return;
+    z.insertAdjacentHTML('beforeend', '<h4 class="dk-h">' + T(g[0]) + '</h4>');
+    g[1].forEach(function (m) { puce(m); });
+  });
+  function puce(m) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'puce' + (choisis.indexOf(m.nl) !== -1 ? ' pris' : '');
+    b.innerHTML = '<b>' + ech(m[L]) + '</b><small>' + ech(m[A]) + '</small>';
+    b.onclick = function () { var k = choisis.indexOf(m.nl); if (k === -1) choisis.push(m.nl); else choisis.splice(k, 1); b.classList.toggle('pris'); son('clic'); maj(); };
+    z.appendChild(b);
+  }
+  maj();
+  $('dk-go').onclick = function () {
+    if (choisis.length < 4) return;
+    etat.deck = LISTE.filter(function (m) { return choisis.indexOf(m.nl) !== -1; }).map(function (m) { return m.nl; });
+    etat.deckBrouillon = null; etat.donjon = null; chargerDeck(); sauver(); son('clic'); vueSemaine();
+  };
+}
+function majSemaine() { $('s-go').disabled = !['c1', 'c2', 'c3'].every(function (id) { return $(id).value.trim(); }); }
+function ouvrirCoffreVue() {
+  voir('coffre');
+  COFFRE.ouvert = etat.semaine.ouvert; COFFRE.ouvre = null;
+  $('k-retour').classList.add('cache');
+  $('k-cadeaux').innerHTML = '';
+  if (!etat.semaine.ouvert) {
+    $('k-texte').textContent = T('Touche le coffre pour l\'ouvrir.');
+    $('scene-coffre').style.cursor = 'pointer';
+    $('scene-coffre').onclick = async function () {
+      if (COFFRE.ouvre) return;
+      COFFRE.ouvre = { t0: maintenant(), dur: 700 }; bruit(.5, .05);
+      await attendre(900);
+      etat.semaine.ouvert = true; sauver();
+      $('scene-coffre').style.cursor = ''; $('scene-coffre').onclick = null;
+      afficherCadeaux();
+    };
+  } else afficherCadeaux();
+}
+function afficherCadeaux() {
+  var z = $('k-cadeaux'); z.innerHTML = '';
+  if (etat.semaine.choisi != null) {
+    $('k-texte').textContent = T('Ton cadeau de la semaine : « {0} ». {1} en sera {2}.', etat.semaine.choisiTexte, autre(), autreElle());
+    z.insertAdjacentHTML('beforeend', '<p class="texte-coffre" style="margin:0;color:var(--doux);font-size:14px">' + ech(texteDuo()) + '</p>');
+    $('k-retour').classList.remove('cache'); $('k-retour').onclick = function () { camp(); };
+    return;
+  }
+  var ses = sesCadeaux();
+  if (!ses) {
+    $('k-texte').textContent = T('{0} n\'a pas encore donné ses trois idées de cadeau. Reviens au coffre dès que c\'est fait.', autre());
+    $('k-retour').classList.remove('cache'); $('k-retour').onclick = function () { camp(); };
+    etat.semaine.ouvert = false; sauver();
+    return;
+  }
+  $('k-texte').textContent = T('Choisis ton cadeau parmi ceux que {0} t\'a proposés.', autre());
+  ses.forEach(function (k, i) {
+    var b = document.createElement('button'); b.className = 'cadeau'; b.textContent = k;
+    b.onclick = async function () {
+      var r = await modal('Choisir ce cadeau ?', [T('« {0} »', k), 'Ce choix est définitif pour la semaine.'], [{ t: 'Je le prends' }, { t: 'Réfléchir encore', sec: true }]);
+      if (r) return;
+      etat.semaine.choisi = i; etat.semaine.choisiTexte = k; accorderRelique(); sauver(); pousserDistant(); son('niveau'); afficherCadeaux();
+    };
+    z.appendChild(b);
+  });
+}
+function texteDuo() {
+  return autreFini() ? T('{0} a aussi bouclé ses mots : vous recevez chacun la Relique du duo (+3 attaque, +2 défense).', autre())
+    : T('Si {0} boucle aussi ses mots avant dimanche minuit, vous recevrez chacun la Relique du duo.', autre());
+}
+function accorderRelique() { if (autreFini() && etat.boss.mort && !H().relique) { H().relique = true; } }
+function nouvelleSemaine() {
+  var n = sem() + 1;
+  etat = neuf(etat); etat.semNum = n; DISTRACTEURS = {}; chargerDeck(); sauver(); COFFRE.ouvert = false;
+  vueDeck();
+}
+
+/* ═════════ outils du prototype ═════════ */
+function majOutils() {
+  if (!etat) return;
+  $('o-ulysse').classList.toggle('on', etat.moi === 'ulysse');
+  $('o-jasmien').classList.toggle('on', etat.moi === 'jasmien');
+  $('o-autre-mot').textContent = autre() + ' : +1 mot (' + etat.autre.mots + ' / ' + etat.autre.total + ')';
+  $('o-autre-explo').textContent = autre() + ' : +10 % d\'exploration (' + etat.autre.explo + ' %)';
+  $('o-autre-dragon').textContent = 'Dragon de ' + autre() + ' : ' + (etat.autre.dragon ? 'vaincu' : 'non');
+  $('o-leg-cad').textContent = 'Cadeaux proposés par ' + autre();
+  ['o-k1', 'o-k2', 'o-k3'].forEach(function (id, i) { if (document.activeElement !== $(id)) $(id).value = etat.semaine.ses[i] || ''; });
+  var g = etat.fiche.groupe || [];
+  $('o-mots').innerHTML = MOTS.map(function (m) {
+    var p = prog(m);
+    return '<tr class="' + (g.indexOf(m.nl) !== -1 ? 'g' : '') + '"><td>' + ech(m.nl) + '</td><td class="n">' + Math.min(3, p.q) + '/3</td><td class="n">' + Math.min(2, p.f) + '/2</td><td class="n">' + Math.min(2, p.c) + '/2</td></tr>';
+  }).join('');
+  var b = etat.fiche.bilan;
+  $('o-algo').textContent = 'Groupe ' + (etat.fiche.numGroupe || 0) + ' (en jaune). Bilan ' + (bilanDu() ? 'dû' : 'non dû') + (b ? ', ' + b.ok + ' justes, ' + b.err + ' erreurs' : '') + '. Dragon : ' + (etat.boss.pv == null ? bossPvMax() : etat.boss.pv) + ' PV.';
+}
+function rafraichir() { if (vueActive === 'donjon') { majDonjon(); return; } if (vueActive === 'deck') { vueDeck(); return; } if (vueActive === 'camp') camp(false); else if (vueActive === 'marchand') marchand(); else if (vueActive === 'semaine') vueSemaine(); else if (vueActive === 'coffre') ouvrirCoffreVue(); majOutils(); }
+$('o-ulysse').onclick = function () { etat.moi = 'ulysse'; sauver(); if (vueActive === 'qui') route(); else rafraichir(); };
+$('o-jasmien').onclick = function () { etat.moi = 'jasmien'; sauver(); if (vueActive === 'qui') route(); else rafraichir(); };
+$('o-valider').onclick = function () {
+  if (C) { alerteOutil('Rentre d\'abord sur la carte ou au camp.'); return; }
+  if (!MOTS.length) { alerteOutil('Choisis d\'abord ton deck.'); return; }
+  if (!groupeCourant().length) groupeDe();
+  groupeCourant().forEach(function (m) { var p = prog(m); p.q = 3; p.f = 2; p.c = 2; p.vu = Date.now(); recalculer(m, p); });
+  sauver(); rafraichir();
+};
+$('o-or').onclick = function () { H().or += 200; sauver(); rafraichir(); };
+$('o-dimanche').onclick = function () { etat.semaine.fin = Date.now() - 1000; verifierFuite(); sauver(); if (!C) rafraichir(); };
+$('o-autre-mot').onclick = function () { var a = etat.autre; a.mots = a.mots >= a.total ? 0 : a.mots + 1; accorderRelique(); sauver(); rafraichir(); };
+$('o-autre-explo').onclick = function () { var a = etat.autre; a.explo = a.explo >= 100 ? 0 : a.explo + 10; sauver(); rafraichir(); };
+$('o-autre-dragon').onclick = function () { etat.autre.dragon = !etat.autre.dragon; sauver(); rafraichir(); };
+$('o-semaine').onclick = function () { if (C) { alerteOutil('Rentre d\'abord au camp.'); return; } nouvelleSemaine(); };
+$('o-reset').onclick = function () { try { localStorage.removeItem(CLE); } catch (e) {} etat = neuf(); C = null; poserListe(LISTE_COMMUNE || LISTES[0].id); chargerDeck(); route(); majOutils(); };
+['o-k1', 'o-k2', 'o-k3'].forEach(function (id, i) { $(id).oninput = function () { etat.semaine.ses[i] = $(id).value; sauver(); if (vueActive === 'semaine') $('s-autre').innerHTML = etat.semaine.ses.map(function (k) { return '<li>' + ech(k) + '</li>'; }).join(''); }; });
+function alerteOutil(t) { $('o-algo').textContent = t; }
+$('dj-camp').onclick = function () { son('clic'); camp(); };
+$('b-heroique').onclick = heroique;
+$('camp-marchand').onclick = function () { son('clic'); marchand(); };
+$('camp-son').onclick = function () { etat.son = !etat.son; sauver(); son('clic'); camp(false); };
+$('m-retour').onclick = function () { son('clic'); camp(false); };
+document.addEventListener('click', function (e) { var m = $('p-menu'); if (!m.classList.contains('cache') && !m.contains(e.target) && e.target.id !== 'p-trou') m.classList.add('cache'); });
+
+/* outils de test : seulement avec ?outils=1 dans l'adresse */
+var OUTILS = /[?&]outils=1/.test(location.search);
+if (!OUTILS) $('outils').classList.add('cache');
+/* l'écran de jeu (390 × 800) est mis à l'échelle de la fenêtre : plein écran
+   sur téléphone, cadre de téléphone sur PC */
+function ajuster() {
+  var mobile = window.innerWidth < 600;
+  document.body.classList.toggle('mobile', mobile);
+  var marge = mobile ? 0 : 40, large = window.innerWidth - marge - (OUTILS && !mobile ? 330 : 0), haut = window.innerHeight - marge;
+  var s = Math.min(mobile ? 1.4 : 1, large / 390, haut / 800);
+  $('tel').style.transform = 'scale(' + s + ')';
+  $('cadre').style.width = (390 * s) + 'px'; $('cadre').style.height = (800 * s) + 'px';
+}
+window.addEventListener('resize', ajuster); ajuster();
+function vueQui() {
+  voir('qui');
+  ['ulysse', 'jasmien'].forEach(function (q) {
+    var b = $('qui-' + q), c = b.querySelector('canvas'), s = spr(q === 'ulysse' ? 'heros' : 'heroine', q === 'ulysse' ? ARMURES[0].pal : null, 'qui-' + q);
+    c.width = s.width; c.height = s.height; c.getContext('2d').drawImage(s, 0, 0);
+    b.onclick = function () { etat.moi = q; sauver(); son('clic'); route(); };
+  });
+}
+function route() { traduireDOM(); if (!etat.moi) vueQui(); else if (!etat.deck) vueDeck(); else if (!etat.semaine.ok) vueSemaine(); else camp(); }
+
+etat = charger() || neuf();
+if (!etat.heros.reliques) etat.heros.reliques = [];
+if (etat.donjon && !etat.donjon.vues) etat.donjon = null;
+traduireDOM();
+requestAnimationFrame(boucle);
+chargerListes()
+  .then(function () { return lireListeCommune(); })
+  .then(function (commune) {
+    LISTE_COMMUNE = commune && LISTES.some(function (l) { return l.id === commune; }) ? commune : null;
+    poserListe(etat.listeId || listeImposee() || LISTE_COMMUNE || LISTES[0].id);
+    if (etat.deck) chargerDeck();
+    return tirerDistant();
+  })
+  .then(route);
+</script>
+</body>
+</html>
