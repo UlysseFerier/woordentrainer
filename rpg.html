@@ -2810,6 +2810,8 @@ function route() { traduireDOM(); if (!etat.moi) vueQui(); else if (!etat.deck) 
 etat = charger() || neuf();
 if (!etat.heros.reliques) etat.heros.reliques = [];
 if (etat.donjon && !etat.donjon.vues) etat.donjon = null;
+/* ouvert depuis l'app (bouton « Donjon ») : l'app dit qui joue */
+(function () { var q = /[?&]moi=(ulysse|jasmien)/.exec(location.search); if (q && !etat.moi) { etat.moi = q[1]; sauver(); } })();
 traduireDOM();
 requestAnimationFrame(boucle);
 chargerListes()

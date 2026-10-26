@@ -1132,6 +1132,7 @@ body.nuit .paire-btn .b.roussi { border-color:#5A4028; }
     <span class="pastilles" id="a-pastilles"></span>
     <span class="texte" id="a-hebdo-t"></span>
     <button class="puce-cad" id="a-cad" onclick="voir('cadeaux')">Cadeaux</button>
+    <button class="puce-cad" id="a-donjon" onclick="allerDonjon()" data-t="donjon">Donjon</button>
     <button class="puce-cad alerte cache" id="a-install" onclick="installer()" data-t="inst">Installer</button>
   </div>
   <div class="deck-appel cache" id="a-deck">
@@ -1426,7 +1427,7 @@ var T = {
     'g-zero': 'Repartir de zéro', 'g-zero-p': 'Efface les scores de la liste choisie. Les mots ne bougent pas.',
     'g-liste': 'Liste', 'g-effacer': 'Effacer ces scores',
     'g-seances': 'Remettre les séances de la semaine à zéro',
-    'inst': 'Installer',
+    'inst': 'Installer', 'donjon': 'Donjon',
     'inst-menu': "Passe par le menu du navigateur : les trois points en haut à droite, puis « Installer l'application » ou « Ajouter à l'écran d'accueil ». Sur iPhone, c'est le bouton Partager de Safari, puis « Sur l'écran d'accueil ».",
     'g-seances-q': 'Remettre le compteur de séances de la semaine à zéro ? Les points et les mots acquis ne bougent pas.',
     'g-seances-ok': 'Compteur de séances remis à zéro.',
@@ -1543,7 +1544,7 @@ var T = {
     'g-zero': 'Opnieuw beginnen', 'g-zero-p': 'Wist de scores van de gekozen lijst. De woorden zelf blijven staan.',
     'g-liste': 'Lijst', 'g-effacer': 'Deze scores wissen',
     'g-seances': 'De sessies van deze week op nul zetten',
-    'inst': 'Installeren',
+    'inst': 'Installeren', 'donjon': 'Kerker',
     'inst-menu': 'Ga via het menu van de browser: de drie puntjes rechtsboven, dan « App installeren » of « Toevoegen aan startscherm ». Op iPhone is het de deelknop van Safari, dan « Zet op beginscherm ».',
     'g-seances-q': 'De sessieteller van deze week op nul zetten? De punten en de gekende woorden blijven staan.',
     'g-seances-ok': 'Sessieteller op nul gezet.',
@@ -1862,7 +1863,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'bg';
+var WT_BUILD = 'bh';
 
 function charger() {
   var e = null;
@@ -3371,6 +3372,10 @@ function majInstall() {
   var b = document.getElementById('a-install');
   if (b) b.classList.toggle('cache', !wtInstall);
 }
+/* 26/10/2026 : passage vers le RPG en test (rpg.html), en lui disant qui joue
+   pour qu'il saute son écran « Qui joue ? ». Même onglet : dans l'app
+   installée, on reste dans l'app ; le bouton retour d'Android ramène ici. */
+function allerDonjon() { location.href = 'rpg.html' + (moi() ? '?moi=' + moi() : ''); }
 function installer() {
   if (!wtInstall) { alert(tr('inst-menu')); return; }
   wtInstall.prompt();
