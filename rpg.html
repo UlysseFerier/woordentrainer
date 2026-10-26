@@ -150,7 +150,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--xp);outline-off
 .bloc{margin:16px 14px 0}
 .bloc h3{font-size:14px;font-weight:400;color:var(--doux);margin:0 0 8px;display:flex;justify-content:space-between}
 .bloc h3 b{color:var(--texte);font-weight:600}
-.camp-actions{margin:auto 14px 10px;display:flex;flex-direction:column;gap:16px}
+.camp-actions{margin:auto 14px 10px;display:flex;flex-direction:column;gap:12px}
 .ligne{display:flex;gap:14px}
 .ligne .btn{flex:1}
 .echeance{text-align:center;font-size:13px;color:var(--doux);margin:0 14px 14px;line-height:1.35}
@@ -281,7 +281,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--xp);outline-off
 body{touch-action:manipulation}
 #cadre{position:relative;overflow:visible}
 #tel{transform-origin:top left;position:absolute;left:0;top:0}
-body.mobile{padding:0;gap:0;align-items:center;justify-content:center;height:100vh;height:100dvh;overflow:hidden;background:var(--nuit)}
+body.mobile{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);box-sizing:border-box;gap:0;align-items:center;justify-content:center;height:100vh;height:100dvh;overflow:hidden;background:var(--nuit)}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+/* si le texte du téléphone est agrandi, les écrans défilent au lieu de couper le bas */
+#v-camp,#v-semaine,#v-marchand,#v-coffre{overflow-y:auto;overflow-x:hidden}
 body.mobile #tel{border-radius:0;box-shadow:none}
 #v-deck .deck{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;align-content:start;padding:2px 2px 12px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 .puce b,.puce small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2794,7 +2797,10 @@ if (!OUTILS) $('outils').classList.add('cache');
 function ajuster() {
   var mobile = window.innerWidth < 600;
   document.body.classList.toggle('mobile', mobile);
-  var marge = mobile ? 0 : 40, large = window.innerWidth - marge - (OUTILS && !mobile ? 330 : 0), haut = window.innerHeight - marge;
+  /* sur téléphone, on retire les barres du système (heure en haut, navigation en bas),
+     sous lesquelles l'app installée dessine sinon */
+  var cs = getComputedStyle(document.body), barres = mobile ? (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0) : 0;
+  var marge = mobile ? 0 : 40, large = window.innerWidth - marge - (OUTILS && !mobile ? 330 : 0), haut = Math.min(window.innerHeight, document.documentElement.clientHeight || window.innerHeight) - marge - barres;
   var s = Math.min(mobile ? 1.4 : 1, large / 390, haut / 800);
   $('tel').style.transform = 'scale(' + s + ')';
   $('cadre').style.width = (390 * s) + 'px'; $('cadre').style.height = (800 * s) + 'px';
