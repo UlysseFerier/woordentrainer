@@ -1777,6 +1777,7 @@ function zoneEpuisee() {
 function ouvrirDonjon() {
   ac();
   if (!etat.donjon) etat.donjon = genererDonjon(MOTS.length);
+  posEnPiece(etat.donjon);
   if (!groupeCourant().length) groupeDe();
   sauver();
   C = null; cur = null;
@@ -1791,19 +1792,38 @@ function majDonjon() {
   $('dj-lib').textContent = T(deckFini() ? 'Tous tes mots sont appris' : groupeFini() ? (bilanDu() ? 'Groupe appris : le gardien t\'attend' : 'Groupe appris : la porte est ouverte') : NOM_PHASE[ph]);
   majOutils();
 }
-function aller(id) {
+/* on ne se tient que dans les pièces : un couloir se traverse d'un coup.
+   Une ancienne sauvegarde arrêtée dans un couloir repart de la pièce d'où l'on venait. */
+function posEnPiece(d) {
+  var l = d.lieux[d.pos]; if (l.type === 'piece') return;
+  d.pos = d.prev === l.a || d.prev === l.b ? d.prev : d.lieux[l.b].visite ? l.b : l.a;
+  if (d.lieux[d.prev].type !== 'piece') d.prev = d.pos;
+}
+/* les destinations possibles : chaque couloir qui part de la pièce, et la pièce au bout */
+function cibles(d) {
+  var res = [];
+  d.adj[d.pos].forEach(function (cid) {
+    var c = d.lieux[cid]; if (c.type !== 'couloir') return;
+    var s = c.a === d.pos ? c.b : c.a;
+    if (c.porte && porteOuverte(c.porte)) { c.vu = true; d.lieux[s].vu = true; }
+    res.push({ couloir: cid, salle: s });
+  });
+  return res;
+}
+function aller(id, cid) {
   var d = etat.donjon;
   if (!d || vueActive !== 'donjon' || !$('voile').classList.contains('cache')) return;
-  if (d.adj[d.pos].indexOf(id) === -1) return;
-  var l = d.lieux[id], p = l.porte;
+  var c = d.lieux[cid];
+  if (!c || c.type !== 'couloir' || d.adj[d.pos].indexOf(cid) === -1 || (c.a !== id && c.b !== id)) return;
+  var l = d.lieux[id], p = c.porte;
   if (p && !porteOuverte(p)) {
-    l.vu = true;
+    c.vu = true;
     if (p.type === 'gardien' && (etat.fiche.numGroupe || 1) === p.zone && bilanDu()) { d.prev = d.pos; sauver(); ouvrirSalle('gardien', p); return; }
     son('clic');
     banniereCarte(p.type === 'gardien' ? 'Une porte gardée.' : 'Une porte scellée.', 'Elle s\'ouvrira quand les mots de cette zone seront appris.');
     return;
   }
-  d.prev = d.pos; d.pos = id; l.visite = true; devoiler(d, id);
+  d.prev = d.pos; c.vu = c.visite = true; d.pos = id; l.visite = true; devoiler(d, cid); devoiler(d, id);
   bip(330 + rnd(40), 300, .04, 'triangle', .03);
   if (p && (etat.fiche.numGroupe || 1) === p.zone && groupeFini() && !bilanDu() && !p.finale) {
     groupeDe(); banniereCarte('Nouvelle zone.', 'De nouveaux mots t\'attendent.');
@@ -1814,28 +1834,33 @@ function aller(id) {
     if (verifierFuite()) { banniereCarte('L\'antre est vide.', 'Le dragon s\'est enfui dimanche à minuit.'); return; }
     if (deckFini()) { lancerBoss(); return; }
   }
-  if (!groupeFini() && zoneEpuisee() && Math.random() < .3) ouvrirSalle('combat', { t: 'combat', fait: true });
+  /* .5 par pièce : le même rythme qu'avant, quand une pièce coûtait deux pas */
+  if (!groupeFini() && zoneEpuisee() && Math.random() < .5) ouvrirSalle('combat', { t: 'combat', fait: true });
 }
 var cvD = document.getElementById('cv-donjon'), cxD = cvD.getContext('2d'); cxD.imageSmoothingEnabled = false;
 cvD.addEventListener('click', function (ev) {
   var d = etat.donjon; if (!d) return;
   var v = vueZone(d, zoneDe(d, d.lieux[d.pos]));
   var r = cvD.getBoundingClientRect(), px = (ev.clientX - r.left) * CW / r.width, py = (ev.clientY - r.top) * CW / r.height;
-  /* le lieu voisin le plus proche du doigt, avec 14 px de marge : seuls les voisins comptent */
+  /* la pièce voisine la plus proche du doigt, avec 16 px de marge ; une porte
+     se touche aussi elle-même, puisque la pièce derrière reste cachée */
   var best = null, bd = 1e9;
-  d.adj[d.pos].forEach(function (id) {
-    var l = d.lieux[id]; if (!l.vu || !visibleDans(d, l, v)) return;
-    var q = rectLieu(d, l, v), dx = Math.max(q.x - px, 0, px - (q.x + q.w)), dy = Math.max(q.y - py, 0, py - (q.y + q.h)), dd = dx * dx + dy * dy;
-    if (dd < bd) { bd = dd; best = id; }
+  function tester(q, k) { var dx = Math.max(q.x - px, 0, px - (q.x + q.w)), dy = Math.max(q.y - py, 0, py - (q.y + q.h)), dd = dx * dx + dy * dy; if (dd < bd) { bd = dd; best = k; } }
+  cibles(d).forEach(function (k) {
+    var s = d.lieux[k.salle], c = d.lieux[k.couloir];
+    if (s.vu && visibleDans(d, s, v)) tester(rectLieu(d, s, v), k);
+    if (c.porte && c.vu && visibleDans(d, c, v)) { var q = rectLieu(d, c, v); tester({ x: q.x + q.w / 2 - 8, y: q.y + q.h / 2 - 8, w: 16, h: 16 }, k); }
   });
-  if (best != null && bd <= 196) aller(best);
+  if (best && bd <= 256) aller(best.salle, best.couloir);
 });
 var banCarte = null;
 function banniereCarte(t, s) { $('dj-info').innerHTML = '<b>' + ech(T(t)) + '</b> ' + ech(T(s || '')); clearTimeout(banCarte); banCarte = setTimeout(function () { $('dj-info').innerHTML = ''; }, 3600); }
 function dessinerDonjon(now) {
   var d = etat.donjon; if (!d) return;
+  posEnPiece(d);
   var x = cxD, clign = Math.floor(now / 420) % 2, voisins = {}, v = vueZone(d, zoneDe(d, d.lieux[d.pos]));
-  d.adj[d.pos].forEach(function (id) { voisins[id] = 1; });
+  /* clignotent : les pièces où l'on peut aller, et les portes encore fermées */
+  cibles(d).forEach(function (k) { voisins[k.salle] = 1; var c = d.lieux[k.couloir]; if (c.porte && !porteOuverte(c.porte)) voisins[c.id] = 1; });
   if (!DECORS.fondCarte) {
     var f = toile(CW, CW), fx = f.getContext('2d'); fx.fillStyle = '#0b0d1e'; fx.fillRect(0, 0, CW, CW);
     for (var j = 0; j < CW; j += 6) for (var i = (j / 6) % 2 ? 3 : 0; i < CW; i += 6) { fx.fillStyle = '#10132a'; fx.fillRect(i, j, 5, 5); }
