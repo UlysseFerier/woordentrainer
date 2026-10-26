@@ -2,6 +2,19 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<script>
+/* 26/10/2026 : cette semaine (jusqu'au dimanche 1er novembre inclus), l'app
+   s'ouvre directement sur le donjon (rpg.html), en lui disant qui joue.
+   location.replace : le bouton retour d'Android ne ramène pas ici, sinon on
+   reboucle. Pour l'app classique : index.html?classique=1 (lien dans le camp
+   du donjon). Après le 1er novembre, l'app classique revient d'elle-même. */
+(function () {
+  if (/[?&]classique=1/.test(location.search) || Date.now() >= new Date(2026, 10, 2).getTime()) return;
+  var m = null;
+  try { var e = JSON.parse(localStorage.getItem('wt2_etat') || 'null'); m = e && e.reglages && e.reglages.moi; } catch (x) {}
+  location.replace('rpg.html' + (m === 'ulysse' || m === 'jasmien' ? '?moi=' + m : ''));
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Woordentrainer</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -1863,7 +1876,7 @@ var distant = { ulysse: null, jasmien: null, semaine: null };
 var swAttente = null, appuiLong = false;
 /* doit être identique au suffixe de VERSION dans sw.js : c'est le seul moyen
    de vérifier depuis le téléphone quelle version a réellement pris la main. */
-var WT_BUILD = 'bh';
+var WT_BUILD = 'bi';
 
 function charger() {
   var e = null;

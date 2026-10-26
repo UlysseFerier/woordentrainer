@@ -299,6 +299,7 @@ body.mobile #cadre{margin:0 auto}
 .qui-b canvas{width:88px;height:100px;image-rendering:pixelated}
 .qui-b:active{transform:translateY(2px)}
 .liste-autre li.vide{color:var(--doux);font-style:italic}
+.lien-classique{display:block;margin:-6px auto 12px;background:none;border:0;color:#7d82ad;font-family:var(--lex);font-size:12px;text-decoration:underline;cursor:pointer}
 @media (max-width:760px){body{flex-direction:column;align-items:center}#outils{width:390px}}
 @media (prefers-reduced-motion:reduce){.nombre,.trou,.opt.attire,.carte.retourne{animation-duration:.01s}}
 </style>
@@ -355,6 +356,7 @@ body.mobile #cadre{margin:0 auto}
       </div>
     </div>
     <div class="echeance" id="camp-echeance"></div>
+    <button class="lien-classique" id="camp-classique" onclick="location.href='index.html?classique=1'">Version classique de l'app</button>
   </section>
 
   <!-- le combat -->
@@ -635,7 +637,8 @@ var NL = {
   "Choisis ton cadeau parmi ceux que {0} t'a proposés.": 'Kies je cadeau uit wat {0} je voorstelde.',
   'Choisir ce cadeau ?': 'Dit cadeau kiezen?', '« {0} »': '‘{0}’',
   'Ce choix est définitif pour la semaine.': 'Deze keuze is definitief voor deze week.',
-  'Je le prends': 'Ik neem het', 'Réfléchir encore': 'Nog even nadenken'
+  'Je le prends': 'Ik neem het', 'Réfléchir encore': 'Nog even nadenken',
+  "Version classique de l'app": 'Klassieke versie van de app'
 };
 var THEMES_NL = {
   'semaine-01': 'het huis en het dagelijks leven', 'semaine-02': 'eten en drinken', 'semaine-03': 'het lichaam en de gezondheid',
