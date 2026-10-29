@@ -7620,7 +7620,7 @@ var SYNC = { actif: false, url: '', cle: '', partie: '', base: null, vu: {}, dis
 var CLE_BASE = CLE + '-base', CLE_PARTIE = CLE + '-partie';
 function configSync() {
   var c = window.WT_SUPABASE || {};
-  SYNC.url = String(c.url || '').replace(/\/+$/, ''); SYNC.cle = c.cle || '';
+  SYNC.url = String(c.url || '').trim().replace(/\/+$/, '').replace(/\/rest\/v1$/, ''); SYNC.cle = String(c.cle || '').trim();
   var q = /[?&]partie=([^&#]+)/.exec(location.search);
   try { if (q) localStorage.setItem(CLE_PARTIE, decodeURIComponent(q[1])); SYNC.partie = localStorage.getItem(CLE_PARTIE) || ''; } catch (err) {}
   try { var b = localStorage.getItem(CLE_BASE); SYNC.base = b ? JSON.parse(b) : null; } catch (err) {}
@@ -7634,7 +7634,9 @@ function planifierSync(ms) {
   SYNC.minuterie = setTimeout(synchroniser, ms);
 }
 function requete(methode, chemin, corps, prefer) {
-  var h = { apikey: SYNC.cle, Authorization: 'Bearer ' + SYNC.cle, 'Content-Type': 'application/json', 'x-partie': SYNC.partie };
+  /* les nouvelles clés « sb_publishable_… » ne sont pas des JWT : elles passent seulement dans apikey */
+  var h = { apikey: SYNC.cle, 'Content-Type': 'application/json', 'x-partie': SYNC.partie };
+  if (!/^sb_/.test(SYNC.cle)) h.Authorization = 'Bearer ' + SYNC.cle;
   if (prefer) h.Prefer = prefer;
   return fetch(SYNC.url + '/rest/v1/' + chemin, { method: methode, headers: h, body: corps ? JSON.stringify(corps) : undefined }).then(function (r) {
     if (!r.ok) throw new Error('HTTP ' + r.status);
