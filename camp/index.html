@@ -7599,7 +7599,10 @@ function chargerListesEnLigne() {
   for (var n = 1; n <= fin; n++) {
     if (listeDeNum(n)) continue;
     (function (n) {
-      attentes.push(fetch('listes/semaine-' + String(n).padStart(2, '0') + '.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      /* d'abord le dossier data/ de l'app Woordentrainer (une seule place pour les listes), sinon listes/ à côté du jeu */
+      var nom = 'semaine-' + String(n).padStart(2, '0') + '.json';
+      function lire(u) { return fetch(u, { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); }
+      attentes.push(lire('../data/' + nom).then(function (j) { return j || lire('listes/' + nom); }).then(function (j) {
         if (j && ajouterListe(j, n)) {
           nouvelles++;
           try { var c = JSON.parse(localStorage.getItem(CLE_LISTES) || '{}'); c[n] = j; localStorage.setItem(CLE_LISTES, JSON.stringify(c)); } catch (err) {}
@@ -7622,7 +7625,7 @@ function configSync() {
   var c = window.WT_SUPABASE || {};
   SYNC.url = String(c.url || '').trim().replace(/\/+$/, '').replace(/\/rest\/v1$/, ''); SYNC.cle = String(c.cle || '').trim();
   var q = /[?&]partie=([^&#]+)/.exec(location.search);
-  try { if (q) localStorage.setItem(CLE_PARTIE, decodeURIComponent(q[1])); SYNC.partie = localStorage.getItem(CLE_PARTIE) || ''; } catch (err) {}
+  try { if (q) localStorage.setItem(CLE_PARTIE, decodeURIComponent(q[1])); SYNC.partie = c.partie || localStorage.getItem(CLE_PARTIE) || ''; } catch (err) {}
   try { var b = localStorage.getItem(CLE_BASE); SYNC.base = b ? JSON.parse(b) : null; } catch (err) {}
   SYNC.actif = !!(SYNC.url && SYNC.cle && SYNC.partie && window.fetch);
   SYNC.etat = SYNC.actif ? 'en attente' : 'local';
