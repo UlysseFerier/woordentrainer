@@ -3,16 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <script>
-/* 26/10/2026 : cette semaine (jusqu'au dimanche 1er novembre inclus), l'app
-   s'ouvre directement sur le donjon (rpg.html), en lui disant qui joue.
-   location.replace : le bouton retour d'Android ne ramène pas ici, sinon on
-   reboucle. Pour l'app classique : index.html?classique=1 (lien dans le camp
-   du donjon). Après le 1er novembre, l'app classique revient d'elle-même. */
+/* 29/10/2026 : l'app s'ouvre désormais sur le camp (camp/), le RPG de vocabulaire,
+   en lui disant qui joue. location.replace : le bouton retour d'Android ne ramène
+   pas ici, sinon on reboucle. Pour l'app classique : index.html?classique=1. */
 (function () {
-  if (/[?&]classique=1/.test(location.search) || Date.now() >= new Date(2026, 10, 2).getTime()) return;
+  if (/[?&]classique=1/.test(location.search)) return;
   var m = null;
   try { var e = JSON.parse(localStorage.getItem('wt2_etat') || 'null'); m = e && e.reglages && e.reglages.moi; } catch (x) {}
-  location.replace('rpg.html' + (m === 'ulysse' || m === 'jasmien' ? '?moi=' + m : ''));
+  location.replace('camp/' + (m === 'ulysse' || m === 'jasmien' ? '?moi=' + m : ''));
 })();
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -3388,7 +3386,7 @@ function majInstall() {
 /* 26/10/2026 : passage vers le RPG en test (rpg.html), en lui disant qui joue
    pour qu'il saute son écran « Qui joue ? ». Même onglet : dans l'app
    installée, on reste dans l'app ; le bouton retour d'Android ramène ici. */
-function allerDonjon() { location.href = 'rpg.html' + (moi() ? '?moi=' + moi() : ''); }
+function allerDonjon() { location.href = 'camp/' + (moi() ? '?moi=' + moi() : ''); }
 function installer() {
   if (!wtInstall) { alert(tr('inst-menu')); return; }
   wtInstall.prompt();
