@@ -309,6 +309,9 @@ body.mobile #cadre{margin:0 auto}
 @media (max-width:760px){body{flex-direction:column;align-items:center}#outils{width:390px}}
 @media (prefers-reduced-motion:reduce){.nombre,.trou,.opt.attire,.carte.retourne{animation-duration:.01s}}
 
+/* Android : pas de flash bleu au toucher, ni de menu de copie sur un appui long */
+*{-webkit-tap-highlight-color:transparent}
+canvas,#tel,button{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;outline:none}
 /* ═════════ v3 : chiffres lisibles ═════════ */
 :root{--num:'Trebuchet MS',Verdana,Arial,sans-serif}
 .res b,.chip,.barre b,.nombre,.tf b,.prog,.bu-l b,.couts .chip,.ameliore b{font-family:var(--num);font-weight:700;letter-spacing:0}
