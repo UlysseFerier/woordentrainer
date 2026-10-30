@@ -610,6 +610,7 @@ canvas,#tel,button{-webkit-touch-callout:none;-webkit-user-select:none;user-sele
 .mo-chance{display:flex;align-items:center;gap:6px;margin:6px 0 0;font-size:11px;color:var(--doux)}.mo-chance span{flex:0 1 auto}.mo-chance i{flex:1;height:7px;background:#0a0c18;box-shadow:0 0 0 1px #000;min-width:40px}.mo-chance b{display:block;height:100%;background:linear-gradient(90deg,#c08af2,#ffd24d)}.mo-chance em{font-style:normal;white-space:nowrap;font-family:var(--num);color:var(--or);font-weight:700}
 .pb-note.evt-note{color:#c8b0f0}.pb-note.evt-note.neuf{color:var(--or);font-weight:700}
 .lieu.zone{transform:translate(-50%,-50%);gap:0}.lieu.zone .lz-vig{position:relative;display:block;background:none;box-shadow:none;padding:0;font-size:0;line-height:0}.lieu.zone .lz-vig>img.px{max-width:none;filter:drop-shadow(0 3px 0 rgba(0,0,0,.45))}.lieu.zone.sel .lz-vig>img.px{filter:drop-shadow(0 0 2px #ffd24d) drop-shadow(0 0 4px #ffd24d) drop-shadow(0 3px 0 rgba(0,0,0,.45))}.lieu.zone .lz-res,.lieu.zone.sel .lz-res{position:absolute;right:4px;top:4px;display:flex;gap:2px;background:none;box-shadow:none;padding:0}.lieu.zone .lz-res img{height:18px;width:18px;max-width:none;object-fit:contain;background:rgba(14,17,40,.88);box-shadow:0 0 0 1px #000,inset 0 0 0 1px var(--pierre2);padding:2px;filter:none}.lieu.zone .evt-pt{left:4px;right:auto;top:4px}.lieu.zone .lz-nom{margin-top:-8px;position:relative}.lieu.zone.sel .lz-vig{background:none}
+#mo-terroir{position:absolute;pointer-events:auto;cursor:pointer}#mo-terroir.entre{animation:terroirIn .5s .25s backwards}@keyframes terroirIn{from{opacity:0}}#mo-terroir img,#mo-terroir canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}#mo-terroir canvas{pointer-events:none;animation:selPulse 1.2s ease-in-out infinite alternate}@keyframes selPulse{from{opacity:.65}to{opacity:1}}.lieu.tag{transform:translate(-50%,-50%);gap:1px}.lieu.tag .lz-res,.lieu.tag.sel .lz-res{display:flex;gap:2px;background:none;box-shadow:none;padding:0;align-items:center}.lieu.tag .lz-res img{height:20px;width:20px;max-width:none;object-fit:contain;background:rgba(14,17,40,.9);box-shadow:0 0 0 1px #000,inset 0 0 0 1px var(--pierre2);padding:3px;filter:none}.lieu.tag.sel .lz-res img{box-shadow:0 0 0 2px #000,inset 0 0 0 1px var(--or),0 0 6px #ffd24d}.lieu.tag .evt-pt{position:relative;top:0;right:0;left:0;display:inline-block;margin-right:2px}
 .lieu.danger span{color:#ffb0a0}.lieu.evt span{color:var(--or)}.lieu.sel.evt span,.lieu.sel.danger span{color:#10121e}
 .lieu.entre{animation:lieuIn .4s steps(4) backwards}@keyframes lieuIn{from{opacity:0;scale:.4}}
 .evt-pt{position:absolute;top:-6px;right:-2px;font-style:normal;font-family:var(--px);font-weight:700;font-size:13px;color:#10121e;background:var(--or);box-shadow:0 0 0 2px #000;width:15px;height:15px;line-height:15px;text-align:center;animation:attire .8s steps(2) infinite}
@@ -10043,7 +10044,9 @@ function themeVig(n) {
   return { sol: th.sol || ['#86c860', '#7cc25a', '#72b852', '#68ae4a', '#5fa444'], herbe: th.herbe || ['#4a8e3a', '#a8e078'], t: a.t || 'feuillu', f: a.f || ['#3f7a3a', '#5aa858', '#8ad070'], tronc: a.tronc || ['#5a3a26', '#7a5236'] };
 }
 /* l'îlot : une ellipse au bord irrégulier, avec son épaisseur sous le sol */
+var VIG_NU = false;
 function ilotVig(x, sol, bord, al) {
+  if (VIG_NU) { al(); al(); return function () { return false; }; }
   var cx = 16, cy = 18, rx = 15, ry = 7, p1 = al() * 6, p2 = al() * 6;
   function dedans(i, j) { var dx = (i + .5 - cx) / rx, dy = (j + .5 - cy) / ry, th = Math.atan2(dy, dx), r = 1 + .07 * Math.sin(3 * th + p1) + .05 * Math.sin(5 * th + p2); return dx * dx + dy * dy <= r * r; }
   for (var j = 8; j < VIG_H; j++) for (var i = 0; i < VIG_W; i++) {
@@ -10166,6 +10169,230 @@ function sprEvtLieu(t, b) {
 /* ce qu'on y récolte : une ou deux pastilles */
 var RECOLTE_LIEU = { foret: ['bois'], mine: ['pierre', 'fer'], chasse: ['cuir'], grotte: ['cristal'], donjon: ['or', 'objet'], potager: ['herbes'], conquete: ['or'], boss: ['cristal', 'objet'] };
 function recolteLieu(L) { return L.k === 'evt' ? EVTS[L.ev.type].res.slice(0, 2) : RECOLTE_LIEU[L.k] || []; }
+
+/* ═════════ le terroir : la contrée zoomée est repeinte, lieu par lieu ═════════
+   Quand on zoome sur une contrée, sa surface est redessinée en détail et partagée entre ses lieux :
+   une parcelle de forêt couverte d'arbres, un coteau pierreux percé d'une mine, un pré de chasse, un
+   champ de rochers sombres autour d'une grotte, les ruines d'une forteresse, des sillons de potager…
+   Des chemins de terre séparent les parcelles. On touche une parcelle pour la choisir ; une pastille
+   dit ce qu'on y récolte. Les couleurs suivent le thème de la contrée. */
+var TERROIR = {}, MASQUES = {};
+function masqueContree(n) {
+  if (MASQUES[n]) return MASQUES[n];
+  var z = CARTE.zid, x0 = CW, y0 = CH, x1 = -1, y1 = -1;
+  function de(X, Y) { return X >= 0 && Y >= 0 && X < CW && Y < CH && z[Y * CW + X] === n; }
+  for (var Y = 0; Y < CH; Y++) for (var X = 0; X < CW; X++) if (de(X, Y)) { if (X < x0) x0 = X; if (X > x1) x1 = X; if (Y < y0) y0 = Y; if (Y > y1) y1 = Y; }
+  if (x1 < 0) return null;
+  /* l'intérieur seulement : la frontière dessinée sur la carte reste visible */
+  return (MASQUES[n] = { x0: x0, y0: y0, w: x1 - x0 + 1, h: y1 - y0 + 1, dedans: function (X, Y) { return de(X, Y) && de(X - 1, Y) && de(X + 1, Y) && de(X, Y - 1) && de(X, Y + 1); } });
+}
+function hachage(i, j, k) { var h = Math.sin(i * 12.9898 + j * 78.233 + (k || 0) * 37.719) * 43758.5453; return h - Math.floor(h); }
+
+/* ── le découpage de la contrée en parcelles ── */
+function decouperTerroir(n, l, f) {
+  var Mq = masqueContree(n), W = Mq.w * f, H = Mq.h * f, N = W * H, m = new Uint8Array(N), i, j, k;
+  for (j = 0; j < H; j++) for (i = 0; i < W; i++) m[j * W + i] = Mq.dedans(Mq.x0 + Math.floor(i / f), Mq.y0 + Math.floor(j / f)) ? 1 : 0;
+  /* on arrondit les marches d'escalier du masque */
+  for (var it = 0; it < 2; it++) { var m2 = new Uint8Array(N); for (j = 1; j < H - 1; j++) for (i = 1; i < W - 1; i++) { var s = 0; for (var dj = -1; dj <= 1; dj++) for (var di = -1; di <= 1; di++) s += m[(j + dj) * W + i + di]; m2[j * W + i] = s >= 5 ? 1 : 0; } m = m2; }
+  /* distance au bord, pour placer les germes loin des frontières et loin les uns des autres */
+  var dist = distanceBord(m, W, H, function (p) { return m[p]; });
+  var germes = [], nb = l.length;
+  for (k = 0; k < nb; k++) {
+    var meil = -1, bp = -1;
+    for (var p = 0; p < N; p += 1) {
+      if (!m[p]) continue; var x = p % W, y = (p / W) | 0, sc = Math.min(dist[p] * 1.6, 999);
+      for (var g = 0; g < germes.length; g++) sc = Math.min(sc, Math.hypot(x - germes[g][0], y - germes[g][1]));
+      if (sc > meil) { meil = sc; bp = p; }
+    }
+    if (bp < 0) break; germes.push([bp % W, (bp / W) | 0]);
+  }
+  germes.sort(function (a, b) { return a[1] - b[1] || a[0] - b[0]; });
+  /* chaque pixel va au germe le plus proche, avec un bord un peu sinueux */
+  var prop = new Int8Array(N).fill(-1);
+  for (j = 0; j < H; j++) for (i = 0; i < W; i++) {
+    if (!m[j * W + i]) continue; var best = 1e9, bk = -1;
+    for (k = 0; k < germes.length; k++) { var d = Math.hypot(i - germes[k][0], j - germes[k][1]) + 2.2 * Math.sin(i * .33 + k * 1.7) + 2.2 * Math.cos(j * .29 + k * 2.3); if (d < best) { best = d; bk = k; } }
+    prop[j * W + i] = bk;
+  }
+  /* les chemins : un pixel dont un voisin appartient à une autre parcelle */
+  var chemin = new Uint8Array(N);
+  for (j = 1; j < H - 1; j++) for (i = 1; i < W - 1; i++) { var q = j * W + i, o = prop[q]; if (o < 0) continue; if ([q - 1, q + 1, q - W, q + W].some(function (r) { return prop[r] >= 0 && prop[r] !== o; })) chemin[q] = 1; }
+  var regs = germes.map(function (g, k2) { return { k: k2, px: [], cx: g[0], cy: g[1], r: 0, x0: W, y0: H, x1: 0, y1: 0 }; });
+  for (var p2 = 0; p2 < N; p2++) { var o2 = prop[p2]; if (o2 < 0 || chemin[p2]) continue; var R = regs[o2], X2 = p2 % W, Y2 = (p2 / W) | 0; R.px.push(p2); if (X2 < R.x0) R.x0 = X2; if (X2 > R.x1) R.x1 = X2; if (Y2 < R.y0) R.y0 = Y2; if (Y2 > R.y1) R.y1 = Y2; }
+  /* le cœur de chaque parcelle : le point le plus éloigné de ses bords */
+  var dr = distanceBord(m, W, H, function (p3) { return prop[p3] >= 0 && !chemin[p3]; }, prop);
+  regs.forEach(function (R2) { var b = -1; R2.px.forEach(function (p4) { if (dr[p4] > b) { b = dr[p4]; R2.cx = p4 % W; R2.cy = (p4 / W) | 0; } }); R2.r = b; });
+  return { W: W, H: H, f: f, x0: Mq.x0, y0: Mq.y0, m: m, prop: prop, chemin: chemin, regs: regs };
+}
+/* distance (4-voisins) au premier pixel hors de l'ensemble ; si prop est donné, changer de parcelle compte comme un bord */
+function distanceBord(m, W, H, dans, prop) {
+  var N = W * H, d = new Int16Array(N).fill(-1), file = [], t = 0;
+  for (var p = 0; p < N; p++) {
+    if (!dans(p)) { d[p] = 0; continue; }
+    var x = p % W, y = (p / W) | 0, bord = x === 0 || y === 0 || x === W - 1 || y === H - 1;
+    if (!bord) [p - 1, p + 1, p - W, p + W].forEach(function (q) { if (!dans(q) || (prop && prop[q] !== prop[p])) bord = true; });
+    if (bord) { d[p] = 1; file.push(p); }
+  }
+  while (t < file.length) { var a = file[t++], xa = a % W; [xa > 0 ? a - 1 : -1, xa < W - 1 ? a + 1 : -1, a - W, a + W].forEach(function (q) { if (q < 0 || q >= N || d[q] !== -1) return; if (prop && prop[q] !== prop[a]) return; d[q] = d[a] + 1; file.push(q); }); }
+  return d;
+}
+
+/* ── la peinture ── */
+var SOLS_T = {
+  foret: function (P) { return [P.herbe[0], melange(P.herbe[0], '#000000', .2), P.sol[4] || P.sol[2], melange(P.f[0], '#000000', .15)]; },
+  mine: function () { return ['#8a8478', '#a09a8c', '#7a756a', '#958f82']; },
+  chasse: function (P) { return [P.sol[0], P.sol[1], P.sol[0], melange(P.sol[0], '#ffffff', .12)]; },
+  grotte: function () { return ['#4a4e62', '#3e4256', '#555a70', '#44485c']; },
+  donjon: function () { return ['#8a8a84', '#7a7a74', '#94948c', '#727270']; },
+  potager: function () { return ['#6e4a2c', '#5a3a22', '#7a5434', '#664428']; },
+  conquete: function () { return ['#5a4a3a', '#4a3a2e', '#6a5a48', '#54443a']; },
+  boss: function () { return ['#2a2438', '#3a3048', '#2e2840', '#241e30']; },
+  evt: function (P) { return [P.sol[1], P.sol[2], P.sol[0], P.sol[1]]; }
+};
+function genreTerroir(L) {
+  if (L.k !== 'evt') return L.k;
+  var D = EVTS[L.ev.type]; return D.genre === 'activite' ? D.mode : D.genre === 'crypte' ? 'donjon' : 'evt';
+}
+function peindreTerroir(T0, l, n) {
+  var P = themeVig(n), c = toile(T0.W, T0.H), x = c.getContext('2d'), W = T0.W, chem = THEMES[CONTREES[n].b] && THEMES[CONTREES[n].b].chemin || '#c9a46a';
+  /* les sols */
+  T0.regs.forEach(function (R) {
+    var g = genreTerroir(l[R.k]), sol = (SOLS_T[g] || SOLS_T.evt)(P);
+    R.px.forEach(function (p) { var i = p % W, j = (p / W) | 0, h = hachage(i, j, n); pxr(x, i, j, 1, 1, sol[h < .45 ? 0 : h < .75 ? 1 : h < .92 ? 2 : 3]); });
+    if (g === 'donjon') R.px.forEach(function (p) { var i = p % W, j = (p / W) | 0; if (j % 4 === 0 || (i + (j >> 2) * 3) % 6 === 0) pxr(x, i, j, 1, 1, '#66665f'); });
+    if (g === 'potager') R.px.forEach(function (p) { var i = p % W, j = (p / W) | 0; if (j % 4 === 3) pxr(x, i, j, 1, 1, '#4a2e1a'); });
+  });
+  /* les chemins entre les parcelles */
+  for (var p = 0; p < T0.chemin.length; p++) if (T0.chemin[p]) { var i = p % W, j = (p / W) | 0; pxr(x, i, j, 1, 1, hachage(i, j, 3) < .25 ? melange(chem, '#000000', .18) : chem); }
+  /* les décors de chaque parcelle, du fond vers l'avant */
+  var objets = [];
+  T0.regs.forEach(function (R) { remplirParcelle(objets, R, l[R.k], P, T0, n); });
+  objets.sort(function (a, b) { return a.y - b.y; }).forEach(function (o) { o.f(x); });
+  return c;
+}
+function dansParcelle(T0, R, i, j, marge) {
+  var W = T0.W; marge = marge || 0;
+  for (var dj = -marge; dj <= marge; dj++) for (var di = -marge; di <= marge; di++) { var X = i + di, Y = j + dj; if (X < 0 || Y < 0 || X >= W || Y >= T0.H) return false; var q = Y * W + X; if (T0.prop[q] !== R.k || T0.chemin[q]) return false; }
+  return true;
+}
+/* une grille un peu secouée de points dans la parcelle */
+function semis(T0, R, pas, marge, k) {
+  var l = [];
+  for (var j = R.y0; j <= R.y1; j += pas) for (var i = R.x0 + ((j / pas) % 2 ? pas / 2 : 0); i <= R.x1; i += pas) {
+    var X = Math.round(i + (hachage(i, j, k) - .5) * pas * .7), Y = Math.round(j + (hachage(j, i, k + 1) - .5) * pas * .7);
+    if (dansParcelle(T0, R, X, Y, marge)) l.push([X, Y]);
+  }
+  return l;
+}
+/* un dessin de vignette (sans son îlot) posé au cœur de la parcelle */
+function vignetteAuCoeur(objets, R, g, P, n, dy) {
+  var D = DESSIN_VIG[g]; if (!D) return;
+  objets.push({ y: R.cy + 6, f: function (x) { VIG_NU = true; x.save(); x.translate(R.cx - 16, R.cy - 18 + (dy || 0)); D(x, P, alea0((n * 131 + R.k * 17) % 233280 + 3)); x.restore(); VIG_NU = false; } });
+}
+function remplirParcelle(o, R, L, P, T0, n) {
+  var g = genreTerroir(L), D = L.k === 'evt' ? EVTS[L.ev.type] : null, coeur = function (i, j) { return Math.hypot(i - R.cx, j - R.cy) < 11; };
+  if (g === 'foret') {
+    semis(T0, R, 5, 1, 7).forEach(function (q) { if (D && coeur(q[0], q[1])) return; o.push({ y: q[1], f: function (x) { arbreVig(x, q[0], q[1], P); } }); });
+    semis(T0, R, 7, 0, 9).forEach(function (q) { o.push({ y: q[1] - 9, f: function (x) { pxr(x, q[0], q[1], 1, 1, P.herbe[1]); } }); });
+  } else if (g === 'chasse') {
+    semis(T0, R, 3, 0, 11).forEach(function (q, z) { o.push({ y: q[1], f: function (x) { pxr(x, q[0], q[1] - 1, 1, 2, P.herbe[z % 2]); if (z % 9 === 0) pxr(x, q[0] + 1, q[1] - 2, 1, 1, ['#ffffff', '#ffe066', '#ff7a8a'][z % 3]); } }); });
+    semis(T0, R, 13, 2, 13).forEach(function (q) { if (coeur(q[0], q[1])) return; o.push({ y: q[1], f: function (x) { rond(x, q[0], q[1] - 2, 2, P.f[0]); pxr(x, q[0] - 1, q[1] - 3, 1, 1, P.f[2]); } }); });
+    if (!D) vignetteAuCoeur(o, R, 'chasse', P, n);
+  } else if (g === 'mine' || g === 'grotte' || g === 'donjon' || g === 'conquete' || g === 'boss' || g === 'potager') {
+    if (g === 'potager') semis(T0, R, 3, 0, 15).forEach(function (q, z) { if (q[1] % 4 !== 2) return; o.push({ y: q[1], f: function (x) { pxr(x, q[0], q[1] - 1, 1, 2, '#3f8a4a'); pxr(x, q[0] - 1, q[1], 3, 1, '#5aa858'); if (z % 3 === 0) pxr(x, q[0], q[1] - 1, 1, 1, ['#e0483e', '#ffa63a', '#b48ae8', '#ffe066'][z % 4]); } }); });
+    var garni = { mine: function (x, q, z) { rond(x, q[0], q[1] - 1, 1 + z % 2, '#6a6570'); if (z % 3 === 0) pxr(x, q[0], q[1] - 1, 1, 1, '#e08a3a'); },
+      grotte: function (x, q, z) { if (z % 2) cristalVig(x, q[0], q[1], z % 4 === 1 ? '#7fd0ff' : '#c08af2', z % 4 === 1 ? '#5fa0d0' : '#8a5ac0'); else rond(x, q[0], q[1] - 1, 2, '#3a3e52'); },
+      donjon: function (x, q, z) { pxr(x, q[0], q[1] - 1, 2, 1, '#8d93a8'); pxr(x, q[0], q[1], 2, 1, '#5a5f74'); if (z % 3 === 0) pxr(x, q[0] + 2, q[1], 1, 1, P.f[0]); },
+      conquete: function (x, q, z) { if (z % 5 === 2) { pxr(x, q[0], q[1] - 1, 2, 1, '#e8e0c8'); pxr(x, q[0] + 2, q[1] - 2, 1, 1, '#e8e0c8'); return; } if (z % 4 === 0) { for (var r = 0; r < 4; r++) pxr(x, q[0] - r, q[1] - 4 + r, r * 2 + 1, 1, r % 2 ? '#a8342a' : '#c8463a'); } else { pxr(x, q[0], q[1] - 4, 1, 5, '#7a5236'); pxr(x, q[0], q[1] - 5, 1, 1, '#c9955a'); } },
+      boss: function (x, q, z) { if (z % 2) { pxr(x, q[0], q[1] - 1, 2, 2, '#e8e0c8'); pxr(x, q[0], q[1], 1, 1, '#1a1420'); } else { pxr(x, q[0], q[1] - 3 - z % 3, 1, 4 + z % 3, '#4a3e5c'); pxr(x, q[0], q[1] - 3 - z % 3, 1, 1, '#5a4e70'); } },
+      potager: function (x, q) { pxr(x, q[0], q[1] - 3, 1, 4, '#a8784a'); } }[g];
+    semis(T0, R, g === 'potager' ? 9 : g === 'conquete' ? 12 : 8, 1, 17).forEach(function (q, z) { if (coeur(q[0], q[1]) || (g === 'potager' && !(z % 3 === 0))) return; o.push({ y: q[1], f: function (x) { garni(x, q, z); } }); });
+    if (!D || D.genre === 'activite' || D.genre === 'crypte') vignetteAuCoeur(o, R, g, P, n, g === 'potager' ? 2 : 0);
+  } else {
+    semis(T0, R, 4, 0, 19).forEach(function (q, z) { o.push({ y: q[1], f: function (x) { pxr(x, q[0], q[1] - 1, 1, 2, P.herbe[z % 2]); } }); });
+  }
+  /* les événements : leur sprite au cœur, et des éclats dorés */
+  if (D) {
+    var s = sprEvtLieu(L.ev.type, CONTREES[n].b), ac = D.genre === 'activite' || D.genre === 'crypte';
+    if (s && D.genre !== 'crypte') o.push({ y: R.cy + 8, f: function (x) { poserSprVig(x, s, R.cx, R.cy + 7, ac ? 16 : 22, 24); } });
+    semis(T0, R, 6, 0, 23).forEach(function (q, z) { if (z % 2) return; o.push({ y: 999, f: function (x) { var c = D.genre === 'crypte' ? '#c08af2' : '#ffd24d'; pxr(x, q[0], q[1] - 6, 1, 1, c); pxr(x, q[0] - 1, q[1] - 6, 1, 1, melange(c, '#ffffff', .5)); pxr(x, q[0] + 1, q[1] - 6, 1, 1, melange(c, '#ffffff', .5)); } }); });
+  }
+}
+
+/* ── le zoom, le terroir posé sur la carte, la sélection ── */
+zoomCarte = function (n) {
+  var M = $('mo-monde'), Z = $('mo-lieux'), vieux = $('mo-terroir');
+  if (!n || etatContree(n) === 'brume' || !masqueContree(n)) { M.style.transform = ''; M.classList.remove('zoom'); LIEU.zoom = null; Z.innerHTML = ''; Z.style.transform = ''; if (vieux) vieux.remove(); return; }
+  var l = lieuxDe(n), Mq = masqueContree(n), nouveau = LIEU.zoom !== n;
+  if (nouveau) {
+    /* l'échelle : la contrée remplit la partie visible (le panneau ouvert compris) */
+    var W = M.offsetWidth || 390, Hm = M.offsetHeight || 800, R0 = M.parentNode.getBoundingClientRect(), P = $('mo-panneau');
+    var bas = Math.min(P && !P.classList.contains('cache') ? P.getBoundingClientRect().top - R0.top : Hm, R0.height - 270), haut = 56;
+    var s = Math.max(3, Math.min(9, Math.min(W * .96 / (Mq.w * 2), (bas - haut - 10) / (Mq.h * 2)))); s = Math.floor(s * 2) / 2;
+    var cx = (Mq.x0 + Mq.w / 2) * 2 * s, cy = (Mq.y0 + Mq.h / 2) * 2 * s;
+    LIEU.s = s; LIEU.tx = Math.max(W - W * s, Math.min(0, W / 2 - cx)); LIEU.ty = Math.max(bas - Hm * s, Math.min(0, (haut + bas) / 2 - cy));
+  }
+  M.style.transformOrigin = '0 0'; M.style.transform = 'translate(' + LIEU.tx + 'px,' + LIEU.ty + 'px) scale(' + LIEU.s + ')'; M.classList.add('zoom');
+  Z.style.transform = 'translate(' + LIEU.tx + 'px,' + LIEU.ty + 'px)';
+  LIEU.zoom = n;
+  if (!l.length) { Z.innerHTML = ''; if (vieux) vieux.remove(); return; }
+  /* le terroir, en cache tant que les lieux ne changent pas */
+  var f = Math.max(2, Math.round(2 * LIEU.s / 3)), cle = n + ':' + f + ':' + l.map(function (L) { return L.k === 'evt' ? L.ev.type : L.k; }).join(',');
+  var T0 = TERROIR[cle];
+  if (!T0) { T0 = decouperTerroir(n, l, f); T0.img = peindreTerroir(T0, l, n).toDataURL(); TERROIR[cle] = T0; }
+  LIEU.terroir = T0; LIEU.lieux = l;
+  if (!vieux || vieux.dataset.cle !== cle) {
+    if (vieux) vieux.remove();
+    var d = document.createElement('div'); d.id = 'mo-terroir'; d.dataset.cle = cle; d.className = nouveau ? 'entre' : '';
+    d.style.cssText = 'left:' + T0.x0 * 2 + 'px;top:' + T0.y0 * 2 + 'px;width:' + T0.W * 2 / f + 'px;height:' + T0.H * 2 / f + 'px';
+    d.innerHTML = '<img class="px" src="' + T0.img + '"><canvas class="px" id="mo-terroir-sel" width="' + T0.W + '" height="' + T0.H + '"></canvas>';
+    M.appendChild(d);
+    d.onclick = function (ev) {
+      ev.stopPropagation(); var r = d.getBoundingClientRect(), i = Math.floor((ev.clientX - r.left) / r.width * T0.W), j = Math.floor((ev.clientY - r.top) / r.height * T0.H);
+      var k = proprioTerroir(T0, i, j); if (k < 0) return; var L = LIEU.lieux[k]; if (!L) return;
+      LIEU.sel = L.k === 'evt' ? L.ev.id : L.k; son('clic'); panneauMonde();
+    };
+  }
+  marquerSelTerroir();
+  dessinerLieux(n, nouveau);
+};
+/* un clic sur un chemin compte pour la parcelle la plus proche */
+function proprioTerroir(T0, i, j) {
+  for (var r = 0; r < 4; r++) for (var dj = -r; dj <= r; dj++) for (var di = -r; di <= r; di++) { var X = i + di, Y = j + dj; if (X < 0 || Y < 0 || X >= T0.W || Y >= T0.H) continue; var o = T0.prop[Y * T0.W + X]; if (o >= 0) return o; }
+  return -1;
+}
+function indexSel() { var l = LIEU.lieux || []; for (var k = 0; k < l.length; k++) if ((l[k].k === 'evt' ? l[k].ev.id : l[k].k) === LIEU.sel) return k; return -1; }
+function marquerSelTerroir() {
+  var c = $('mo-terroir-sel'), T0 = LIEU.terroir; if (!c || !T0) return;
+  var x = c.getContext('2d'), W = T0.W, k = indexSel(); x.clearRect(0, 0, W, T0.H); if (k < 0) return;
+  for (var p = 0; p < T0.prop.length; p++) {
+    if (T0.prop[p] !== k) continue; var i = p % W, j = (p / W) | 0;
+    var bord = [p - 1, p + 1, p - W, p + W].some(function (q) { return q < 0 || q >= T0.prop.length || T0.prop[q] !== k; });
+    if (bord) pxr(x, i, j, 1, 1, '#ffd24d'); else if ((i + j) % 2 === 0) pxr(x, i, j, 1, 1, 'rgba(255,240,180,.16)');
+  }
+}
+/* les étiquettes : la récolte (toujours) et le nom (quand il y a la place) */
+dessinerLieux = function (n, nouveau) {
+  var T0 = LIEU.terroir, l = LIEU.lieux || [], z = $('mo-lieux'), h = '', s = LIEU.s, boites = [];
+  if (!T0) { z.innerHTML = ''; return; }
+  var et = T0.regs.map(function (R) {
+    var L = l[R.k], k = L.k === 'evt' ? L.ev.id : L.k, def = L.k === 'evt' ? EVTS[L.ev.type] : LIEUX_DEF[L.k];
+    var X = (T0.x0 * 2 + (R.cx + .5) * 2 / T0.f) * s, Y = (T0.y0 * 2 + (R.cy + .5) * 2 / T0.f) * s + Math.min(R.r * 2 / T0.f * s * .55, 46);
+    return { L: L, k: k, def: def, X: X, Y: Y, nom: true };
+  });
+  et.sort(function (a, b) { return (LIEU.sel === b.k) - (LIEU.sel === a.k); }).forEach(function (e) {
+    var w = Math.max(T(e.def.nom).length * 6.2 + 10, 44), r = [e.X - w / 2, e.Y - 12, e.X + w / 2, e.Y + 16];
+    if (boites.some(function (q) { return r[0] < q[2] && r[2] > q[0] && r[1] < q[3] && r[3] > q[1]; }) && LIEU.sel !== e.k) { e.nom = false; r = [e.X - 22, e.Y - 12, e.X + 22, e.Y + 4]; }
+    boites.push(r);
+  });
+  et.forEach(function (e, i) {
+    h += '<button class="lieu tag' + (e.L.k === 'evt' ? ' evt' : '') + (e.L.k === 'boss' || e.L.k === 'conquete' ? ' danger' : '') + (LIEU.sel === e.k ? ' sel' : '') + (nouveau ? ' entre' : '') + '" data-lieu="' + e.k + '" style="left:' + e.X + 'px;top:' + e.Y + 'px;animation-delay:' + (nouveau ? .5 + i * .06 : 0) + 's">' +
+      '<span class="lz-res">' + (e.L.k === 'evt' ? '<i class="evt-pt">!</i>' : '') + recolteLieu(e.L).map(function (r) { return '<img class="px" src="' + icoDest(r) + '">'; }).join('') + '</span>' +
+      (e.nom ? '<span class="lz-nom">' + ech(T(e.def.nom)) + '</span>' : '') + '</button>';
+  });
+  z.innerHTML = h;
+  z.querySelectorAll('.lieu').forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); LIEU.sel = b.dataset.lieu; son('clic'); panneauMonde(); }; });
+};
 
 /* ═════════ les textes des rencontres, accordés en français ═════════
    « Deux squelettes et un squelette à bouclier » plutôt que « 3 ennemis : Squelette, Squelette à bouclier ». */
