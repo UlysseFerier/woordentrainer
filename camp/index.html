@@ -311,6 +311,11 @@ body.mobile #cadre{margin:0 auto}
 
 /* Android : pas de flash bleu au toucher, ni de menu de copie sur un appui long */
 *{-webkit-tap-highlight-color:transparent}
+/* sur téléphone, un glissé ne doit jamais devenir un défilement ou un « tirer pour actualiser » :
+   sinon le navigateur annule le geste en cours (l'arc ne tirait pas). Seules les listes défilent. */
+html,body{overscroll-behavior:none}
+#tel{touch-action:none}
+#tel .f-corps,#tel .bu-corps,#tel #v-deck .deck,#tel #v-coffre{touch-action:pan-y}
 canvas,#tel,button{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;outline:none}
 /* ═════════ v3 : chiffres lisibles ═════════ */
 :root{--num:'Trebuchet MS',Verdana,Arial,sans-serif}
@@ -639,6 +644,9 @@ canvas,#tel,button{-webkit-touch-callout:none;-webkit-user-select:none;user-sele
 .camp-bas{right:6px;top:6px;bottom:auto;flex-direction:column;gap:5px;align-items:stretch}
 .camp-bas .mini{font-size:12px;padding:5px 8px;background:rgba(38,45,85,.85)}
 .camp-rang{left:6px;top:6px;bottom:auto;font-size:12px}
+.camp-sync{position:absolute;right:6px;top:6px;display:flex;align-items:center;gap:5px;background:rgba(13,16,36,.82);border:0;padding:4px 8px;box-shadow:0 0 0 2px #000;color:var(--doux);font-family:var(--num);font-size:11px;cursor:pointer}
+.camp-sync i{width:8px;height:8px;background:#7a7f9a;box-shadow:0 0 0 1px #000}
+.camp-sync.ok i{background:#5cbf64}.camp-sync.ko i{background:#e2463a}.camp-sync.att i{background:#ffd24d}
 
 /* ═════════ v9 : le butin en pop-up, avec sa rareté ═════════ */
 .pop-butin{position:absolute;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:rgba(5,6,16,.6);padding:16px}
@@ -695,6 +703,7 @@ canvas,#tel,button{-webkit-touch-callout:none;-webkit-user-select:none;user-sele
       <canvas id="cv-camp" width="195" height="372"></canvas>
       <button class="fleche" id="camp-fleche">Expédition</button>
       <div class="camp-rang" id="camp-rang"></div>
+      <button class="camp-sync" id="camp-sync"></button>
       
     </div>
   </section>
@@ -4059,7 +4068,7 @@ function campVue(retour) {
   if (revient) { HEROC.x = GX; HEROC.y = GY + 12; allerVers(FX - 22, FY + 22); }
   var rg = rangCamp(); $('camp-rang').innerHTML = '<b>' + ech(T(rg.nom)) + '</b>' + (rg.suiv ? '<small>' + T('{0} / {1}', rg.total, rg.suiv[0]) + '</small>' : '');
   H().pv = pvMax();
-  voir('camp'); hudCamp();
+  voir('camp'); hudCamp(); majSyncUI();
   STATIQUES = null; SOL = null;
   sauver();
 }
@@ -4555,12 +4564,12 @@ function genererQuete() {
   return q;
 }
 function tailleTableau() { return 3; }
-/* trois nouvelles quêtes au plus par jour : une quête réclamée ne revient que le lendemain */
+/* trois quêtes par jour, point final : le tableau se remplit à trois chaque matin, et une quête faite
+   ne laisse pas sa place avant le lendemain. Les quêtes pas faites la veille ne s'ajoutent pas aux nouvelles. */
 var QUETES_PAR_JOUR = 3;
 function remplirTableau() {
   var j = J(), k = jourCle(), l = j.quetes;
-  if (j.qJour !== k) { j.qJour = k; j.qNouv = 0; }
-  while (l.length < tailleTableau() && j.qNouv < QUETES_PAR_JOUR) { l.push(genererQuete()); j.qNouv++; }
+  if (j.qJour !== k) { j.qJour = k; j.qNouv = 0; while (l.length < tailleTableau()) l.push(genererQuete()); }
   return l;
 }
 function queteFaite(q) { return q.type === 'objectif' && q.obj.fait >= q.obj.n; }
@@ -4571,7 +4580,7 @@ function progresQuete(k, v, max) {
 function recompenser(q) {
   for (var k in q.rec) crediter(k, q.rec[k]);
   J().quetes = J().quetes.filter(function (x) { return x !== q; });
-  remplirTableau(); sauver(); son('niveau');
+  J().qNouv = (J().qNouv || 0) + 1; sauver(); son('niveau');
 }
 function icoQuete(q) {
   if (q.type === 'troupe' || q.type === 'bete') { var m = MOBS[q.mob]; return rogne(spr(m.spr, m.pal, m.cle || m.spr), 'q-' + q.mob); }
@@ -4586,7 +4595,7 @@ function feuilleQuetes() {
   var nbC = cadeauxDonnes() ? '' : ' <i class="pastille"></i>';
   var h = '<div class="onglets"><button data-tab="q" class="' + (QTAB === 'q' ? 'on' : '') + '">' + T('Quêtes') + '</button><button data-tab="c" class="' + (QTAB === 'c' ? 'on' : '') + '">' + T('Cadeaux de la semaine') + nbC + '</button></div>';
   if (QTAB === 'q') {
-    h += '<p class="f-sous">' + T('Une quête accomplie laisse sa place à une nouvelle.') + '</p>';
+    h += '<p class="f-sous">' + T('Trois quêtes par jour : le tableau se remplit chaque matin.') + '</p>';
     J().quetes.forEach(function (q, i) {
       var action = '';
       if (q.type === 'troupe' || q.type === 'bete' || QUETES_JEU[q.type]) action = '<button class="mini fab" data-i="' + i + '" data-a="partir">' + T('Partir') + '</button>';
@@ -4596,8 +4605,7 @@ function feuilleQuetes() {
         (q.demande ? '<span class="couts">' + coutHTML(q.demande) + '</span>' : '') +
         '<span class="couts rec">' + Object.keys(q.rec).map(function (k) { return chip(k, q.rec[k]); }).join('') + (q.objet ? '<span class="chip">' + img(icoURL('relique', { R: '#ffd24d' }, 'q-obj'), 14) + '?</span>' : '') + '</span></div>' + action + '</div>';
     });
-    var reste = QUETES_PAR_JOUR - (J().qNouv || 0);
-    h += '<p class="f-sous centre">' + (reste > 0 ? T(reste === 1 ? 'Encore {0} nouvelle quête possible aujourd\'hui.' : 'Encore {0} nouvelles quêtes possibles aujourd\'hui.', reste) : T('Plus de nouvelles quêtes aujourd\'hui : reviens demain.')) + '</p>';
+    if (!J().quetes.length) h += '<p class="f-sous centre">' + T('Plus de quêtes aujourd\'hui : le tableau se remplit demain matin.') + '</p>';
   } else h += cadeauxHTML();
   feuille('Tableau des quêtes', h);
   lier('[data-tab]', function (d) { QTAB = d.tab; son('clic'); feuilleQuetes(); });
@@ -4928,7 +4936,7 @@ function nouvelleExpe(mode, n) {
   /* le premier départ de la journée rapporte double : une raison de revenir chaque jour */
   if (mode !== 'boss' && bonusJourDispo()) { EXPE.bonus = 2; J().bonusJour = jourCle(); }
   H().pv = pvMax(); combo = 0; session = { derniers: [], depuisRappel: 0 }; recents = [];
-  if (!groupeCourant().length) groupeDe();
+  groupeDe();
   J().journal.exp++; sauver();
 }
 function lancerDepart(dest, n) {
@@ -5207,7 +5215,10 @@ async function finBudget() {
 function tirer() {
   if (C.famille === 'gardien') return tirerMot();
   if (C.famille === 'boss') { var mb = retenir(lePlusAncien(MOTS)); return { mot: mb, sansPts: true, mode: modeDe(mb) }; }
-  if (!groupeCourant().length || groupeFini()) { var l = MOTS.filter(estValide), m = retenir(lePlusAncien(l.length ? l : MOTS)); return { mot: m, sansPts: true, mode: modeDe(m) }; }
+  /* un groupe de 10 fini : on ouvre le suivant (ou le bilan qui le garde). Avant, tirer() ne rappelait jamais
+     groupeDe() une fois le groupe validé, et l'on restait bloqué sur le premier groupe en révision sans fin. */
+  if (groupeFini() && !bilanDu()) groupeDe();
+  if (!groupeCourant().length || (groupeFini() && !bilanDu())) { var l = MOTS.filter(estValide), m = retenir(lePlusAncien(l.length ? l : MOTS)); return { mot: m, sansPts: true, mode: modeDe(m) }; }
   return tirerMot();
 }
 function formeDe(mode) { if (mode !== 'rappel') return mode; return Math.random() < .65 ? 'rune' : 'mystere'; }
@@ -5217,7 +5228,6 @@ function poserQuestion(t, forcee) {
   if (cur.forme === 'phrase' && !aPhrases(cur.mot)) cur.forme = 'qcm';
   ({ qcm: montrerQCM, phrase: montrerPhrase, rune: montrerRune, mystere: montrerMyst, parchemin: montrerParch })[cur.forme]();
   C.intro = false;
-  if (C.famille === 'messager' && EXPE.qj) { EXPE.qj.debut = maintenant(); demarrerChrono(7, false, false); }
   C.verrou = false;
   majBande(); majCombo(); majBarre(); hud('hud-combat');
 }
@@ -5754,7 +5764,6 @@ function jauge() {
     }
     function tape(ev) { if (ev.target && ev.target.closest && ev.target.closest('#hud-combat, #voile')) return; ev.preventDefault(); ev.stopPropagation(); var p = pos(); fin(p >= deb && p <= deb + large / 100 ? 'parfait' : 'rate'); }
     setTimeout(function () { if (!fini) document.addEventListener('pointerdown', tape, true); }, 80);
-    setTimeout(function () { fin('aucun'); }, 2600);
     anim();
   });
 }
@@ -5967,7 +5976,7 @@ function branchY(b, y0, ep) { return b.haut ? y0 - 6 : y0 + ep + 5; }
 function mjBranches() {
   var T0 = EXPE.foret.tronc, total = T0.branches.length, coupees = 0, duree = 6000, F = T0, ep = F.gros > 2 ? 7 : 5, y0 = 60 - ep;
   SC.ebranche = true;
-  montrerMJ('Ébrancher le tronc', 'Le tronc est tombé. Touche chaque branche encadrée de jaune, dans l\'image au-dessus, pour la couper.', '<div class="temps"><i style="animation-duration:' + duree + 'ms"></i></div><div class="mj-compte" id="mj-compte">0 / ' + total + ' ' + T('branches') + '</div>');
+  montrerMJ('Ébrancher le tronc', 'Le tronc est tombé. Touche chaque branche encadrée de jaune, dans l\'image au-dessus, pour la couper.', '<div class="mj-compte" id="mj-compte">0 / ' + total + ' ' + T('branches') + '</div>');
   return new Promise(function (res) {
     var fini = false; MJ_ANNULE = function () { coupees = 0; fin(); };
     function fin() { if (fini) return; fini = true; MJ_ANNULE = null; SC.ebranche = false; document.removeEventListener('pointerdown', tape, true); var ok = coupees >= total - 1; $('mj-aide').textContent = T(ok ? 'Tronc propre !' : 'Il reste des branches, tant pis.'); setTimeout(function () { cacherMJ(); res(ok); }, 450); }
@@ -5982,7 +5991,6 @@ function mjBranches() {
       if (coupees >= total) fin();
     }
     setTimeout(function () { document.addEventListener('pointerdown', tape, true); }, 80);
-    setTimeout(fin, duree);
   });
 }
 /* mini-jeu 2 : scier, en touchant à chaque bout de course, un côté puis l'autre */
@@ -6004,7 +6012,6 @@ function mjScie() {
       if (bons >= 3) fin();
     }
     setTimeout(function () { document.addEventListener('pointerdown', tape, true); }, 80);
-    setTimeout(fin, 5200);
     anim();
   });
 }
@@ -6016,11 +6023,10 @@ function mjFendre() {
     function niv() { if (t0 == null) return 0; var t = ((performance.now() - t0) / 1050) % 2; return t < 1 ? t : 2 - t; }
     function anim() { if (fini) return; val = niv(); c.style.width = (val * 100) + '%'; SC.coupFinal = t0 != null ? { leve: val } : null; requestAnimationFrame(anim); }
     MJ_ANNULE = function () { fin(false); };
-    function fin(ok) { if (fini) return; fini = true; MJ_ANNULE = null; document.removeEventListener('pointerdown', bas, true); document.removeEventListener('pointerup', haut, true); SC.coupFinal = null; f.classList.add(ok ? 'ok' : 'ko'); $('mj-aide').textContent = T(ok ? 'Fendu net !' : t0 == null ? 'Trop tard.' : 'Le coup dévie.'); setTimeout(function () { cacherMJ(); res(ok); }, 450); }
+    function fin(ok) { if (fini) return; fini = true; MJ_ANNULE = null; document.removeEventListener('pointerdown', bas, true); document.removeEventListener('pointerup', haut, true); document.removeEventListener('pointercancel', haut, true); SC.coupFinal = null; f.classList.add(ok ? 'ok' : 'ko'); $('mj-aide').textContent = T(ok ? 'Fendu net !' : t0 == null ? 'Trop tard.' : 'Le coup dévie.'); setTimeout(function () { cacherMJ(); res(ok); }, 450); }
     function bas(ev) { if (horsJeu(ev)) return; ev.preventDefault(); ev.stopPropagation(); if (t0 == null) t0 = performance.now(); }
     function haut(ev) { if (t0 == null || fini) return; ev.preventDefault(); var v = niv(); SC.heros.coup = { t0: maintenant(), dur: 320 }; son('coup', 3); secouer(2, 200); fin(v >= .72 && v <= .92); }
-    setTimeout(function () { document.addEventListener('pointerdown', bas, true); document.addEventListener('pointerup', haut, true); }, 80);
-    setTimeout(function () { fin(false); }, 6000);
+    setTimeout(function () { document.addEventListener('pointerdown', bas, true); document.addEventListener('pointerup', haut, true); document.addEventListener('pointercancel', haut, true); }, 80);
     anim();
   });
 }
@@ -6087,18 +6093,18 @@ function tirCloche() {
   montrerMJ('Tire !', 'Glisse vers l\'arrière pour tendre l\'arc et viser, relâche pour tirer. Seul le début de la trajectoire se voit.', '<div class="vent-l">' + T('Cible à environ {0} pas', pas) + '<br>' + T('Vent') + ' : <b>' + ventTexte(vent) + '</b></div>');
   return new Promise(function (res) {
     var fini = false, dep = null; MJ_ANNULE = function () { fin('fuite'); };
-    function fin(r) { if (fini) return; fini = true; MJ_ANNULE = null; ['pointerdown', 'pointermove', 'pointerup'].forEach(function (n, i) { document.removeEventListener(n, [bas, bouge, haut][i], true); }); setTimeout(function () { cacherMJ(); res(r); }, r === 'fuite' ? 0 : 900); }
-    function bas(ev) { if (horsJeu(ev) || !SC.tir || SC.tir.phase !== 'vise') return; ev.preventDefault(); ev.stopPropagation(); dep = { x: ev.clientX, y: ev.clientY }; SC.tir.drag = { dx: 0, dy: 0 }; }
-    function bouge(ev) { if (!dep || !SC.tir) return; ev.preventDefault(); SC.tir.drag = { dx: ev.clientX - dep.x, dy: ev.clientY - dep.y }; }
+    function fin(r) { if (fini) return; fini = true; MJ_ANNULE = null; ['pointerdown', 'pointermove', 'pointerup', 'pointercancel'].forEach(function (n, i) { document.removeEventListener(n, [bas, bouge, haut, haut][i], true); }); setTimeout(function () { cacherMJ(); res(r); }, r === 'fuite' ? 0 : 900); }
+    function bas(ev) { if (horsJeu(ev) || !SC.tir || SC.tir.phase !== 'vise') return; ev.preventDefault(); ev.stopPropagation(); dep = { x: ev.clientX, y: ev.clientY, id: ev.pointerId }; SC.tir.drag = { dx: 0, dy: 0 }; }
+    /* le glissé se mesure en pixels de l'écran ramenés à la taille du jeu : même geste sur PC et sur téléphone */
+    function bouge(ev) { if (!dep || !SC.tir || (dep.id != null && ev.pointerId !== dep.id)) return; ev.preventDefault(); var k = 390 / $('tel').getBoundingClientRect().width; SC.tir.drag = { dx: (ev.clientX - dep.x) * k, dy: (ev.clientY - dep.y) * k }; }
     function haut(ev) {
-      if (!dep || !SC.tir) return; ev.preventDefault(); var P = paramTir(SC.tir.drag); dep = null;
+      if (!dep || !SC.tir || !SC.tir.drag) return; ev.preventDefault(); var P = paramTir(SC.tir.drag); dep = null;
       if (P.p < .12) { SC.tir.drag = null; $('mj-aide').textContent = T('Tends plus fort : glisse plus loin vers l\'arrière.'); return; }
       var o = origineTir(); SC.tir.drag = null; SC.tir.phase = 'vol'; SC.tir.fleche = { x: o.x, y: o.y, vx: P.vx, vy: P.vy, last: maintenant() };
       bip(420, 160, .1, 'triangle', .06); bruit(.06, .03);
       SC.tir.fin = fin;
     }
-    setTimeout(function () { if (fini) return; document.addEventListener('pointerdown', bas, true); document.addEventListener('pointermove', bouge, true); document.addEventListener('pointerup', haut, true); }, 100);
-    setTimeout(function () { if (!fini && SC.tir && SC.tir.phase === 'vise') fin('fuite'); }, 20000);
+    setTimeout(function () { if (fini) return; document.addEventListener('pointerdown', bas, true); document.addEventListener('pointermove', bouge, true); document.addEventListener('pointerup', haut, true); document.addEventListener('pointercancel', haut, true); }, 100);
   });
 }
 /* la plaine défile : la caméra suit la proie, l'archer, puis la flèche */
@@ -6491,7 +6497,6 @@ async function consequenceQuete(f, juste) {
   if (f === 'messager') {
     var duree = maintenant() - (Q.debut || 0);
     if (!juste) { nombre('Tu trébuches', 48, 22, 'mal'); return; }
-    if (duree > 7000) { nombre('Trop lent : tu reprends ton souffle', 48, 22, 'mal'); return; }
     Q.fait++; Q.routeCible += 34; bip(500, 700, .06, 'triangle', .03); majEtiquette();
     await attendre(500);
     if (Q.fait < Q.n && Q.fait % 2 === 0) { r = await mjSaut(); if (!C || EXPE !== X) return 'fin'; if (!r) { Q.fait = Math.max(0, Q.fait - 1); nombre('Tu tombes !', 48, 22, 'mal'); son('mal'); } }
@@ -6540,12 +6545,13 @@ function tapMouton(m) {
 function mjMoutons() {
   var Q = EXPE.qj, dedans = Q.moutons.filter(function (m) { return m.etat === 'enclos'; }), n = Math.min(3, dedans.length);
   mel(dedans).slice(0, n).forEach(function (m) { m.etat = 'fuite'; m.vx = .6 + Math.random() * .4; m.saut0 = maintenant(); Q.fait--; });
-  Q.agite = true; montrerMJ('Ils s\'échappent !', 'Touche les moutons qui courent pour les ramener.', '<div class="temps"><i style="animation-duration:4200ms"></i></div>');
+  Q.agite = true; montrerMJ('Ils s\'échappent !', 'Touche les moutons qui courent pour les ramener.', '');
   bip(500, 300, .2, 'square', .04);
   return new Promise(function (res) {
     var fini = false; MJ_ANNULE = function () { fin(); };
     function fin() { if (fini) return; fini = true; MJ_ANNULE = null; Q.agite = false; Q.moutons.forEach(function (m) { if (m.etat === 'fuite') { m.etat = 'libre'; m.tx = 50 + Math.random() * 40; } }); setTimeout(function () { cacherMJ(); res(); }, 300); }
-    setTimeout(fin, 4200);
+    /* pas de limite de temps : le mini-jeu s'arrête quand plus aucun mouton ne court */
+    var veille = setInterval(function () { if (fini || !EXPE || !EXPE.qj) { clearInterval(veille); return; } if (!Q.moutons.some(function (m) { return m.etat === 'fuite'; })) { clearInterval(veille); fin(); } }, 200);
   });
 }
 function dessinerTroupeau(x, now) {
@@ -6620,7 +6626,6 @@ function mjPlanche() {
       fin(ok);
     }
     setTimeout(function () { if (!fini) document.addEventListener('pointerdown', tape, true); }, 120);
-    setTimeout(function () { if (!fini && SC.planche) { SC.planche.etat = 'tombe'; SC.planche.t1 = maintenant(); $('mj-aide').textContent = T('Trop tard, elle glisse.'); fin(false); } }, 6000);
   });
 }
 function dessinerPont(x, now) {
@@ -7529,6 +7534,14 @@ Object.assign(NL, {
   'Woordentrainer, le camp': 'Woordentrainer, het kamp', 'Le camp s\'éveille…': 'Het kamp ontwaakt…', 'Expédition': 'Tocht', '‹ Camp': '‹ Kamp', 'Tes mots': 'Jouw woorden', 'Camp': 'Kamp',
   'Le coffre du gardien': 'De kist van de bewaker',
   /* nouveautés de cette passe : listes en ligne, synchronisation */
+  'Trois quêtes par jour : le tableau se remplit chaque matin.': 'Drie opdrachten per dag: het bord vult zich elke ochtend.',
+  'Plus de quêtes aujourd\'hui : le tableau se remplit demain matin.': 'Geen opdrachten meer vandaag: morgenvroeg vult het bord zich weer.',
+  'Partagé': 'Gedeeld', 'Hors ligne': 'Offline', 'Synchro…': 'Synchro…', 'Sur ce téléphone': 'Op deze telefoon',
+  '{0} a construit : {1}': '{0} heeft gebouwd: {1}', '{0} a amélioré : {1} (niveau {2})': '{0} heeft verbeterd: {1} (niveau {2})',
+  'Partage avec {0}': 'Delen met {0}', 'Synchroniser maintenant': 'Nu synchroniseren', 'Fermer': 'Sluiten',
+  'Le camp, les ressources et la carte sont partagés.': 'Het kamp, de grondstoffen en de kaart worden gedeeld.',
+  'Dernier échange : il y a {0} s.': 'Laatste uitwisseling: {0} s geleden.', 'Pas encore d\'échange réussi.': 'Nog geen geslaagde uitwisseling.', 'Erreur : {0}': 'Fout: {0}',
+  'Pas de config.js : chaque téléphone garde sa propre partie.': 'Geen config.js: elke telefoon houdt zijn eigen spel.',
   'La liste {0} n\'est pas encore en ligne : tu révises la liste {1}.': 'Lijst {0} staat nog niet online: je herhaalt lijst {1}.'
 });
 
@@ -7577,7 +7590,7 @@ function ecrire() {
 function sauver() {
   majOutils();
   if (!SAUVE.minuterie) SAUVE.minuterie = setTimeout(ecrire, 400);
-  planifierSync(4000);
+  planifierSync(2500);
 }
 document.addEventListener('visibilitychange', function () {
   if (document.visibilityState === 'hidden') ecrire();
@@ -7645,7 +7658,7 @@ function requete(methode, chemin, corps, prefer) {
   if (!/^sb_/.test(SYNC.cle)) h.Authorization = 'Bearer ' + SYNC.cle;
   if (prefer) h.Prefer = prefer;
   return fetch(SYNC.url + '/rest/v1/' + chemin, { method: methode, headers: h, body: corps ? JSON.stringify(corps) : undefined }).then(function (r) {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
+    if (!r.ok) return r.text().then(function (t) { throw new Error('HTTP ' + r.status + ' ' + String(t || '').slice(0, 160)); });
     return r.status === 204 || r.headers.get('content-length') === '0' ? null : r.text().then(function (t) { return t ? JSON.parse(t) : null; });
   });
 }
@@ -7707,7 +7720,7 @@ async function synchroniser() {
       /* 3) moi : sur un téléphone neuf, on reprend ma partie distante */
       if (moi && !SAUVE.chargee && !SYNC.base && SYNC.distant[moi] && M[moi]) { etat.joueurs[moi] = completer(SYNC.distant[moi].data, joueurNeuf()); reenregistrer(moi); }
       /* 4) le camp commun, fusionné */
-      var dc = M.camp && SYNC.distant.camp, avant = JSON.stringify(etat.camp), instant = cloner(etat.camp);
+      var dc = M.camp && SYNC.distant.camp, avant = JSON.stringify(etat.camp), instant = cloner(etat.camp), plotsAvant = cloner(etat.camp.plots);
       var fusion = !dc ? instant : (!SAUVE.chargee && !SYNC.base) ? cloner(dc.data) : borner(fusionner(SYNC.base, instant, dc.data, ''));
       if (!dc) {
         try { await requete('POST', 'camp_etat', [{ partie: SYNC.partie, id: 'camp', data: fusion, version: 1, maj: new Date().toISOString() }], 'return=minimal'); }
@@ -7733,18 +7746,48 @@ async function synchroniser() {
       }
       SAUVE.chargee = true; SYNC.etat = 'ok'; SYNC.dernier = Date.now();
       ecrire();
-      if (avant !== JSON.stringify(etat.camp)) rafraichirApresSync();
+      if (avant !== JSON.stringify(etat.camp)) rafraichirApresSync(plotsAvant);
       break;
     }
-  } catch (err) { SYNC.etat = 'hors ligne'; }
-  finally { SYNC.enCours = false; majOutils(); }
+    SYNC.erreur = '';
+  } catch (err) { SYNC.etat = 'hors ligne'; SYNC.erreur = (err && err.message) || String(err); if (/fetch|network|load/i.test(SYNC.erreur)) SYNC.erreur += ' (réseau, ou en-tête x-partie refusé par Supabase)'; }
+  finally { SYNC.enCours = false; majOutils(); majSyncUI(); }
 }
-/* après une synchronisation qui a changé le camp : on redessine sans interrompre ce qu'on fait */
-function rafraichirApresSync() {
+/* après une synchronisation qui a changé le camp : on redessine sans interrompre ce qu'on fait,
+   et un bâtiment construit ou amélioré par l'autre se construit sous nos yeux */
+function rafraichirApresSync(plotsAvant) {
   STATIQUES = null; SOL = null; MONDE_CLE = '';
-  if (vueActive === 'camp' && $('feuille').classList.contains('cache')) hudCamp();
+  var nouveaux = [];
+  (etat.camp.plots || []).forEach(function (p, i) {
+    var a = plotsAvant && plotsAvant[i]; if (!p.bat) return;
+    if (!a || !a.bat) nouveaux.push({ i: i, txt: T('{0} a construit : {1}', autre(), T(BATIMENTS[p.bat].nom)) });
+    else if ((p.niv || 0) > (a.niv || 0)) nouveaux.push({ i: i, txt: T('{0} a amélioré : {1} (niveau {2})', autre(), T(BATIMENTS[p.bat].nom), p.niv) });
+  });
+  if (vueActive === 'camp') {
+    if ($('feuille').classList.contains('cache')) hudCamp();
+    nouveaux.forEach(function (n, k) { setTimeout(function () { CONSTR = { plot: n.i, t0: maintenant() }; STATIQUES = null; bruit(.4, .06); celebrer(n.txt); }, k * 1600); });
+  }
 }
-setInterval(function () { if (document.visibilityState === 'visible') planifierSync(0); }, 30000);
+/* le petit bouton du camp : partagé, hors ligne, ou seulement sur ce téléphone */
+function majSyncUI() {
+  var b = $('camp-sync'); if (!b) return;
+  var cls = !SYNC.actif ? '' : SYNC.etat === 'ok' ? 'ok' : SYNC.etat === 'hors ligne' ? 'ko' : 'att';
+  b.className = 'camp-sync ' + cls;
+  b.innerHTML = '<i></i>' + ech(T(!SYNC.actif ? 'Sur ce téléphone' : SYNC.etat === 'ok' ? 'Partagé' : SYNC.etat === 'hors ligne' ? 'Hors ligne' : 'Synchro…'));
+}
+if ($('camp-sync')) $('camp-sync').onclick = async function (ev) {
+  ev.stopPropagation(); son('clic');
+  var l = [];
+  if (!SYNC.actif) l.push('Pas de config.js : chaque téléphone garde sa propre partie.');
+  else {
+    l.push('Le camp, les ressources et la carte sont partagés.');
+    l.push(SYNC.dernier ? T('Dernier échange : il y a {0} s.', Math.round((Date.now() - SYNC.dernier) / 1000)) : 'Pas encore d\'échange réussi.');
+    if (SYNC.erreur) l.push(T('Erreur : {0}', SYNC.erreur));
+  }
+  var r = await modal(T('Partage avec {0}', autre()), l, SYNC.actif ? [{ t: 'Synchroniser maintenant' }, { t: 'Fermer', sec: true }] : [{ t: 'Fermer' }]);
+  if (SYNC.actif && r === 0) { SYNC.etat = 'en attente'; majSyncUI(); while (SYNC.enCours) await attendre(50); await synchroniser(); celebrer(SYNC.etat === 'ok' ? 'Partagé' : 'Hors ligne'); }
+};
+setInterval(function () { if (document.visibilityState === 'visible') planifierSync(0); }, 15000);
 
 /* ═════════ démarrage ═════════ */
 function voir(n) {
@@ -7780,12 +7823,19 @@ function ajuster() {
   var mobile = window.innerWidth < 600;
   document.body.classList.toggle('mobile', mobile);
   var cs = getComputedStyle(document.body), barres = mobile ? (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0) : 0;
-  var marge = mobile ? 0 : 40, large = window.innerWidth - marge - (OUTILS && !mobile ? 330 : 0), haut = Math.min(window.innerHeight, document.documentElement.clientHeight || window.innerHeight) - marge - barres;
+  var vv = window.visualViewport, hv = vv ? vv.height : window.innerHeight;
+  var marge = mobile ? 0 : 40, large = (vv && mobile ? vv.width : window.innerWidth) - marge - (OUTILS && !mobile ? 330 : 0), haut = Math.min(window.innerHeight, hv, document.documentElement.clientHeight || window.innerHeight) - marge - barres - (mobile ? 4 : 0);
   var s = Math.min(mobile ? 1.4 : 1, large / 390, haut / 800);
   $('tel').style.transform = 'scale(' + s + ')';
   $('cadre').style.width = (390 * s) + 'px'; $('cadre').style.height = (800 * s) + 'px';
 }
 window.addEventListener('resize', ajuster); ajuster();
+/* au lancement de l'app installée, la hauteur visible n'est pas toujours définitive : on recalcule */
+if (window.visualViewport) window.visualViewport.addEventListener('resize', ajuster);
+window.addEventListener('orientationchange', function () { setTimeout(ajuster, 200); });
+window.addEventListener('pageshow', ajuster);
+document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') { ajuster(); setTimeout(ajuster, 400); } });
+[150, 600, 1500].forEach(function (t) { setTimeout(ajuster, t); });
 function vueQui() {
   voir('qui');
   ['ulysse', 'jasmien'].forEach(function (q) {
@@ -7820,7 +7870,7 @@ $('o-heure').onclick = function () { var l = [null, 12, 19.5, 23]; var k = l.ind
 $('o-semaine').onclick = function () { etat.decalage = (etat.decalage || 0) + SEMAINE_MS; sauver(); rafraichir(); };
 $('o-valider').onclick = function () {
   if (!ZC || !MOTS.length) { $('o-info').textContent = 'Lance d\'abord une expédition dans une zone.'; return; }
-  if (!groupeCourant().length) groupeDe();
+  groupeDe();
   groupeCourant().forEach(function (m) { var p = prog(m); p.q = 3; p.f = 2; p.c = 2; p.vu = Date.now(); recalculer(m, p); });
   sauver(); $('o-info').textContent = 'Groupe validé (' + groupeCourant().length + ' mots).';
 };
