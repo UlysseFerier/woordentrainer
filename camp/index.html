@@ -717,6 +717,10 @@ canvas,#tel,button{-webkit-touch-callout:none;-webkit-user-select:none;user-sele
 .cr-jet small{grid-column:1/3;text-align:center;font-size:11px}
 .chances{display:flex;flex-wrap:wrap;gap:2px 8px;margin-top:3px}
 .chances i{font-style:normal;font-size:11px}
+.nombre.r2{color:#7fc4f2;font-size:20px}.nombre.r3{color:#d4a8f8;font-size:22px}.nombre.r4{color:#ffd24d;font-size:24px;text-shadow:0 0 6px #ffb000,2px 2px 0 #000}
+.vente-choix{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.vente-choix .btn{font-size:13px;padding:8px 4px}
+.et-n{font-family:var(--num);font-size:13px;color:var(--doux);white-space:nowrap;font-weight:400}
+#mo-panneau .b3 .biome.b-conquete{grid-column:1/-1;padding:8px}
 /* les récits : la boîte de dialogue du personnage qui raconte */
 .dlg{position:absolute;inset:0;z-index:42;display:flex;align-items:flex-end;background:linear-gradient(rgba(5,6,16,0) 25%,rgba(5,6,16,.75));padding:0 10px 22px}
 .dlg.cache{display:none}
@@ -4211,7 +4215,7 @@ function enteteBat(id, niv) {
 }
 function feuilleBat(i) {
   var p = etat.camp.plots[i], b = BATIMENTS[p.bat], niv = p.niv, h = enteteBat(p.bat, niv);
-  if (p.bat === 'marche') h += troqueHTML();
+  if (p.bat === 'marche') h += troqueHTML() + venteHTML();
   else if (p.bat === 'tour') h += enchantHTML(niv);
   else if (p.bat === 'batisseur') h += decoHTML(niv);
   else if (p.bat === 'entrepot') h += brocanteHTML(niv);
@@ -4223,7 +4227,7 @@ function feuilleBat(i) {
     celebrer(T('{0} : niveau {1} !', T(b.nom), p.niv)); feuilleBat(i);
   };
   lierAtelier(p.bat, function () { feuilleBat(i); });
-  if (p.bat === 'marche') lierTroc(function () { feuilleBat(i); });
+  if (p.bat === 'marche') { lierTroc(function () { feuilleBat(i); }); lierVente(function () { feuilleBat(i); }); }
   if (p.bat === 'batisseur') lierDeco(function () { feuilleBat(i); });
   if (p.bat === 'entrepot') lierBrocante(function () { feuilleBat(i); });
   if (p.bat === 'tour') lierEnchant(function () { feuilleBat(i); });
@@ -4425,8 +4429,8 @@ function recolter(p, muet) {
    Une liste par semaine = une contrée à conquérir : 15 monstres (compteur commun), puis le gardien,
    qui est le boss de la liste. Chacun l'affronte seul quand son deck est validé. */
 var DEPART = { contree: null, liste: null };
-var DEST_RES = { foret: ['bois', 'herbes'], mine: ['pierre', 'fer', 'cristal', 'or'], chasse: ['cuir'], grotte: ['cristal', 'geode'], potager: ['herbes', 'or'], donjon: ['or', 'cuir', 'objet'] };
-var DEST_NOM = { foret: 'La forêt', mine: 'La mine', chasse: 'La chasse', grotte: 'La grotte', potager: 'Le potager', donjon: 'Le donjon', boss: 'Le gardien' };
+var DEST_RES = { conquete: ['or', 'cuir'], foret: ['bois', 'herbes'], mine: ['pierre', 'fer', 'cristal', 'or'], chasse: ['cuir'], grotte: ['cristal', 'geode'], potager: ['herbes', 'or'], donjon: ['or', 'cuir', 'objet'] };
+var DEST_NOM = { conquete: 'Combattre les monstres', foret: 'La forêt', mine: 'La mine', chasse: 'La chasse', grotte: 'La grotte', potager: 'Le potager', donjon: 'Le donjon', boss: 'Le gardien' };
 var MONSTRES_CONQUETE = 15;
 function icoDest(k) { return k === 'geode' ? icoURL('ic-geode') : k === 'objet' ? icoURL('relique', { R: '#ffd24d' }, 'q-obj') : icoRes(k); }
 function carteJeu() {
@@ -4502,17 +4506,18 @@ function panneauMonde() {
       if (e === 'conquete') {
         var fini = c.fait >= MONSTRES_CONQUETE;
         h += '<div class="mo-barre"><i style="width:' + Math.min(100, c.fait / MONSTRES_CONQUETE * 100) + '%"></i><span>' + T('{0} / {1} monstres battus', Math.min(c.fait, MONSTRES_CONQUETE), MONSTRES_CONQUETE) + '</span></div>';
-        h += '<p class="mo-g">' + T('Gardien : {0}', ech(T(C0.g.nom))) + '<small>' + T(!fini ? 'Il sort quand ses 15 monstres sont battus, à vous deux, et que ton deck est validé.' : bossDispo(numCourant()) ? 'Il t\'attend : c\'est le boss de la liste.' : 'Ses monstres sont battus. Il sort quand ton deck est validé.') + '</small></p>';
+        h += '<p class="mo-g">' + T('Gardien : {0}', ech(T(C0.g.nom))) + '<small>' + T(!fini ? 'Il sort quand ses 15 monstres sont battus, à vous deux, et que tous tes mots de la semaine sont validés.' : bossDispo(numCourant()) ? 'Il t\'attend : c\'est le boss de la liste.' : 'Ses monstres sont battus. Il sort quand tous tes mots de la semaine sont validés (et tes bilans réussis).') + '</small></p>';
       }
       if (!listeDeNum(numCourant())) h += '<p class="mo-desc">' + T('La liste {0} n\'est pas encore en ligne : tu révises la liste {1}.', numCourant(), DEPART.liste) + '</p>';
       var listes = LISTES.filter(function (l) { return zoneOuverte(l.n) && J().zones[l.id] && J().zones[l.id].deck; });
       if (listes.length > 1) h += '<div class="mo-listes">' + T('Mots :') + listes.map(function (l) { return '<button data-liste="' + l.n + '" class="' + (l.n === DEPART.liste ? 'on' : '') + '">' + T('Liste {0}', l.n) + '</button>'; }).join('') + '</div>';
-      if (bonusJourDispo() || el) h += '<p class="bonus-jour">' + (bonusJourDispo() ? T('Premier départ du jour : butin double.') : '') + (el ? ' ' + T('Élixir prêt : {0}.', T(el.nom)) : '') + '</p>';
+      if (bonusJourDispo() || el) h += '<p class="bonus-jour">' + (bonusJourDispo() ? T('Premier départ du jour : butin double sur tes {0} premières réponses.', BUDGET) : '') + (el ? ' ' + T('Élixir prêt : {0}.', T(el.nom)) : '') + '</p>';
       var dests = ['foret', 'mine', 'chasse', 'grotte', 'donjon']; if (n === 1) dests.splice(4, 0, 'potager');
+      if (e === 'conquete' && c.fait < MONSTRES_CONQUETE) { dests = ['conquete']; h += '<p class="mo-desc">' + T('Tant que ses 15 monstres ne sont pas battus, on ne peut ni récolter ni explorer ici : seulement combattre.') + '</p>'; }
       if (contreeGardien() === n && bossDispo(numCourant()) && DEPART.liste === numCourant()) dests.push('boss');
       h += '<div class="biomes b3">' + dests.map(function (d) {
         var gauche = d === 'boss' ? ['cristal', 'or'] : DEST_RES[d];
-        return '<button class="biome b-' + d + (d === 'boss' ? ' boss' : '') + '" data-dest="' + d + '"><b>' + ech(T(DEST_NOM[d])) + '</b><span class="br"><span class="ics">' + gauche.map(function (k) { return img(icoDest(k), 15); }).join('') + '</span></span></button>';
+        return '<button class="biome b-' + d + (d === 'boss' || d === 'conquete' ? ' boss' : '') + '" data-dest="' + d + '"><b>' + ech(T(DEST_NOM[d])) + '</b><span class="br"><span class="ics">' + gauche.map(function (k) { return img(icoDest(k), 15); }).join('') + '</span></span></button>';
       }).join('') + '</div>';
     }
   }
@@ -4860,12 +4865,12 @@ function choisirLettre(b, ch) {
   var r = cur.r;
   if (r.pos < r.lettres.length && ch.toLowerCase() === r.lettres[r.pos].toLowerCase()) {
     b.disabled = true; r.pos++; sauterNonLettres(); majCases(); bip(500 + r.pos * 40, 500 + r.pos * 40, .04, 'square', .03); verifierRune();
-  } else { r.rate = true; secouerEl(b); bip(200, 120, .1, 'square', .05); }
+  } else { /* une lettre mal placée ne compte pas comme une faute : la tuile tremble, c'est tout */ r.mauvais = (r.mauvais || 0) + 1; secouerEl(b); bip(200, 120, .1, 'square', .05); }
 }
 function verifierRune() {
   var r = cur.r;
   /* l'article raté ne compte pas comme une faute : on le signale, c'est tout */
-  if (r.pos >= r.lettres.length && r.artOk) repondreForme(!r.rate, r.rate ? T('Trouvé, mais avec une erreur en chemin : « {0} ».', cur.solution) : r.artFaux ? T('Juste ! Seul l\'article était faux : « {0} ».', cur.solution) : null);
+  if (r.pos >= r.lettres.length && r.artOk) repondreForme(true, r.artFaux ? T('Juste ! Seul l\'article était faux : « {0} ».', cur.solution) : null);
 }
 /* mot mystère : un pendu à partir de la traduction */
 function montrerMyst() {
@@ -5019,12 +5024,16 @@ function nouvelleExpe(mode, n) {
   if (el) { H().conso[el]--; H().elixirPret = null; }
   EXPE = { mode: mode, zone: n, contree: mode === 'boss' ? contreeGardien() || 1 : mode === 'quete' ? 1 : DEPART.contree || 1, res: RES_MODE[mode] || 'or', elixir: el, butin: {}, mots: [], objets: [], q: 0, budget: BUDGET, faits: { arbres: 0, prof: 0, coffres: 0, tues: 0, proies: 0, geodes: 0 }, geodes: [], pousses: 0 };
   /* le premier départ de la journée rapporte double : une raison de revenir chaque jour */
+  /* on reste aussi longtemps qu'on veut : seuls le donjon et le gardien gardent leur torche */
+  EXPE.budget = mode === 'donjon' || mode === 'boss' ? BUDGET : Infinity;
   if (mode !== 'boss' && bonusJourDispo()) { EXPE.bonus = 2; J().bonusJour = jourCle(); }
   H().pv = pvMax(); combo = 0; session = { derniers: [], depuisRappel: 0 }; recents = [];
   groupeDe();
   J().journal.exp++; sauver();
 }
 function lancerDepart(dest, n) {
+  /* une contrée en conquête : tant que ses 15 monstres ne sont pas battus, on n'y fait que combattre */
+  if (dest !== 'conquete' && dest !== 'boss' && DEPART.contree && etatContree(DEPART.contree) === 'conquete' && carteJeu().fait < MONSTRES_CONQUETE) return;
   ac(); entrerZone(n);
   if (!ZC.deck) { vueDeck(n, function () { lancerDepart(dest, n); }); return; }
   if (dest === 'boss') { nouvelleExpe('boss', n); scene('boss'); return; }
@@ -5047,6 +5056,7 @@ function debutMode() {
   else if (m === 'chasse') { EXPE.chasse = { proie: null, etape: 0, alerte: 0 }; scene('chasse'); }
   else if (m === 'grotte') { EXPE.grotte = { cam: 0, camCible: 0, geodes: [], ouvre: -1, coups: 0, requis: 0, sec: 0 }; scene('grotte'); }
   else if (m === 'potager') { EXPE.potager = {}; scene('potager'); }
+  else if (m === 'conquete') combatConquete();
   else if (m === 'quete') { if (EXPE.quete.type === 'recit') { lancerEtapeRecit(); return; } scene(estQJ(EXPE.quete.type) ? EXPE.quete.type : EXPE.quete.type === 'bete' ? 'bete' : 'troupe'); }
 }
 
@@ -5055,7 +5065,7 @@ async function scene(f, opts) {
   opts = opts || {};
   C = { famille: f, verrou: true, n: 0, ok: 0, garde: stat('garde'), sonne: false, intro: true, groupe: null, rythme: ['loup', 'combat', 'elite', 'troupe', 'bete', 'boss'].indexOf(f) !== -1, max: opts.max || 0, tues: 0 };
   var b = biome(EXPE.mode) || { decor: 'plaine' };
-  SC.decor = f === 'boss' ? 'antre' : f === 'gardien' ? 'gardien' : EXPE.mode === 'quete' ? (DECOR_QJ[f] || 'plaine') : b.decor;
+  SC.decor = f === 'boss' ? 'antre' : f === 'gardien' ? 'gardien' : EXPE.mode === 'quete' ? (DECOR_QJ[f] || 'plaine') : EXPE.mode === 'conquete' ? decorConquete() : b.decor;
   SC.heros.ko = false; SC.heros.lunge = null; SC.heros.chute = null; SC.heros.base = 60; SC.heros.coup = null;
   /* l'outil en main selon le lieu : la hache en forêt, la pioche sous terre, l'arc à la chasse */
   SC.heros.outil = f === 'arbre' ? 'hache' : f === 'mine' ? 'pioche' : f === 'grotte' ? (EXPE.grotte && EXPE.grotte.ouvre >= 0 ? 'pioche' : 'torche') : f === 'chasse' ? 'arc' : f === 'potager' || (estQJ(f) && f !== 'palissade') ? 'main' : null;
@@ -5110,7 +5120,8 @@ async function scene(f, opts) {
     if (f === 'fouille' || EXPE.mode !== 'donjon') finExpedition(false); else { EXPE.salle.fait = true; voirCarte(); }
     return;
   }
-  if (EXPE.bonus && !EXPE.bonusVu) { EXPE.bonusVu = true; await banniere('Premier départ du jour', 'Tout le butin de cette expédition compte double.', 1400); }
+  if (!EXPE || !C) return;   /* on a pu rentrer au camp pendant l'entrée en scène */
+  if (EXPE.bonus && !EXPE.bonusVu) { EXPE.bonusVu = true; await banniere('Premier départ du jour', T('Le butin de tes {0} premières réponses compte double.', BUDGET), 1400); }
   await banniere(titre, sous, 1200);
   prochaine();
 }
@@ -5173,7 +5184,8 @@ async function fuitProie() {
 function nouvelArbre() {
   var r = Math.random();
   if (r < .15) return { nom: 'Un arbre ancien', cle: 'n-ancien', requis: 5, fait: 0, gros: 2.5 };
-  return mel([{ nom: 'Un chêne', cle: 'n-arbre', requis: 3, fait: 0, gros: 1 }, { nom: 'Un pin', cle: 'n-pin', requis: 3, fait: 0, gros: 1 }, { nom: 'Un bouleau', cle: 'n-bouleau', requis: 3, fait: 0, gros: 1.2 }])[0];
+  var a = mel([{ nom: 'Un chêne', cle: 'n-arbre', requis: 4, fait: 0, gros: 1 }, { nom: 'Un pin', cle: 'n-pin', requis: 4, fait: 0, gros: 1 }, { nom: 'Un bouleau', cle: 'n-bouleau', requis: 4, fait: 0, gros: 1.2 }])[0];
+  a.requis = hasard(4, 5); return a;
 }
 function entiteArbre(a) { return { nom: a.nom, spr: a.cle, cle: a.cle, noeud: true, pv: a.requis - a.fait, pvMax: a.requis, x: 0, base: 60, flash: 0 }; }
 async function abattre(parfait) {
@@ -5283,6 +5295,7 @@ async function apresScene() {
   if (f === 'coffre' || f === 'tresor') await ouvrirCoffre(f);
   if (f === 'gardien') { debutMode(); return; }
   if (f === 'loup') { if (EXPE.mode === 'chasse') { EXPE.chasse.etape = 0; EXPE.chasse.alerte = 0; if (!EXPE.chasse.proie) EXPE.chasse.proie = nouvelleProieV6(); } await scene(EXPE.mode === 'chasse' ? 'chasse' : 'arbre'); return; }
+  if (f === 'fortuit') { await apresFortuit(); return; }
   if (EXPE.recit && (f === 'recit' || f === 'bete')) { await apresRecit(); return; }
   if (f === 'troupe' || f === 'bete') { EXPE.queteReussie = true; await banniere('Quête accomplie !', null, 900); finExpedition(false); return; }
   if (estQJ(f)) {
@@ -5292,6 +5305,7 @@ async function apresScene() {
     return;
   }
   if (f === 'boss') { finExpedition(false); return; }
+  if (EXPE.mode === 'conquete') { await suiteConquete(); return; }
   if (EXPE.mode === 'donjon') { EXPE.salle.fait = true; voirCarte(); return; }
   finExpedition(false);
 }
@@ -5372,7 +5386,8 @@ function majCombo() {
 function majBarre() {
   if (!EXPE) return;
   var h = '<span class="et">';
-  for (var i = 0; i < EXPE.budget; i++) h += '<i class="' + (i < EXPE.q ? 'fait' : i === EXPE.q && cur && !cur.fait ? 'ici' : '') + '"></i>';
+  if (isFinite(EXPE.budget)) for (var i = 0; i < EXPE.budget; i++) h += '<i class="' + (i < EXPE.q ? 'fait' : i === EXPE.q && cur && !cur.fait ? 'ici' : '') + '"></i>';
+  else h += '<b class="et-n">' + T('{0} réponses', EXPE.q) + (EXPE.bonus && EXPE.q < BUDGET ? ' · ×2 ' + T('encore {0}', BUDGET - EXPE.q) : '') + '</b>';
   h += '</span><span class="bt">';
   var cles = Object.keys(EXPE.butin).filter(function (k) { return EXPE.butin[k] > 0; }).sort(function (a, b) { return EXPE.butin[b] - EXPE.butin[a]; });
   cles.slice(0, 4).forEach(function (k) { h += chip(k, EXPE.butin[k]); });
@@ -5391,7 +5406,7 @@ function hud(id) {
 /* ── le butin ── */
 function gagner(k, n, pas) {
   if (!EXPE) return 0;
-  var f = n * (cur && cur.sansPts && !pas ? .75 : 1) * (EXPE.bonus || 1);
+  var f = n * (cur && cur.sansPts && !pas ? .75 : 1) * (EXPE.bonus && EXPE.q < BUDGET ? EXPE.bonus : 1);
   var v = Math.floor(f) + (Math.random() < f - Math.floor(f) ? 1 : 0);
   if (!v) return 0;
   EXPE.butin[k] = (EXPE.butin[k] || 0) + v;
@@ -5449,13 +5464,15 @@ async function consequence(juste, info, opts) {
       await frappeHeros(0, 2, false, true);
       m.prof++; m.max = Math.max(m.max, m.prof); EXPE.faits.prof = Math.max(EXPE.faits.prof, m.prof);
       /* un coup de pioche : souvent rien, parfois un bloc, rarement deux */
-      var c = couche(m.prof), riche = Math.random() < .08, q = (c.res === 'cristal' ? .35 : c.res === 'fer' ? .5 : .65) * multi(c.res, true) * (riche ? 2 : 1);
-      var v = Math.min(riche ? 3 : 2, Math.floor(q) + (Math.random() < q - Math.floor(q) ? 1 : 0));
+      var c = couche(m.prof), tr = (SC.ennemi && SC.ennemi.rarete) || 0, riche = tr > 0, q = (c.res === 'cristal' ? .35 : c.res === 'fer' ? .5 : .65) * multi(c.res, true) * multRenc(tr);
+      var v = Math.min(2 + tr * 2, Math.floor(q) + (Math.random() < q - Math.floor(q) ? 1 : 0));
       if (v) m.chariot[c.res] = (m.chariot[c.res] || 0) + v;
       if (m.prof >= 10 && Math.random() < .12) { var sp = rareContree(); m.chariot[sp] = (m.chariot[sp] || 0) + 1; nombre(T('{0} !', nomRes(sp)), 48, 34, 'fort'); }
-      nombre(v ? (riche ? T('Veine riche ! ') : '') + '+' + v + ' ' + nomRes(c.res) : T('Rien que des cailloux'), 62, 22, v ? (riche ? 'fort' : 'info') : 'mal');
+      if (tr >= 2) { m.chariot.cristal = (m.chariot.cristal || 0) + tr - 1; } if (tr === 3) { var spE = rareContree(); m.chariot[spE] = (m.chariot[spE] || 0) + 1; }
+      nombre(v ? (riche ? T(['', 'Veine rare ! ', 'Veine épique ! ', 'Veine légendaire ! '][tr]) : '') + '+' + v + ' ' + nomRes(c.res) : T('Rien que des cailloux'), 62, 22, v ? (riche ? 'fort' : 'info') : 'mal');
       if (Math.random() < .04) { m.chariot.or = (m.chariot.or || 0) + 2; nombre('Une pépite d\'or !', 48, 34, 'fort'); }
       changerFilon();
+      if (await peutEtreFortuit(.035)) return 'scene';
     } else {
       secouer(4, 400); son('mal');
       for (var p = 0; p < 30; p++) SC.parts.push({ x: Math.random() * 96, y: -2, vx: (Math.random() - .5) * .3, vy: .5 + Math.random(), g: .06, vie: 50, c: Math.random() < .5 ? '#6a6070' : '#8a8090' });
@@ -5544,13 +5561,14 @@ async function ennemiAbattu() {
   if (e.atk && Math.random() < CHANCE_RARE * (1 + stat('special%') / 100)) { gagner(rareContree(), 1); nombre(T('{0} !', nomRes(rareContree())), 48, 30, 'fort'); }
   var dbl = Math.random() * 100 < stat('vol') ? 2 : 1;
   for (var r = 0; r < dbl; r++) {
-    if (e.drop && e.drop !== 'or') gagnerRes(e.drop, .6);
-    gagnerRes('or', f === 'loup' ? .4 : 1.1);
+    if (e.drop && e.drop !== 'or') gagnerRes(e.drop, .6 * multRenc(e.rarete));
+    gagnerRes('or', (f === 'loup' ? .4 : 1.1) * multRenc(e.rarete));
   }
   if (dbl > 1) nombre('Butin double', 48, 40, 'info');
   if (f === 'loup') { gagnerRes('cuir', C.cuir || 1); if (EXPE.mode === 'chasse') { EXPE.faits.proies++; progresQuete('proies', 1); } }
   if (e.elite) { gagnerSpeciale(.7); gagnerRes('cristal', .8); }
-  if (e.atk && Math.random() < CHANCE_DROP[e.elite ? 'elite' : 'mob'] * dbl) dropObjet(e.elite ? 'elite' : 'mob');
+  if (e.rarete) bonusRarete(e.rarete);
+  if (e.atk && Math.random() < CHANCE_DROP[e.elite ? 'elite' : 'mob'] * dbl * (1 + (e.rarete || 0))) dropObjet(e.elite || e.rarete >= 2 ? 'elite' : 'mob');
   if (C.groupe) { if (await suiteGroupe(f)) return; C.fini = true; return; }
   if (f === 'troupe') {
     C.tues++;
@@ -5794,6 +5812,7 @@ function dessinerExtras(x, now) {
   if (C && C.famille === 'mine' && EXPE && EXPE.mine) { var c = couche(EXPE.mine.prof + 1); x.fillStyle = c.teinte; x.fillRect(0, 0, 96, 72); dessinerWagon(x, now); }
   if (C && C.famille === 'chasse') dessinerTirV6(x, now);
   dessinerOutilScene(x, now);
+  auraRarete(x, now);
   if (C && C.famille === 'grotte') dessinerNoir(x, now); else if (!(C && C.famille === 'champi')) ambiance(x, now);
   meteoTheme(x, now);
   dessusQuete(x, now);
@@ -5834,6 +5853,23 @@ function afficherCadeaux() {
     };
     z.appendChild(b);
   });
+}
+
+/* ═════════ la conquête : des combats à la suite, dans le paysage de la contrée ═════════ */
+function decorConquete() { var b = CONTREES[EXPE.contree] && CONTREES[EXPE.contree].b; return ['bois', 'marais', 'foret', 'fees', 'maudit'].indexOf(b) !== -1 ? 'foret' : 'plaine'; }
+function rencontresConquete() {
+  var b = CONTREES[EXPE.contree] && CONTREES[EXPE.contree].b;
+  if (['necro', 'citadelle', 'ruines', 'mines', 'cendre'].indexOf(b) !== -1) return RENCONTRES.donjon;
+  return RENCONTRES.foret.concat([['gobelin', 'gobelin', 'chaman'], ['bandit', 'bandit'], ['orc', 'gobelin']]);
+}
+function combatConquete() { EXPE.combats = (EXPE.combats || 0) + 1; scene(EXPE.combats % 4 === 0 ? 'elite' : 'combat'); }
+async function suiteConquete() {
+  var X = EXPE, cj = carteJeu();
+  if (cj.conquete === EXPE.contree && cj.fait >= MONSTRES_CONQUETE && !EXPE.degage) { EXPE.degage = true; son('niveau'); await banniere('La contrée est dégagée !', 'Ses 15 monstres sont battus : on peut maintenant y récolter. Le gardien attend que tous tes mots de la semaine soient validés.', 2200); }
+  else await banniere('Victoire !', 'D\'autres monstres approchent…', 900);
+  if (EXPE !== X) return;
+  if (await peutEtreFortuit(.12)) return;
+  combatConquete();
 }
 
 /* ═════════ v5 : les mini-jeux et l'ambiance des lieux ═════════ */
@@ -5986,12 +6022,12 @@ function etiquetteLieu(f) {
   var h = '', i;
   if (f === 'arbre') {
     var F = EXPE.foret, a = F.arbre;
-    if (F.etape === 'abattre') { $('e-nom').textContent = T(a.nom); for (i = 0; i < a.requis; i++) h += '<span class="' + (i < a.fait ? 'vert' : 'vide') + '"></span>'; }
-    else { var et = ['ebrancher', 'scier', 'fendre'], k = et.indexOf(F.etape); $('e-nom').textContent = T({ ebrancher: 'Ébrancher le tronc', scier: 'Scier en rondins', fendre: 'Fendre en planches' }[F.etape] || 'Les planches'); for (i = 0; i < 3; i++) h += '<span class="' + (i < k ? 'vert' : 'vide') + '"></span>'; }
+    if (F.etape === 'abattre') { $('e-nom').textContent = T(a.nom) + etoiles(a.rarete); for (i = 0; i < a.requis; i++) h += '<span class="' + (i < a.fait ? 'vert' : 'vide') + '"></span>'; }
+    else { var et = ['ebrancher', 'scier', 'fendre'], k = et.indexOf(F.etape), bes = besoinForet(F); $('e-nom').textContent = T({ ebrancher: 'Ébrancher le tronc', scier: 'Scier en rondins', fendre: 'Fendre en planches' }[F.etape] || 'Les planches') + (k >= 0 ? ' · ' + T('étape {0}/3', k + 1) : ''); if (k >= 0) for (i = 0; i < bes; i++) h += '<span class="' + (i < (F.prog || 0) ? 'vert' : 'vide') + '"></span>'; }
   } else if (f === 'chasse') {
     var K = EXPE.chasse; if (!K.proie) return;
-    $('e-nom').textContent = majus(T(K.proie.nom).replace(/^(un|une|een) /i, '')) + (K.alerte ? ' · ' + T('aux aguets') : '');
-    ['Flèche', 'Encoche', 'Vise'].forEach(function (n, j) { h += '<span class="' + (j < K.etape ? 'vert' : 'vide') + '"></span>'; });
+    $('e-nom').textContent = majus(T(K.proie.nom).replace(/^(un|une|een) /i, '')) + etoiles(K.proie.rarete) + (K.alerte ? ' · ' + T('aux aguets') : '');
+    if (!K.besoin) K.besoin = hasard(4, 5); for (var j2 = 0; j2 < K.besoin; j2++) h += '<span class="' + (j2 < K.etape ? 'vert' : 'vide') + '"></span>';
   } else if (f === 'grotte') {
     var G = EXPE.grotte;
     if (G.ouvre >= 0) { var g = GEODE[G.geodes[G.ouvre].g], R = RARETES[g.r]; $('e-nom').textContent = T('Géode {0}', T(R.nom).toLowerCase()); for (i = 0; i < G.requis; i++) h += '<span style="' + (i < G.coups ? 'background:' + R.c : '') + '" class="' + (i < G.coups ? '' : 'vide') + '"></span>'; }
@@ -6004,7 +6040,9 @@ function etiquetteLieu(f) {
   $('e-barre').innerHTML = h ? '<div class="segs">' + h + '</div>' : '';
 }
 
-/* ═════════ la forêt : abattre, ébrancher, scier, fendre ═════════ */
+/* ═════════ la forêt : abattre, ébrancher, scier, fendre ═════════
+   Chaque étape demande 4 ou 5 bonnes réponses avant son mini-jeu. */
+function besoinForet(F) { if (!F.besoin) F.besoin = hasard(4, 5); return F.besoin; }
 function nouvelleForet() { return { arbre: nouvelArbre(), etape: 'abattre', score: 0, tronc: null }; }
 async function consequenceForet(juste) {
   var X = EXPE;
@@ -6020,14 +6058,19 @@ async function consequenceForet(juste) {
     }
     majEtiquette(); return;
   }
-  if (!juste) { nombre(mel(['Tu hésites…', 'Le bois résiste', 'Une écharde !'])[0], 60, 28, 'mal'); bip(180, 120, .12, 'square', .04); return; }
+  if (!juste) { F.prog = Math.max(0, (F.prog || 0) - 1); nombre(mel(['Tu hésites…', 'Le bois résiste', 'Une écharde !'])[0], 60, 28, 'mal'); bip(180, 120, .12, 'square', .04); majEtiquette(); return; }
+  var bes = besoinForet(F); F.prog = (F.prog || 0) + 1;
+  await frappeHeros(0, 1, false, true); gagnerRes('bois', .15, true);
+  for (var cp = 0; cp < 6; cp++) SC.parts.push({ x: 50 + Math.random() * 40, y: 55, vx: (Math.random() - .5) * .8, vy: -.6 - Math.random() * .5, g: .08, vie: 22, c: Math.random() < .5 ? '#e0c090' : '#a8784a' });
+  if (F.prog < bes) { nombre({ ebrancher: 'Tu dégages les branches…', scier: 'Tu marques les coupes…', fendre: 'Tu cales les coins…' }[F.etape] || '…', 60, 24, 'info'); majEtiquette(); return; }
+  F.prog = 0; F.besoin = 0; majEtiquette();
   var ok = false;
   if (F.etape === 'ebrancher') { ok = await mjBranches(); if (!C || EXPE !== X) return 'fin'; F.etape = 'scier'; F.tronc.coupe = true; }
   else if (F.etape === 'scier') { ok = await mjScie(); if (!C || EXPE !== X) return 'fin'; F.etape = 'fendre'; F.tronc.rondins = true; }
   else if (F.etape === 'fendre') { ok = await mjFendre(); if (!C || EXPE !== X) return 'fin'; F.etape = 'fini'; F.tronc.planches = true; }
   if (ok) F.score++;
   if (F.etape === 'fini') {
-    var n = gagnerRes('bois', (.4 + F.score * .4) * a.gros, true);
+    var n = gagnerRes('bois', (.4 + F.score * .4) * a.gros * 2 * multRenc(a.rarete), true); bonusRarete(a.rarete);
     nombre(n ? T(n > 1 ? '{0} planches !' : '{0} planche !', n) : T('Du bois trop tordu : rien à garder'), 48, 18, n ? 'fort' : 'mal');
     if (Math.random() < .3) gagnerRes('herbes', .6);
     if (a.gros > 2) gagnerSpeciale(.5);
@@ -6035,6 +6078,7 @@ async function consequenceForet(juste) {
     await attendre(700);
     EXPE.foret = nouvelleForet();
     if (EXPE.q < EXPE.budget && Math.random() < .15) { await scene('loup', {}); return 'scene'; }
+    if (await peutEtreFortuit(.12)) return 'scene';
     SC.heros.x = 36; await apparition(entiteArbre(EXPE.foret.arbre));
   }
   majEtiquette();
@@ -6152,13 +6196,14 @@ async function consequenceChasse(juste) {
     if (K.alerte >= 2) { await fuiteV6('Il t\'a repéré…'); return; }
     nombre('Il dresse l\'oreille !', 60, 22, 'mal'); bip(500, 700, .08, 'triangle', .04); majEtiquette(); return;
   }
+  if (!K.besoin) K.besoin = hasard(4, 5);
   K.etape++; SC.geste = { t0: maintenant(), dur: 420 };
-  nombre(['', 'Tu prends une flèche', 'Tu l\'encoches', 'Tu vises…'][K.etape], 48, 20, 'info'); bip(300 + K.etape * 120, 300 + K.etape * 120, .06, 'triangle', .03);
+  nombre(K.etape >= K.besoin ? 'Tu vises…' : K.etape === 1 ? 'Tu prends une flèche' : K.etape === 2 ? 'Tu l\'encoches' : K.etape === 3 ? 'Tu tends la corde' : 'Tu retiens ton souffle', 48, 20, 'info'); bip(300 + K.etape * 100, 300 + K.etape * 100, .06, 'triangle', .03);
   majEtiquette();
-  if (K.etape < 3) return;
+  if (K.etape < K.besoin) return;
   await attendre(260);
   var r = await tirCloche(); if (!C || EXPE !== X) return 'fin';
-  K.etape = 0; K.alerte = 0;
+  K.dernier = K.besoin; K.etape = 0; K.alerte = 0; K.besoin = 0;
   if (r === 'tete' || r === 'touche') { var r2 = await attraperV6(r); if (r2 === 'scene') return 'scene'; }
   else if (r === 'fuite') await fuiteV6('Trop lent : il s\'éloigne');
   else if (K.proie.combat && Math.random() < .5) { var pc = K.proie; K.proie = null; await scene('loup', { mob: 'sanglier', pv: 60, atk: 7, cuir: pc.cuir, titre: 'Raté ! Le sanglier charge !' }); return 'scene'; }
@@ -6172,16 +6217,17 @@ async function attraperV6(r) {
   if (pr.combat) { K.proie = null; await scene('loup', { mob: 'sanglier', pv: r === 'tete' ? 14 : 28, atk: 7, cuir: pr.cuir, titre: 'Blessé, le sanglier charge !' }); return 'scene'; }
   son('niveau'); particulesDe(spr(e.spr, e.pal, e.cle), e.x, e.base - spr(e.spr, e.pal, e.cle).height, .4); e.mort = true;
   nombre(T(r === 'tete' ? 'Tir parfait : {0} pour le camp !' : 'Touché : {0} pour le camp !', minus(T(pr.nom))), 48, 18, 'fort');
-  gagnerRes('cuir', pr.cuir * (r === 'tete' ? 1.6 : 1)); if (Math.random() < pr.sp) gagnerSpeciale(1);
+  gagnerRes('cuir', pr.cuir * (r === 'tete' ? 1.6 : 1) * (K.dernier || 3) / 3 * multRenc(pr.rarete)); bonusRarete(pr.rarete); if (Math.random() < pr.sp) gagnerSpeciale(1);
   EXPE.faits.proies++; progresQuete('proies', 1);
   await attendre(700);
-  K.proie = nouvelleProieV6(); SC.tir = null; await apparition(entiteProieV6(K.proie));
+  K.proie = nouvelleProieV6(); SC.tir = null; if (await peutEtreFortuit(.14)) return 'scene';
+  await apparition(entiteProieV6(K.proie));
   return null;
 }
 async function fuiteV6(msg) {
   var K = EXPE.chasse, e = SC.ennemi; if (e) e.fuite = { t0: maintenant(), dur: 500 };
   nombre(msg, 48, 26, 'mal'); await attendre(520);
-  K.proie = nouvelleProieV6(); K.etape = 0; K.alerte = 0; SC.tir = null;
+  K.proie = nouvelleProieV6(); K.etape = 0; K.alerte = 0; K.besoin = 0; SC.tir = null;
   await apparition(entiteProieV6(K.proie)); majEtiquette();
 }
 function ventTexte(v) { var a = Math.abs(v); return a < .0008 ? T('nul') : (a < .0022 ? T('léger') : T('fort')) + (v > 0 ? ' →' : ' ←'); }
@@ -6287,7 +6333,7 @@ async function consequenceGrotte(juste) {
     if (!juste) { nombre('La pioche dérape', 60, 26, 'mal'); bip(190, 110, .3, 'sawtooth', .05); return; }
     await frappeHeros(0, 2, false, true); G.coups++;
     var f0 = 600 + G.coups * 140; bip(f0, f0 * 1.5, .18, 'triangle', .06);
-    if (G.coups >= G.requis) await ouvrirGeodeV6();
+    if (G.coups >= G.requis) { await ouvrirGeodeV6(); if (await peutEtreFortuit(.25)) return 'scene'; }
     majEtiquette(); return;
   }
   if (!juste) { G.vacille = maintenant(); nombre(mel(['Une chauve-souris !', 'La torche vacille', 'Un bruit dans le noir…'])[0], 50, 20, 'mal'); bip(300, 200, .12, 'sine', .04); return; }
@@ -6309,7 +6355,7 @@ function clicScene(ev) {
     if (gd.etat !== 'vue' || G.ouvre >= 0) return;
     var sx = gd.wx - G.cam, sy = solCave(gd.wx) - 17;
     if (m.x >= sx - 3 && m.x <= sx + 23 && m.y >= sy - 4 && m.y <= sy + 22) {
-      var g = GEODE[gd.g]; G.ouvre = i; G.coups = 0; G.requis = Math.max(1, RARETES[g.r].q - stat('geode'));
+      var g = GEODE[gd.g]; G.ouvre = i; G.coups = 0; G.requis = Math.max(3, [4, 4, 5, 5][g.r] - stat('geode'));
       gd.etat = 'ouvre'; gd.ox = sx; SC.heros.outil = 'pioche'; son('or');
       nombre(T('Géode {0} : {1} coups de pioche pour l\'ouvrir', T(RARETES[g.r].nom).toLowerCase(), G.requis), 48, 16, 'fort');
       majEtiquette();
@@ -6323,7 +6369,7 @@ async function ouvrirGeodeV6() {
   SC.geodeOuverte = { g: g, t0: maintenant(), x: 44, base: 60 };
   son('niveau'); secouer(2, 320); SC.eclair = maintenant() + 120; etincelles(54, 51, 26, [R.c, '#ffffff', g.int[1]], 1.1);
   await attendre(650);
-  gagnerRes('cristal', R.cristal, true); if (R.sp && Math.random() < R.sp) gagnerSpeciale(1);
+  gagnerRes('cristal', R.cristal * 1.5, true); if (R.sp && Math.random() < R.sp) gagnerSpeciale(1);
   var nouvelle = !J().geodes[g.id] && EXPE.geodes.indexOf(g.id) === -1;
   EXPE.geodes.push(g.id); EXPE.faits.geodes++;
   await banniere(T(g.nom), nouvelle ? T('{0} · nouvelle pour ta collection', T(R.nom)) : T(R.nom), 1300);
@@ -6435,10 +6481,11 @@ async function consequencePotager(juste) {
   SC.geste = { t0: maintenant(), dur: 600, type: action };
   var P = pot[cible];
   if (action === 'recolte') {
-    var g = GRAINE[P.g]; son('niveau');
-    for (var kk in g.rec) { if (kk === 'sp') { if (Math.random() < .5) gagnerSpeciale(g.rec.sp); } else gagnerRes(kk, g.rec[kk] * .7, true); }
+    var g = GRAINE[P.g], trp = rareteParcelle(P); son('niveau');
+    for (var kk in g.rec) { if (kk === 'sp') { if (Math.random() < .5) gagnerSpeciale(g.rec.sp); } else gagnerRes(kk, g.rec[kk] * .7 * multRenc(trp), true); }
+    bonusRarete(trp);
     for (var q = 0; q < 10; q++) SC.parts.push({ x: PARC_X[cible], y: 52, vx: (Math.random() - .5) * .8, vy: -.6 - Math.random() * .5, g: .05, vie: 26, c: [g.fleur, '#7cc25a', '#ffffff'][q % 3] });
-    P.g = null; P.p = 0; progresQuete('recoltes', 1); nombre(T('Récolte : {0}', T(g.nom)), 48, 20, 'fort');
+    P.g = null; P.p = 0; P.r = null; progresQuete('recoltes', 1); nombre(T('Récolte : {0}', T(g.nom)) + etoiles(trp), 48, 20, 'fort');
   } else if (action === 'seme') {
     var gs = grainePourSemer(); payer(gs.cout); P.g = gs.id; P.p = 0; bruit(.15, .04);
     nombre(T('Tu sèmes : {0}', T(gs.nom)), 48, 20, 'info');
@@ -6484,7 +6531,7 @@ function dessinerOutilScene(x, now) {
   }
   var o = outilPorte(H0.outil); if (!o) return;
   if (H0.outil === 'arc') {
-    var K = EXPE && EXPE.chasse, tension = SC.tir && SC.tir.phase === 'vise' && SC.tir.drag ? paramTir(SC.tir.drag).p : K && K.etape >= 3 ? .3 : 0;
+    var K = EXPE && EXPE.chasse, tension = SC.tir && SC.tir.phase === 'vise' && SC.tir.drag ? paramTir(SC.tir.drag).p : K && K.etape >= Math.max(3, (K.besoin || 3) - 1) ? .3 : 0;
     var encoche = !!(K && (K.etape >= 2 || (SC.tir && SC.tir.phase === 'vise')));
     if (K && K.etape === 1 && !encoche) { x.fillStyle = '#c9a46a'; x.fillRect(mx - 2, my - 4, 1, 8); x.fillStyle = '#e2463a'; x.fillRect(mx - 3, my + 3, 3, 1); }
     dessinerArc(x, o, mx + 1, my, encoche ? Math.max(.15, tension) : 0, encoche);
@@ -6926,8 +6973,8 @@ function formerGroupe(f, opts) {
   if (['loup', 'combat', 'elite', 'troupe', 'bete'].indexOf(f) === -1 || !SC.ennemi) return null;
   var ids, q = EXPE.quete;
   if (f === 'loup' && opts.mob) ids = [opts.mob === 'sanglier' ? 'sanglier' : 'loup'];
-  else if (f === 'loup') ids = mel(RENCONTRES.foret)[0];
-  else if (f === 'combat') ids = mel(RENCONTRES.donjon)[0];
+  else if (f === 'loup') ids = mel(rencontresBiome(RENCONTRES.foret))[0];
+  else if (f === 'combat') ids = mel(EXPE.mode === 'conquete' ? rencontresConquete() : RENCONTRES.donjon)[0];
   else if (f === 'elite') ids = mel(RENCONTRES.elite)[0];
   else if (f === 'bete' && EXPE.recitCombat) ids = EXPE.recitCombat.groupe.slice();
   else if (f === 'bete') ids = [{ ours: 'ours', 'sanglier-g': 'sanglierG', 'loup-a': 'loupAlpha', 'orc-c': 'orcChef' }[q.mob] || 'ours'];
@@ -8796,7 +8843,7 @@ var nouvelArbreBase = nouvelArbre;
 nouvelArbre = function () {
   var th = themeExpe(); if (!th || !th.noeuds) return nouvelArbreBase();
   var t = mel(th.noeuds)[0], ancien = Math.random() < .15, E = ESSENCES[t];
-  return { nom: ancien ? T('{0}, très ancien', T(E.nom)) : E.nom, cle: sprEssence(t, ancien), requis: ancien ? 5 : 3, fait: 0, gros: ancien ? 2.5 : t === 'bouleau' ? 1.2 : 1 };
+  return { nom: ancien ? T('{0}, très ancien', T(E.nom)) : E.nom, cle: sprEssence(t, ancien), requis: ancien ? 5 : hasard(4, 5), fait: 0, gros: ancien ? 2.5 : t === 'bouleau' ? 1.2 : 1 };
 };
 var creerMobBase = creerMob;
 creerMob = function (id, pv, atk, elite, pvBrut) { var th = themeExpe(); if (th && th.mobs && th.mobs[id] && MOBS[th.mobs[id]]) id = th.mobs[id]; return creerMobBase(id, pv, atk, elite, pvBrut); };
@@ -9052,6 +9099,478 @@ function sousMeteo(x, now, th) {
   if (A === 'cendre' && R < .1) SC.parts.push({ x: Math.random() * 96, y: 2, vx: .05, vy: .15, g: 0, vie: 400, c: 'rgba(170,165,170,.8)', feuille: true });
   if (A === 'os') meteo(x, now, { meteo: null, follets: true, arbres: { f: [] }, id: 'necro' });
 }
+
+/* ═════════ les rencontres rares : normale, rare, épique, légendaire ═════════
+   Dans chaque zone d'expédition, ce qu'on rencontre peut sortir de l'ordinaire : un arbre aux reflets
+   bleus, un cerf blanc, une licorne, une veine d'améthyste, un cœur d'étoile, une récolte légendaire,
+   un monstre champion… Chaque palier a son sprite (teinte, éclats, ou sprite dédié pour les légendaires),
+   une aura qui pulse, une annonce, et un butin multiplié. */
+var RENC_NOM = ['Normal', 'Rare', 'Épique', 'Légendaire'];
+var RENC_C = [null, ['#5fb0e8', '#d8f0ff'], ['#c08af2', '#f2e2ff'], ['#ffd24d', '#fff8d0']];
+var MULT_RENC = [1, 1.7, 2.6, 4];
+var POIDS_RENC = { arbre: [70, 21, 7, 2], proie: [70, 21, 7, 2], filon: [84, 12, 3.3, .7], plante: [72, 20, 6.5, 1.5], monstre: [84, 12, 3.4, .6] };
+function tirerRenc(p) { var b = 1 + stat('special%') / 200, q = [p[0], p[1] * b, p[2] * b, p[3] * b], t = Math.random() * (q[0] + q[1] + q[2] + q[3]); for (var i = 0; i < 4; i++) { t -= q[i]; if (t < 0) return i; } return 0; }
+function multRenc(t) { return MULT_RENC[t || 0]; }
+function etoiles(t) { return t ? ' ' + '★★★'.slice(0, t) : ''; }
+var ANNONCES_R = [null, TR('Rencontre rare !', 'Zeldzame ontmoeting!'), TR('Rencontre épique !', 'Epische ontmoeting!'), TR('Rencontre légendaire !', 'Legendarische ontmoeting!')];
+function annonceRarete(t, X, Y) {
+  if (!t || !C) return;
+  X = X || 66; Y = Y || 12;
+  nombre(ANNONCES_R[t], X - 18, Y, 'r' + (t + 1));
+  if (t === 1) [660, 880, 1100].forEach(function (f, k) { bip(f, f, .1, 'triangle', .04, k * .06); });
+  else if (t === 2) [523, 659, 784, 1047, 1319].forEach(function (f, k) { bip(f, f, .14, 'square', .04, k * .07); });
+  else { [523, 659, 784, 1047, 784, 1047, 1319, 1568].forEach(function (f, k) { bip(f, f, .18, 'square', .05, k * .09); }); SC.eclair = maintenant() + 140; secouer(2, 300); }
+  etincelles(X, Y + 14, 8 + t * 8, [RENC_C[t][0], RENC_C[t][1], '#ffffff'], .9);
+}
+/* ce que rapporte en plus une rencontre hors du commun */
+function bonusRarete(t) {
+  if (t === 2) { gagnerSpeciale(3); gagnerRes('cristal', .8, true); }
+  if (t === 3) { var sp = rareContree(); gagner(sp, 1); nombre(T('{0} !', nomRes(sp)), 48, 30, 'fort'); gagnerRes('cristal', 2, true); if (Math.random() < .5) dropObjet('elite'); }
+}
+
+/* ── les sprites : une teinte et des éclats pour rare et épique, un sprite dédié pour les légendaires ── */
+function sprTier(cleBase, t, src) {
+  var k = cleBase + '-t' + t; if (SPR[k]) return k;
+  var s = src || SPR[cleBase]; if (!s) return cleBase;
+  var w = s.width, h = s.height, c = toile(w, h), x = c.getContext('2d');
+  x.drawImage(s, 0, 0);
+  x.globalCompositeOperation = 'source-atop'; x.globalAlpha = [0, .3, .38, .45][t]; x.fillStyle = RENC_C[t][0]; x.fillRect(0, 0, w, h);
+  x.globalAlpha = 1; x.globalCompositeOperation = 'source-over';
+  var d = s.getContext('2d').getImageData(0, 0, w, h).data, pts = [];
+  for (var j = 1; j < h - 1; j++) for (var i = 1; i < w - 1; i++) { var o = (j * w + i) * 4; if (d[o + 3] && d[o + 3 - 4] && d[o + 3 + 4] && d[o + 3 - w * 4] && d[o + 3 + w * 4]) pts.push([i, j]); }
+  for (var n = 0; n < 3 + t * 4 && pts.length; n++) { var p = pts[Math.floor(hachis(n, t, w + h) * pts.length)]; x.fillStyle = n % 3 ? RENC_C[t][1] : '#ffffff'; x.fillRect(p[0], p[1], 1, 1); if (t >= 2 && n % 4 === 0) { x.fillStyle = RENC_C[t][1]; x.fillRect(p[0] - 1, p[1], 3, 1); x.fillRect(p[0], p[1] - 1, 1, 3); } }
+  enregistrer(k, c);
+  if (ECORCE[cleBase]) ECORCE[k] = ECORCE[cleBase];
+  if (FEUILLAGE_T[cleBase] || /^n-/.test(cleBase)) FEUILLAGE_T[k] = [melange(RENC_C[t][0], '#000000', .25), RENC_C[t][1]];
+  return k;
+}
+/* l'arbre d'or, le seul légendaire de la forêt */
+function sprArbreOr() {
+  var k = 'n-arbre-or'; if (SPR[k]) return k;
+  var c = toile(42, 46), x = c.getContext('2d');
+  peindreArbre(x, 'feuillu', 21, 45, 1.35, { f: ['#c9951f', '#ffd24d', '#fff6c8'], tronc: ['#e8e4d0', '#ffffff'] });
+  [[12, 14], [27, 10], [20, 22], [31, 18], [9, 22], [24, 6]].forEach(function (p, i) { x.fillStyle = i % 2 ? '#ff8a3a' : '#ffffff'; x.fillRect(p[0], p[1], 2, 2); x.fillStyle = '#fff2a0'; x.fillRect(p[0], p[1], 1, 1); });
+  enregistrer(k, contour(c)); ECORCE[k] = ['#e8e4d0', '#ffffff', '#c8c0a8']; FEUILLAGE_T[k] = ['#ffd24d', '#fff6c8'];
+  return k;
+}
+/* le cœur d'étoile, le filon légendaire */
+function sprCoeurEtoile() {
+  var k = 'n-etoile'; if (SPR[k]) return k;
+  var c = toile(24, 20), x = c.getContext('2d');
+  rond(x, 12, 12, 8, '#3a3450'); rond(x, 10, 11, 6, '#4a4466'); x.fillStyle = '#2a2438'; x.fillRect(3, 18, 18, 2);
+  var e = [[12, 4], [12, 5], [11, 6], [12, 6], [13, 6], [8, 8], [9, 8], [10, 8], [11, 8], [12, 8], [13, 8], [14, 8], [15, 8], [16, 8], [10, 9], [11, 9], [12, 9], [13, 9], [14, 9], [10, 10], [11, 10], [13, 10], [14, 10], [9, 11], [10, 11], [14, 11], [15, 11], [12, 7], [11, 7], [13, 7]];
+  e.forEach(function (p) { x.fillStyle = '#ffd24d'; x.fillRect(p[0], p[1], 1, 1); });
+  [[12, 6], [12, 8], [11, 8], [13, 8], [12, 7]].forEach(function (p) { x.fillStyle = '#ffffff'; x.fillRect(p[0], p[1], 1, 1); });
+  [[5, 12], [18, 13], [7, 16], [16, 16]].forEach(function (p) { x.fillStyle = '#7fd0ff'; x.fillRect(p[0], p[1], 1, 2); });
+  enregistrer(k, contour(c));
+  return k;
+}
+/* le gibier hors du commun : le cerf blanc et la licorne */
+DEF.licorne = { relief: true, plat: 'kyg', pal: { W: '#f8f8ff', w: '#d0d4e8', k: '#1a1520', y: '#ffd24d', g: '#e0b030', m: '#ff8ad8', M: '#7fd0ff', V: '#b48ae8' }, r: [
+  '.y..............',
+  '..y.............',
+  '..yy.mM.........',
+  '.WWWmMV.........',
+  'WkWWWmM.........',
+  'WWWWWWmV........',
+  '..WWWWWWWWWWWm..',
+  '..WWWWWWWWWWWWMV',
+  '...WwWWWWWWWWW.m',
+  '...WW.....WW...M',
+  '...W.W....W.W...',
+  '...W.W....W.W...',
+  '...g.g....g.g...'] };
+function sprCerfBlanc() { if (!SPR['cerf-blanc']) spr('cerf', { C: '#f4f4f8', c: '#c8c8d8', w: '#ffffff', b: '#ffd24d' }, 'cerf-blanc'); return 'cerf-blanc'; }
+
+/* ═════════ la forêt ═════════ */
+var nouvelArbreTheme = nouvelArbre;
+nouvelArbre = function () {
+  var t = tirerRenc(POIDS_RENC.arbre), th = themeExpe(), l = th && th.noeuds ? th.noeuds : ['feuillu', 'sapin', 'bouleau'], ess = mel(l)[0], ancien = Math.random() < .15, E = ESSENCES[ess], a;
+  if (t === 3) a = { nom: TR("L'Arbre d'or", 'De Gouden Boom'), cle: sprArbreOr(), requis: 5, gros: 2.5 };
+  else { var cle = sprEssence(ess, ancien); if (t) cle = sprTier(cle, t); a = { nom: ancien ? T('{0}, très ancien', T(E.nom)) : E.nom, cle: cle, requis: ancien ? 5 : hasard(4, 5), gros: ancien ? 2.5 : ess === 'bouleau' ? 1.2 : 1 }; }
+  a.fait = 0; a.rarete = t; return a;
+};
+var entiteArbreBase = entiteArbre;
+entiteArbre = function (a) { var e = entiteArbreBase(a); e.rarete = a.rarete || 0; if (e.rarete) setTimeout(function () { annonceRarete(e.rarete, 70, 12); }, 450); return e; };
+
+/* ═════════ la chasse ═════════ */
+var nouvelleProieTheme = nouvelleProieV6;
+nouvelleProieV6 = function () {
+  var p = nouvelleProieTheme(), t = tirerRenc(POIDS_RENC.proie);
+  if (t === 3) { spr('licorne'); p.nom = TR('Une licorne', 'Een eenhoorn'); p.spr = 'licorne'; p.cuir = 3; p.sp = 1; p.combat = false; }
+  else if (t === 2) { p.nom = TR('Un cerf blanc', 'Een wit hert'); p.spr = sprCerfBlanc(); p.cuir = 2.4; p.sp = .6; p.combat = false; }
+  else if (t === 1) { if (!SPR[p.spr] && DEF[p.spr]) spr(p.spr); p.spr = sprTier(p.spr, 1); }
+  p.rarete = t; return p;
+};
+var entiteProieBase = entiteProieV6;
+entiteProieV6 = function (p) { var e = entiteProieBase(p); e.rarete = p.rarete || 0; if (e.rarete) setTimeout(function () { annonceRarete(e.rarete, 70, 12); }, 450); return e; };
+
+/* ═════════ la mine ═════════ */
+var entiteFilonBase = entiteFilon;
+entiteFilon = function () {
+  var e = entiteFilonBase(), t = tirerRenc(POIDS_RENC.filon);
+  if (t === 3) { e.spr = e.cle = sprCoeurEtoile(); e.nom = TR("Un cœur d'étoile", 'Een sterrenhart'); }
+  else if (t) { if (!SPR[e.cle] && DEF[e.cle]) spr(e.cle); e.spr = e.cle = sprTier(e.cle, t); }
+  e.rarete = t; if (t) setTimeout(function () { annonceRarete(t, 70, 12); }, 300);
+  return e;
+};
+
+/* ═════════ les monstres champions ═════════ */
+var creerEnnemiBase = creerEnnemi;
+creerEnnemi = function (id, pvForce) {
+  var e = creerEnnemiBase(id, pvForce);
+  if (pvForce || !EXPE || EXPE.mode === 'boss' || EXPE.mode === 'quete') return e;
+  var t = tirerRenc(POIDS_RENC.monstre); if (!t) return e;
+  e.rarete = t; e.pv = e.pvMax = Math.round(e.pvMax * [1, 1.35, 1.8, 2.5][t]); e.atk = Math.round(e.atk * [1, 1.1, 1.25, 1.4][t]);
+  spr(e.spr, e.pal, e.cle); e.cle = sprTier(e.cle, t); e.nom = T(e.nom) + etoiles(t);
+  setTimeout(function () { annonceRarete(t, 60, 12); }, 500);
+  return e;
+};
+
+/* ═════════ le potager : une plante mûre peut être exceptionnelle ═════════ */
+function rareteParcelle(p) {
+  if (p.r == null) { p.r = tirerRenc(POIDS_RENC.plante); if (p.r && C && C.famille === 'potager') { var i = etat.camp.potager.indexOf(p); annonceRarete(p.r, i >= 0 ? PARC_X[i] : 60, 26); } }
+  return p.r;
+}
+
+/* ═════════ l'aura : ce qui sort de l'ordinaire brille ═════════ */
+/* un halo autour du sprite, sans le recouvrir : la silhouette élargie, moins le sprite lui-même */
+var HALOS_R = {};
+function haloR(cle, t) {
+  var k = cle + '|' + t; if (HALOS_R[k]) return HALOS_R[k];
+  var s = SPR[cle]; if (!s) return null;
+  var c = toile(s.width + 6, s.height + 6), x = c.getContext('2d'), tk = teinte(s, RENC_C[t][0]), r = t === 3 ? 3 : 2;
+  for (var dy = -r; dy <= r; dy++) for (var dx = -r; dx <= r; dx++) if (dx * dx + dy * dy <= r * r + 1) { x.globalAlpha = 1 - Math.sqrt(dx * dx + dy * dy) / (r + 1.5); x.drawImage(tk, 3 + dx, 3 + dy); }
+  x.globalAlpha = 1; x.globalCompositeOperation = 'destination-out'; x.drawImage(s, 3, 3);
+  return (HALOS_R[k] = c);
+}
+function auraRarete(x, now) {
+  if (!C) return;
+  var l = [SC.ennemi].concat(C.groupe || []).filter(function (e, i, a) { return e && e.rarete && !e.mort && a.indexOf(e) === i; });
+  l.forEach(function (e, j) {
+    var s = spr(e.spr, e.pal, e.cle), h = haloR(e.cle, e.rarete); if (!h) return;
+    var X = e.x, Y = e.base - s.height + (e.flotte ? Math.round(Math.sin(now / 260) * 2) - 3 : 0);
+    x.globalCompositeOperation = 'lighter'; x.globalAlpha = .45 + .25 * Math.sin(now / 260 + j);
+    x.drawImage(h, X - 3, Y - 3);
+    x.globalAlpha = 1; x.globalCompositeOperation = 'source-over';
+    if (Math.random() < .04 * e.rarete) SC.parts.push({ x: X + Math.random() * s.width, y: Y + Math.random() * s.height, vx: 0, vy: -.25, g: 0, vie: 30, c: Math.random() < .5 ? RENC_C[e.rarete][1] : '#ffffff' });
+  });
+  /* les plantes exceptionnelles du potager */
+  if (C.famille === 'potager') {
+    var pot = etat.camp.potager, n = parcelles();
+    for (var i = 0; i < n; i++) {
+      var p = pot[i]; if (stadePlante(p) !== 4) continue; var t = rareteParcelle(p); if (!t) continue;
+      var X0 = PARC_X[i], g = .2 + .12 * Math.sin(now / 300 + i);
+      x.globalCompositeOperation = 'lighter'; x.fillStyle = RENC_C[t][0]; x.globalAlpha = g; x.fillRect(X0 - 6, 44, 13, 14); x.globalAlpha = g * .6; x.fillRect(X0 - 4, 40, 9, 4); x.globalAlpha = 1; x.globalCompositeOperation = 'source-over';
+      if (Math.random() < .05 * t) SC.parts.push({ x: X0 - 5 + Math.random() * 10, y: 46 + Math.random() * 8, vx: 0, vy: -.25, g: 0, vie: 26, c: RENC_C[t][1] });
+    }
+  }
+}
+
+/* ═════════ le marché : vendre une pièce, sans savoir d'avance ce qu'on recevra ═════════
+   Le prix dépend du niveau du marché, de la rareté et des enchantements de la pièce, et des
+   effets « or » et « prix du marché » portés. On choisit l'or ou des ressources ; la quantité
+   est une surprise (le marchand est d'humeur variable). */
+FX_TXT['vente%'] = '+{0} % aux prix du marché';
+TR('+{0} % aux prix du marché', '+{0} % op de marktprijzen');
+ENCH_U['vente%'] = 5;
+['relique', 'sac'].forEach(function (k) { if (ENCH_POOL[k]) ENCH_POOL[k].push('vente%'); });
+var VENTE = { sel: null, page: 0 };
+function valeurMarche(o) {
+  var v = 0; for (var k in o.cout) v += o.cout[k] * (VALEUR_RES[k] || 8);
+  v *= MULT_P[o.r] * MULT_P[o.r] * (1 + .25 * (o.rec.ench || []).filter(Boolean).length);
+  return v * .55 * (1 + niveauBat('marche') * .08) * (1 + (stat('or%') * .5 + stat('vente%')) / 100);
+}
+function aVendreMarche() { return mesObjets(function (o) { return !estPorte(o); }); }
+function venteHTML() {
+  var l = aVendreMarche(), par = 12, h = '<h4 class="f-h">' + T(TR('Vendre une pièce', 'Een stuk verkopen')) + '</h4>';
+  if (!l.length) return h + '<p class="f-sous">' + T(TR('Rien à vendre : ce que tu portes n\'apparaît pas ici.', 'Niets te verkopen: wat je draagt staat hier niet.')) + '</p>';
+  if (!l.some(function (o) { return o.id === VENTE.sel; })) VENTE.sel = l[0].id;
+  var pages = Math.ceil(l.length / par); VENTE.page = Math.min(VENTE.page, pages - 1);
+  h += '<p class="f-sous">' + T(TR('Le marchand fait son prix selon la rareté, les enchantements, le niveau du marché et tes effets de commerce. Tu ne sais pas d\'avance combien.', 'De koopman bepaalt zijn prijs naar zeldzaamheid, betoveringen, het niveau van de markt en je handelseffecten. Hoeveel weet je vooraf niet.')) + '</p>';
+  h += '<div class="grille g6">' + l.slice(VENTE.page * par, VENTE.page * par + par).map(function (o) { return tuileG(icoObjet(o), (VENTE.sel === o.id ? 'sel ' : '') + 'r' + o.r, ' data-vente="' + o.id + '"', null, nomRare(o)); }).join('') + '</div>';
+  if (pages > 1) h += '<div class="dk-pager"><button class="mini" id="v-prec"' + (VENTE.page ? '' : ' disabled') + '>‹</button><span>' + (VENTE.page + 1) + ' / ' + pages + '</span><button class="mini" id="v-suiv"' + (VENTE.page < pages - 1 ? '' : ' disabled') + '>›</button></div>';
+  var o = OBJ[VENTE.sel];
+  h += '<div class="detail"><img class="px" src="' + icoObjet(o) + '"><div class="n"><b class="rc' + o.r + '">' + ech(nomRare(o)) + '</b><small>' + ech(texteObjet(o)) + '</small></div></div>';
+  h += '<div class="vente-choix"><button class="btn petit-b" id="v-or">' + img(icoRes('or'), 16) + ' ' + T(TR('Recevoir de l\'or', 'Goud krijgen')) + '</button><button class="btn sec petit-b" id="v-res">' + img(icoRes('fer'), 16) + ' ' + T(TR('Recevoir des ressources', 'Grondstoffen krijgen')) + '</button></div>';
+  return h;
+}
+function lierVente(refaire) {
+  lier('[data-vente]', function (d) { VENTE.sel = d.vente; son('clic'); refaire(); });
+  if ($('v-prec')) $('v-prec').onclick = function () { VENTE.page--; son('clic'); refaire(); };
+  if ($('v-suiv')) $('v-suiv').onclick = function () { VENTE.page++; son('clic'); refaire(); };
+  function vendre(ressources) {
+    var o = OBJ[VENTE.sel]; if (!o || !o.inst || estPorte(o)) return;
+    var humeur = .8 + Math.random() * .45, v = valeurMarche(o) * humeur, lignes = [], gains = {};
+    if (!ressources) gains.or = Math.max(1, Math.round(v));
+    else {
+      /* les ressources valent un peu plus que l'or : le marchand se débarrasse de son stock */
+      var reste = v * 1.25, pool = o.r >= 3 ? ['cristal', 'fer', 'or', 'cuir'] : o.r >= 2 ? ['fer', 'cristal', 'pierre', 'cuir'] : ['bois', 'pierre', 'cuir', 'herbes', 'fer'], ks = mel(pool).slice(0, 2 + (o.r >= 2 ? 1 : 0));
+      ks.forEach(function (k, i) { var part = i === ks.length - 1 ? reste : reste * (.35 + Math.random() * .3); var n = Math.max(1, Math.round(part / (VALEUR_RES[k] || 1))); gains[k] = (gains[k] || 0) + n; reste -= n * (VALEUR_RES[k] || 1); });
+      if (o.r >= 3 && Math.random() < (o.r === 4 ? .8 : .35)) { var sp = rareLibre(); gains[sp] = 1; }
+    }
+    var x = H(); delete x.objets[o.id]; delete OBJ[o.id];
+    for (var k in gains) { crediter(k, gains[k]); lignes.push({ ico: icoRes(k), n: gains[k], nom: nomRes(k), rar: rareteRes(k, gains[k]) }); }
+    sauver(); hudCamp(); refaire(); son('or');
+    popupButin(T(TR('Vendu : {0}', 'Verkocht: {0}'), nomRare(o)), lignes, [T(humeur > 1.12 ? TR('Le marchand était de bonne humeur.', 'De koopman was goedgeluimd.') : humeur < .9 ? TR('Le marchand a marchandé dur.', 'De koopman heeft hard onderhandeld.') : TR('Un prix honnête.', 'Een eerlijke prijs.'))], null);
+  }
+  if ($('v-or')) $('v-or').onclick = function () { vendre(false); };
+  if ($('v-res')) $('v-res').onclick = function () { vendre(true); };
+}
+
+/* ═════════ plus de rencontres : bestiaire et gibier par région, légendaires régionaux, rencontres fortuites ═════════
+   1. Chaque région a ses monstres (yéti, scorpion, salamandre, crabe, harpie, loup-garou, momie, serpent, sylvain…)
+      pour les combats de la forêt et de la conquête.
+   2. Chaque région a son gibier en plus du lapin, du renard, du cerf et du sanglier.
+   3. Les légendaires de la forêt et de la chasse changent selon la région.
+   4. Des rencontres fortuites interrompent parfois l'expédition (coffre, marchand, source, cercle de fées…) :
+      quelques bonnes réponses, une récompense, puis on reprend là où on en était. */
+
+/* ═════════ 1. les monstres des régions ═════════ */
+DEF.yeti = { relief: true, plat: 'kbr', pal: { W: '#eef2f8', w: '#c0cad8', k: '#1a1520', b: '#5a6aa8', r: '#e0483e' }, r: [
+  '....WWWW......', '...WWWWWW.....', '..WkWWkWWW....', '..WWbbbWWW....', '..WWrrrWWW....', '.WWWWWWWWWW...', 'WWWWWWWWWWWW..',
+  'WwWWWWWWWWwWW.', 'Ww.WWWWWWW.wW.', 'Ww.WWWWWWW.wW.', 'bb.WWwwWWW.bb.', '...WWW.WWW....', '...WWW.WWW....', '..wWW...WWw...', '..bbb...bbb...'] };
+DEF.scorpion = { relief: true, plat: 'kr', pal: { s: '#c88a3a', S: '#e8b060', k: '#1a1520', r: '#e0483e', d: '#8a5a22' }, r: [
+  '..........SSs.', '...........s.S', '............sS', 'dd..........s.', '.dsss......s..', '..sSSssssss...', '.rsSSSSSSsss..', 'dd.sSsSsSss...', '..s.s.s.s.s...'] };
+DEF.salamandre = { relief: true, plat: 'ky', pal: { r: '#e0482a', R: '#ff8a3a', y: '#ffd24d', k: '#1a1520' }, r: [
+  '..RRR.........', '.RkRRRRR....rr', 'RRRRRRRRRRrr.y', '.yRRyRRyRRr...', '..r.r..r.r....', '.r...r.r...r..'] };
+DEF.crabe = { relief: true, plat: 'kW', pal: { c: '#e0583a', C: '#ff8a5a', k: '#1a1520', W: '#ffffff' }, r: [
+  'cc........cc', 'Cc.k....k.cC', '.c.W....W.c.', '..cccccccc..', '.cCCCCCCCCc.', 'c.cccccccc.c', '.c.c.c.c.c.c'] };
+DEF.harpie = { relief: true, plat: 'kyr', pal: { b: '#7a5a8a', B: '#a888b8', f: '#f2c08f', k: '#1a1520', y: '#ffd24d', r: '#e0483e', h: '#3a2a4a' }, r: [
+  'B............B', 'BB..hhh.....BB', '.BB.hfff...BB.', '.BBbfkff.bBB..', '..BBbfffbBB...', '...BbbbbbB....', '....bbbbb.....', '....b...b.....', '...yy...yy....'] };
+DEF.loupgarou = { relief: true, plat: 'krW', pal: { G: '#4a3a3a', g: '#6a5a58', d: '#2a1e1e', k: '#1a1520', r: '#ffd24d', W: '#ffffff' }, r: [
+  '.G..G.........', 'GGGGG.........', 'GrGGGG........', 'GGGGGGG.......', 'WWGGGGG.......', '.GGGGGGGG.....', '..GGgGGGGG....', '.GG.GGGGGGg...',
+  'GG..GGGGGG.g..', 'G...GGGGGG....', '....GGddGG....', '....GG..GG....', '...dGG..GGd...', '...kk....kk...'] };
+DEF.momie = { miroir: true, relief: true, plat: 'kr', pal: { w: '#e8dcc0', W: '#c8b890', k: '#1a1520', r: '#7fffb0' }, r: [
+  '...www', '..wWww', '..wkrw', '..wwww', '...wWw', '.wwwww', 'wwWwww', 'w.wwWw', 'w.wwww', '..wWww', '..ww.w', '..ww.w', '..Ww.w', '.kkk.k'] };
+DEF.serpent = { relief: true, plat: 'kry', pal: { v: '#5a8a3a', V: '#8ab85a', y: '#e8d860', k: '#1a1520', r: '#e0483e' }, r: [
+  '.vvv..........', 'vkvvv.........', 'rvVvv.....vv..', '..vvv....vVVv.', '...vVv..vV..vv', '....vVvvV....y', '.....vvvv.....'] };
+DEF.sylvain = { relief: true, plat: 'ky', pal: { b: '#6b4630', B: '#8a5a33', g: '#3f8a4a', G: '#7cc25a', k: '#1a1520', y: '#ffe066' }, r: [
+  '..GgG.gGg.....', '.gGGgGGgGg....', '.gggbbbgg.....', '..bbykbyb.....', '..bbbbbbb.....', '...bbBbb......', '.bbbbBbbbb....', 'b..bbbbbb.b...',
+  'g..bbBbbb..g..', '...bbbbbb.....', '...bb..bb.....', '..bbb..bbb....', '.b.b....b.b...'] };
+Object.assign(MOBS, {
+  yeti: { nom: TR('Yéti', 'Yeti'), spr: 'yeti', drop: 'cuir' }, scorpion: { nom: TR('Scorpion géant', 'Reuzenschorpioen'), spr: 'scorpion', drop: 'cuir' },
+  salamandre: { nom: TR('Salamandre de feu', 'Vuursalamander'), spr: 'salamandre', drop: 'cristal' }, crabe: { nom: TR('Crabe géant', 'Reuzenkrab'), spr: 'crabe', drop: 'cuir' },
+  harpie: { nom: TR('Harpie', 'Harpij'), spr: 'harpie', flotte: true, drop: 'cuir' }, loupgarou: { nom: TR('Loup-garou', 'Weerwolf'), spr: 'loupgarou', drop: 'cuir' },
+  momie: { nom: TR('Momie', 'Mummie'), spr: 'momie', drop: 'or' }, serpent: { nom: TR('Serpent', 'Slang'), spr: 'serpent', drop: 'herbes' },
+  sylvain: { nom: TR('Sylvain', 'Boomgeest'), spr: 'sylvain', drop: 'bois' },
+  'golem-glace': { nom: TR('Golem de glace', 'IJsgolem'), spr: 'golem', pal: { S: '#a8c8e8', s: '#6a90b8', L: '#e8f4ff', y: '#5fd0f0', m: '#ffffff' }, cle: 'golem-glace', drop: 'cristal' },
+  'squelette-pirate': { nom: TR('Squelette pirate', 'Piratenskelet'), spr: 'squelette', pal: { W: '#e8e0c8', w: '#a8987a', r: '#ffd24d' }, cle: 'squelette-pirate', drop: 'or' }
+});
+Object.assign(BEST, {
+  yeti: { mob: 'yeti', pv: 82, atk: 9, cd: 1.3, traits: ['lourd', 'enrage'], elite: true }, scorpion: { mob: 'scorpion', pv: 34, atk: 5, traits: ['poison'] },
+  salamandre: { mob: 'salamandre', pv: 28, atk: 5, cd: .8, traits: ['rapide', 'explose'] }, crabe: { mob: 'crabe', pv: 40, atk: 5, traits: ['carapace'] },
+  harpie: { mob: 'harpie', pv: 26, atk: 4, cd: .7, traits: ['rapide', 'esquive'] }, loupgarou: { mob: 'loupgarou', pv: 78, atk: 9, traits: ['enrage', 'vampire'], elite: true },
+  momie: { mob: 'momie', pv: 48, atk: 6, cd: 1.2, traits: ['regen'] }, serpent: { mob: 'serpent', pv: 22, atk: 4, cd: .7, traits: ['poison', 'rapide'] },
+  sylvain: { mob: 'sylvain', pv: 70, atk: 7, cd: 1.3, traits: ['regen', 'carapace'], elite: true }, golemGlace: { mob: 'golem-glace', pv: 85, atk: 10, cd: 1.4, traits: ['carapace', 'lourd'], elite: true },
+  squelettePirate: { mob: 'squelette-pirate', pv: 34, atk: 6, traits: ['esquive'] }
+});
+var RENC_REGION = {
+  neige: [['yeti'], ['loup', 'loup'], ['golemGlace'], ['loup', 'yeti'], ['araignee', 'araignee']],
+  montagne: [['harpie', 'harpie'], ['loup', 'loup'], ['yeti'], ['harpie', 'loup'], ['golem']],
+  sable: [['scorpion', 'scorpion'], ['serpent', 'serpent'], ['momie'], ['scorpion', 'momie'], ['loup', 'loup']],
+  feu: [['salamandre', 'salamandre'], ['salamandre', 'gelee'], ['loup', 'loup'], ['golem'], ['salamandre', 'salamandre', 'salamandre']],
+  cote: [['crabe', 'crabe'], ['crabe', 'squelettePirate'], ['squelettePirate', 'squelettePirate'], ['harpie'], ['crabe', 'crabe', 'crabe']],
+  marais: [['serpent', 'serpent'], ['crapaud'], ['gelee', 'gelee'], ['feufollet', 'feufollet'], ['serpent', 'crapaud']],
+  ombre: [['loupgarou'], ['loup', 'loup'], ['araignee', 'araignee', 'araignee'], ['feufollet', 'feufollet', 'feufollet'], ['fantome', 'loupgarou']],
+  morts: [['momie', 'squelette'], ['squelette', 'squelette', 'fantome'], ['fantome', 'fantome'], ['loupgarou'], ['momie', 'momie']],
+  fees: [['sylvain'], ['feufollet', 'feufollet'], ['champi', 'champi', 'champi'], ['loup', 'loup'], ['sylvain', 'champi']],
+  bois: [['sylvain'], ['loup', 'loup'], ['sanglier'], ['araignee', 'araignee'], ['ours']]
+};
+var REGION_BIOME = { lac: 'neige', toundra: 'neige', pic: 'montagne', col: 'montagne', desert: 'sable', canyon: 'sable', volcan: 'feu', cendre: 'feu', citadelle: 'feu', cote: 'cote', marais: 'marais', gue: 'marais', maudit: 'ombre', necro: 'morts', ruines: 'morts', fees: 'fees', bois: 'bois', foret: 'bois' };
+function regionExpe() { var th = themeExpe(); return th ? REGION_BIOME[th.id] || null : null; }
+/* les combats de la forêt et de la conquête puisent dans le bestiaire de la région (un tiers du temps, le bestiaire commun) */
+function rencontresBiome(base) { var r = regionExpe(); return r && Math.random() < .67 ? RENC_REGION[r] : base; }
+var rencontresConqueteBase = rencontresConquete;
+rencontresConquete = function () { return rencontresBiome(rencontresConqueteBase()); };
+
+/* ═════════ 2. le gibier des régions ═════════ */
+DEF.faisan = { relief: true, plat: 'kr', pal: { b: '#a8582a', B: '#d8884a', v: '#2f7a5a', r: '#e0483e', k: '#1a1520', y: '#e8c860' }, r: [
+  '.vv.........', 'vkrv........', '.vvv........', '..bbbbbb....', '.bBbBbbbbbbb', '..bbbbbb..bb', '...y..y.....'] };
+DEF.chamois = { relief: true, plat: 'kw', pal: { C: '#8a6a4a', c: '#5a4230', w: '#f1e4c2', k: '#1a1520', b: '#2a1e14' }, r: [
+  '.b.b..........', '.bb...........', '.CC...........', 'CkCC..........', 'wCCw..........', '.CCCCCCCCCC...', '.CCCCCCCCCCC..', '..CwwCCCCcC...', '..C.C....C.C..', '..C.C....C.C..', '..k.k....k.k..'] };
+DEF.ecureuil = { relief: true, plat: 'k', pal: { o: '#c86a2a', O: '#e89a5a', k: '#1a1520', w: '#f1e4c2' }, r: [
+  '.o.....OO', 'ooo...OOo', 'koo..OOoo', 'ooow.Ooo.', '.oooooo..', '.owoooo..', '..o..o...'] };
+DEF.canard = { relief: true, plat: 'ky', pal: { v: '#2f7a4a', b: '#8a6a4a', B: '#b08a6a', k: '#1a1520', y: '#ffb03c', w: '#ffffff' }, r: [
+  '.vv......', 'vkv......', 'yvv......', '.vbbbbbb.', '.wBBbBbbb', '..bbbbbb.', '...y..y..'] };
+var GIBIER_REGION = {
+  neige: [{ nom: TR('Un renne', 'Een rendier'), spr: 'renne', base: ['cerf', { C: '#8a7a6a', c: '#5a4a3a', w: '#f4f4f8', b: '#c8b8a0' }], cuir: 2.2 }],
+  montagne: [{ nom: TR('Un chamois', 'Een gems'), spr: 'chamois', cuir: 1.5 }],
+  bois: [{ nom: TR('Un écureuil', 'Een eekhoorn'), spr: 'ecureuil', cuir: .6, sp: .1 }, { nom: TR('Un faisan', 'Een fazant'), spr: 'faisan', cuir: .9 }],
+  fees: [{ nom: TR('Un écureuil', 'Een eekhoorn'), spr: 'ecureuil', cuir: .6, sp: .2 }],
+  marais: [{ nom: TR('Un canard', 'Een eend'), spr: 'canard', cuir: .8 }],
+  cote: [{ nom: TR('Un crabe', 'Een krab'), spr: 'crabe', cuir: .8 }],
+  champs: [{ nom: TR('Un faisan', 'Een fazant'), spr: 'faisan', cuir: .9 }]
+};
+REGION_BIOME.village = REGION_BIOME.village || null;
+var GIB_BIOME = { village: 'champs', champs: 'champs', collines: 'bois', bois: 'bois', foret: 'bois', ruines: 'bois', fees: 'fees', marais: 'marais', gue: 'marais', cote: 'cote', col: 'montagne', pic: 'montagne', lac: 'neige', toundra: 'neige' };
+/* les légendaires régionaux */
+var LEGENDES_ARBRE = {
+  neige: { nom: TR("Le Sapin d'argent", 'De Zilveren Spar'), t: 'sapinNeige', f: ['#8ab0d8', '#c8e0f8', '#ffffff'], tronc: ['#c8d8e8', '#ffffff'] },
+  sable: { nom: TR("Le Palmier d'or", 'De Gouden Palm'), t: 'palmier', f: ['#c9951f', '#ffd24d', '#fff6c8'], tronc: ['#e0c090', '#fff0c8'] },
+  cote: { nom: TR("Le Palmier d'or", 'De Gouden Palm'), t: 'palmier', f: ['#c9951f', '#ffd24d', '#fff6c8'], tronc: ['#e0c090', '#fff0c8'] },
+  feu: { nom: TR("L'Arbre de braise", 'De Gloedboom'), t: 'feuillu', f: ['#a8301a', '#ff6a2a', '#ffd24d'], tronc: ['#2a1a1a', '#5a3a2a'] },
+  fees: { nom: TR('Le Cerisier de lune', 'De Maankers'), t: 'cerisier', f: ['#8ab8ff', '#c8d8ff', '#ffffff'], tronc: ['#e8e4f8', '#ffffff'] },
+  ombre: { nom: TR('L\'Arbre aux âmes', 'De Zielenboom'), t: 'mort', f: ['#c8d0e8', '#e8eeff', '#ffffff'], tronc: ['#c8d0e8', '#ffffff'] },
+  morts: { nom: TR('L\'Arbre aux âmes', 'De Zielenboom'), t: 'mort', f: ['#c8d0e8', '#e8eeff', '#ffffff'], tronc: ['#c8d0e8', '#ffffff'] },
+  marais: { nom: TR('Le Saule d\'émeraude', 'De Smaragdwilg'), t: 'saule', f: ['#2a9a6a', '#5fe0a0', '#c8ffe0'], tronc: ['#3a5a4a', '#6a8a7a'] }
+};
+var LEGENDES_PROIE = {
+  neige: { nom: TR('Le Renard céleste', 'De Hemelvos'), cle: 'leg-renard', base: ['loup', { G: '#e8f4ff', g: '#ffffff', d: '#7fb0e8', W: '#ffffff', r: '#5fd0f0' }] },
+  montagne: { nom: TR('Le Renard céleste', 'De Hemelvos'), cle: 'leg-renard', base: ['loup', { G: '#e8f4ff', g: '#ffffff', d: '#7fb0e8', W: '#ffffff', r: '#5fd0f0' }] },
+  sable: { nom: TR("La Gazelle d'or", 'De Gouden Gazelle'), cle: 'leg-gazelle', base: ['cerf', { C: '#ffd24d', c: '#c9951f', w: '#fff6c8', b: '#ffffff' }] },
+  feu: { nom: TR("La Salamandre d'or", 'De Gouden Salamander'), cle: 'leg-salamandre', base: ['salamandre', { r: '#ffd24d', R: '#fff6c8', y: '#ffffff' }] },
+  ombre: { nom: TR('Le Cerf spectral', 'Het Spookhert'), cle: 'leg-spectre', base: ['cerf', { C: '#a8c0f0', c: '#6a80c0', w: '#e8f0ff', b: '#7fffe0' }] },
+  morts: { nom: TR('Le Cerf spectral', 'Het Spookhert'), cle: 'leg-spectre', base: ['cerf', { C: '#a8c0f0', c: '#6a80c0', w: '#e8f0ff', b: '#7fffe0' }] },
+  marais: { nom: TR('La Grenouille d\'émeraude', 'De Smaragden Kikker'), cle: 'leg-crapaud', base: ['crapaud', { g: '#2a9a6a', G: '#1a6a4a', s: '#7fffc0', W: '#c8ffe0' }] }
+};
+function sprLegendeArbre(r) {
+  var L = LEGENDES_ARBRE[r]; if (!L) return null;
+  var k = 'n-leg-' + r; if (SPR[k]) return k;
+  var c = toile(42, 46), x = c.getContext('2d');
+  peindreArbre(x, L.t, 21, 45, 1.35, { f: L.f, tronc: L.tronc });
+  for (var i = 0; i < 7; i++) { x.fillStyle = i % 2 ? '#ffffff' : L.f[2]; x.fillRect(8 + (i * 13) % 26, 6 + (i * 7) % 22, 1, 1); }
+  enregistrer(k, contour(c)); ECORCE[k] = [L.tronc[0], L.tronc[1], melange(L.tronc[0], '#000000', .3)]; FEUILLAGE_T[k] = [L.f[1], L.f[2]];
+  return k;
+}
+/* les arbres légendaires et le gibier passent par la région */
+var nouvelArbreRare = nouvelArbre;
+nouvelArbre = function () {
+  var a = nouvelArbreRare(), r = regionExpe(), th = themeExpe(), L = (r && LEGENDES_ARBRE[r]) || (th && th.id === 'desert' ? LEGENDES_ARBRE.sable : null);
+  if (a.rarete === 3 && L) { a.cle = sprLegendeArbre(r && LEGENDES_ARBRE[r] ? r : 'sable'); a.nom = L.nom; }
+  return a;
+};
+var nouvelleProieRare = nouvelleProieV6;
+nouvelleProieV6 = function () {
+  var p = nouvelleProieRare(), th = themeExpe(), r = regionExpe(), g = th && GIBIER_REGION[GIB_BIOME[th.id]];
+  if (p.rarete === 3 && r && LEGENDES_PROIE[r]) { var L = LEGENDES_PROIE[r]; if (!SPR[L.cle]) spr(L.base[0], L.base[1], L.cle); p.spr = L.cle; p.nom = L.nom; }
+  else if (p.rarete < 2 && g && Math.random() < .45) {
+    var s = mel(g)[0], cle = s.spr;
+    if (s.base && !SPR[cle]) spr(s.base[0], s.base[1], cle); else if (!SPR[cle]) spr(cle);
+    p.nom = s.nom; p.cuir = s.cuir; p.sp = s.sp || 0; p.combat = false; p.spr = p.rarete === 1 ? sprTier(cle, 1) : cle;
+  }
+  return p;
+};
+
+/* ═════════ 4. les rencontres fortuites ═════════ */
+DEF['f-coffre'] = { relief: true, plat: 'gk', pal: { b: '#6a4422', B: '#8a5a33', g: '#c9a46a', k: '#1a0c08', v: '#4f8a4a' }, r: [
+  '.vbbbbbbbbv.', 'vBBBBBBBBBBb', 'bBBBBkkBBBBb', 'gggggkkggggg', 'bBBBBkkBBBBb', 'bBBBBBBBBBBv', 'bbbbbbbbbbvv'] };
+DEF['f-mule'] = { relief: true, plat: 'kr', pal: { m: '#8a7a6a', M: '#a89888', k: '#1a1520', r: '#c0383a', s: '#c9a46a', S: '#8a5a33' }, r: [
+  'm.m...........', 'mmm...........', 'kmmm..........', 'mmmmmmmssssm..', '.mmmmrrSSSSmm.', '..mmmmsssssmmm', '..mmmmmmmmmm.m', '..m.m....m.m..', '..m.m....m.m..', '..k.k....k.k..'] };
+DEF['f-nid'] = { relief: true, plat: 'kWy', pal: { b: '#6b4630', B: '#8a5a33', n: '#a8784a', k: '#1a1520', W: '#ffffff', y: '#ffd24d', p: '#2a2a3a', P: '#5a5a7a' }, r: [
+  '....pp......', '...pkpP.....', '..ppWpPP....', '...pppPPP...', '.nnnnnnnnn..', 'nnynWnnnnnn.', '.nnnnnnnnn..', '..bbbbbbb...', '..bBbbbBb...', '..bbbbbbb...', '..bbBbbbb...', '.bbbbbbbbb..'] };
+DEF['f-ruche'] = { relief: true, plat: 'k', pal: { y: '#e0b040', Y: '#ffd870', o: '#a8782a', k: '#3a2a1a', b: '#6b4630' }, r: [
+  '....b....', '...bbb...', '..yYYYy..', '.yoooooy.', '.YYYYYYY.', 'yoooooooy', 'YYYkkYYYY', 'yooookooy', '.YYYYYYY.', '..yoooy..', '...yyy...'] };
+DEF['f-esprit'] = { pal: { c: '#5aa858', C: '#a8f0a8', W: '#ffffff', k: '#2a5a3a' }, r: [
+  '....c....', '...cc.c..', '..cCCcc..', '.cCWWWCc.', '.cWkWkWc.', 'cCWWWWWCc', 'cCWkkkWCc', '.cCWWWCc.', '..cCCCc..', '...ccc...'] };
+function fabriquerFortuits() {
+  propR('f-marchand', 30, 22, function (x) { x.drawImage(spr('f-mule'), 0, 7); var g = sprGensRole('marchand'); x.drawImage(g, 30 - g.width, 22 - g.height); });
+  propR('f-voyageur', 18, 24, function (x) { var g = sprGensRole('paysan'); x.drawImage(g, 18 - g.width - 2, 24 - g.height); pxr(x, 2, 6, 5, 7, '#8a5a33'); pxr(x, 2, 6, 5, 1, '#a8784a'); pxr(x, 1, 3, 1, 21, '#6b4630'); });
+  propR('f-autel', 22, 16, function (x) { pxr(x, 2, 6, 18, 10, '#6d7288'); pxr(x, 0, 4, 22, 3, '#8d93a8'); pxr(x, 0, 4, 22, 1, '#b9bfd2'); [[5, 9], [10, 10], [15, 9]].forEach(function (r) { pxr(x, r[0], r[1], 2, 3, '#2a2d44'); }); pxr(x, 9, 1, 4, 3, '#c9a46a'); pxr(x, 10, 0, 2, 1, '#ffd24d'); pxr(x, 3, 14, 4, 2, '#3f7a3a'); });
+  propR('f-puits', 18, 20, function (x) { pxr(x, 1, 10, 16, 10, '#8d93a8'); for (var r = 0; r < 3; r++) pxr(x, 1 + (r % 2) * 4, 12 + r * 3, 16, 1, '#6d7288'); pxr(x, 0, 9, 18, 2, '#b9bfd2'); pxr(x, 3, 10, 12, 2, '#1a2a4a'); pxr(x, 2, 0, 1, 10, '#6b4630'); pxr(x, 15, 0, 1, 10, '#6b4630'); pxr(x, 0, 0, 18, 2, '#a8463a'); pxr(x, 8, 2, 2, 4, '#c8ccd8'); pxr(x, 8, 6, 2, 2, '#6b4630'); });
+  propR('f-statue', 14, 28, function (x) { pxr(x, 1, 22, 12, 6, '#6d7288'); pxr(x, 0, 21, 14, 2, '#8d93a8'); pxr(x, 5, 2, 4, 4, '#a8a498'); pxr(x, 4, 6, 6, 9, '#a8a498'); pxr(x, 3, 7, 1, 6, '#a8a498'); pxr(x, 10, 7, 1, 6, '#a8a498'); pxr(x, 11, 1, 1, 13, '#c8c4b8'); pxr(x, 10, 11, 3, 1, '#c8c4b8'); pxr(x, 5, 15, 2, 6, '#8a8678'); pxr(x, 8, 15, 2, 6, '#8a8678'); [[4, 9], [6, 3], [9, 12], [2, 23], [10, 18]].forEach(function (m) { pxr(x, m[0], m[1], 2, 2, '#4f8a4a'); }); });
+  propR('f-charrette', 26, 14, function (x) { traitR(x, 2, 12, 20, 4, '#8a5a33', 3); traitR(x, 2, 10, 20, 2, '#c9955a', 1); rond(x, 20, 10, 3, '#5a3a22'); rond(x, 20, 10, 1, '#c8ccd8'); pxr(x, 3, 11, 6, 3, '#8a6a40'); pxr(x, 9, 12, 4, 2, '#c8ccd8'); pxr(x, 14, 12, 5, 2, '#a8784a'); });
+  propR('f-fees', 30, 9, function (x) { for (var i = 0; i < 7; i++) { var a = Math.PI * (i / 6), X = 15 + Math.round(Math.cos(a + Math.PI) * 13), Y = 6 - Math.round(Math.sin(a) * 3); pxr(x, X, Y, 1, 3, '#f1e4d2'); pxr(x, X - 1, Y - 1, 3, 1, i % 2 ? '#ff8ad8' : '#7fffe0'); } for (var j = 0; j < 4; j++) { pxr(x, 6 + j * 6, 8, 1, 1, '#f1e4d2'); pxr(x, 5 + j * 6, 7, 3, 1, j % 2 ? '#7fffe0' : '#ff8ad8'); } });
+}
+var FORTUITS = [
+  { id: 'coffre', ou: 'tous', cle: 'f-coffre', n: 3, titre: TR('Un coffre abandonné', 'Een achtergelaten kist'), aide: TR('Trois bonnes réponses pour crocheter la serrure.', 'Drie goede antwoorden om het slot open te peuteren.'), rate: TR('La serrure résiste', 'Het slot houdt stand'),
+    gain: function (m) { gagnerRes('or', 4 * m, true); if (Math.random() < .35 * m) dropObjet('coffre'); } },
+  { id: 'marchand', ou: 'dehors', cle: 'f-marchand', n: 2, titre: TR('Un marchand ambulant', 'Een rondtrekkende koopman'), aide: TR('Aide-le à recompter sa marchandise : deux bonnes réponses, et il te fait un cadeau.', 'Help hem zijn waren te tellen: twee goede antwoorden, en hij geeft je een cadeau.'), rate: TR('Tu t\'embrouilles dans ses comptes', 'Je raakt in de war met zijn rekeningen'),
+    gain: function (m) { var h = H(); h.conso['p-petite'] = (h.conso['p-petite'] || 0) + Math.max(1, Math.round(m)); nombre('+' + Math.max(1, Math.round(m)) + ' ' + T('potion'), 48, 26, 'soin'); gagnerRes('or', 2 * m, true); } },
+  { id: 'source', ou: 'tous', cle: 'fontaine', n: 3, titre: TR('Une source enchantée', 'Een betoverde bron'), aide: TR('Chaque bonne réponse te soigne.', 'Elk goed antwoord geneest je.'), rate: TR('L\'eau se trouble', 'Het water wordt troebel'),
+    pas: function () { soigner(22); }, gain: function (m) { gagnerRes('herbes', 2 * m, true); gagnerRes('cristal', .5 * m, true); } },
+  { id: 'fees', ou: 'dehors', cle: 'f-fees', n: 3, titre: TR('Un cercle de fées', 'Een feeënkring'), aide: TR('Danse avec elles : trois bonnes réponses, et les fées te font un cadeau.', 'Dans met hen: drie goede antwoorden, en de feeën geven je een cadeau.'), rate: TR('Une fée te tire les cheveux', 'Een fee trekt aan je haar'),
+    gain: function (m) { gagnerRes('cristal', 2 * m, true); gagnerSpeciale(4 * m); } },
+  { id: 'voyageur', ou: 'dehors', cle: 'f-voyageur', n: 3, titre: TR('Un voyageur égaré', 'Een verdwaalde reiziger'), aide: TR('Indique-lui le chemin : trois bonnes réponses.', 'Wijs hem de weg: drie goede antwoorden.'), rate: TR('Il ne comprend pas', 'Hij begrijpt het niet'),
+    gain: function (m) { gagnerRes('or', 3 * m, true); gagnerRes('cuir', 2 * m, true); } },
+  { id: 'nid', ou: 'dehors', cle: 'f-nid', n: 2, titre: TR('Le nid d\'une pie voleuse', 'Het nest van een diefachtige ekster'), aide: TR('Deux bonnes réponses pour l\'atteindre sans tout faire tomber.', 'Twee goede antwoorden om erbij te komen zonder alles te laten vallen.'), rate: TR('La pie crie !', 'De ekster krijst!'),
+    gain: function (m) { gagnerRes('or', 3 * m, true); if (Math.random() < .5) gagnerRes('cristal', m, true); } },
+  { id: 'autel', ou: 'tous', cle: 'f-autel', n: 4, titre: TR('Un autel oublié', 'Een vergeten altaar'), aide: TR('Quatre bonnes réponses pour rallumer ses runes.', 'Vier goede antwoorden om zijn runen weer te laten gloeien.'), rate: TR('Une rune s\'éteint', 'Een rune dooft'),
+    gain: function (m) { soigner(999); gagnerSpeciale(6 * m); gagnerRes('cristal', m, true); } },
+  { id: 'esprit', ou: 'tous', cle: 'f-esprit', n: 3, titre: TR('Un esprit malicieux', 'Een ondeugende geest'), aide: TR('Il veut jouer : trois bonnes réponses, et il te laisse un souvenir.', 'Hij wil spelen: drie goede antwoorden, en hij laat je een aandenken.'), rate: TR('Il ricane et disparaît un instant', 'Hij grinnikt en verdwijnt even'),
+    gain: function (m) { gagnerRes('cristal', 2 * m, true); gagnerRes('herbes', 2 * m, true); } },
+  { id: 'ruche', ou: 'dehors', cle: 'f-ruche', n: 3, titre: TR('Une ruche sauvage', 'Een wilde bijenkorf'), aide: TR('Trois bonnes réponses pour récolter le miel. Une erreur, et les abeilles piquent.', 'Drie goede antwoorden om de honing te oogsten. Een fout, en de bijen steken.'), rate: TR('Aïe ! Les abeilles piquent', 'Au! De bijen steken'), pique: 3,
+    gain: function (m) { gagnerRes('herbes', 4 * m, true); gagnerRes('or', m, true); } },
+  { id: 'puits', ou: 'dehors', cle: 'f-puits', n: 2, titre: TR('Un puits aux souhaits', 'Een wensput'), aide: TR('Deux bonnes réponses, une pièce, un vœu…', 'Twee goede antwoorden, een muntje, een wens…'), rate: TR('La pièce rebondit sur la margelle', 'Het muntje stuitert op de rand'),
+    gain: function (m) { var r = Math.random(); if (r < .5) gagnerRes('or', 8 * m, true); else if (r < .8) gagnerRes('cristal', 2 * m, true); else nombre(TR('Le vœu ne s\'exauce pas… cette fois.', 'De wens komt niet uit… deze keer.'), 48, 26, 'info'); } },
+  { id: 'statue', ou: 'tous', cle: 'f-statue', n: 4, titre: TR('La statue d\'un héros oublié', 'Het beeld van een vergeten held'), aide: TR('Quatre bonnes réponses pour la débarrasser de sa mousse.', 'Vier goede antwoorden om het van zijn mos te ontdoen.'), rate: TR('La mousse résiste', 'Het mos houdt stand'),
+    gain: function (m) { gagnerRes('or', 4 * m, true); gagnerRes('pierre', 4 * m, true); gagnerSpeciale(3 * m); } },
+  { id: 'charrette', ou: 'dehors', cle: 'f-charrette', n: 3, titre: TR('Une charrette renversée', 'Een omgevallen kar'), aide: TR('Trois bonnes réponses pour la redresser : son propriétaire te remerciera.', 'Drie goede antwoorden om ze recht te zetten: de eigenaar zal je bedanken.'), rate: TR('Elle retombe', 'Ze valt terug'),
+    gain: function (m) { gagnerRes('bois', 4 * m, true); gagnerRes('fer', 2 * m, true); } }
+];
+TR('potion', 'drankje');
+function tirerFortuit() {
+  var dessous = EXPE && (EXPE.mode === 'mine' || EXPE.mode === 'grotte'), l = FORTUITS.filter(function (f) { return f.ou === 'tous' || (f.ou === 'dehors' && !dessous); });
+  if (EXPE.dernierFortuit) l = l.filter(function (f) { return f.id !== EXPE.dernierFortuit; });
+  return mel(l)[0];
+}
+/* déclencher une rencontre au bon moment, depuis une activité ; renvoie 'scene' si elle a lieu */
+async function peutEtreFortuit(chance) {
+  if (!EXPE || EXPE.mode === 'quete' || EXPE.mode === 'boss' || EXPE.mode === 'donjon' || Math.random() >= chance) return null;
+  await scene('fortuit'); return 'scene';
+}
+async function sceneFortuit() {
+  preparerRecits(); if (!SPR['f-marchand']) fabriquerFortuits();
+  var F = tirerFortuit(), t = tirerRenc(POIDS_RENC.arbre), Q = EXPE.qj = { n: F.n, fait: 0, F: F, t: t, fortuit: true };
+  EXPE.dernierFortuit = F.id; SC.tapQ = null; SC.heros.outil = 'main'; SC.heros.x = 10;
+  var cle = t ? sprTier(F.cle === 'fontaine' ? (spr('fontaine'), 'fontaine') : (spr(F.cle), F.cle), t) : F.cle;
+  var e = { nom: T(F.titre) + etoiles(t), spr: cle, cle: cle, prop: true, noeud: true, pv: F.n, pvMax: F.n, x: 0, base: 61, flash: 0, rarete: t };
+  if (!SPR[cle]) spr(cle);
+  placer(e); e.entree = { t0: maintenant(), dur: 380 }; SC.ennemi = e; await attendre(390);
+  if (t) setTimeout(function () { annonceRarete(t, 66, 12); }, 200);
+  return [T(F.titre), T(F.aide)];
+}
+function etiquetteFortuit() {
+  var Q = EXPE.qj, h = ''; if (!Q || !Q.F) return;
+  for (var i = 0; i < Q.n; i++) h += '<span class="' + (i < Q.fait ? 'or' : 'vide') + '"></span>';
+  $('e-nom').textContent = T(Q.F.titre) + etoiles(Q.t); $('e-barre').innerHTML = '<div class="segs">' + h + '</div>';
+}
+async function consequenceFortuit(juste) {
+  var Q = EXPE.qj, F = Q.F, e = SC.ennemi, X = EXPE;
+  if (!juste) {
+    if (F.pique) { var d = absorber(F.pique); nombre(T(F.rate) + (d ? ' -' + d : ''), 48, 22, 'mal'); if (d) encaisser(d); son('mal'); for (var b = 0; b < 8; b++) SC.parts.push({ x: 60 + Math.random() * 20, y: 30 + Math.random() * 20, vx: (Math.random() - .5) * 1.4, vy: (Math.random() - .5) * 1.4, g: 0, vie: 30, c: '#ffd24d' }); }
+    else { nombre(F.rate, 48, 22, 'mal'); bip(220, 140, .12, 'square', .04); }
+    majEtiquette(); return;
+  }
+  Q.fait++; if (e) { e.flash = maintenant() + 120; e.pv = Math.max(0, Q.n - Q.fait); var s = spr(e.spr, e.pal, e.cle); etincelles(e.x + s.width / 2, 61 - s.height / 2, 10, ['#ffffff', '#ffd24d', RENC_C[Q.t] ? RENC_C[Q.t][0] : '#fff3b0'], .7); }
+  SC.geste = { t0: maintenant(), dur: 420, type: 'recolte' }; bip(500 + Q.fait * 120, 500 + Q.fait * 120, .08, 'triangle', .04);
+  if (F.pas) F.pas();
+  majEtiquette();
+  if (Q.fait < Q.n) return;
+  await attendre(250); if (!C || EXPE !== X) return 'fin';
+  son('niveau'); F.gain(multRenc(Q.t)); bonusRarete(Q.t);
+  C.fini = true; C.reussi = true;
+}
+async function apresFortuit() {
+  var X = EXPE;
+  await banniere(C.reussi ? TR('Belle rencontre !', 'Mooie ontmoeting!') : TR('Tu poursuis ta route', 'Je gaat verder'), null, 900);
+  if (EXPE !== X) return;
+  var m = EXPE.mode;
+  if (m === 'foret') scene('arbre');
+  else if (m === 'chasse') scene('chasse');
+  else if (m === 'mine') scene('mine');
+  else if (m === 'grotte') scene('grotte');
+  else if (m === 'potager') scene('potager');
+  else if (m === 'conquete') combatConquete();
+  else finExpedition(false);
+}
+/* la famille de scène « fortuit » passe par les portes des quêtes à mini-jeux */
+QJ.push('fortuit');
+var sceneQueteAvantF = sceneQuete, etiquetteQueteAvantF = etiquetteQuete, consequenceQueteAvantF = consequenceQuete, dessusQueteAvantF = dessusQuete;
+sceneQuete = function (f) { return f === 'fortuit' ? sceneFortuit() : sceneQueteAvantF(f); };
+etiquetteQuete = function (f) { return f === 'fortuit' ? etiquetteFortuit() : etiquetteQueteAvantF(f); };
+consequenceQuete = function (f, juste) { return f === 'fortuit' ? consequenceFortuit(juste) : consequenceQueteAvantF(f, juste); };
+dessusQuete = function (x, now) {
+  dessusQueteAvantF(x, now);
+  var Q = EXPE && EXPE.qj, e = SC.ennemi; if (!C || C.famille !== 'fortuit' || !Q || !Q.F || !e || e.mort) return;
+  var s = spr(e.spr, e.pal, e.cle), X = e.x, Y = 61 - s.height, id = Q.F.id;
+  if (id === 'fees' && Math.random() < .25) SC.parts.push({ x: X + Math.random() * s.width, y: Y - 2 - Math.random() * 10, vx: (Math.random() - .5) * .2, vy: -.2, g: 0, vie: 40, c: Math.random() < .5 ? '#ff8ad8' : '#7fffe0' });
+  if (id === 'ruche') for (var b = 0; b < 3; b++) { var a = now / 300 + b * 2.1; x.fillStyle = '#ffd24d'; x.fillRect(Math.round(X + s.width / 2 + Math.cos(a) * 8), Math.round(Y + 6 + Math.sin(a * 1.3) * 5), 1, 1); }
+  if (id === 'esprit') { e.flotte = true; if (Math.random() < .1) SC.parts.push({ x: X + s.width / 2, y: Y + s.height, vx: (Math.random() - .5) * .3, vy: .1, g: 0, vie: 30, c: '#a8f0a8' }); }
+  if (id === 'autel') { var g = .2 + .15 * Math.sin(now / 300); x.fillStyle = 'rgba(255,220,120,' + g * Q.fait / Q.n + ')'; x.fillRect(X + 4, Y + 8, s.width - 8, 4); }
+  if (id === 'source' && Math.random() < .2) SC.parts.push({ x: X + s.width / 2 + (Math.random() - .5) * 4, y: Y + 2, vx: (Math.random() - .5) * .4, vy: -.5, g: .05, vie: 22, c: '#bfe8ff' });
+  if (id === 'puits' && Math.floor(now / 400) % 6 === 0) { x.fillStyle = '#ffd24d'; x.fillRect(X + 8, Y + 12, 1, 1); }
+};
 
 /* ═════════ les textes des rencontres, accordés en français ═════════
    « Deux squelettes et un squelette à bouclier » plutôt que « 3 ennemis : Squelette, Squelette à bouclier ». */
@@ -9414,6 +9933,19 @@ Object.assign(NL, {
   'la frappe héroïque soigne {0} PV': 'de heldenslag geneest {0} LP', 'une potion offerte': 'een gratis drankje', 'monstres +{0} % PV': 'monsters +{0} % LP',
   'géodes : {0} coup de pioche en moins': 'geodes: {0} houweelslag minder'
 });
+/* expéditions sans fin, 4 ou 5 réponses par étape, la conquête */
+Object.assign(NL, {
+  'Le butin de tes {0} premières réponses compte double.': 'De buit van je eerste {0} antwoorden telt dubbel.', '{0} réponses': '{0} antwoorden', 'encore {0}': 'nog {0}',
+  'étape {0}/3': 'stap {0}/3', 'Tu dégages les branches…': 'Je maakt de takken vrij…', 'Tu marques les coupes…': 'Je tekent de zaagsneden af…', 'Tu cales les coins…': 'Je zet de wiggen klaar…',
+  'Tu tends la corde': 'Je spant de pees', 'Tu retiens ton souffle': 'Je houdt je adem in',
+  'Combattre les monstres': 'Monsters bevechten', 'Tant que ses 15 monstres ne sont pas battus, on ne peut ni récolter ni explorer ici : seulement combattre.': 'Zolang de 15 monsters niet verslagen zijn, kun je hier niets oogsten of verkennen: alleen vechten.',
+  'La contrée est dégagée !': 'Het gebied is vrijgemaakt!', 'Ses 15 monstres sont battus : on peut maintenant y récolter. Le gardien attend que tous tes mots de la semaine soient validés.': 'De 15 monsters zijn verslagen: je kunt hier nu oogsten. De bewaker wacht tot al je woorden van de week gevalideerd zijn.',
+  'Victoire !': 'Overwinning!', 'D\'autres monstres approchent…': 'Er komen nog meer monsters aan…',
+  'Il sort quand ses 15 monstres sont battus, à vous deux, et que tous tes mots de la semaine sont validés.': 'Hij komt tevoorschijn als jullie samen zijn 15 monsters verslagen hebben en al je woorden van de week gevalideerd zijn.',
+  'Ses monstres sont battus. Il sort quand tous tes mots de la semaine sont validés (et tes bilans réussis).': 'Zijn monsters zijn verslagen. Hij komt tevoorschijn als al je woorden van de week gevalideerd zijn (en je toetsen gelukt zijn).'
+});
+Object.assign(NL, { 'Premier départ du jour : butin double sur tes {0} premières réponses.': 'Eerste vertrek van de dag: dubbele buit op je eerste {0} antwoorden.' });
+Object.assign(NL, { 'Veine rare ! ': 'Zeldzame ader! ', 'Veine épique ! ': 'Epische ader! ', 'Veine légendaire ! ': 'Legendarische ader! ', 'Normal': 'Normaal' });
 
 /* ═════════ sauvegarde locale, listes en ligne et synchronisation à deux ═════════
    1) La partie est gardée dans le localStorage du téléphone (CLE), écrite peu après chaque changement
