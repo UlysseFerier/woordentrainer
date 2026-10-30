@@ -609,6 +609,7 @@ canvas,#tel,button{-webkit-touch-callout:none;-webkit-user-select:none;user-sele
 .lieu.haut{flex-direction:column-reverse;transform:translate(-50%,-98%)}.lieu.muet span{display:none}.lieu.muet{transform:translate(-50%,-97%)}
 .mo-chance{display:flex;align-items:center;gap:6px;margin:6px 0 0;font-size:11px;color:var(--doux)}.mo-chance span{flex:0 1 auto}.mo-chance i{flex:1;height:7px;background:#0a0c18;box-shadow:0 0 0 1px #000;min-width:40px}.mo-chance b{display:block;height:100%;background:linear-gradient(90deg,#c08af2,#ffd24d)}.mo-chance em{font-style:normal;white-space:nowrap;font-family:var(--num);color:var(--or);font-weight:700}
 .pb-note.evt-note{color:#c8b0f0}.pb-note.evt-note.neuf{color:var(--or);font-weight:700}
+.lieu.zone{transform:translate(-50%,-50%);gap:0}.lieu.zone .lz-vig{position:relative;display:block;background:none;box-shadow:none;padding:0;font-size:0;line-height:0}.lieu.zone .lz-vig>img.px{max-width:none;filter:drop-shadow(0 3px 0 rgba(0,0,0,.45))}.lieu.zone.sel .lz-vig>img.px{filter:drop-shadow(0 0 2px #ffd24d) drop-shadow(0 0 4px #ffd24d) drop-shadow(0 3px 0 rgba(0,0,0,.45))}.lieu.zone .lz-res,.lieu.zone.sel .lz-res{position:absolute;right:4px;top:4px;display:flex;gap:2px;background:none;box-shadow:none;padding:0}.lieu.zone .lz-res img{height:18px;width:18px;max-width:none;object-fit:contain;background:rgba(14,17,40,.88);box-shadow:0 0 0 1px #000,inset 0 0 0 1px var(--pierre2);padding:2px;filter:none}.lieu.zone .evt-pt{left:4px;right:auto;top:4px}.lieu.zone .lz-nom{margin-top:-8px;position:relative}.lieu.zone.sel .lz-vig{background:none}
 .lieu.danger span{color:#ffb0a0}.lieu.evt span{color:var(--or)}.lieu.sel.evt span,.lieu.sel.danger span{color:#10121e}
 .lieu.entre{animation:lieuIn .4s steps(4) backwards}@keyframes lieuIn{from{opacity:0;scale:.4}}
 .evt-pt{position:absolute;top:-6px;right:-2px;font-style:normal;font-family:var(--px);font-weight:700;font-size:13px;color:#10121e;background:var(--or);box-shadow:0 0 0 2px #000;width:15px;height:15px;line-height:15px;text-align:center;animation:attire .8s steps(2) infinite}
@@ -9804,14 +9805,18 @@ function lieuxDe(n) {
 }
 var POS_LIEUX = {};
 function positionsLieux(n, nb) {
+  /* une grille en quinconce centrée sur la contrée : chaque îlot a sa place, rien ne se chevauche */
   var cle = n + ':' + nb; if (POS_LIEUX[cle]) return POS_LIEUX[cle];
-  var C0 = CONTREES[n], pts = [];
-  for (var dmin = 9; dmin >= 4 && pts.length < nb; dmin -= 1.5) {
-    pts = [];
-    [4, 8, 12, 16, 20].forEach(function (r) { for (var a = 0; a < 12; a++) { var ang = a / 12 * Math.PI * 2 + r * .3, x = C0.x + Math.cos(ang) * r, y = C0.y + Math.sin(ang) * r * .85; if (contreeSous(x, y) !== n) continue; if (pts.every(function (p) { return Math.hypot(p[0] - x, p[1] - y) >= dmin; })) pts.push([x, y]); } });
+  var C0 = CONTREES[n], cols = nb <= 2 ? nb : nb <= 4 ? 2 : 3, rows = Math.ceil(nb / cols), CW = 18.5, CH = 17, pts = [];
+  for (var i = 0; i < nb; i++) {
+    var r = Math.floor(i / cols), c = i % cols, dansRang = Math.min(cols, nb - r * cols);
+    pts.push([C0.x + (c - (dansRang - 1) / 2) * CW + (r % 2 ? 2 : -2) * (cols > 1 ? 1 : 0), C0.y + (r - (rows - 1) / 2) * CH]);
   }
-  while (pts.length < nb) pts.push([C0.x + (pts.length % 3 - 1) * 6, C0.y + Math.floor(pts.length / 3) * 6]);
-  return (POS_LIEUX[cle] = pts.slice(0, nb));
+  /* la grille reste entière sur la carte (195 × 400) : on la décale si elle déborde d'un bord */
+  var xs = pts.map(function (p) { return p[0]; }), ys = pts.map(function (p) { return p[1]; }), mx = 9.5, my = 9;
+  var dx = Math.max(0, mx - Math.min.apply(null, xs)) - Math.max(0, Math.max.apply(null, xs) - (195 - mx)), dy = Math.max(0, my - Math.min.apply(null, ys)) - Math.max(0, Math.max.apply(null, ys) - (400 - my));
+  pts.forEach(function (p) { p[0] += dx; p[1] += dy; });
+  return (POS_LIEUX[cle] = pts);
 }
 
 /* ── les icônes des lieux, dessinées une fois ── */
@@ -9871,20 +9876,13 @@ function zoomCarte(n) {
   dessinerLieux(n, nouveau);
 }
 function dessinerLieux(n, nouveau) {
-  var l = lieuxDe(n), pos = positionsLieux(n, l.length), z = $('mo-lieux'), h = '', boites = [];
-  function cleL(L) { return L.k === 'evt' ? L.ev.id : L.k; }
-  function touche(r) { return boites.some(function (q) { return r[0] < q[2] && r[2] > q[0] && r[1] < q[3] && r[3] > q[1]; }); }
-  /* les icônes d'abord, puis les étiquettes : dessous, sinon dessus, sinon rien (le lieu choisi garde toujours la sienne) */
-  var P = l.map(function (L, i) { var X = pos[i][0] * 2 * ZOOM_S, Y = pos[i][1] * 2 * ZOOM_S; boites.push([X - 22, Y - 35, X + 22, Y + 1]); return { L: L, i: i, X: X, Y: Y, place: '' }; });
-  P.slice().sort(function (a, b) { return (LIEU.sel === cleL(b.L)) - (LIEU.sel === cleL(a.L)); }).forEach(function (o) {
-    var def = o.L.k === 'evt' ? EVTS[o.L.ev.type] : LIEUX_DEF[o.L.k], w = T(def.nom).length * 6.2 + 10;
-    var bas = [o.X - w / 2, o.Y + 1, o.X + w / 2, o.Y + 15], haut = [o.X - w / 2, o.Y - 50, o.X + w / 2, o.Y - 36];
-    if (!touche(bas)) { boites.push(bas); o.place = ''; } else if (!touche(haut)) { boites.push(haut); o.place = ' haut'; } else o.place = LIEU.sel === cleL(o.L) ? '' : ' muet';
-  });
-  P.forEach(function (o) {
-    var L = o.L, k = cleL(L), def = L.k === 'evt' ? EVTS[L.ev.type] : LIEUX_DEF[L.k];
-    h += '<button class="lieu' + o.place + (L.k === 'evt' ? ' evt' : '') + (L.k === 'boss' || L.k === 'conquete' ? ' danger' : '') + (LIEU.sel === k ? ' sel' : '') + (nouveau ? ' entre' : '') + '" data-lieu="' + k + '" style="left:' + o.X + 'px;top:' + o.Y + 'px;animation-delay:' + (nouveau ? .35 + o.i * .05 : 0) + 's">' +
-      '<img class="px" src="' + iconeLieu(L, n) + '">' + (L.k === 'evt' ? '<i class="evt-pt">!</i>' : '') + '<span>' + ech(T(def.nom)) + '</span></button>';
+  var l = lieuxDe(n), pos = positionsLieux(n, l.length), z = $('mo-lieux'), h = '';
+  l.forEach(function (L, i) {
+    var X = pos[i][0] * 2 * ZOOM_S, Y = pos[i][1] * 2 * ZOOM_S, k = L.k === 'evt' ? L.ev.id : L.k, def = L.k === 'evt' ? EVTS[L.ev.type] : LIEUX_DEF[L.k];
+    h += '<button class="lieu zone' + (L.k === 'evt' ? ' evt' : '') + (L.k === 'boss' || L.k === 'conquete' ? ' danger' : '') + (LIEU.sel === k ? ' sel' : '') + (nouveau ? ' entre' : '') + '" data-lieu="' + k + '" style="left:' + X + 'px;top:' + Y + 'px;animation-delay:' + (nouveau ? .35 + i * .06 : 0) + 's">' +
+      '<span class="lz-vig"><img class="px" src="' + vignetteLieu(L, n) + '" style="width:' + (VIG_W + 2) * VIG_S + 'px;height:' + (VIG_H + 2) * VIG_S + 'px">' +
+      '<span class="lz-res">' + recolteLieu(L).map(function (r) { return '<img class="px" src="' + icoDest(r) + '">'; }).join('') + '</span>' + (L.k === 'evt' ? '<i class="evt-pt">!</i>' : '') + '</span>' +
+      '<span class="lz-nom">' + ech(T(def.nom)) + '</span></button>';
   });
   z.innerHTML = h;
   z.querySelectorAll('.lieu').forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); LIEU.sel = b.dataset.lieu; son('clic'); panneauMonde(); }; });
@@ -10033,6 +10031,141 @@ async function caravane(ev, n) {
     sauver(); celebrer(T(o.nom));
   }
 }
+
+/* ═════════ les lieux de récolte, dessinés sur la carte zoomée ═════════
+   Chaque lieu est un petit îlot en pixel art posé sur la contrée : un bosquet pour la forêt, une
+   colline creusée d'une galerie pour la mine, un pré avec son mirador pour la chasse, une grotte
+   hérissée de cristaux, une forteresse, un potager… Les couleurs (sol, feuillage, essence d'arbre)
+   viennent du thème de la contrée. Une petite pastille indique ce qu'on y récolte. */
+var VIG_CACHE = {}, VIG_W = 32, VIG_H = 27, VIG_S = 3;
+function themeVig(n) {
+  var th = THEMES[CONTREES[n].b] || THEMES.bois || {}, a = th.arbres || {};
+  return { sol: th.sol || ['#86c860', '#7cc25a', '#72b852', '#68ae4a', '#5fa444'], herbe: th.herbe || ['#4a8e3a', '#a8e078'], t: a.t || 'feuillu', f: a.f || ['#3f7a3a', '#5aa858', '#8ad070'], tronc: a.tronc || ['#5a3a26', '#7a5236'] };
+}
+/* l'îlot : une ellipse au bord irrégulier, avec son épaisseur sous le sol */
+function ilotVig(x, sol, bord, al) {
+  var cx = 16, cy = 18, rx = 15, ry = 7, p1 = al() * 6, p2 = al() * 6;
+  function dedans(i, j) { var dx = (i + .5 - cx) / rx, dy = (j + .5 - cy) / ry, th = Math.atan2(dy, dx), r = 1 + .07 * Math.sin(3 * th + p1) + .05 * Math.sin(5 * th + p2); return dx * dx + dy * dy <= r * r; }
+  for (var j = 8; j < VIG_H; j++) for (var i = 0; i < VIG_W; i++) {
+    if (dedans(i, j)) { var k = ((i * 7 + j * 13) % 5 + (i + j) % 3) % sol.length; if (j < cy - 3 && k > 1) k--; pxr(x, i, j, 1, 1, sol[Math.min(sol.length - 1, k)]); }
+    else if (dedans(i, j - 2)) pxr(x, i, j, 1, 1, j === VIG_H - 1 || !dedans(i, j - 3) ? melange(bord, '#000000', .35) : bord);
+  }
+  return dedans;
+}
+function arbreVig(x, X, Y, P) {
+  var f = P.f, t = P.tronc, k = P.t;
+  if (k === 'sapin' || k === 'foret') { pxr(x, X, Y - 2, 1, 2, t[0]); for (var r = 0; r < 7; r++) { var w = Math.floor(r / 2) * 2 + 1; pxr(x, X - Math.floor(w / 2), Y - 9 + r, w, 1, r % 2 ? f[0] : f[1]); } pxr(x, X, Y - 9, 1, 1, f[2]); }
+  else if (k === 'palmier') { traitR(x, X, Y, X + 1, Y - 7, t[1], 1); [[-3, 1], [4, 1], [-2, -2], [3, -2]].forEach(function (d) { traitR(x, X + 1, Y - 7, X + 1 + d[0], Y - 7 + d[1] + 1, f[1], 1); }); pxr(x, X, Y - 7, 2, 1, f[0]); }
+  else if (k === 'cactus') { pxr(x, X, Y - 7, 2, 7, '#4a9a4a'); pxr(x, X, Y - 7, 1, 7, '#6ac06a'); pxr(x, X - 2, Y - 4, 2, 1, '#4a9a4a'); pxr(x, X - 2, Y - 6, 1, 2, '#4a9a4a'); pxr(x, X + 2, Y - 3, 2, 1, '#4a9a4a'); pxr(x, X + 3, Y - 5, 1, 2, '#4a9a4a'); }
+  else if (k === 'mort' || k === 'brule') { pxr(x, X, Y - 7, 1, 7, t[0]); traitR(x, X, Y - 5, X - 2, Y - 7, t[0], 1); traitR(x, X, Y - 4, X + 2, Y - 6, t[1], 1); if (k === 'brule') { pxr(x, X - 2, Y - 7, 1, 1, '#ff8a3a'); pxr(x, X + 1, Y - 3, 1, 1, '#ffb03c'); } }
+  else { pxr(x, X, Y - 3, 1, 3, t[0]); rond(x, X, Y - 6, 4, melange(f[0], '#000000', .45)); pxr(x, X - 1, Y - 2, 3, 1, melange(f[0], '#000000', .45)); pxr(x, X, Y - 3, 1, 2, t[1]); rond(x, X, Y - 6, 3, f[0]); rond(x, X - 1, Y - 7, 2, f[1]); pxr(x, X - 2, Y - 8, 1, 1, f[2]); pxr(x, X + 1, Y - 5, 1, 1, f[2]); if (k === 'cerisier') { pxr(x, X - 1, Y - 5, 1, 1, '#ffffff'); pxr(x, X + 2, Y - 7, 1, 1, '#ffd0e8'); } }
+}
+function cristalVig(x, X, Y, c, c2) { pxr(x, X, Y - 4, 1, 4, c); pxr(x, X - 1, Y - 2, 1, 2, c2); pxr(x, X + 1, Y - 3, 1, 3, c2); pxr(x, X, Y - 4, 1, 1, '#ffffff'); }
+function eclatsVig(x, al, c) { for (var i = 0; i < 6; i++) { var X = 2 + Math.floor(al() * 28), Y = 2 + Math.floor(al() * 14); pxr(x, X, Y, 1, 1, c); if (i % 2) { pxr(x, X - 1, Y, 1, 1, melange(c, '#ffffff', .5)); pxr(x, X + 1, Y, 1, 1, melange(c, '#ffffff', .5)); } } }
+/* un sprite réduit sans flou, posé debout sur l'îlot */
+function poserSprVig(x, s, X, Y, hMax, wMax) {
+  if (!s) return; var k = Math.min(1, hMax / s.height, wMax / s.width), w = Math.max(1, Math.round(s.width * k)), h = Math.max(1, Math.round(s.height * k));
+  x.imageSmoothingEnabled = false; x.drawImage(s, Math.round(X - w / 2), Math.round(Y - h), w, h);
+}
+var DESSIN_VIG = {
+  foret: function (x, P, al) {
+    ilotVig(x, [P.herbe[0], P.sol[3] || P.sol[0], P.sol[4] || P.sol[1], P.herbe[0], P.sol[2]], P.tronc[0], al);
+    for (var i = 0; i < 9; i++) pxr(x, 3 + Math.floor(al() * 26), 13 + Math.floor(al() * 10), 1, 1, P.herbe[1]);
+    [[8, 15], [16, 13], [24, 15], [5, 21], [13, 20], [21, 20], [28, 22], [16, 25]].forEach(function (p) { arbreVig(x, p[0], p[1], P); });
+    pxr(x, 27, 22, 3, 2, P.tronc[1]); pxr(x, 27, 22, 3, 1, '#e0c090'); traitR(x, 29, 21, 31, 18, '#8a5a33', 1); pxr(x, 31, 17, 1, 2, '#c8ccd8');
+  },
+  mine: function (x, P, al) {
+    ilotVig(x, ['#a09a8c', '#8a8478', '#958f82', '#7a756a', '#8a8478'], '#5a5448', al);
+    rond(x, 16, 12, 9, '#5a5560'); rond(x, 9, 14, 6, '#6a6570'); rond(x, 23, 13, 7, '#6a6570'); rond(x, 14, 8, 4, '#7a7580'); rond(x, 23, 10, 3, '#7a7580'); pxr(x, 12, 5, 3, 1, '#8a8590');
+    pxr(x, 13, 12, 7, 9, '#120e18'); pxr(x, 14, 11, 5, 1, '#120e18'); pxr(x, 12, 11, 1, 10, '#8a5a33'); pxr(x, 20, 11, 1, 10, '#8a5a33'); pxr(x, 12, 10, 9, 2, '#a8784a'); pxr(x, 21, 13, 1, 1, '#ffb03c'); pxr(x, 21, 12, 1, 1, '#ffe066');
+    for (var k = 0; k < 4; k++) pxr(x, 13, 21 + k * 2, 7, 1, '#6b4630'); pxr(x, 14, 20, 1, 7, '#8f96aa'); pxr(x, 18, 20, 1, 7, '#8f96aa');
+    pxr(x, 22, 20, 6, 4, '#5a5a66'); pxr(x, 22, 20, 6, 1, '#7a7a88'); pxr(x, 23, 18, 4, 2, '#8a8478'); pxr(x, 24, 18, 1, 1, '#e08a3a'); pxr(x, 26, 19, 1, 1, '#c8ccd8'); pxr(x, 23, 24, 1, 1, '#1a1a22'); pxr(x, 27, 24, 1, 1, '#1a1a22');
+    rond(x, 6, 21, 2, '#6a6570'); pxr(x, 5, 20, 1, 1, '#e08a3a'); pxr(x, 7, 21, 1, 1, '#c8ccd8'); traitR(x, 9, 24, 11, 19, '#8a5a33', 1); traitR(x, 9, 19, 13, 20, '#8f96aa', 1);
+  },
+  chasse: function (x, P, al) {
+    ilotVig(x, [P.sol[0], P.sol[1], P.sol[2], P.sol[1], P.sol[0]], P.tronc[0], al);
+    for (var i = 0; i < 16; i++) { var X = 2 + Math.floor(al() * 28), Y = 13 + Math.floor(al() * 11); pxr(x, X, Y - 1, 1, 2, P.herbe[i % 2]); }
+    pxr(x, 4, 10, 1, 12, '#6b4630'); pxr(x, 9, 10, 1, 12, '#6b4630'); traitR(x, 4, 20, 9, 13, '#6b4630', 1); pxr(x, 3, 9, 8, 2, '#a8784a'); pxr(x, 3, 6, 8, 1, '#8a5a33'); pxr(x, 3, 7, 1, 2, '#8a5a33'); pxr(x, 10, 7, 1, 2, '#8a5a33');
+    pxr(x, 18, 15, 7, 3, '#a8743a'); pxr(x, 19, 17, 4, 1, '#e8d0a8'); pxr(x, 24, 12, 2, 3, '#a8743a'); pxr(x, 24, 11, 3, 2, '#a8743a'); pxr(x, 26, 12, 1, 1, '#1a1210');
+    pxr(x, 24, 9, 1, 2, '#e8d8b8'); pxr(x, 26, 9, 1, 2, '#e8d8b8'); pxr(x, 23, 9, 1, 1, '#e8d8b8'); pxr(x, 27, 9, 1, 1, '#e8d8b8'); pxr(x, 17, 15, 1, 1, '#ffffff');
+    [18, 20, 22, 24].forEach(function (X) { pxr(x, X, 18, 1, 3, '#7a4e26'); });
+    rond(x, 29, 21, 2, P.f[0]); rond(x, 13, 23, 2, P.f[0]); pxr(x, 12, 22, 1, 1, P.f[2]);
+    [[15, 22], [12, 20], [9, 23]].forEach(function (p) { pxr(x, p[0], p[1], 1, 1, '#5a3a22'); pxr(x, p[0] + 1, p[1], 1, 1, '#5a3a22'); });
+  },
+  grotte: function (x, P, al) {
+    ilotVig(x, ['#4a4e62', '#3e4256', '#555a70', '#3a3e50', '#4a4e62'], '#262836', al);
+    rond(x, 16, 12, 10, '#3a3e52'); rond(x, 8, 15, 6, '#454a60'); rond(x, 25, 14, 6, '#454a60'); rond(x, 14, 7, 4, '#5a6078'); rond(x, 24, 10, 2, '#5a6078');
+    rond(x, 16, 17, 4, '#0a0c18'); pxr(x, 12, 17, 9, 4, '#0a0c18'); pxr(x, 15, 19, 2, 1, '#2a5a7a'); pxr(x, 16, 18, 1, 1, '#7fd0ff');
+    cristalVig(x, 5, 22, '#7fd0ff', '#5fa0d0'); cristalVig(x, 27, 22, '#c08af2', '#8a5ac0'); cristalVig(x, 23, 9, '#7fd0ff', '#5fa0d0'); cristalVig(x, 8, 12, '#c08af2', '#8a5ac0'); cristalVig(x, 20, 24, '#7fffe0', '#4ac0a0');
+  },
+  donjon: function (x, P, al) {
+    ilotVig(x, ['#8a8a84', '#7a7a74', P.sol[2], '#6a6a64', P.sol[3] || P.sol[1]], '#4a4a48', al);
+    pxr(x, 5, 11, 22, 10, '#6d7288'); for (var r = 0; r < 4; r++) pxr(x, 5 + (r % 2) * 2, 13 + r * 2, 22 - (r % 2) * 2, 1, '#5a5f74'); for (var c = 5; c < 27; c += 2) pxr(x, c, 10, 1, 1, '#6d7288');
+    pxr(x, 12, 3, 8, 18, '#7d8298'); pxr(x, 12, 3, 1, 18, '#8d93a8'); for (var c2 = 12; c2 < 20; c2 += 2) pxr(x, c2, 2, 1, 1, '#7d8298');
+    pxr(x, 16, -1 + 1, 1, 3, '#3a2a1a'); pxr(x, 17, 0, 3, 2, '#e0483e');
+    pxr(x, 15, 7, 2, 2, '#ffb03c'); pxr(x, 14, 15, 4, 6, '#140f1c'); pxr(x, 15, 14, 2, 1, '#140f1c'); pxr(x, 11, 16, 1, 1, '#ffb03c'); pxr(x, 20, 16, 1, 1, '#ffb03c'); pxr(x, 11, 15, 1, 1, '#ffe066'); pxr(x, 20, 15, 1, 1, '#ffe066');
+    [[6, 12], [24, 14], [9, 19], [26, 19]].forEach(function (p) { pxr(x, p[0], p[1], 2, 1, P.f[0]); });
+    [[4, 23], [27, 22], [22, 25]].forEach(function (p) { pxr(x, p[0], p[1], 2, 1, '#8d93a8'); pxr(x, p[0], p[1] + 1, 2, 1, '#5a5f74'); });
+  },
+  potager: function (x, P, al) {
+    ilotVig(x, [P.sol[0], P.sol[1], P.sol[2], P.sol[1], P.sol[0]], P.tronc[0], al);
+    for (var c = 4; c < 28; c += 4) pxr(x, c, 9, 1, 5, '#a8784a'); pxr(x, 4, 10, 25, 1, '#c9955a');
+    for (var r = 0; r < 4; r++) { pxr(x, 6, 14 + r * 3, 20, 2, '#5a3a22'); pxr(x, 6, 14 + r * 3, 20, 1, '#6e4a2c'); for (var X = 7; X < 26; X += 3) { pxr(x, X, 12 + r * 3, 1, 2, '#3f8a4a'); pxr(x, X - 1, 13 + r * 3, 3, 1, '#5aa858'); if ((X + r) % 2) pxr(x, X, 12 + r * 3, 1, 1, ['#e0483e', '#ffa63a', '#b48ae8', '#ffe066'][r]); } }
+    pxr(x, 28, 10, 1, 12, '#8a5a33'); pxr(x, 26, 13, 5, 1, '#8a5a33'); pxr(x, 27, 11, 3, 3, '#e0c090'); pxr(x, 26, 10, 5, 1, '#a8463a'); pxr(x, 27, 9, 3, 1, '#a8463a'); pxr(x, 27, 14, 3, 4, '#5a7ab0');
+  },
+  conquete: function (x, P, al) {
+    ilotVig(x, ['#5a4a3a', '#4a3a2e', '#6a5a48', '#4a3a2e', '#5a4a3a'], '#2e241c', al);
+    for (var k = 0; k < 14; k++) { pxr(x, 3 + k * 2, 8 + (k % 2), 1, 7, '#7a5236'); pxr(x, 3 + k * 2, 7 + (k % 2), 1, 1, '#c9955a'); }
+    [[9, 22], [24, 21]].forEach(function (p) { for (var r = 0; r < 6; r++) pxr(x, p[0] - r, p[1] - 6 + r, r * 2 + 1, 1, r % 2 ? '#a8342a' : '#c8463a'); pxr(x, p[0], p[1] - 3, 1, 3, '#1a0e0e'); });
+    pxr(x, 16, 3, 1, 15, '#3a2a1a'); pxr(x, 17, 3, 6, 4, '#2a1a2a'); pxr(x, 19, 4, 2, 2, '#e8e0c8'); pxr(x, 19, 5, 1, 1, '#2a1a2a');
+    traitR(x, 12, 26, 20, 19, '#c8ccd8', 1); traitR(x, 20, 26, 12, 19, '#c8ccd8', 1); pxr(x, 13, 24, 2, 1, '#8a5a33'); pxr(x, 18, 24, 2, 1, '#8a5a33');
+    pxr(x, 28, 24, 2, 1, '#ff8a3a'); pxr(x, 28, 23, 1, 1, '#ffd24d'); for (var e = 0; e < 4; e++) pxr(x, 3 + Math.floor(al() * 26), 14 + Math.floor(al() * 10), 1, 1, '#2a1e16');
+  },
+  boss: function (x, P, al) {
+    ilotVig(x, ['#2a2438', '#3a3048', '#2e2840', '#1e1a2a', '#2a2438'], '#120e1a', al);
+    for (var i = 2; i < 30; i++) { var h = 6 + Math.round(Math.abs(Math.sin(i * 1.7)) * 9 + (i > 10 && i < 22 ? 4 : 0)); pxr(x, i, 20 - h, 1, h, i % 3 ? '#3a3048' : '#4a3e5c'); pxr(x, i, 20 - h, 1, 1, '#5a4e70'); }
+    rond(x, 16, 17, 5, '#06040a'); pxr(x, 11, 17, 11, 4, '#06040a'); pxr(x, 14, 16, 1, 1, '#ff3a3a'); pxr(x, 18, 16, 1, 1, '#ff3a3a');
+    [[6, 23], [26, 24], [21, 25]].forEach(function (p) { pxr(x, p[0], p[1], 2, 2, '#e8e0c8'); pxr(x, p[0], p[1] + 1, 1, 1, '#1a1420'); });
+    for (var k = 0; k < 5; k++) pxr(x, 4 + Math.floor(al() * 24), 3 + Math.floor(al() * 10), 1, 1, '#c08af2');
+  },
+  evt: function (x, P, al) {
+    ilotVig(x, [P.sol[0], P.sol[1], P.sol[2], P.sol[1], P.herbe[0]], P.tronc[0], al);
+    for (var i = 0; i < 8; i++) pxr(x, 3 + Math.floor(al() * 26), 14 + Math.floor(al() * 9), 1, 2, P.herbe[i % 2]);
+  }
+};
+/* les événements « expédition modifiée » reprennent le décor de leur activité */
+function vignetteLieu(L, n) {
+  var b = CONTREES[n].b, k = L.k === 'evt' ? 'evt-' + L.ev.type : L.k, cle = 'vig-' + k + '-' + b;
+  if (VIG_CACHE[cle]) return VIG_CACHE[cle];
+  var P = themeVig(n), c = toile(VIG_W, VIG_H), x = c.getContext('2d'), al = alea0((n * 977 + k.length * 131) % 233280 + 7);
+  if (L.k !== 'evt') (DESSIN_VIG[L.k] || DESSIN_VIG.evt)(x, P, al);
+  else {
+    var D = EVTS[L.ev.type], s = sprEvtLieu(L.ev.type, b);
+    if (D.genre === 'activite') { DESSIN_VIG[D.mode](x, P, al); if (s) poserSprVig(x, s, 16, 25, 17, 18); eclatsVig(x, al, '#ffd24d'); }
+    else if (D.genre === 'crypte') { DESSIN_VIG.donjon(x, P, al); eclatsVig(x, al, '#c08af2'); }
+    else { DESSIN_VIG.evt(x, P, al); poserSprVig(x, s, 16, 24, 23, 28); eclatsVig(x, al, '#ffd24d'); }
+  }
+  return (VIG_CACHE[cle] = contour(c).toDataURL());
+}
+/* le sprite d'un événement, pour sa vignette */
+function sprEvtLieu(t, b) {
+  var D = EVTS[t]; preparerEvts();
+  if (t === 'caravane') return SPR['f-marchand'];
+  if (t === 'bete') return sprMobEvt(BETE_REGION[REGION_BIOME[b]] || 'troll', 3);
+  if (t === 'gobelins') { var c = toile(30, 22), x = c.getContext('2d'), te = spr('c-tente'), g = spr('gobelin'); poserSprVig(x, te, 10, 22, 18, 20); poserSprVig(x, g, 23, 22, 16, 12); return c; }
+  if (D.chef) return sprMobEvt(D.chef, t === 'araignees' ? 2 : 1);
+  if (D.ico) return SPR[D.ico] || spr(D.ico);
+  if (t === 'arbreGeant') return SPR[sprArbreOr()];
+  if (t === 'bosquet') return SPR[sprTier(sprEssence('feuillu', false), 2)];
+  if (t === 'troupeau') return SPR[sprCerfBlanc()];
+  if (t === 'traces') return spr('licorne');
+  if (t === 'pluie') return SPR[sprCoeurEtoile()];
+  if (t === 'filonOr') return SPR[propLieu('evt-filonOr')];
+  return null;
+}
+/* ce qu'on y récolte : une ou deux pastilles */
+var RECOLTE_LIEU = { foret: ['bois'], mine: ['pierre', 'fer'], chasse: ['cuir'], grotte: ['cristal'], donjon: ['or', 'objet'], potager: ['herbes'], conquete: ['or'], boss: ['cristal', 'objet'] };
+function recolteLieu(L) { return L.k === 'evt' ? EVTS[L.ev.type].res.slice(0, 2) : RECOLTE_LIEU[L.k] || []; }
 
 /* ═════════ les textes des rencontres, accordés en français ═════════
    « Deux squelettes et un squelette à bouclier » plutôt que « 3 ennemis : Squelette, Squelette à bouclier ». */
