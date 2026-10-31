@@ -4667,7 +4667,7 @@ var QUETES_JEU = {
   chat: { qui: 'aubergiste', titre: 'Retrouver le chat de l\'aubergiste', min: 1, max: 1, rec: { or: 7, cuir: 1 } },
   messager: { qui: 'marchand', titre: 'Porter un message urgent au village voisin', min: 5, max: 6, rec: { or: 9 } }
 };
-var POIDS_QUETES = { recit: 26, troupe: 12, bete: 8, livraison: 11, objectif: 9, peche: 9, troupeau: 9, palissade: 9, pont: 8, champi: 8, chat: 8, messager: 8 };
+var POIDS_QUETES = { recit: 34, troupe: 12, bete: 8, livraison: 11, objectif: 9, peche: 9, troupeau: 9, palissade: 9, pont: 8, champi: 8, chat: 8, messager: 8 };
 function genererQuete() {
   var deja = (J().quetes || []).map(function (x) { return x.type; }), p = {};
   for (var k0 in POIDS_QUETES) if (deja.indexOf(k0) === -1 || k0 === 'livraison' || k0 === 'objectif' || (k0 === 'recit' && nbRecits() < 2)) p[k0] = POIDS_QUETES[k0];
@@ -5508,15 +5508,18 @@ async function consequence(juste, info, opts) {
     if (juste) {
       await frappeHeros(0, 2, false, true);
       m.prof += pasReponse(); m.max = Math.max(m.max, m.prof); EXPE.faits.prof = Math.max(EXPE.faits.prof, m.prof);
-      /* quitte ou double : presque rien près de la surface, de plus en plus en descendant */
+      /* 31/10 : la pierre est la ressource de base de la mine, elle tombe à chaque coup et grossit avec la
+         profondeur ; le fer et l'or sont des filons en bonus, plus fréquents en descendant mais en petite quantité */
       var c = couche(m.prof), tr = (SC.ennemi && SC.ennemi.rarete) || 0, riche = tr > 0;
-      var chance = m.prof <= 5 ? .04 + m.prof * .02 : Math.min(.92, .14 + (m.prof - 5) * .08), qte = 1 + Math.floor(Math.max(0, m.prof - 5) / 3);
-      var v = Math.random() < chance || riche ? Math.max(1, Math.round(qte * multi(c.res, true) * multRenc(tr) * (.8 + Math.random() * .4))) : 0;
+      var pi = Math.max(1, Math.round((1 + Math.floor(m.prof / 3)) * multi('pierre', true) * (.8 + Math.random() * .4)));
+      m.chariot.pierre = (m.chariot.pierre || 0) + pi;
+      var chance = m.prof <= 5 ? .1 + m.prof * .03 : Math.min(.7, .2 + (m.prof - 5) * .05), qte = 1 + Math.min(2, Math.floor(Math.max(0, m.prof - 5) / 4));
+      var v = c.res !== 'pierre' && (Math.random() < chance || riche) ? Math.max(1, Math.round(qte * multi(c.res, true) * multRenc(tr) * (.8 + Math.random() * .4))) : 0;
       if (v && c.res === 'or') v *= 3;
       if (v) m.chariot[c.res] = (m.chariot[c.res] || 0) + v;
       if (tr >= 2) { m.chariot.or = (m.chariot.or || 0) + (tr - 1) * 4; } if (tr === 3) { var spE = rareContree(); m.chariot[spE] = (m.chariot[spE] || 0) + 1; }
       if (m.prof >= 10 && Math.random() < .12) { var sp = rareContree(); m.chariot[sp] = (m.chariot[sp] || 0) + 1; nombre(T('{0} !', nomRes(sp)), 48, 34, 'fort'); }
-      nombre(v ? (riche ? T(['', 'Veine rare ! ', 'Veine épique ! ', 'Veine légendaire ! '][tr]) : '') + '+' + v + ' ' + nomRes(c.res) : T(m.prof <= 5 ? 'Rien que des cailloux' : 'Rien cette fois… creuse encore'), 62, 22, v ? (riche ? 'fort' : 'info') : 'mal');
+      nombre((v && riche ? T(['', 'Veine rare ! ', 'Veine épique ! ', 'Veine légendaire ! '][tr]) : '') + '+' + pi + ' ' + nomRes('pierre') + (v ? ' · +' + v + ' ' + nomRes(c.res) : ''), 62, 22, v ? (riche ? 'fort' : 'info') : 'info');
       if (m.prof > 5 && Math.random() < .05) { m.chariot.or = (m.chariot.or || 0) + 2; nombre('Une pépite d\'or !', 48, 34, 'fort'); }
       changerFilon();
       if (await peutEtreFortuit(.035)) return 'scene';
@@ -8658,6 +8661,678 @@ TR('Coffre mimique', 'Kist met tanden'); TR('Roi des rats', 'Rattenkoning'); TR(
 TR('« {0} » reste au tableau : tu reprendras à l\'étape {1}.', '« {0} » blijft op het bord: je gaat verder bij stap {1}.');
 TR('Raté, mais ça tombe quand même.', 'Mis, maar het valt toch.'); TR('BOUM !', 'BOEM!'); TR('Pschhh !', 'Pssst!');
 TR('Tableau des quêtes', 'Opdrachtenbord');
+
+/* ═════════ les récits (3/3) : douze nouvelles quêtes et six mécaniques (31/10) ═════════
+   Mécaniques nouvelles, toujours « une bonne réponse = une action », sans chronomètre :
+     enquête      : chaque bonne réponse révèle un indice ; on compare avec ce que porte chaque
+                    suspect, puis on touche le coupable (une fausse accusation coûte des PV).
+     course       : on court contre un rival qui avance à chaque question ; trois bonnes réponses
+                    d'affilée donnent un second souffle.
+     marchandage  : chaque bonne réponse fait baisser le prix, une erreur le fait remonter ;
+                    sous ton budget, tu topes là ou tu tentes de gratter encore (quitte ou double).
+     sérénade     : chaque bonne réponse joue une phrase de l'air ; une fausse note fâche le
+                    public, et trois, c'est la tomate.
+     gué          : chaque bonne réponse fait émerger deux pierres ; l'une est une tortue
+                    endormie (elle fait des bulles). On saute sur la bonne.
+     apprivoiser  : chaque bonne réponse, on tend une friandise ; la bête n'aime qu'une chose,
+                    et il lui arrive de changer d'avis.
+   Les textes vont par paires français / néerlandais (TR). */
+
+/* ── ingrédients, objets et bêtes ── */
+Object.assign(ING, {
+  farine: { nom: TR("Farine", "Bloem"), c: '#f4f0e4' }, oeuf: { nom: TR("Œuf", "Ei"), c: '#fff2c0' },
+  pomme: { nom: TR("Pomme", "Appel"), c: '#d8382f' }, carotte: { nom: TR("Carotte", "Wortel"), c: '#e8742a' },
+  oignon: { nom: TR("Oignon", "Ui"), c: '#c9955a' }, lait: { nom: TR("Lait", "Melk"), c: '#f4f4ec' }
+});
+DEF['g-farine'] = { relief: true, plat: 'k', pal: { k: '#8a6a40', W: '#f4f0e4', w: '#c8c0a8' }, r: ['.kkk.', 'kWWWk', 'WWwWW', 'WwWWW', 'WWWWW', '.WWW.'] };
+DEF['g-oeuf'] = { relief: true, pal: { w: '#e8dcc0', W: '#fffaf0' }, r: ['.ww.', 'wWWw', 'wWWw', 'wWww', '.ww.'] };
+DEF['g-pomme'] = { relief: true, pal: { g: '#5aa858', r: '#d8382f', R: '#ff8a7a' }, r: ['..g..', '.rgr.', 'rRrrr', 'rrrrr', 'rrrrr', '.rrr.'] };
+DEF['g-carotte'] = { relief: true, pal: { g: '#5aa858', o: '#e8742a', O: '#ffb070' }, r: ['..gg', '.ogg', '.oo.', 'oOo.', 'oo..', 'o...'] };
+DEF['g-oignon'] = { relief: true, pal: { g: '#8ac85a', y: '#c9955a', Y: '#f0d0a0' }, r: ['..g..', '..y..', '.yYy.', 'yYyyy', 'yyyyy', '.yyy.'] };
+DEF['g-lait'] = { relief: true, plat: 'kb', pal: { k: '#8a6a40', W: '#f4f4ec', b: '#5fb0e8' }, r: ['.kk.', 'kWWk', 'WWWW', 'WbWW', 'WWWW', 'WWWW'] };
+DEF['i-calice'] = { relief: true, plat: 'b', pal: { g: '#c8ccd8', G: '#ffffff', b: '#5fb0e8' }, r: ['ggggg', 'gGbbg', '.ggg.', '..g..', '..g..', '.ggg.'] };
+DEF['i-grimoire'] = { relief: true, plat: 'yW', pal: { p: '#5a2a6a', P: '#8a4aa8', y: '#ffd24d', W: '#f1e4c2' }, r: ['pppppp', 'pPyPPp', 'pPPPPp', 'pPyPPp', 'pppppp', 'WWWWWW'] };
+DEF['i-trefle'] = { relief: true, pal: { g: '#3f8a4a', G: '#7cc25a', v: '#2a5a2a' }, r: ['.g.g.', 'gGgGg', '.ggg.', 'gGgGg', '.g.g.', '..v..'] };
+DEF['i-sonnaille'] = { relief: true, plat: 'k', pal: { c: '#8a5a33', b: '#8f96aa', B: '#e0e4ee', k: '#3a2216' }, r: ['...c...', '..bbb..', '.bBbbb.', '.bBbbb.', 'bBbbbbb', 'bbbbbbb', '...k...'] };
+DEF['i-rose'] = { relief: true, pal: { r: '#c0383a', R: '#ff8a9a', g: '#3f8a4a' }, r: ['.r.R.', 'rRrRr', '.rgr.', '..g..', '.gg..', '..g..'] };
+DEF['i-safran'] = { relief: true, plat: 'k', pal: { k: '#5a3a22', O: '#e8742a', y: '#ffd24d' }, r: ['.kk.', 'yOOy', 'OyOO', 'OOyO', '.OO.'] };
+DEF['i-minerai'] = { relief: true, plat: 'b', pal: { c: '#7a6a9a', C: '#e0d0ff', b: '#bfe8ff' }, r: ['.cc.', 'cCbc', 'cbCc', '.cc.'] };
+DEF.dragonnet = { relief: true, plat: 'ey', pal: { g: '#2f7a4a', G: '#5fc87a', w: '#8ae0a0', W: '#ffffff', e: '#1a1520', y: '#ffe680' }, r: [
+  '......w.w...', '.....wwww...', '.gg..wGww...', 'gGGg.gww....', 'gWeGgGg.....', 'gGGGGGGgg...',
+  '.gggyyGGGg..', '....yyyGGGgg', '....gGyyGg.g', '....g.g.g...'] };
+Object.assign(OBJETS_R, {
+  grimoire: TR("le grimoire", "het toverboek"), trefle: TR("le trèfle à quatre feuilles", "het klavertjevier"),
+  sonnaille: TR("la sonnaille de Marguerite", "de koebel van Margriet"), calice: TR("le calice d'argent", "de zilveren kelk")
+});
+
+/* ═════════ les douze nouveaux récits ═════════ */
+Object.assign(RECITS, {
+  'tarte-volee': {
+    qui: 'aubergiste', nom: TR("Berthe l'aubergiste", "Berthe de waardin"), titre: TR("Qui a mangé la tarte ?", "Wie heeft de taart opgegeten?"),
+    rec: { or: 26, herbes: 8 },
+    etapes: [
+      { type: 'enquete', decor: 'cabane',
+        suspects: [{ qui: 'garde', nom: TR("Bastien le garde", "Bastien de wachter"), traits: ['g-farine', 'g-plume'] },
+          { qui: 'paysan', nom: TR("Hugo le meunier", "Hugo de molenaar"), traits: ['g-farine', 'g-miel'] },
+          { qui: 'ecuyere', nom: TR("Lys l'écuyère", "Lys de schildknaap"), traits: ['g-miel', 'i-botte'] }],
+        indices: ['g-farine', 'g-miel'],
+        indTxt: [TR("Des traces de farine sur le rebord de la fenêtre…", "Sporen van bloem op de vensterbank…"), TR("… et des doigts collants de miel sur le plat vide !", "… en kleverige honingvingers op de lege schaal!")],
+        aveu: TR("« Elle sentait trop bon… J'ai juste goûté. Toute la tarte. »", "« Ze rook te lekker… Ik heb alleen geproefd. De hele taart. »"),
+        titre: TR("L'enquête", "Het onderzoek"),
+        dlg: [TR("{moi} ! Ma tarte aux pommes pour le concours… volatilisée ! Il ne reste que le plat.", "{moi}! Mijn appeltaart voor de wedstrijd… verdwenen! Alleen de schaal is er nog."),
+          TR("Trois personnes sont passées par la cuisine ce matin. L'une d'elles est coupable.", "Er zijn vanmorgen drie mensen door de keuken gekomen. Eén van hen is de dader."),
+          TR(">Regardons les indices. Et ce que chacun a sur lui.", ">Laten we de aanwijzingen bekijken. En wat iedereen bij zich heeft.")] },
+      { type: 'chaudron', decor: 'cabane', recette: ['pomme', 'miel', 'oeuf', 'farine'],
+        titre: TR("Une nouvelle tarte", "Een nieuwe taart"),
+        dlg: [TR("Le meunier ! Bon, il a promis de me livrer de la farine pendant un an.", "De molenaar! Goed, hij heeft beloofd me een jaar lang bloem te brengen."),
+          TR("Mais le concours, c'est dans une heure. Aide-moi à refaire la garniture. Dans l'ordre !", "Maar de wedstrijd is over een uur. Help me de vulling opnieuw te maken. In de juiste volgorde!")] },
+      { type: 'course', decor: 'plaine', n: 8, vitesse: .72, rival: 'marchand', rivalNom: TR("Silas", "Silas"),
+        titre: TR("Course au concours", "Race naar de wedstrijd"),
+        dlg: [TR("Elle est cuite ! Cours la porter sur la place, vite !", "Hij is gebakken! Breng hem snel naar het plein!"),
+          TR("Oh non… Silas aussi est en route, avec sa tarte aux prunes. Le premier arrivé aura la meilleure table.", "O nee… Silas is ook onderweg, met zijn pruimentaart. Wie eerst aankomt, krijgt de beste tafel.")] }
+    ],
+    fin: [TR("Premier prix ! Le jury a même redemandé une part. Tiens, c'est pour toi.", "Eerste prijs! De jury vroeg zelfs om nog een stuk. Hier, dit is voor jou.")]
+  },
+  'serenade': {
+    qui: 'chevalier', nom: TR("Messire Godefroy", "Heer Godfried"), titre: TR("La sérénade du chevalier", "De serenade van de ridder"),
+    rec: { or: 28, cuir: 6 }, objet: true,
+    etapes: [
+      { type: 'marchandage', decor: 'plaine', marchand: 'marchand', objet: 'i-rose', depart: 64, budget: 36, pas: 8,
+        titre: TR("Des roses pour madame", "Rozen voor mevrouw"),
+        dlg: [TR("Demain, cela fera un an que la meunière a dit oui. Je veux lui offrir des roses… et une chanson.", "Morgen is het een jaar geleden dat de molenaarster ja zei. Ik wil haar rozen geven… en een lied."),
+          TR("Silas vend les plus belles roses du pays. Et les plus chères. Je n'ai que 36 pièces.", "Silas verkoopt de mooiste rozen van het land. En de duurste. Ik heb maar 36 munten."),
+          TR(">Laisse-moi négocier.", ">Laat mij maar onderhandelen.")] },
+      { type: 'gue', decor: 'prairie', n: 5,
+        titre: TR("Le gué du moulin", "De doorwaadplaats bij de molen"),
+        dlg: [TR("Le pont du moulin est emporté. Il faut passer par le gué, de pierre en pierre.", "De brug bij de molen is weggespoeld. We moeten door de doorwaadplaats, van steen naar steen."),
+          TR("Attention : les tortues du ruisseau dorment au milieu des pierres. Elles font des bulles en ronflant.", "Pas op: de schildpadden van de beek slapen tussen de stenen. Ze maken bubbels als ze snurken.")] },
+      { type: 'serenade', decor: 'nuit', air: 'lune', cible: 'fenetre', public: 'paysanne',
+        titre: TR("Sous la fenêtre", "Onder het raam"),
+        dlg: [TR("Nous y sommes. Euh… {moi}… je chante comme un canard enrhumé.", "We zijn er. Eh… {moi}… ik zing als een verkouden eend."),
+          TR("Tu veux bien jouer pour moi ? Je ferai semblant. Elle n'y verra que du feu.", "Wil jij voor me spelen? Ik doe alsof. Ze merkt er niets van.")] }
+    ],
+    fin: [TR("Elle pleure de joie ! Enfin… je crois que c'est de joie. Merci, l'ami. Prends ceci.", "Ze huilt van geluk! Tenminste… ik denk van geluk. Dank je, vriend. Neem dit.")]
+  },
+  'dragonnet': {
+    qui: 'mage', nom: TR("Maître Orbéric", "Meester Orberik"), titre: TR("Le dragonnet égaré", "Het verdwaalde draakje"),
+    rec: { cristal: 4, or: 20 }, objet: true,
+    etapes: [
+      { type: 'apprivoiser', decor: 'foret', bete: 'dragonnet', nomBete: TR("Le dragonnet", "Het draakje"), n: 5, friandises: ['g-eclat', 'g-miel', 'g-os'], aime: 'g-eclat', capricieux: true,
+        titre: TR("Une petite flamme dans les fougères", "Een vlammetje tussen de varens"),
+        dlg: [TR("Catastrophe ! L'œuf de dragon de mon laboratoire a éclos… et le petit s'est sauvé dans la forêt.", "Ramp! Het drakenei in mijn laboratorium is uitgekomen… en het kleintje is het bos in gevlucht."),
+          TR("Il a peur de tout. Approche-le doucement, et trouve ce qu'il aime manger. Les dragons sont capricieux.", "Hij is bang van alles. Benader hem zachtjes, en ontdek wat hij graag eet. Draken zijn grillig.")] },
+      { type: 'combat', decor: 'foret', groupe: ['bandit', 'bandit'],
+        titre: TR("Les braconniers", "De stropers"),
+        dlg: [TR("Il te suit ! Mais… des braconniers nous ont repérés. Un bébé dragon vaut une fortune au marché noir.", "Hij volgt je! Maar… stropers hebben ons gezien. Een babydraak is een fortuin waard op de zwarte markt."),
+          TR(">Personne ne touche à ce petit.", ">Niemand komt aan dat kleintje.")] },
+      { type: 'escorte', decor: 'plaine', n: 6, suiveur: 'charrette', charge: 'dragonnet',
+        titre: TR("Vers la montagne", "Naar de berg"),
+        dlg: [TR("Sa mère vit dans les montagnes de l'est. Ramenons-le-lui, avant qu'il ne mette le feu à ma bibliothèque.", "Zijn moeder woont in de bergen in het oosten. Laten we hem naar haar terugbrengen, voor hij mijn bibliotheek in brand steekt.")] }
+    ],
+    fin: [TR("Tu as vu ? Sa mère t'a fait une révérence ! Les dragons n'oublient jamais un ami. Tiens, des écailles qu'il a perdues.", "Zag je dat? Zijn moeder maakte een buiging voor je! Draken vergeten nooit een vriend. Hier, schubben die hij verloren heeft.")]
+  },
+  'jeux-hameau': {
+    qui: 'garde', nom: TR("Sergente Mathilde", "Sergeant Mathilde"), titre: TR("Les Jeux du Hameau", "De Spelen van het Gehucht"),
+    rec: { or: 30, cuir: 6, fer: 4 }, objet: true,
+    etapes: [
+      { type: 'course', decor: 'prairie', n: 7, vitesse: .68, rival: 'ecuyere', rivalNom: TR("Lys", "Lys"),
+        titre: TR("Les qualifications", "De kwalificaties"),
+        dlg: [TR("Les Jeux du Hameau commencent ! Trois épreuves, et le vainqueur reçoit la couronne de lauriers.", "De Spelen van het Gehucht beginnen! Drie proeven, en de winnaar krijgt de lauwerkrans."),
+          TR("Première épreuve : le sprint. Lys est rapide, mais elle part toujours trop vite.", "Eerste proef: de sprint. Lys is snel, maar ze vertrekt altijd te snel.")] },
+      { type: 'gue', decor: 'prairie', n: 6,
+        titre: TR("L'épreuve du gué", "De proef van de doorwaadplaats"),
+        dlg: [TR("Qualifié ! Deuxième épreuve : traverser le gué sans se mouiller les bottes.", "Gekwalificeerd! Tweede proef: de doorwaadplaats over zonder natte laarzen."),
+          TR("Les tortues du ruisseau adorent cette fête. Elles se mettent au milieu, exprès.", "De schildpadden van de beek zijn dol op dit feest. Ze gaan er expres middenin liggen.")] },
+      { type: 'course', decor: 'plaine', n: 9, vitesse: .8, rival: 'chevalier', rivalNom: TR("Godefroy", "Godfried"),
+        titre: TR("La grande finale", "De grote finale"),
+        dlg: [TR("La finale ! Contre Messire Godefroy, champion trois années de suite.", "De finale! Tegen Heer Godfried, drie jaar op rij kampioen."),
+          TR("Il court en armure. Ne me demande pas comment.", "Hij loopt in harnas. Vraag me niet hoe.")] }
+    ],
+    fin: [TR("La couronne est à toi ! Godefroy demande déjà sa revanche pour l'an prochain.", "De krans is van jou! Godfried vraagt al om een revanche volgend jaar.")]
+  },
+  'epices': {
+    qui: 'marchand', nom: TR("Silas le marchand", "Silas de koopman"), titre: TR("L'affaire du safran", "De saffraanzaak"),
+    rec: { or: 40, cuir: 4 },
+    etapes: [
+      { type: 'marchandage', decor: 'plaine', marchand: 'aubergiste', objet: 'i-safran', depart: 80, budget: 48, pas: 10,
+        titre: TR("La caravane d'Orient", "De karavaan uit het Oosten"),
+        dlg: [TR("Une caravane vend du safran au carrefour ! L'or rouge, {moi}. Je peux le revendre trois fois plus cher.", "Een karavaan verkoopt saffraan op het kruispunt! Rood goud, {moi}. Ik kan het drie keer duurder verkopen."),
+          TR("Mais la marchande est coriace. Moi, elle me connaît. Toi, elle ne te connaît pas.", "Maar de koopvrouw is taai. Mij kent ze. Jou kent ze niet.")] },
+      { type: 'enquete', decor: 'plaine',
+        suspects: [{ qui: 'artisan', nom: TR("Gorm le mineur", "Gorm de mijnwerker"), traits: ['g-os', 'i-botte'] },
+          { qui: 'bucheron', nom: TR("Aldric le bûcheron", "Aldric de houthakker"), traits: ['g-orge', 'i-botte'] },
+          { qui: 'herboriste', nom: TR("Mère Ortie", "Moeder Brandnetel"), traits: ['g-orge', 'g-petale'] }],
+        indices: ['i-botte', 'g-orge'],
+        indTxt: [TR("Des traces de grosses bottes autour de la charrette…", "Sporen van grote laarzen rond de kar…"), TR("… et de la sciure teinte dans le sac, collée à des grains d'orge !", "… en geverfd zaagsel in de zak, vastgeplakt aan gerstkorrels!")],
+        aveu: TR("« Ce n'est pas moi ! Enfin… on m'a payé pour échanger les sacs. Des faussaires, sur la route du sud. »", "« Ik was het niet! Nou ja… ik werd betaald om de zakken te ruilen. Vervalsers, op de weg naar het zuiden. »"),
+        titre: TR("Le safran a changé de couleur", "De saffraan is van kleur veranderd"),
+        dlg: [TR("Catastrophe ! Le safran… c'est de la sciure teinte ! Quelqu'un a échangé le sac pendant la nuit.", "Ramp! De saffraan… het is geverfd zaagsel! Iemand heeft de zak 's nachts verwisseld."),
+          TR("Trois voisins sont passés près de ma charrette. Mène l'enquête.", "Drie buren zijn langs mijn kar gekomen. Doe jij het onderzoek.")] },
+      { type: 'combat', decor: 'plaine', groupe: ['incendiaire', 'bandit', 'bandit'],
+        titre: TR("Les faussaires", "De vervalsers"),
+        dlg: [TR("Des faussaires ! Ils teignent de la sciure et la vendent pour du safran dans tout le pays.", "Vervalsers! Ze verven zaagsel en verkopen het als saffraan in het hele land."),
+          TR("Leur chef garde mon vrai sac. Va le chercher. Je… je garde la charrette.", "Hun leider heeft mijn echte zak. Ga hem halen. Ik… ik bewaak de kar.")] }
+    ],
+    fin: [TR("Mon safran, le vrai ! Il sent le soleil. Voilà ta part, et bien plus encore.", "Mijn saffraan, de echte! Hij ruikt naar de zon. Hier is jouw deel, en nog veel meer.")]
+  },
+  'eau-benite': {
+    qui: 'pretresse', nom: TR("Sœur Amandine", "Zuster Amandine"), titre: TR("La source de l'îlot", "De bron op het eilandje"),
+    rec: { or: 20, cristal: 3, herbes: 6 },
+    etapes: [
+      { type: 'gue', decor: 'marais', n: 6,
+        titre: TR("Vers l'îlot", "Naar het eilandje"),
+        dlg: [TR("Une fois l'an, il faut puiser l'eau de la source sacrée, sur l'îlot au milieu du marais.", "Eén keer per jaar moet je water halen uit de heilige bron, op het eilandje midden in het moeras."),
+          TR("Le chemin passe de pierre en pierre. Certaines pierres… respirent. Regarde bien les bulles.", "Het pad gaat van steen naar steen. Sommige stenen… ademen. Let goed op de bubbels.")] },
+      { type: 'peche', decor: 'marais', objet: 'calice', n: 2,
+        titre: TR("Le calice tombé", "De gevallen kelk"),
+        dlg: [TR("Oh non ! Mon calice d'argent a glissé dans la source !", "O nee! Mijn zilveren kelk is in de bron gegleden!"),
+          TR(">Je l'aurai. J'ai toujours ma canne.", ">Ik vis hem op. Ik heb mijn hengel bij.")] },
+      { type: 'rituel', decor: 'nuit', n: 5, centre: 'i-calice',
+        titre: TR("La bénédiction de l'eau", "De zegening van het water"),
+        dlg: [TR("Maintenant, la bénédiction. Cinq bougies autour du calice, puis les runes de l'eau.", "Nu de zegening. Vijf kaarsen rond de kelk, daarna de runen van het water.")] }
+    ],
+    fin: [TR("L'eau brille… Elle protégera le hameau toute l'année. Que la lumière te garde, {moi}.", "Het water glanst… Het zal het gehucht het hele jaar beschermen. Moge het licht je behoeden, {moi}.")]
+  },
+  'geant': {
+    qui: 'paysan', nom: TR("Barnabé le paysan", "Barnabé de boer"), titre: TR("Le géant qui ronfle", "De snurkende reus"),
+    rec: { or: 24, herbes: 10, cuir: 4 },
+    etapes: [
+      { type: 'serenade', decor: 'prairie', air: 'jacques', cible: 'geant',
+        titre: TR("Surtout, ne pas le réveiller", "Vooral niet wakker maken"),
+        dlg: [TR("Un géant a pris ma vache Marguerite ! Il l'a mise dans son sac… et il fait la sieste dessus.", "Een reus heeft mijn koe Margriet meegenomen! Hij heeft haar in zijn zak gestopt… en hij doet er een dutje op."),
+          TR("Les géants dorment comme des bébés si on leur chante une comptine. Joue-lui quelque chose de doux.", "Reuzen slapen als baby's als je een kinderliedje zingt. Speel hem iets zachts."),
+          TR(">« Dormez-vous » ? Ça me paraît de circonstance.", ">« Vader Jacob »? Dat lijkt me wel gepast.")] },
+      { type: 'fouille', decor: 'prairie', lieux: 'camp', objet: 'sonnaille', pieges: ['rat', 'araignee'],
+        titre: TR("Le sac du géant", "De zak van de reus"),
+        dlg: [TR("Il ronfle comme un tonnerre. Vite, fouille ses affaires : le son de la sonnaille te mènera à Marguerite.", "Hij snurkt als de donder. Snel, doorzoek zijn spullen: het geluid van de koebel leidt je naar Margriet.")] },
+      { type: 'chaudron', decor: 'cabane', recette: ['carotte', 'oignon', 'champi', 'lait'],
+        titre: TR("La soupe du géant", "De soep van de reus"),
+        dlg: [TR("Marguerite est libre ! Mais… le géant s'est réveillé. Et il a faim.", "Margriet is vrij! Maar… de reus is wakker. En hij heeft honger."),
+          TR("Un géant qui a le ventre plein est un géant gentil. Préparons-lui ma fameuse soupe.", "Een reus met een volle buik is een lieve reus. Laten we mijn befaamde soep voor hem maken.")] }
+    ],
+    fin: [TR("Il a tout bu, il a dit merci, et il est reparti en chantonnant. Marguerite est rentrée. Que demander de plus ?", "Hij heeft alles opgedronken, dankjewel gezegd, en is neuriënd vertrokken. Margriet is thuis. Wat wil je nog meer?")]
+  },
+  'grimoire': {
+    qui: 'mage', nom: TR("Maître Orbéric", "Meester Orberik"), titre: TR("Le grimoire volé", "Het gestolen toverboek"),
+    rec: { cristal: 5, or: 18 },
+    etapes: [
+      { type: 'enquete', decor: 'maison',
+        suspects: [{ qui: 'pretresse', nom: TR("Sœur Amandine", "Zuster Amandine"), traits: ['g-eclat', 'g-petale'] },
+          { qui: 'artisan', nom: TR("Gorm le mineur", "Gorm de mijnwerker"), traits: ['g-eclat', 'g-plume'] },
+          { qui: 'forgeron', nom: TR("Brunhilde la forgeronne", "Brunhilde de smid"), traits: ['g-plume', 'g-os'] }],
+        indices: ['g-plume', 'g-eclat'],
+        indTxt: [TR("Une plume de corbeau sur l'étagère vide…", "Een kraaienveer op de lege plank…"), TR("… et de la poussière de cristal sur la poignée de la porte.", "… en kristalstof op de deurklink.")],
+        aveu: TR("« Je voulais juste lire le chapitre sur l'or des fous ! Je l'ai caché… chez moi. »", "« Ik wilde alleen het hoofdstuk over kattengoud lezen! Ik heb het verstopt… bij mij thuis. »"),
+        titre: TR("Qui est entré dans la tour ?", "Wie is de toren binnengekomen?"),
+        dlg: [TR("Mon grimoire a disparu ! Celui avec les sorts interdits. S'il tombe entre de mauvaises mains…", "Mijn toverboek is weg! Dat met de verboden spreuken. Als het in de verkeerde handen valt…"),
+          TR("Trois visiteurs hier. Chacun a laissé une trace de son passage. À toi de jouer.", "Drie bezoekers gisteren. Iedereen heeft een spoor achtergelaten. Aan jou.")] },
+      { type: 'fouille', decor: 'cave', lieux: 'mine', objet: 'grimoire', pieges: ['chauve', 'rat'],
+        titre: TR("La cachette de Gorm", "De schuilplaats van Gorm"),
+        dlg: [TR("Gorm ! Il l'a caché dans sa réserve, au fond de la galerie. Attention, il y a des chauves-souris.", "Gorm! Hij heeft het verstopt in zijn voorraadkamer, achterin de gang. Pas op, er zitten vleermuizen.")] },
+      { type: 'rituel', decor: 'nuit', n: 5, centre: 'i-grimoire',
+        titre: TR("Sceller le grimoire", "Het toverboek verzegelen"),
+        dlg: [TR("Le grimoire s'est réveillé en voyant la lumière. Il faut le sceller tout de suite !", "Het toverboek is wakker geworden van het licht. We moeten het meteen verzegelen!"),
+          TR("Bougies, puis runes. Et ne le regarde pas dans les yeux. Oui, il a des yeux.", "Kaarsen, dan runen. En kijk het niet in de ogen. Ja, het heeft ogen.")] }
+    ],
+    fin: [TR("Scellé pour cent ans. Gorm fera mes corvées pendant un mois. Et toi, prends ces cristaux : tu les as mérités.", "Verzegeld voor honderd jaar. Gorm doet een maand lang mijn klusjes. En jij, neem deze kristallen: je hebt ze verdiend.")]
+  },
+  'loups-col': {
+    qui: 'garde', nom: TR("Sergente Mathilde", "Sergeant Mathilde"), titre: TR("Les loups du col", "De wolven van de bergpas"),
+    rec: { or: 24, cuir: 10 },
+    etapes: [
+      { type: 'course', decor: 'plaine', n: 8, vitesse: .74, rival: 'loup', rivalNom: TR("La meute", "De roedel"),
+        titre: TR("Prévenir le berger", "De herder waarschuwen"),
+        dlg: [TR("Une meute descend du col ! Elle file droit vers la bergerie, et le berger ne se doute de rien.", "Een roedel komt van de bergpas! Ze rennen recht naar de schaapskooi, en de herder vermoedt niets."),
+          TR("Cours ! Il faut arriver avant eux pour fermer l'enclos.", "Rennen! We moeten er voor hen zijn om de omheining te sluiten.")] },
+      { type: 'combat', decor: 'plaine', groupe: ['loup', 'loup', 'loupAlpha'],
+        titre: TR("La meute à la porte", "De roedel aan de poort"),
+        dlg: [TR("L'enclos est fermé ! Mais ils sont là. Le grand gris, c'est le chef. Tiens bon !", "De omheining is dicht! Maar ze zijn er. De grote grijze is de leider. Hou vol!")] },
+      { type: 'apprivoiser', decor: 'prairie', bete: 'mouton', nomBete: TR("L'agnelle", "Het ooilam"), n: 4, friandises: ['g-carotte', 'g-pomme', 'g-orge'], aime: 'g-orge',
+        titre: TR("L'agnelle perdue", "Het verdwaalde ooilam"),
+        dlg: [TR("Ils fuient ! Mais une agnelle s'est échappée dans la panique. Elle tremble dans le pré.", "Ze vluchten! Maar een ooilam is in de paniek ontsnapt. Ze staat te bibberen in de wei."),
+          TR("Rassure-la. Les moutons ont leurs petites manies côté gourmandises.", "Stel haar gerust. Schapen hebben zo hun gewoontes als het om lekkers gaat.")] }
+    ],
+    fin: [TR("Tout le troupeau est sauf. Le berger t'offre ses plus belles peaux. Et l'agnelle te suit partout, maintenant.", "De hele kudde is veilig. De herder geeft je zijn mooiste vachten. En het ooilam volgt je nu overal.")]
+  },
+  'epee-chantante': {
+    qui: 'forgeron', nom: TR("Brunhilde la forgeronne", "Brunhilde de smid"), titre: TR("L'épée qui chante", "Het zingende zwaard"),
+    rec: { fer: 14, or: 20, cristal: 2 }, objet: true,
+    etapes: [
+      { type: 'marchandage', decor: 'carriere', marchand: 'artisan', objet: 'i-minerai', depart: 72, budget: 40, pas: 9,
+        titre: TR("Le minerai chantant", "Het zingende erts"),
+        dlg: [TR("J'ai un rêve : forger une épée qui chante quand on la tire du fourreau.", "Ik heb een droom: een zwaard smeden dat zingt als je het uit de schede trekt."),
+          TR("Il me faut du minerai chantant. Le vieux Durgin en vend… à des prix de voleur.", "Ik heb zingend erts nodig. De oude Durgin verkoopt het… tegen woekerprijzen.")] },
+      { type: 'miner', decor: 'carriere', mode: 'meteore', n: 5, meche: 9,
+        titre: TR("La coulée", "Het gieten"),
+        aide: TR("Chaque question fait monter la chaleur. Une bonne réponse martèle la lame, une erreur la fait chauffer deux fois plus.", "Elke vraag laat de hitte stijgen. Een goed antwoord smeedt het lemmet, een fout maakt het dubbel zo heet."),
+        final: { titre: TR("La trempe", "Het afschrikken"), aide: TR("Plonge la lame dans l'eau au moment parfait.", "Dompel het lemmet op het perfecte moment in het water."), ok: TR("Trempée à la perfection !", "Perfect afgeschrikt!"), rate: TR("Un peu tôt… mais elle tient.", "Iets te vroeg… maar het houdt.") },
+        dlg: [TR("Le minerai fond. Martèle-le pendant qu'il est chaud, mais pas trop longtemps : il est capricieux.", "Het erts smelt. Smeed het terwijl het heet is, maar niet te lang: het is grillig.")] },
+      { type: 'serenade', decor: 'carriere', air: 'lune', cible: 'epee',
+        titre: TR("Accorder l'épée", "Het zwaard stemmen"),
+        dlg: [TR("Elle est forgée… mais elle chante faux ! Il faut l'accorder.", "Het is gesmeed… maar het zingt vals! Het moet gestemd worden."),
+          TR("Joue-lui un air qu'elle connaît. Elle apprendra en t'écoutant.", "Speel een liedje dat het kent. Het leert door naar jou te luisteren.")] }
+    ],
+    fin: [TR("Écoute… Elle chante juste ! Je la garde pour le roi. Mais pour toi, j'ai forgé quelque chose aussi.", "Luister… Het zingt zuiver! Ik bewaar het voor de koning. Maar voor jou heb ik ook iets gesmeed.")]
+  },
+  'peage-troll': {
+    qui: 'bucheron', nom: TR("Aldric le bûcheron", "Aldric de houthakker"), titre: TR("Le péage du troll", "De tol van de trol"),
+    rec: { bois: 16, or: 26 },
+    etapes: [
+      { type: 'marchandage', decor: 'foret', marchand: 'troll', objet: 'i-pepite', depart: 90, budget: 44, pas: 11,
+        repliques: [TR("Grmmbl… {0}. Pas moins.", "Grmmbl… {0}. Niet minder."), TR("Troll pas idiot. {0} !", "Trol niet dom. {0}!"), TR("Hmpf. {0}, et toi passer.", "Hmpf. {0}, en jij erdoor.")],
+        titre: TR("Le pont du troll", "De brug van de trol"),
+        dlg: [TR("Un troll s'est installé sous le pont de la scierie. Il réclame un péage à chaque charrette !", "Er woont een trol onder de brug bij de zagerij. Hij eist tol van elke kar!"),
+          TR("Il demande une fortune. Mais les trolls savent mal compter. Va discuter avec lui.", "Hij vraagt een fortuin. Maar trollen kunnen slecht rekenen. Ga eens met hem praten.")] },
+      { type: 'gue', decor: 'foret', n: 5,
+        titre: TR("Passer quand même", "Toch oversteken"),
+        dlg: [TR("Il a pris l'or… et maintenant il veut le double ! « Troll a oublié. »", "Hij nam het goud… en nu wil hij het dubbele! « Trol vergeten. »"),
+          TR("Tant pis pour lui. On traverse par le gué, juste à côté.", "Jammer voor hem. We steken over via de doorwaadplaats, vlak ernaast.")] },
+      { type: 'combat', decor: 'foret', groupe: ['troll'],
+        titre: TR("Le troll en colère", "De boze trol"),
+        dlg: [TR("Il nous a vus. Et il n'aime pas qu'on évite son pont.", "Hij heeft ons gezien. En hij houdt er niet van dat je zijn brug ontwijkt."),
+          TR(">Il voulait une discussion ? Il va l'avoir.", ">Wou hij een gesprek? Dat kan hij krijgen.")] }
+    ],
+    fin: [TR("Il est parti bouder dans la montagne, et il a laissé tout son trésor de péage. On partage ?", "Hij is gaan mokken in de bergen en heeft heel zijn tolschat achtergelaten. Delen we?")]
+  },
+  'licorne': {
+    qui: 'herboriste', nom: TR("Mère Ortie, l'herboriste", "Moeder Brandnetel, de kruidenvrouw"), titre: TR("La licorne blessée", "De gewonde eenhoorn"),
+    rec: { herbes: 16, cristal: 3, or: 14 }, objet: true,
+    etapes: [
+      { type: 'apprivoiser', decor: 'foret', bete: 'licorne', nomBete: TR("La licorne", "De eenhoorn"), n: 5, friandises: ['g-pomme', 'g-miel', 'g-petale'], aime: 'g-pomme', capricieux: true,
+        titre: TR("Approcher la licorne", "De eenhoorn benaderen"),
+        dlg: [TR("Une licorne boite au fond des bois. Une flèche de chasseur l'a effleurée.", "Een eenhoorn hinkt diep in het bos. Een jagerspijl heeft haar geschampt."),
+          TR("Elle ne se laisse approcher que par les cœurs purs… et les gens qui ont des friandises.", "Ze laat alleen zuivere harten dichtbij komen… en mensen met lekkers.")] },
+      { type: 'fouille', decor: 'foret', lieux: 'foret', objet: 'trefle', pieges: ['araignee', 'cri'],
+        titre: TR("Le trèfle à quatre feuilles", "Het klavertjevier"),
+        dlg: [TR("Elle te fait confiance. Pour son baume, il me faut un trèfle à quatre feuilles. Il pousse sous les buissons.", "Ze vertrouwt je. Voor haar zalf heb ik een klavertjevier nodig. Het groeit onder de struiken.")] },
+      { type: 'chaudron', decor: 'cabane', recette: ['eau', 'miel', 'petale', 'champi'],
+        titre: TR("Le baume de lune", "De maanzalf"),
+        dlg: [TR("Le trèfle ! Maintenant, le baume. Je lis, tu verses. Elle nous regarde, alors pas d'erreur.", "Het klavertje! Nu de zalf. Ik lees voor, jij giet. Ze kijkt naar ons, dus geen fouten.")] }
+    ],
+    fin: [TR("Elle galope de nouveau ! Tu as vu ? Elle t'a laissé un crin d'argent. Ça porte bonheur, paraît-il.", "Ze galoppeert weer! Zag je dat? Ze heeft een zilveren haar voor je achtergelaten. Dat brengt geluk, zeggen ze.")]
+  }
+});
+
+/* ═════════ les mécaniques ═════════ */
+TR('Indices {0}/{1}', 'Aanwijzingen {0}/{1}'); TR('Désigne le coupable', 'Wijs de dader aan');
+TR('Qui est le coupable ?', 'Wie is de dader?'); TR('Touche le suspect que tous les indices désignent.', 'Tik op de verdachte die bij alle aanwijzingen past.');
+TR('{0} s\'indigne : « Ce n\'est pas moi ! »', '{0} is verontwaardigd: « Ik was het niet! »');
+TR('Toi {0}/{1} · {2} {3}/{1}', 'Jij {0}/{1} · {2} {3}/{1}'); TR('Second souffle !', 'Tweede adem!'); TR('Tu trébuches !', 'Je struikelt!');
+TR('{0} arrive le premier…', '{0} is er als eerste…'); TR('Gagné !', 'Gewonnen!');
+TR('Prix : {0} or · ta bourse : {1} or', 'Prijs: {0} goud · je beurs: {1} goud'); TR('{0} or : c\'est dans ta bourse !', '{0} goud: dat past in je beurs!');
+TR('Tope là maintenant, ou tente de faire encore baisser le prix ? Une erreur, et ça remonte.', 'Nu de koop sluiten, of de prijs nog verder proberen te drukken? Eén fout, en hij stijgt weer.');
+TR('Tope là !', 'Akkoord!'); TR('Marchander encore', 'Verder afdingen'); TR('Économie : +{0} or', 'Besparing: +{0} goud'); TR('Marché conclu !', 'Koop gesloten!');
+TR('Couplets {0}/{1}', 'Strofen {0}/{1}'); TR('Une tomate ! Le couplet est à reprendre.', 'Een tomaat! De strofe moet opnieuw.');
+TR('Pierres {0}/{1}', 'Stenen {0}/{1}'); TR('Quelle pierre ?', 'Welke steen?'); TR('L\'une des deux est une tortue endormie : regarde bien les bulles.', 'Eén van de twee is een slapende schildpad: let goed op de bubbels.');
+TR('Plouf ! C\'était une tortue.', 'Plons! Het was een schildpad.'); TR('Le courant forcit…', 'De stroming wordt sterker…'); TR('Sur l\'autre rive !', 'Aan de overkant!');
+TR('Confiance {0}/{1}', 'Vertrouwen {0}/{1}'); TR('Que lui tends-tu ?', 'Wat geef je?'); TR('Tends-lui une friandise.', 'Geef een lekkernij.');
+TR('{0} adore ça !', '{0} vindt het heerlijk!'); TR('{0} renifle… et détourne la tête.', '{0} snuffelt… en draait het hoofd weg.');
+TR('{0} en a assez de ça !', '{0} heeft daar genoeg van!'); TR('{0} prend peur !', '{0} schrikt!'); TR('{0} te fait confiance !', '{0} vertrouwt je!');
+var MENSONGES_R = [TR("« Moi ? Je n'ai rien vu. »", "« Ik? Ik heb niets gezien. »"), TR("« Je dormais, je le jure ! »", "« Ik sliep, ik zweer het! »"), TR("« Demande plutôt aux autres. »", "« Vraag het maar aan de anderen. »")];
+var BAISSES_R = [TR("Bon, bon… {0}.", "Goed, goed… {0}."), TR("Tu me ruines ! {0}.", "Je ruïneert me! {0}."), TR("Allez, {0}, pour tes beaux yeux.", "Kom, {0}, omdat jij het bent.")];
+var VEXES_R = [TR("Tu me vexes ! {0}.", "Je beledigt me! {0}."), TR("Pfff… {0}, maintenant.", "Pff… {0}, nu."), TR("Pour la peine : {0}.", "Voor straf: {0}.")];
+var HUEES_R = [TR("Fausse note !", "Valse noot!"), TR("Aïe, les oreilles…", "Au, mijn oren…"), TR("Hou ! Hou !", "Boe! Boe!")];
+var AIDES_R2 = {
+  enquete: TR("Chaque bonne réponse révèle un indice. Compare avec ce que porte chaque suspect, puis désigne le coupable.", "Elk goed antwoord onthult een aanwijzing. Vergelijk met wat elke verdachte bij zich heeft en wijs dan de dader aan."),
+  course: TR("Chaque bonne réponse te fait avancer, et ton rival avance à chaque question. Trois d'affilée : second souffle !", "Elk goed antwoord brengt je vooruit, en je rivaal loopt bij elke vraag. Drie op rij: tweede adem!"),
+  marchandage: TR("Chaque bonne réponse fait baisser le prix, une erreur le fait remonter.", "Elk goed antwoord drukt de prijs, een fout laat hem stijgen."),
+  serenade: TR("Chaque bonne réponse joue une phrase de l'air. Trois fausses notes, et c'est la tomate.", "Elk goed antwoord speelt een zin van het liedje. Drie valse noten, en je krijgt een tomaat."),
+  gue: TR("Chaque bonne réponse fait émerger deux pierres. L'une est une tortue qui dort : saute sur l'autre.", "Elk goed antwoord laat twee stenen bovenkomen. Eén is een slapende schildpad: spring op de andere."),
+  apprivoiser: TR("Chaque bonne réponse, tends-lui une friandise. Trouve celle qu'elle aime ; une erreur lui fait peur.", "Bij elk goed antwoord geef je een lekkernij. Vind wat ze lekker vindt; een fout maakt haar bang.")
+};
+var AIRS_R = {
+  /* Au clair de la lune (XVIIIe siècle) */
+  lune: [[60, 60, 60, 62, 64, 62], [60, 64, 62, 62, 60], [62, 62, 62, 62, 57, 57], [62, 60, 59, 57, 55], [60, 60, 60, 62, 64, 62], [60, 64, 62, 62, 60]],
+  /* Frère Jacques (traditionnel) */
+  jacques: [[60, 62, 64, 60], [60, 62, 64, 60], [64, 65, 67], [64, 65, 67], [67, 69, 67, 65, 64, 60], [67, 69, 67, 65, 64, 60]]
+};
+function freqMidi(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+function segsR(ok, tot, cls) { var h = ''; for (var j = 0; j < tot; j++) h += '<span class="' + (j < ok ? (cls || 'vert') : 'vide') + '"></span>'; return h; }
+function sprRival(k) { return PAL_GENS[k] ? sprGensRole(k) : sprR(k); }
+function urlR(cle) { return rogne(sprR(cle), 'mj-' + cle); }
+/* attendre un toucher dans la scène : f(m) renvoie true quand le toucher est accepté */
+function toucherScene(f) {
+  return new Promise(function (res) {
+    var fini = false;
+    MJ_ANNULE = function () { if (fini) return; fini = true; SC.tapQ = null; MJ_ANNULE = null; cacherMJ(); res(null); };
+    SC.tapQ = function (m) { if (fini) return; var r = f(m); if (r == null) return; fini = true; SC.tapQ = null; MJ_ANNULE = null; res(r); };
+  });
+}
+(function () {
+  var st = document.createElement('style');
+  st.textContent = '.mj-choix{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}' +
+    '.mj-choix .btn{font-size:15px;padding:10px 12px}' +
+    '.mj-friand{font-family:var(--lex);font-weight:700;font-size:13px;color:var(--encre);background:#fbf3dc;border:0;min-width:76px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 0 0 3px var(--encre),inset 0 -4px 0 0 var(--parch3)}' +
+    '.mj-friand img{height:24px;image-rendering:pixelated}.mj-friand.pale{opacity:.35}.mj-friand:active{transform:translateY(2px)}';
+  document.head.appendChild(st);
+})();
+
+var NOUV_R = {};
+/* ── l'enquête ── */
+var SX_SUS = [50, 67, 84];
+NOUV_R.enquete = {
+  scene: function (E, Q) {
+    SC.heros.x = 6; Q.n = E.indices.length; Q.vus = []; Q.phase = 'indices';
+    Q.sus = E.suspects.map(function (s, i) { return { i: i, qui: s.qui, nom: s.nom, traits: s.traits, x: SX_SUS[i], etat: null, t0: 0 }; });
+    Q.coupable = Q.sus.filter(function (s) { return E.indices.every(function (k) { return s.traits.indexOf(k) !== -1; }); })[0].i;
+  },
+  etiq: function (E, Q) { return [Q.phase === 'indices' ? T('Indices {0}/{1}', Q.fait, Q.n) : T('Désigne le coupable'), segsR(Q.fait, Q.n, 'or')]; },
+  rep: async function (E, Q, juste, X) {
+    if (!juste) { var s0 = mel(Q.sus.filter(function (s) { return s.etat !== 'innocent'; }))[0][0]; s0.parle = maintenant(); nombre(T(mel(MENSONGES_R)[0]), 48, 22, 'info'); return; }
+    if (Q.phase === 'indices') {
+      var k = E.indices[Q.fait]; Q.vus.push(k); Q.fait++; Q.flash = { cle: k, t0: maintenant() }; son('or');
+      banniere(T(E.indTxt[Q.fait - 1]), null, 2200); majEtiquette();
+      if (Q.fait < Q.n) return;
+      await attendre(900); if (!C || EXPE !== X) return 'fin';
+      Q.phase = 'accuse'; majEtiquette();
+    }
+    montrerMJ(TR('Qui est le coupable ?', 'Wie is de dader?'), TR('Touche le suspect que tous les indices désignent.', 'Tik op de verdachte die bij alle aanwijzingen past.'), '');
+    Q.choix = true;
+    var s = await toucherScene(function (m) { var b = null, bd = 8; Q.sus.forEach(function (x) { var d = Math.abs(m.x - x.x); if (d < bd && m.y > 24) { bd = d; b = x; } }); return b; });
+    Q.choix = false; cacherMJ(); if (!s || !C || EXPE !== X) return 'fin';
+    s.t0 = maintenant();
+    if (s.i === Q.coupable) {
+      s.etat = 'coupable'; son('niveau'); etincelles(s.x, 30, 14, ['#ffd24d', '#ffffff'], .7);
+      await banniere(T(E.aveu), T(s.nom), 2600); if (!C || EXPE !== X) return 'fin';
+      C.fini = true; C.reussi = true; return;
+    }
+    s.etat = 'innocent'; son('mal'); secouer(2, 250);
+    var d = absorber(3); banniere(T('{0} s\'indigne : « Ce n\'est pas moi ! »', T(s.nom)), null, 1800); if (d) encaisser(d);
+    Q.phase = 'attente'; majEtiquette();
+  },
+  fond: function (x, now, E, Q) {
+    /* le tableau des indices, en haut à gauche */
+    var w = Q.n * 10 + 4; x.fillStyle = '#c9b27c'; x.fillRect(2, 2, w, 12); x.fillStyle = '#f1e4c2'; x.fillRect(3, 3, w - 2, 10);
+    for (var i = 0; i < Q.n; i++) {
+      var cx = 5 + i * 10;
+      if (i < Q.vus.length) { var s = sprR(Q.vus[i]); x.drawImage(s, Math.round(cx + 4 - s.width / 2), Math.round(8 - s.height / 2)); }
+      else { x.fillStyle = '#8a7350'; x.fillRect(cx + 2, 5, 3, 1); x.fillRect(cx + 4, 6, 1, 2); x.fillRect(cx + 3, 8, 1, 1); x.fillRect(cx + 3, 10, 1, 1); }
+    }
+    Q.sus.forEach(function (su) {
+      var sp = sprGensRole(su.qui), p = su.t0 ? (now - su.t0) / 600 : 2, saut = su.etat === 'coupable' && p < 1 ? Math.round(Math.sin(p * Math.PI) * 6) : 0;
+      var X = Math.round(su.x - sp.width / 2), Y = 60 - sp.height - saut;
+      ombre(x, su.x, 61, 5);
+      if (su.etat === 'innocent') x.globalAlpha = .5;
+      x.drawImage(sp, X, Y); x.globalAlpha = 1;
+      if (su.parle && now - su.parle < 500) { x.fillStyle = '#ffffff'; x.fillRect(X + sp.width, Y - 2, 2, 2); }
+      /* ce que porte chaque suspect */
+      su.traits.forEach(function (k, j) {
+        var t = sprR(k), tx = Math.round(su.x - 7 + j * 8 + 4 - t.width / 2), ty = Y - 9 - (t.height > 6 ? 1 : 0);
+        var hit = Q.flash && Q.flash.cle === k && now - Q.flash.t0 < 1400;
+        if (hit) { x.globalCompositeOperation = 'lighter'; x.fillStyle = 'rgba(255,220,120,' + (.4 + Math.sin(now / 90) * .2) + ')'; x.fillRect(tx - 2, ty - 2, t.width + 4, t.height + 4); x.globalCompositeOperation = 'source-over'; }
+        x.drawImage(t, tx, ty);
+      });
+      if (Q.choix) { var a = Math.floor(now / 250 + su.i) % 2; x.fillStyle = '#ffd24d'; x.fillRect(su.x - 1, Y - 16 - a, 3, 1); x.fillRect(su.x, Y - 15 - a, 1, 2); }
+      if (su.etat === 'coupable') { x.fillStyle = '#e0483e'; x.fillRect(su.x, Y - 20, 2, 5); x.fillRect(su.x, Y - 14, 2, 2); }
+    });
+  }
+};
+/* ── la course ── */
+function xCourse(Q, p) { return Math.round(6 + Math.min(1, p / Q.n) * 76); }
+NOUV_R.course = {
+  scene: function (E, Q) { SC.heros.x = 6; Q.n = E.n || 8; Q.pos = 0; Q.rival = 0; Q.rx = 6; Q.serie = 0; },
+  etiq: function (E, Q) { return [T('Toi {0}/{1} · {2} {3}/{1}', Q.pos, Q.n, T(E.rivalNom), Math.floor(Q.rival)), segsR(Q.pos, Q.n)]; },
+  rep: async function (E, Q, juste, X) {
+    if (juste) {
+      Q.serie++; var pas = 1;
+      if (Q.serie % 3 === 0) { pas = 2; nombre(T('Second souffle !'), SC.heros.x + 10, 26, 'fort'); son('or'); }
+      Q.pos = Math.min(Q.n, Q.pos + pas); bip(500 + Q.pos * 40, 700 + Q.pos * 40, .08, 'square', .03);
+      await marcherVers(xCourse(Q, Q.pos)); if (!C || EXPE !== X) return 'fin';
+    } else { Q.serie = 0; Q.chute = maintenant(); secouer(2, 220); bruit(.12, .04); nombre(T('Tu trébuches !'), SC.heros.x + 10, 28, 'mal'); }
+    if (Q.pos >= Q.n) { majEtiquette(); son('niveau'); nombre(T('Gagné !'), 70, 18, 'fort'); etincelles(86, 40, 20, ['#ffd24d', '#ffffff', '#5cbf64'], .9); await attendre(900); if (!C || EXPE !== X) return 'fin'; C.fini = true; C.reussi = true; return; }
+    Q.rival = Math.min(Q.n, Q.rival + (E.vitesse || .7) * (.8 + Math.random() * .4));
+    majEtiquette();
+    if (Q.rival >= Q.n) { son('mal'); banniere(T('{0} arrive le premier…', T(E.rivalNom)), null, 1600); await attendre(1100); if (!C || EXPE !== X) return 'fin'; C.fini = true; C.reussi = false; }
+  },
+  fond: function (x, now, E, Q) {
+    if (SC.marche) { var pm = Math.min(1, (now - SC.marche.t0) / SC.marche.dur); SC.heros.x = Math.round(SC.marche.de + (SC.marche.a - SC.marche.de) * pm); }
+    /* la piste, la ligne de départ et l'arrivée */
+    x.fillStyle = 'rgba(150,110,70,.55)'; x.fillRect(0, 55, 96, 8); x.fillStyle = 'rgba(255,255,255,.5)'; x.fillRect(12, 55, 1, 8);
+    for (var r = 0; r < 4; r++) for (var c = 0; c < 2; c++) { x.fillStyle = (r + c) % 2 ? '#1a1520' : '#ffffff'; x.fillRect(90 + c * 2, 34 + r * 2, 2, 2); }
+    x.fillStyle = '#6b4630'; x.fillRect(89, 34, 1, 28);
+    for (var k = 1; k < Q.n; k++) { x.fillStyle = 'rgba(255,255,255,.18)'; x.fillRect(xCourse(Q, k) + 8, 62, 1, 1); }
+    /* le rival, un couloir derrière */
+    var cible = xCourse(Q, Q.rival); Q.rx += (cible - Q.rx) * .08;
+    var s = sprRival(E.rival), bouge = Math.abs(cible - Q.rx) > .5, bob = bouge ? Math.floor(now / 120) % 2 : 0;
+    ombre(x, Q.rx + s.width / 2, 57, 5); x.drawImage(s, Math.round(Q.rx), 56 - s.height - bob);
+    if (bouge && Math.random() < .3) SC.parts.push({ x: Q.rx, y: 56, vx: -.3, vy: -.1, g: 0, vie: 14, c: 'rgba(200,170,130,.6)' });
+    if (SC.heros.marche && Math.random() < .4) SC.parts.push({ x: SC.heros.x + 4, y: 61, vx: -.4, vy: -.1, g: 0, vie: 14, c: 'rgba(200,170,130,.7)' });
+  }
+};
+/* ── le marchandage ── */
+NOUV_R.marchandage = {
+  scene: function (E, Q) { SC.heros.x = 22; Q.prix = E.depart; Q.budget = E.budget; Q.t = 'marchandage'; },
+  etiq: function (E, Q) {
+    var h = ''; for (var i = 0; i < 10; i++) { var v = (i + 1) * E.depart / 10; h += '<span class="' + (v > Q.prix + .01 ? 'vide' : v <= Q.budget ? 'vert' : '') + '"></span>'; }
+    return [T('Prix : {0} or · ta bourse : {1} or', Q.prix, Q.budget), h];
+  },
+  rep: async function (E, Q, juste, X) {
+    var rep = E.repliques || (juste ? BAISSES_R : VEXES_R);
+    if (juste) { var b = Math.max(1, Math.round(E.pas * (.7 + Math.random() * .6))); Q.prix = Math.max(1, Q.prix - b); Q.parle = maintenant(); bip(700, 500, .08, 'square', .03); nombre(T(mel(rep)[0], Q.prix), 70, 18, 'info'); }
+    else { Q.prix = Math.min(E.depart + E.pas * 2, Q.prix + Math.round(E.pas * .6)); Q.fache = maintenant(); bip(220, 160, .12, 'sawtooth', .04); nombre(T(mel(E.repliques || VEXES_R)[0], Q.prix), 70, 18, 'mal'); }
+    majEtiquette();
+    if (!juste || Q.prix > Q.budget) return;
+    await attendre(500); if (!C || EXPE !== X) return 'fin';
+    montrerMJ(T('{0} or : c\'est dans ta bourse !', Q.prix), T('Tope là maintenant, ou tente de faire encore baisser le prix ? Une erreur, et ça remonte.'),
+      '<div class="mj-choix"><button class="btn" id="mc-ok">' + ech(T('Tope là !')) + '</button><button class="btn sec" id="mc-plus">' + ech(T('Marchander encore')) + '</button></div>');
+    var ok = await new Promise(function (res) {
+      var fini = false; function fin(v) { if (fini) return; fini = true; MJ_ANNULE = null; cacherMJ(); res(v); }
+      MJ_ANNULE = function () { fin(null); };
+      $('mc-ok').onclick = function () { son('clic'); fin(true); }; $('mc-plus').onclick = function () { son('clic'); fin(false); };
+    });
+    if (ok == null || !C || EXPE !== X) return 'fin';
+    if (!ok) return;
+    Q.tope = maintenant(); son('or'); etincelles(60, 36, 16, ['#ffd24d', '#fff2a0'], .7);
+    var eco = Q.budget - Q.prix; nombre(T('Marché conclu !'), 48, 16, 'fort'); if (eco > 0) { setTimeout(function () { if (C) nombre(T('Économie : +{0} or', eco), 48, 28, 'info'); }, 500); gagner('or', eco, true); }
+    await attendre(1100); if (!C || EXPE !== X) return 'fin';
+    C.fini = true; C.reussi = true;
+  },
+  fond: function (x, now, E, Q) {
+    /* l'étal : un auvent rayé, une table, la marchandise */
+    for (var i = 0; i < 9; i++) { x.fillStyle = i % 2 ? '#f1e4c2' : '#c0383a'; x.fillRect(56 + i * 4, 30, 4, 4); }
+    x.fillStyle = '#8a5a33'; x.fillRect(57, 34, 1, 22); x.fillRect(91, 34, 1, 22);
+    var m = sprRival(E.marchand), gros = E.marchand === 'troll', mx = gros ? 66 : 70, fache = Q.fache && now - Q.fache < 500, bob = Q.parle && now - Q.parle < 400 ? Math.floor(now / 80) % 2 : 0;
+    x.drawImage(m, mx + (fache ? (Math.floor(now / 40) % 2 ? 1 : -1) : 0), 58 - m.height - bob + (gros ? 4 : 0));
+    x.fillStyle = '#6b4630'; x.fillRect(55, 52, 38, 3); x.fillStyle = '#a8784a'; x.fillRect(55, 52, 38, 1); x.fillStyle = '#4a2e1a'; x.fillRect(57, 55, 2, 6); x.fillRect(89, 55, 2, 6);
+    if (E.objet) { var o = sprR(E.objet); x.drawImage(o, 62, 52 - o.height); x.drawImage(o, 67, 52 - o.height); }
+    /* la pancarte du prix : la barre se vide à mesure que le prix baisse */
+    var w = 14, rempli = Math.round(w * Q.prix / E.depart), bx = Math.round(w * Q.budget / E.depart);
+    x.fillStyle = '#3a2216'; x.fillRect(77, 41, w + 2, 6); x.fillStyle = '#c0383a'; x.fillRect(78, 42, rempli, 4); x.fillStyle = Q.prix <= Q.budget ? '#5cbf64' : '#ffd24d'; x.fillRect(78, 42, Math.min(rempli, bx), 4);
+    x.fillStyle = '#ffffff'; x.fillRect(78 + bx, 40, 1, 8);
+    if (fache) { x.fillStyle = '#e0483e'; x.fillRect(mx + 4, 58 - m.height - 6, 3, 1); x.fillRect(mx + 5, 58 - m.height - 7, 1, 3); }
+    if (Q.tope) { var p = (now - Q.tope) / 700; if (p < 1) { x.fillStyle = 'rgba(255,230,140,' + (1 - p) + ')'; x.fillRect(52, 44 - p * 8, 3, 3); } }
+  }
+};
+/* ── la sérénade ── */
+NOUV_R.serenade = {
+  scene: function (E, Q) { SC.heros.x = 16; Q.air = AIRS_R[E.air] || AIRS_R.lune; Q.n = Q.air.length; Q.humeur = 3; },
+  etiq: function (E, Q) { var c = ''; for (var i = 0; i < 3; i++) c += i < Q.humeur ? '♥' : '·'; return [T('Couplets {0}/{1}', Q.fait, Q.n) + ' · ' + c, segsR(Q.fait, Q.n, 'or')]; },
+  rep: async function (E, Q, juste, X) {
+    if (juste) {
+      var ph = Q.air[Q.fait]; Q.joue = maintenant();
+      ph.forEach(function (m, k) { var f = freqMidi(m + 12); bip(f, f, .26, 'triangle', .055, k * .26); setTimeout(function () { if (C && EXPE === X) SC.parts.push({ x: SC.heros.x + 18, y: 38, vx: .25 + Math.random() * .2, vy: -.3, g: -.002, vie: 60, c: ['#ffd24d', '#ffffff', '#ff9ac0'][k % 3], note: true }); }, k * 260); });
+      Q.fait++; majEtiquette();
+      await attendre(ph.length * 260 + 150); if (!C || EXPE !== X) return 'fin';
+      if (Q.fait >= Q.n) {
+        Q.final = maintenant(); son('niveau'); etincelles(80, 30, 24, ['#ff9ac0', '#ffd24d', '#ffffff'], .9);
+        await attendre(1400); if (!C || EXPE !== X) return 'fin'; C.fini = true; C.reussi = true;
+      }
+      return;
+    }
+    var f0 = freqMidi((Q.air[Q.fait] || Q.air[0])[0] + 12); bip(f0 * 1.07, f0 * .9, .35, 'sawtooth', .05); Q.hue = maintenant();
+    Q.humeur--; nombre(T(mel(HUEES_R)[0]), 72, 22, 'mal');
+    if (Q.humeur <= 0) {
+      Q.tomate = maintenant(); await attendre(450); if (!C || EXPE !== X) return 'fin';
+      secouer(3, 300); son('mal'); var d = absorber(3); if (d) encaisser(d);
+      for (var i = 0; i < 12; i++) SC.parts.push({ x: SC.heros.x + 10, y: 40, vx: (Math.random() - .5) * 1.2, vy: -Math.random(), g: .08, vie: 25, c: '#e0483e' });
+      banniere(T('Une tomate ! Le couplet est à reprendre.'), null, 1800);
+      Q.humeur = 2; Q.fait = Math.max(0, Q.fait - 1);
+    }
+    majEtiquette();
+  },
+  fond: function (x, now, E, Q) {
+    if (E.cible === 'fenetre') {
+      /* une tour de pierre et sa fenêtre éclairée */
+      x.fillStyle = '#5f6478'; x.fillRect(70, 0, 26, 62); for (var r = 0; r < 15; r++) { x.fillStyle = r % 2 ? '#6d7288' : '#565b70'; x.fillRect(70 + (r % 2 ? 0 : 6), r * 4, 12, 1); }
+      var lum = Q.fait > 0 ? 1 : .35; x.fillStyle = 'rgba(255,210,110,' + lum + ')'; x.fillRect(78, 18, 11, 12); x.fillStyle = '#3a2216'; x.fillRect(77, 17, 13, 1); x.fillRect(77, 30, 13, 2); x.fillRect(83, 18, 1, 12);
+      if (Q.fait > 0) { var p = sprGensRole(E.public || 'paysanne'); x.save(); x.beginPath(); x.rect(78, 18, 11, 12); x.clip(); x.drawImage(p, 79, 20 - (Q.hue && now - Q.hue < 500 ? -3 : 0)); x.restore(); }
+      if (Q.final) { x.globalCompositeOperation = 'lighter'; x.fillStyle = 'rgba(255,150,190,' + (.25 + Math.sin(now / 150) * .1) + ')'; x.fillRect(74, 12, 19, 24); x.globalCompositeOperation = 'source-over'; if (Math.random() < .3) SC.parts.push({ x: 83, y: 18, vx: (Math.random() - .5) * .5, vy: -.4, g: 0, vie: 50, c: '#ff8a9a' }); }
+    } else if (E.cible === 'geant') {
+      var g = sprR('troll'), gx = 62, gy = 61 - g.height + 3, remue = Q.hue && now - Q.hue < 500;
+      x.drawImage(g, gx + (remue ? (Math.floor(now / 50) % 2 ? 1 : -1) : 0), gy);
+      x.fillStyle = '#c9a46a'; x.fillRect(gx - 8, 52, 9, 9); x.fillStyle = '#a8784a'; x.fillRect(gx - 8, 52, 9, 1); x.fillRect(gx - 5, 50, 3, 2);
+      if (!remue && Math.random() < .04) SC.parts.push({ x: gx + g.width - 6, y: gy + 4, vx: .2, vy: -.25, g: 0, vie: 60, c: 'rgba(255,255,255,.85)', zz: true });
+      if (remue) { x.fillStyle = '#ffffff'; x.fillRect(gx + 8, gy + 6, 1, 1); x.fillRect(gx + 12, gy + 6, 1, 1); }
+    } else if (E.cible === 'epee') {
+      x.fillStyle = '#3a3e50'; x.fillRect(64, 52, 20, 5); x.fillRect(68, 57, 12, 4); x.fillStyle = '#5a5e70'; x.fillRect(64, 52, 20, 1);
+      var v = Q.joue && now - Q.joue < 1600 ? Math.sin(now / 25) : 0, ok = Q.final ? 1 : Q.fait / Q.n;
+      x.fillStyle = '#c8ccd8'; x.fillRect(72 + Math.round(v), 30, 3, 22); x.fillStyle = '#ffffff'; x.fillRect(72 + Math.round(v), 30, 1, 22); x.fillStyle = '#8a5a33'; x.fillRect(69, 49, 9, 2);
+      x.globalCompositeOperation = 'lighter'; x.fillStyle = 'rgba(140,200,255,' + (ok * .35 + (v ? .15 : 0)) + ')'; x.fillRect(69, 27, 9, 26); x.globalCompositeOperation = 'source-over';
+    }
+    /* le luth, dans la main du héros */
+    var H0 = SC.heros; if (H0.ox != null) { var lx = H0.ox + MAIN.x - 2, ly = H0.oy + MAIN.y - 2, j = Q.joue && now - Q.joue < 1500 ? Math.floor(now / 90) % 2 : 0; x.fillStyle = '#a8642f'; x.fillRect(lx, ly + 2, 6, 5); x.fillStyle = '#7a4a22'; x.fillRect(lx + 5, ly - 3, 2, 6); x.fillStyle = '#2a1a14'; x.fillRect(lx + 2, ly + 3 + j, 2, 2); }
+    if (Q.tomate) { var pt = (now - Q.tomate) / 450; if (pt < 1) { x.fillStyle = '#e0483e'; x.fillRect(Math.round(80 - pt * (80 - SC.heros.x - 8)), Math.round(30 - Math.sin(pt * Math.PI) * 14), 3, 3); } }
+  }
+};
+/* ── le gué ── */
+function xGue(Q, k) { return Math.round(8 + k * 78 / (Q.n + 1)); }
+var Y_GUE = { h: 58, b: 64 };
+NOUV_R.gue = {
+  scene: function (E, Q) { Q.n = E.n || 5; Q.pos = 0; Q.lane = 'b'; Q.pierres = []; Q.cands = null; SC.heros.x = 0; SC.heros.base = 60; },
+  etiq: function (E, Q) { return [T('Pierres {0}/{1}', Q.pos, Q.n), segsR(Q.pos, Q.n)]; },
+  rep: async function (E, Q, juste, X) {
+    if (!juste) { Q.vague = maintenant(); nombre(T('Le courant forcit…'), 48, 24, 'mal'); bruit(.15, .03); return; }
+    var k = Q.pos + 1, bon = Math.random() < .5 ? 'h' : 'b';
+    Q.cands = { k: k, bon: bon, t0: maintenant() }; bip(300, 500, .12, 'sine', .04);
+    await attendre(450); if (!C || EXPE !== X) return 'fin';
+    montrerMJ(TR('Quelle pierre ?', 'Welke steen?'), TR('L\'une des deux est une tortue endormie : regarde bien les bulles.', 'Eén van de twee is een slapende schildpad: let goed op de bubbels.'), '');
+    Q.choix = true;
+    var lane = await toucherScene(function (m) { return Math.abs(m.x - xGue(Q, k)) < 9 && m.y > 40 ? (m.y < 61 ? 'h' : 'b') : null; });
+    Q.choix = false; cacherMJ(); if (!lane || !C || EXPE !== X) return 'fin';
+    await sauterGue(Q, xGue(Q, k), Y_GUE[lane]); if (!C || EXPE !== X) return 'fin';
+    if (lane === bon) {
+      Q.pierres.push({ k: k, lane: lane }); Q.pos = k; Q.lane = lane; Q.cands = null; son('clic'); majEtiquette();
+      if (Q.pos >= Q.n) {
+        await sauterGue(Q, xGue(Q, Q.n + 1) + 4, 60); if (!C || EXPE !== X) return 'fin';
+        son('niveau'); nombre(T('Sur l\'autre rive !'), 60, 20, 'fort'); await attendre(700); if (!C || EXPE !== X) return 'fin';
+        C.fini = true; C.reussi = true;
+      }
+      return;
+    }
+    /* c'était la tortue : elle plonge, et l'on retombe à l'eau */
+    Q.plouf = { t0: maintenant(), x: xGue(Q, k), y: Y_GUE[lane] }; Q.cands = null; SC.heros.dansLeau = true; bruit(.4, .06); son('mal');
+    for (var i = 0; i < 16; i++) SC.parts.push({ x: xGue(Q, k), y: Y_GUE[lane] - 2, vx: (Math.random() - .5) * 1.4, vy: -.5 - Math.random(), g: .07, vie: 25, c: Math.random() < .5 ? '#bfe8ff' : '#5fb0e8' });
+    var d = absorber(3); nombre(T('Plouf ! C\'était une tortue.') + (d ? ' -' + d : ''), 48, 22, 'mal'); if (d) encaisser(d);
+    await attendre(700); if (!C || EXPE !== X) return 'fin'; SC.heros.dansLeau = false;
+    await sauterGue(Q, Q.pos ? xGue(Q, Q.pos) : 6, Q.pos ? Y_GUE[Q.lane] : 60);
+  },
+  fond: function (x, now, E, Q) {
+    var x0 = 10, x1 = xGue(Q, Q.n + 1) - 2;
+    /* les berges, l'eau qui coule */
+    x.fillStyle = '#4a7a3a'; x.fillRect(0, 54, x0, 14); x.fillRect(x1, 54, 96 - x1, 14); x.fillStyle = '#6aa04a'; x.fillRect(0, 54, x0, 1); x.fillRect(x1, 54, 96 - x1, 1);
+    x.fillStyle = 'rgba(40,90,150,.85)'; x.fillRect(x0, 54, x1 - x0, 14); x.fillStyle = 'rgba(70,140,200,.8)'; x.fillRect(x0, 54, x1 - x0, 1);
+    for (var w = 0; w < 9; w++) { var wx = x0 + ((w * 11 + now / (Q.vague && now - Q.vague < 800 ? 18 : 40)) % (x1 - x0)), wy = 56 + (w * 5) % 11; x.fillStyle = 'rgba(190,230,255,.55)'; x.fillRect(Math.round(wx), wy, 3, 1); }
+    function pierre(X, Y, tortue) {
+      ombre(x, X, Y + 1, 5);
+      x.fillStyle = tortue ? '#6a7258' : '#6d7288'; x.fillRect(X - 5, Y - 3, 10, 3); x.fillRect(X - 4, Y - 4, 8, 1);
+      x.fillStyle = tortue ? '#8a9070' : '#9aa0b8'; x.fillRect(X - 4, Y - 4, 5, 1); x.fillRect(X - 5, Y - 3, 2, 1);
+      if (tortue) {
+        x.fillStyle = '#4e5a40'; x.fillRect(X - 2, Y - 3, 1, 1); x.fillRect(X + 2, Y - 2, 1, 1);
+        var cyc = (now / 700) % 1; x.fillStyle = 'rgba(220,245,255,.9)'; x.fillRect(X + 6, Math.round(Y - 1 - cyc * 6), 1, 1); if (cyc > .3) x.fillRect(X + 7, Math.round(Y - cyc * 4), 1, 1);
+        if (Math.floor(now / 2600) % 2 === 0 && now % 2600 < 350) { x.fillStyle = '#6a8a4a'; x.fillRect(X - 7, Y - 3, 2, 2); }
+      }
+    }
+    Q.pierres.forEach(function (p) { pierre(xGue(Q, p.k), Y_GUE[p.lane], false); });
+    if (Q.cands) {
+      var pc = Math.min(1, (now - Q.cands.t0) / 400), X = xGue(Q, Q.cands.k);
+      ['h', 'b'].forEach(function (l) { x.save(); x.globalAlpha = pc; pierre(X, Y_GUE[l] + Math.round((1 - pc) * 3), l !== Q.cands.bon); x.restore(); });
+      if (Q.choix) { var a = Math.floor(now / 250) % 2; x.fillStyle = '#ffd24d'; x.fillRect(X - 1, 44 - a, 3, 1); x.fillRect(X, 45 - a, 1, 2); }
+    }
+    if (Q.plouf) { var pp = (now - Q.plouf.t0) / 700; if (pp > 1) Q.plouf = null; else { x.strokeStyle = 'rgba(220,245,255,' + (1 - pp) + ')'; x.lineWidth = 1; x.beginPath(); x.ellipse(Q.plouf.x, Q.plouf.y, 3 + pp * 9, 1 + pp * 2, 0, 0, Math.PI * 2); x.stroke(); } }
+    var S = Q.saut; if (S) { var ps = Math.min(1, (now - S.t0) / 380); SC.heros.x = Math.round(S.x0 + (S.x1 - S.x0) * ps); SC.heros.base = Math.round(S.y0 + (S.y1 - S.y0) * ps - Math.sin(ps * Math.PI) * 9); if (ps >= 1) Q.saut = null; }
+  },
+  dessus: function (x, now, E, Q) {
+    if (SC.heros.dansLeau && SC.heros.ox != null) { x.fillStyle = 'rgba(40,90,150,.9)'; x.fillRect(SC.heros.ox - 2, SC.heros.base - 8, 22, 9); x.fillStyle = 'rgba(190,230,255,.7)'; x.fillRect(SC.heros.ox - 2, SC.heros.base - 8, 22, 1); }
+  }
+};
+function sauterGue(Q, xPied, yPied) {
+  var hs = sprHeros(); Q.saut = { t0: maintenant(), x0: SC.heros.x, y0: SC.heros.base, x1: Math.round(xPied - hs.width / 2), y1: yPied };
+  bip(400, 700, .1, 'square', .03);
+  return attendre(400);
+}
+/* ── apprivoiser ── */
+NOUV_R.apprivoiser = {
+  scene: function (E, Q) { SC.heros.x = 8; Q.n = E.n || 5; Q.conf = 0; Q.bx = 80; Q.aime = E.aime || mel(E.friandises)[0]; Q.refus = {}; Q.ancien = null; },
+  etiq: function (E, Q) { return [T('Confiance {0}/{1}', Q.conf, Q.n), segsR(Q.conf, Q.n, 'or')]; },
+  rep: async function (E, Q, juste, X) {
+    var nom = T(E.nomBete);
+    if (!juste) {
+      if (Q.conf > 0) Q.conf--; Q.peur = maintenant(); Q.bx = Math.min(84, Q.bx + 5); bruit(.12, .04);
+      nombre(T('{0} prend peur !', nom), 48, 24, 'mal'); majEtiquette(); return;
+    }
+    var corps = '<div class="mj-choix">' + E.friandises.map(function (f) { return '<button class="mj-friand' + (Q.refus[f] ? ' pale' : '') + '" data-f="' + f + '"><img src="' + urlR(f) + '">' + ech(T(ING[f.slice(2)] ? ING[f.slice(2)].nom : f)) + '</button>'; }).join('') + '</div>';
+    montrerMJ(T('Que lui tends-tu ?'), T('Tends-lui une friandise.'), corps);
+    var f = await new Promise(function (res) {
+      var fini = false; function fin(v) { if (fini) return; fini = true; MJ_ANNULE = null; cacherMJ(); res(v); }
+      MJ_ANNULE = function () { fin(null); };
+      $('mj-corps').querySelectorAll('[data-f]').forEach(function (b) { b.onclick = function () { son('clic'); fin(b.dataset.f); }; });
+    });
+    if (!f || !C || EXPE !== X) return 'fin';
+    Q.tend = { f: f, t0: maintenant() }; await attendre(450); if (!C || EXPE !== X) return 'fin';
+    if (f === Q.aime) {
+      Q.conf++; Q.coeur = maintenant(); Q.bx = Math.max(36, Q.bx - 9); bip(660, 990, .12, 'triangle', .04); son('or');
+      for (var i = 0; i < 6; i++) SC.parts.push({ x: Q.bx + 4, y: 40, vx: (Math.random() - .5) * .5, vy: -.4, g: 0, vie: 40, c: '#ff8a9a' });
+      nombre(T('{0} adore ça !', nom), 48, 24, 'info');
+      /* une bête capricieuse change de goût à mi-chemin, sans prévenir */
+      if (E.capricieux && !Q.ancien && Q.conf === Math.ceil(Q.n / 2)) { Q.ancien = Q.aime; Q.aime = mel(E.friandises.filter(function (k) { return k !== Q.aime; }))[0]; Q.refus = {}; }
+    } else {
+      Q.refus[f] = 1; Q.bx = Math.min(84, Q.bx + 3); Q.non = maintenant(); bip(300, 220, .1, 'square', .03);
+      banniere(T(f === Q.ancien ? '{0} en a assez de ça !' : '{0} renifle… et détourne la tête.', nom), null, 1600);
+    }
+    majEtiquette();
+    if (Q.conf >= Q.n) { Q.final = maintenant(); son('niveau'); banniere(T('{0} te fait confiance !', nom), null, 1500); await attendre(1300); if (!C || EXPE !== X) return 'fin'; C.fini = true; C.reussi = true; }
+  },
+  fond: function (x, now, E, Q) {
+    var s = sprR(E.bete); Q.bxa = Q.bxa == null ? Q.bx : Q.bxa + (Q.bx - Q.bxa) * .06;
+    var peur = Q.peur && now - Q.peur < 500, non = Q.non && now - Q.non < 500, saut = peur ? Math.round(Math.sin((now - Q.peur) / 500 * Math.PI) * 5) : Q.final ? Math.abs(Math.round(Math.sin(now / 160) * 2)) : 0;
+    var X = Math.round(Q.bxa) + (non ? (Math.floor(now / 60) % 2 ? 1 : -1) : 0);
+    ombre(x, X + s.width / 2, 61, Math.max(4, s.width / 3)); x.drawImage(s, X, 61 - s.height - saut);
+    if (E.bete === 'dragonnet' && Math.random() < .03) SC.parts.push({ x: X + 1, y: 61 - s.height + 4, vx: -.3, vy: -.2, g: 0, vie: 18, c: Math.random() < .5 ? '#ffd24d' : '#ff8a3a' });
+    if (Q.tend) { var p = (now - Q.tend.t0) / 450; if (p > 1.2) Q.tend = null; else { var o = sprR(Q.tend.f), tx = SC.heros.x + 16 + (X - SC.heros.x - 16) * Math.min(1, p) * .5; x.drawImage(o, Math.round(tx), 46); } }
+  }
+};
+
+/* ═════════ branchement sur le moteur des récits ═════════ */
+var sceneRecitAvant2 = sceneRecit;
+sceneRecit = async function () {
+  preparerRecits();
+  var E = etapeRecit(), M = NOUV_R[E.type];
+  if (!M) return sceneRecitAvant2();
+  var Q = EXPE.qj = { n: E.n || 1, fait: 0, t: E.type, E: E }; SC.tapQ = null; SC.decor = E.decor || 'plaine';
+  SC.heros.outil = 'main'; SC.heros.base = 60; SC.heros.dansLeau = false;
+  M.scene(E, Q);
+  return [T(E.titre), T(E.aide || AIDES_R2[E.type] || '')];
+};
+var etiquetteRecitAvant2 = etiquetteRecit;
+etiquetteRecit = function () {
+  var Q = EXPE.qj; if (!Q || !Q.E || !NOUV_R[Q.E.type]) return etiquetteRecitAvant2();
+  var r = NOUV_R[Q.E.type].etiq(Q.E, Q); $('e-nom').textContent = r[0]; $('e-barre').innerHTML = '<div class="segs">' + r[1] + '</div>';
+};
+var consequenceRecitAvant2 = consequenceRecit;
+consequenceRecit = async function (juste) {
+  var Q = EXPE.qj; if (!Q || !Q.E || !NOUV_R[Q.E.type]) return consequenceRecitAvant2(juste);
+  return NOUV_R[Q.E.type].rep(Q.E, Q, juste, EXPE);
+};
+var dessinerRecitAvant2 = dessinerRecit;
+dessinerRecit = function (x, now) {
+  var Q = EXPE.qj; if (!Q || !Q.E || !NOUV_R[Q.E.type]) return dessinerRecitAvant2(x, now);
+  NOUV_R[Q.E.type].fond(x, now, Q.E, Q);
+};
+var dessusRecitAvant2 = dessusRecit;
+dessusRecit = function (x, now) {
+  var Q = EXPE.qj; if (!Q || !Q.E || !NOUV_R[Q.E.type]) return dessusRecitAvant2(x, now);
+  var M = NOUV_R[Q.E.type]; if (M.dessus) M.dessus(x, now, Q.E, Q);
+};
 
 /* ═════════ les environnements : chaque contrée a son paysage ═════════
    La forêt de la Toundra n'est pas celle du Bois des Fées : ciel, astre, horizon, arbres, sol,
