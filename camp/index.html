@@ -4830,9 +4830,9 @@ function montrerPhrase() {
   cur.reponse = x.mot;
   $('p-phrase').className = 'phrase';
   $('p-phrase').innerHTML = phraseHTML(cur.ph[cur.rl], true);
-  /* 31/10 : la traduction n'apparaît qu'une fois la bonne réponse trouvée */
-  $('p-trad').innerHTML = phraseHTML(cur.ph[cur.rl === 'nl' ? 'fr' : 'nl']);
-  $('p-trad').classList.add('cache');
+  /* 31/10 : la traduction est affichée d'office, mais sans le mot en gras (il donnait la réponse) */
+  $('p-trad').textContent = String(cur.ph[cur.rl === 'nl' ? 'fr' : 'nl'] || '').replace(/[{}]/g, '');
+  $('p-trad').classList.remove('cache');
   var pool = (MOTS.length >= 8 ? MOTS : LISTE).filter(function (y) { return y !== m; }), vus = DISTRACTEURS['ph:' + m.nl] || [];
   function frais(t) { return mel(t.filter(function (y) { return vus.indexOf(y.nl) === -1; })).concat(mel(t.filter(function (y) { return vus.indexOf(y.nl) !== -1; }))); }
   var ordre = frais(pool.filter(function (y) { return !!y.v === !!m.v; })).concat(frais(pool.filter(function (y) { return !!y.v !== !!m.v; })));
