@@ -1235,7 +1235,7 @@ var BATIMENTS = {
   tailleur: { nom: 'Taille de pierre', desc: 'Chaque niveau rapporte +8 % de pierre.', max: 10, base: { bois: 15, pierre: 25 }, passif: { 'pierre%': 8 }, passifTxt: '+8 % de pierre par niveau', villageois: 'artisan' },
   fonderie: { nom: 'Fonderie', desc: 'Chaque niveau rapporte +8 % de fer.', max: 10, base: { pierre: 30, fer: 10 }, passif: { 'fer%': 8 }, passifTxt: '+8 % de fer par niveau', villageois: 'forgeron' },
   tannerie: { nom: 'Tannerie', desc: 'Chaque niveau rapporte +8 % de cuir et d\'herbes.', max: 10, base: { bois: 20, cuir: 10 }, passif: { 'cuir%': 8, 'herbes%': 8 }, passifTxt: '+8 % de cuir et d\'herbes par niveau', villageois: 'paysanne' },
-  entrepot: { nom: 'Hôtel des ventes', desc: 'De temps en temps, un lot exceptionnel y est mis aux enchères : des pièces aux stats hors norme, mais hors de prix. Chaque niveau baisse les prix de 3 % et ouvre plus de lots.', max: 10, base: { bois: 40, pierre: 20 }, passif: {}, passifTxt: '−3 % sur le prix des lots par niveau', villageois: 'marchand' },
+  entrepot: { nom: 'Hôtel des ventes', desc: 'Chaque jour, des lots de toutes sortes : objets ou ressources, à des prix qui varient du tout au tout. Chaque niveau baisse les prix de 3 %, et tous les trois niveaux, un lot de plus.', max: 10, base: { bois: 40, pierre: 20 }, passif: {}, passifTxt: '−3 % sur le prix des lots par niveau', villageois: 'marchand' },
   marche: { nom: 'Marché', desc: 'Troquer et vendre. Chaque niveau améliore les taux et ajoute +5 % d\'or.', max: 10, base: { bois: 30, cuir: 10 }, passif: { 'or%': 5 }, passifTxt: '+5 % d\'or par niveau', villageois: 'marchand' },
   sanctuaire: { nom: 'Sanctuaire', desc: 'Reliques. On en porte jusqu\'à trois : une d\'office, une deuxième au niveau 3, une troisième au niveau 6.', max: 10, base: { pierre: 35, cristal: 5 }, passif: { 'cristal%': 5 }, passifTxt: '+5 % de cristal par niveau', villageois: 'pretresse' },
   taverne: { nom: 'Taverne', desc: 'Compagnons d\'expédition. Chaque niveau ajoute +5 % aux dégâts des compagnons.', max: 10, base: { bois: 35, pierre: 10, herbes: 5 }, passif: { 'compagnon%': 5 }, passifTxt: '+5 % de dégâts de compagnon par niveau', villageois: 'aubergiste' },
@@ -12391,64 +12391,88 @@ Object.assign(NL, {
   'Troc et vente': 'Ruilen en verkopen', 'Vendre des pièces': 'Stukken verkopen'
 });
 
-/* ═════════ l'hôtel des ventes (31/10, remplace la brocante) ═════════
-   Toutes les douze heures, chaque emplacement de lot a une chance d'accueillir une pièce de maître :
-   épique ou légendaire, avec des stats au-delà du meilleur jet possible à l'atelier. Elle coûte
-   très cher : beaucoup d'or, les ressources du modèle en quantité, et une composante rare.
-   Les lots sont tirés d'une graine commune (la période et l'emplacement) : Ulysse et Jasmien voient
-   les mêmes, et le premier qui achète un lot l'emporte (il disparaît chez l'autre à la synchro).
-   La revente, elle, se fait au marché : il n'y a plus qu'un seul bâtiment pour vendre. */
-var HDV_PERIODE = 12 * 3600 * 1000, HDV_CHANCE = .55;
+/* ═════════ l'hôtel des ventes (31/10, refait le soir) ═════════
+   Cinq lots dès le niveau 1 (un de plus tous les trois niveaux, huit au plus), renouvelés toutes les
+   douze heures. Un lot est soit une pièce d'équipement (rareté tirée, parfois « de maître »), soit un
+   pack de ressources (une seule, un mélange, ou des composantes rares). Le prix est la valeur du lot
+   multipliée par un facteur tiré au hasard entre ×0,5 et ×2 : on ne sait jamais si c'est une bonne
+   affaire. Il se paie en or, ou parfois en troc contre une autre ressource. Le verdict tombe à l'achat.
+   Les lots viennent d'une graine commune (période + emplacement) : Ulysse et Jasmien voient les mêmes,
+   et le premier qui achète l'emporte. La revente se fait au marché. */
+var HDV_PERIODE = 12 * 3600 * 1000;
 function hdvAlea(seed) {
   var a = seed >>> 0;
   return function () { a = (a + 0x6D2B79F5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
 }
 function hdvEtat() { var c = etat.camp; if (!c.hdv || typeof c.hdv !== 'object') c.hdv = { pris: {} }; if (!c.hdv.pris) c.hdv.pris = {}; return c.hdv; }
 function hdvPeriode() { return Math.floor(Date.now() / HDV_PERIODE); }
-function hdvSlots(niv) { return Math.min(4, 1 + Math.floor(niv / 3)); }
+function hdvSlots(niv) { return Math.min(8, 5 + Math.floor(niv / 3)); }
+var VAL_OR = 1.3;   /* une unité de ressource « vaut » environ 1,3 or (le marché vend 5 pour 1 à 4, revend 1 pour 2 à 6) */
+function choixR(R, l) { return l[Math.floor(R() * l.length)]; }
 function lotHdv(w, s, niv) {
-  var R = hdvAlea(w * 7919 + s * 104729 + 31337);
-  if (R() > HDV_CHANCE) return null;
-  var libres = Object.keys(carteJeu().libres).map(Number).sort(function (a, b) { return a - b; });
-  var nmax = Math.min(10, 2 + libres.length + Math.floor(niv / 3)), nmin = Math.max(1, nmax - 4);
-  var pool = OBJETS.filter(function (o) { return estGear(o) && o.niv <= nmax && o.niv >= nmin; });
-  if (!pool.length) return null;
-  var b = pool[Math.floor(R() * pool.length)];
-  var r = R() < .25 + niv * .03 ? 4 : 3, fx = {};
-  /* « de maître » : la force de la rareté, et un jet entre ×1,25 et ×1,45 (l'atelier plafonne à ×1,2) */
-  for (var k in b.fx) fx[k] = FIXES.indexOf(k) !== -1 ? b.fx[k] : Math.max(1, Math.round(b.fx[k] * MULT_R[r] * (1.25 + R() * .2)));
-  var v = 0; for (var c in b.cout) v += b.cout[c] * (VALEUR_RES[c] || 8);
-  v *= MULT_P[r] * MULT_P[r];
-  /* hors de prix, exprès : beaucoup d'or, quatre fois les ressources du modèle, du cristal et une composante rare */
-  var rem = Math.max(.7, 1 - .03 * niv), prix = { or: Math.round((250 + 50 * b.niv + v * 2.5) * rem) };
-  for (var c2 in b.cout) prix[c2] = (prix[c2] || 0) + (SPECIALES[c2] ? Math.ceil(b.cout[c2] * 1.5) : Math.max(1, Math.round(b.cout[c2] * 4 * rem)));
-  prix.cristal = (prix.cristal || 0) + Math.round((6 + 3 * b.niv) * rem);
-  var sp = CONTREES[libres[Math.floor(R() * libres.length)] || 1].rare;
-  prix[sp] = (prix[sp] || 0) + (r === 4 ? 3 : 2);
-  return { cle: w + ':' + s, id: b.id, r: r, fx: fx, prix: prix, fin: (w + 1) * HDV_PERIODE };
+  var R = hdvAlea(w * 7919 + s * 104729 + 31337), libres = Object.keys(carteJeu().libres).map(Number).sort(function (a, b) { return a - b; });
+  var lot = { cle: w + ':' + s, contenu: {}, v: 0 }, t = R();
+  if (t < .45) {
+    /* une pièce d'équipement */
+    var nmax = Math.min(10, 2 + libres.length + Math.floor(niv / 3)), pool = OBJETS.filter(function (o) { return estGear(o) && o.niv <= nmax; });
+    var b = choixR(R, pool), q = R(), r = q < .38 ? 0 : q < .66 ? 1 : q < .85 ? 2 : q < .96 ? 3 : 4, maitre = R() < .12, fx = {};
+    for (var k in b.fx) fx[k] = FIXES.indexOf(k) !== -1 ? b.fx[k] : Math.max(1, Math.round(b.fx[k] * MULT_R[r] * (maitre ? 1.25 + R() * .2 : .8 + R() * .4)));
+    var v = 0; for (var c in b.cout) v += b.cout[c] * (VALEUR_RES[c] || 8);
+    lot.genre = 'objet'; lot.id = b.id; lot.r = r; lot.fx = fx; lot.maitre = maitre; lot.v = v * VAL_OR * MULT_P[r] * MULT_P[r] * (maitre ? 1.6 : 1);
+  } else if (t < .8) {
+    /* un pack d'une seule ressource */
+    var k1 = choixR(R, RES), n1 = Math.round((k1 === 'cristal' ? 6 + R() * 14 : k1 === 'fer' ? 15 + R() * 35 : 25 + R() * 75) * (1 + niv * .08));
+    lot.genre = 'pack'; lot.contenu[k1] = n1; lot.v = n1 * (VALEUR_RES[k1] || 1) * VAL_OR;
+  } else if (t < .93) {
+    /* un mélange de deux ou trois ressources */
+    lot.genre = 'pack'; var l = RES.slice(), nb = R() < .5 ? 2 : 3;
+    for (var j = 0; j < nb; j++) { var kk = l.splice(Math.floor(R() * l.length), 1)[0], nn = Math.round((kk === 'cristal' ? 4 + R() * 8 : 12 + R() * 40) * (1 + niv * .08)); lot.contenu[kk] = nn; lot.v += nn * (VALEUR_RES[kk] || 1) * VAL_OR; }
+  } else {
+    /* des composantes rares */
+    lot.genre = 'pack'; var sp = CONTREES[choixR(R, libres) || 1].rare, ns = 1 + Math.floor(R() * 3); lot.contenu[sp] = ns; lot.v = ns * 18;
+  }
+  /* le prix : la valeur × un facteur entre 0,5 et 2 (plus souvent près de 1), en or ou en troc */
+  var u = (R() + R() + R()) / 3, f = Math.exp((u - .5) * 2 * Math.log(2)), rem = Math.max(.7, 1 - .03 * niv);
+  lot.f = f; var cible = Math.max(3, lot.v * f * rem);
+  if (R() < .3) {
+    var possibles = RES.filter(function (k) { return !lot.contenu[k]; }), kt = choixR(R, possibles);
+    lot.prix = {}; lot.prix[kt] = Math.max(2, Math.round(cible / ((VALEUR_RES[kt] || 1) * VAL_OR)));
+  } else lot.prix = { or: Math.round(cible) };
+  return lot;
 }
 function lotsHdv(niv) {
   var w = hdvPeriode(), pris = hdvEtat().pris, l = [];
   for (var k in pris) if (+k.split(':')[0] < w - 2) delete pris[k];
-  for (var s = 0; s < hdvSlots(niv); s++) { var lot = lotHdv(w, s, niv); if (lot) { lot.pris = pris[lot.cle] || null; l.push(lot); } }
+  for (var s = 0; s < hdvSlots(niv); s++) { var lot = lotHdv(w, s, niv); lot.pris = pris[lot.cle] || null; l.push(lot); }
   return l;
 }
 function dureeTxt(ms) { var h = Math.floor(ms / 3600000), m = Math.max(1, Math.floor(ms % 3600000 / 60000)); return h ? T('{0} h {1}', h, String(m).padStart(2, '0')) : T('{0} min', m); }
-function nomLot(lot) { return T(OBJ[lot.id].nom) + ' · ' + T(RARE_NOM[lot.r]).toLowerCase(); }
+function cleLot(lot) { return Object.keys(lot.contenu)[0]; }
+function nomLot(lot) {
+  if (lot.genre === 'objet') return T(OBJ[lot.id].nom) + ' · ' + T(RARE_NOM[lot.r]).toLowerCase() + (lot.maitre ? ' · ' + T('de maître') : '');
+  var ks = Object.keys(lot.contenu);
+  return ks.length === 1 ? T('Lot de {0}', nomRes(ks[0]).toLowerCase()) : T('Lot mélangé');
+}
+function icoLot(lot) { return lot.genre === 'objet' ? icoObjet(OBJ[lot.id]) : icoRes(cleLot(lot)); }
 function hdvHTML(niv) {
   var l = lotsHdv(niv), libres = l.filter(function (x) { return !x.pris; }), reste = dureeTxt((hdvPeriode() + 1) * HDV_PERIODE - Date.now());
-  var h = '<h4 class="f-h">' + T('Les lots du moment') + '</h4>';
-  if (!libres.length) return h + '<p class="f-sous">' + T(l.length ? 'Tout est parti ! Nouveaux lots dans {0}.' : 'Aucun lot pour l\'instant. Nouveaux lots dans {0}.', reste) + '</p>';
+  var h = '<h4 class="f-h">' + T('Les lots du moment') + '</h4><p class="f-sous">' + T('Nouveaux lots dans {0}. Bonne affaire ou arnaque ? Tu le sauras en achetant.', reste) + '</p>';
+  if (!libres.length) return h + '<p class="f-sous">' + T('Tout est parti !') + '</p>';
   if (!libres.some(function (x) { return x.cle === SEL.hdv; })) SEL.hdv = libres[0].cle;
-  h += '<p class="f-sous">' + T('Des pièces de maître, plus fortes que tout ce que l\'atelier peut sortir. Elles repartent dans {0}.', reste) + '</p>';
   h += '<div class="grille g6">' + l.map(function (x) {
-    return x.pris ? tuileG(icoObjet(OBJ[x.id]), 'verrou r' + x.r, '', null, T('Vendu')) : tuileG(icoObjet(OBJ[x.id]), (SEL.hdv === x.cle ? 'sel ' : '') + 'r' + x.r, ' data-lot="' + x.cle + '"', null, nomLot(x));
+    var badge = x.genre === 'pack' && Object.keys(x.contenu).length === 1 ? x.contenu[cleLot(x)] : null;
+    return x.pris ? tuileG(icoLot(x), 'verrou', '', null, T('Vendu')) : tuileG(icoLot(x), (SEL.hdv === x.cle ? 'sel ' : '') + (x.genre === 'objet' ? 'r' + x.r : ''), ' data-lot="' + x.cle + '"', badge, nomLot(x));
   }).join('') + '</div>';
-  var lot = libres.filter(function (x) { return x.cle === SEL.hdv; })[0], o = OBJ[lot.id];
-  h += '<div class="detail"><img class="px" src="' + icoObjet(o) + '"><div class="n"><b class="rc' + lot.r + '">' + ech(nomLot(lot)) + ' <small class="nb">' + T('de maître') + '</small></b><small>' + ech(fxTexte({ fx: lot.fx, inst: true })) + '</small>' +
-    '<span class="couts">' + coutHTML(lot.prix) + '</span>' + manquesHTML(lot.prix) + '</div>' +
+  var lot = libres.filter(function (x) { return x.cle === SEL.hdv; })[0];
+  var desc = lot.genre === 'objet' ? fxTexte({ fx: lot.fx, inst: true }) : '';
+  h += '<div class="detail"><img class="px" src="' + icoLot(lot) + '"><div class="n"><b' + (lot.genre === 'objet' ? ' class="rc' + lot.r + '"' : '') + '>' + ech(nomLot(lot)) + '</b>' +
+    (desc ? '<small>' + ech(desc) + '</small>' : '<span class="couts">' + coutHTML(lot.contenu).replace(/ manque/g, '') + '</span>') +
+    '<small>' + T('Prix demandé :') + '</small><span class="couts">' + coutHTML(lot.prix) + '</span>' + manquesHTML(lot.prix) + '</div>' +
     '<button class="mini fab" id="b-hdv"' + (peutPayer(lot.prix) ? '' : ' disabled') + '>' + T('Acheter') + '</button></div>';
   return h;
+}
+function verdictLot(f) {
+  return T(f < .7 ? 'Une affaire en or ! Le vendeur n\'y connaissait rien.' : f < .9 ? 'Une bonne affaire.' : f <= 1.15 ? 'Un prix honnête.' : f <= 1.45 ? 'Un peu cher, quand même.' : 'Tu t\'es fait avoir… c\'était hors de prix.');
 }
 function lierHdv(refaire) {
   lier('[data-lot]', function (d) { SEL.hdv = d.lot; son('clic'); refaire(); });
@@ -12456,16 +12480,27 @@ function lierHdv(refaire) {
   $('b-hdv').onclick = function () {
     var lot = lotsHdv(niveauBat('entrepot')).filter(function (x) { return x.cle === SEL.hdv && !x.pris; })[0];
     if (!lot || !peutPayer(lot.prix)) return;
-    payer(lot.prix);
-    var h = H(), u = 'i' + (++CPT_OBJ) + Math.floor(Math.random() * 1e6).toString(36), fx = {};
-    for (var k in lot.fx) fx[k] = lot.fx[k];
-    h.objets[u] = { u: u, id: lot.id, r: lot.r, fx: fx, ench: [] };
-    var x = enregistrerPiece(h.objets[u]); autoEquiper(x);
-    hdvEtat().pris[lot.cle] = etat.moi;
-    sauver(); hudCamp(); refaire();
-    revelerPiece(x, [estPorte(x) ? T('Équipé d\'office : l\'emplacement était libre.') : T('Rangé dans ton sac : équipe-le depuis la fiche.')], 'hdv');
+    payer(lot.prix); hdvEtat().pris[lot.cle] = etat.moi;
+    if (lot.genre === 'objet') {
+      var h = H(), u = 'i' + (++CPT_OBJ) + Math.floor(Math.random() * 1e6).toString(36), fx = {};
+      for (var k in lot.fx) fx[k] = lot.fx[k];
+      h.objets[u] = { u: u, id: lot.id, r: lot.r, fx: fx, ench: [] };
+      var x = enregistrerPiece(h.objets[u]); autoEquiper(x);
+      sauver(); hudCamp(); refaire();
+      revelerPiece(x, [verdictLot(lot.f), estPorte(x) ? T('Équipé d\'office : l\'emplacement était libre.') : T('Rangé dans ton sac : équipe-le depuis la fiche.')], 'hdv');
+      return;
+    }
+    var lignes = [];
+    for (var c in lot.contenu) { crediter(c, lot.contenu[c]); lignes.push({ ico: icoRes(c), n: lot.contenu[c], nom: nomRes(c), rar: rareteRes(c, lot.contenu[c]) }); }
+    sauver(); hudCamp(); refaire(); son('or');
+    popupButin(T('Adjugé !'), lignes, [verdictLot(lot.f)], null);
   };
 }
+TR('Lot de {0}', 'Partij {0}'); TR('Lot mélangé', 'Gemengde partij'); TR('Prix demandé :', 'Vraagprijs:'); TR('Tout est parti !', 'Alles is weg!');
+TR('Nouveaux lots dans {0}. Bonne affaire ou arnaque ? Tu le sauras en achetant.', 'Nieuwe kavels over {0}. Koopje of oplichterij? Dat weet je pas na de koop.');
+TR('Une affaire en or ! Le vendeur n\'y connaissait rien.', 'Een gouden zaak! De verkoper wist van niets.'); TR('Une bonne affaire.', 'Een goede koop.');
+TR('Un prix honnête.', 'Een eerlijke prijs.'); TR('Un peu cher, quand même.', 'Toch wel wat duur.'); TR('Tu t\'es fait avoir… c\'était hors de prix.', 'Je bent beetgenomen… het was veel te duur.');
+TR('Chaque jour, des lots de toutes sortes : objets ou ressources, à des prix qui varient du tout au tout. Chaque niveau baisse les prix de 3 %, et tous les trois niveaux, un lot de plus.', 'Elke dag allerlei kavels: voorwerpen of grondstoffen, tegen prijzen die alle kanten op gaan. Elk niveau verlaagt de prijzen met 3 %, en om de drie niveaus komt er een kavel bij.');
 Object.assign(NL, {
   'Hôtel des ventes': 'Veilinghuis',
   'De temps en temps, un lot exceptionnel y est mis aux enchères : des pièces aux stats hors norme, mais hors de prix. Chaque niveau baisse les prix de 3 % et ouvre plus de lots.': 'Af en toe wordt hier een uitzonderlijk kavel geveild: stukken met buitengewone waarden, maar onbetaalbaar duur. Elk niveau verlaagt de prijzen met 3 % en opent meer kavels.',
