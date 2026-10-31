@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#161b38">
 <title>Woordentrainer, le camp</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11112,28 +11112,38 @@ function boucle() {
 }
 var OUTILS = /[?&]outils=1/.test(location.search);
 if (!OUTILS) $('outils').classList.add('cache');
-/* encarts système déclarés par le navigateur (barre d'état, barre de navigation) */
+/* encarts système déclarés par le navigateur (barre d'état, barre de navigation) : mesurés une seule fois */
+var ENCARTS = null;
 function encarts() {
+  if (ENCARTS) return ENCARTS;
   var d = document.createElement('div');
   d.style.cssText = 'position:fixed;left:0;top:0;width:0;visibility:hidden;pointer-events:none;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)';
   document.body.appendChild(d);
-  var cs = getComputedStyle(d), r = { t: parseFloat(cs.paddingTop) || 0, b: parseFloat(cs.paddingBottom) || 0 };
-  d.remove(); return r;
+  var cs = getComputedStyle(d); ENCARTS = { t: parseFloat(cs.paddingTop) || 0, b: parseFloat(cs.paddingBottom) || 0 };
+  d.remove(); return ENCARTS;
 }
+/* garde-fou : ajuster() ne touche à la page que si la taille de l'écran a vraiment changé,
+   et jamais plus de 8 fois par seconde (pas de boucle redimensionnement → ajustement → redimensionnement) */
+var AJ = { cle: '', n: 0, t0: 0 };
 function ajuster() {
+  var t = Date.now(); if (t - AJ.t0 > 1000) { AJ.t0 = t; AJ.n = 0; } if (++AJ.n > 8) return;
   var mobile = window.innerWidth < 600;
-  document.body.classList.toggle('mobile', mobile);
   var vv = window.visualViewport, hv = vv ? vv.height : window.innerHeight;
-  var dispo = Math.min(window.innerHeight, hv, document.documentElement.clientHeight || window.innerHeight);
+  var dispo = Math.round(Math.min(window.innerHeight, hv, document.documentElement.clientHeight || window.innerHeight));
+  var largeur = Math.round(vv && mobile ? vv.width : window.innerWidth);
+  var cle = [mobile, largeur, dispo, screen.height].join('|'); if (cle === AJ.cle) return; AJ.cle = cle;
+  document.body.classList.toggle('mobile', mobile);
   var haut0 = 0, bas = 0;
   if (mobile) {
     var e = encarts(); haut0 = e.t; bas = e.b;
     /* le bas de l'app passait sous la barre de navigation d'Android (31/10) : quand la page occupe
        tout l'écran sans déclarer d'encarts, on réserve nous-mêmes la barre d'état et celle du bas */
     if (screen.height && dispo >= screen.height - 24) { haut0 = Math.max(haut0, 28); bas = Math.max(bas, 52); }
-    document.body.style.paddingTop = haut0 + 'px'; document.body.style.paddingBottom = bas + 'px';
-  } else { document.body.style.paddingTop = ''; document.body.style.paddingBottom = ''; }
-  var marge = mobile ? 0 : 40, large = (vv && mobile ? vv.width : window.innerWidth) - marge - (OUTILS && !mobile ? 330 : 0), haut = dispo - marge - haut0 - bas - (mobile ? 4 : 0);
+  }
+  var pt = mobile ? haut0 + 'px' : '', pb = mobile ? bas + 'px' : '';
+  if (document.body.style.paddingTop !== pt) document.body.style.paddingTop = pt;
+  if (document.body.style.paddingBottom !== pb) document.body.style.paddingBottom = pb;
+  var marge = mobile ? 0 : 40, large = largeur - marge - (OUTILS && !mobile ? 330 : 0), haut = dispo - marge - haut0 - bas - (mobile ? 4 : 0);
   var s = Math.min(mobile ? 1.4 : 1, large / 390, haut / 800);
   $('tel').style.transform = 'scale(' + s + ')';
   $('cadre').style.width = (390 * s) + 'px'; $('cadre').style.height = (800 * s) + 'px';
@@ -11141,7 +11151,7 @@ function ajuster() {
 window.addEventListener('resize', ajuster); ajuster();
 /* au lancement de l'app installée, la hauteur visible n'est pas toujours définitive : on recalcule */
 if (window.visualViewport) window.visualViewport.addEventListener('resize', ajuster);
-window.addEventListener('orientationchange', function () { setTimeout(ajuster, 200); });
+window.addEventListener('orientationchange', function () { ENCARTS = null; AJ.cle = ''; setTimeout(ajuster, 200); });
 window.addEventListener('pageshow', ajuster);
 document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') { ajuster(); setTimeout(ajuster, 400); } });
 [150, 600, 1500].forEach(function (t) { setTimeout(ajuster, t); });
