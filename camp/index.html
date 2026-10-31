@@ -5023,8 +5023,9 @@ function nouvelleExpe(mode, n) {
   EXPE = { mode: mode, zone: n, contree: mode === 'boss' ? contreeGardien() || 1 : mode === 'quete' ? 1 : DEPART.contree || 1, res: RES_MODE[mode] || 'or', elixir: el, butin: {}, mots: [], objets: [], q: 0, budget: BUDGET, faits: { arbres: 0, prof: 0, coffres: 0, tues: 0, proies: 0, geodes: 0 }, geodes: [], pousses: 0 };
   /* le premier départ de la journée rapporte double : une raison de revenir chaque jour */
   /* on reste aussi longtemps qu'on veut : seuls le donjon et le gardien gardent leur torche */
-  EXPE.budget = mode === 'donjon' || mode === 'boss' ? BUDGET : Infinity;
-  if (DEPART.evt) { EXPE.evt = DEPART.evt; DEPART.evt = null; if (EXPE.evt.type === 'crypte') EXPE.budget = 16; }
+  /* 31/10 : plus de torche dans le donjon non plus : on explore tant qu'on veut, et l'on rentre avec son butin quand on le décide */
+  EXPE.budget = mode === 'boss' ? BUDGET : Infinity;
+  if (DEPART.evt) { EXPE.evt = DEPART.evt; DEPART.evt = null; }
   if (mode !== 'boss' && bonusJourDispo()) { EXPE.bonus = 2; J().bonusJour = jourCle(); }
   H().pv = pvMax(); combo = 0; session = { derniers: [], depuisRappel: 0 }; recents = [];
   groupeDe();
@@ -5279,7 +5280,7 @@ function voirCarte() {
     b.onclick = function () { allerSalle(i); };
     z.appendChild(b);
   });
-  $('carte-info').textContent = T(EXPE.budget - EXPE.q > 1 ? 'Il reste {0} questions à ta torche. Choisis ton chemin.' : 'Il reste {0} question à ta torche. Choisis ton chemin.', EXPE.budget - EXPE.q);
+  $('carte-info').textContent = isFinite(EXPE.budget) ? T(EXPE.budget - EXPE.q > 1 ? 'Il reste {0} questions à ta torche. Choisis ton chemin.' : 'Il reste {0} question à ta torche. Choisis ton chemin.', EXPE.budget - EXPE.q) : T(TR('Choisis ton chemin. Tu rentres quand tu veux, avec tout ton butin.', 'Kies je weg. Je gaat terug wanneer je wilt, met al je buit.'));
 }
 async function allerSalle(i) {
   var d = EXPE.donjon; if (voisinsDe(d, d.pos).indexOf(i) === -1) return;
@@ -10992,12 +10993,15 @@ async function caravane(ev, n) {
   ], j = J(); j.evts = j.evts || {};
   for (;;) {
     var dispo = offre.filter(function (o) { return !j.evts[ev.id + ':' + o.k]; });
+    /* 31/10 : la caravane repart quand tout est vendu, ou quand on la congédie ; elle libère la place pour d'autres événements */
+    if (!dispo.length) { marquerEvt(ev.id); MONDE_CLE = ''; LIEU.sel = null; await modal(EVTS.caravane.nom, [T(TR('« Tout est vendu ! Merci, l\'ami. Je reprends la route. »', '« Alles is verkocht! Bedankt, vriend. Ik trek verder. »'))]); if (vueActive === 'monde') majMonde(); return; }
     var i = await modal(EVTS.caravane.nom, [T(TR('« Rien que de la belle marchandise, et je repars après-demain ! »', '« Alleen maar mooie waar, en overmorgen trek ik verder! »')), T('Le camp a {0} or.', stock('or'))],
-      dispo.map(function (o) { return { t: T('{0} · {1} or', T(o.nom), o.prix), petit: true }; }).concat([{ t: 'Reprendre la route', sec: true }]));
-    if (i >= dispo.length) return;
+      dispo.map(function (o) { return { t: T('{0} · {1} or', T(o.nom), o.prix), petit: true }; }).concat([{ t: TR('Le laisser repartir', 'Hem laten vertrekken'), sec: true, petit: true }, { t: 'Reprendre la route', sec: true }]));
+    if (i === dispo.length) { marquerEvt(ev.id); MONDE_CLE = ''; LIEU.sel = null; celebrer(TR('La caravane reprend la route', 'De karavaan trekt verder')); if (vueActive === 'monde') majMonde(); return; }
+    if (i > dispo.length) return;
     var o = dispo[i]; if (stock('or') < o.prix) { await modal(EVTS.caravane.nom, [T('Pas assez d\'or.')]); continue; }
     etat.camp.res.or -= o.prix; j.evts[ev.id + ':' + o.k] = true; son('or');
-    if (o.k === 'piece') { var s = specDrop('tresor'), p = creerObjet(s.id, Math.max(2, s.r)); autoEquiper(p); sauver(); revelerPiece(p, [T('Rangé dans ton sac : équipe-le depuis la fiche.')], 'caravane'); return; }
+    if (o.k === 'piece') { var s = specDrop('tresor'), p = creerObjet(s.id, Math.max(2, s.r)); autoEquiper(p); if (offre.every(function (x) { return j.evts[ev.id + ':' + x.k]; })) { marquerEvt(ev.id); MONDE_CLE = ''; LIEU.sel = null; } sauver(); revelerPiece(p, [T('Rangé dans ton sac : équipe-le depuis la fiche.')], 'caravane'); return; }
     if (o.k === 'elixir') { var el = mel(['e-force', 'e-vigueur'])[0]; H().conso[el] = (H().conso[el] || 0) + 1; }
     if (o.k === 'potions') H().conso['p-petite'] = (H().conso['p-petite'] || 0) + 3;
     if (o.k === 'rare') crediter(CONTREES[n].rare, 1);
