@@ -1,5 +1,5 @@
 /* service worker du camp : réseau d'abord (les mises à jour arrivent tout de suite), cache si hors ligne */
-var CACHE = 'wt-camp-202610291028';
+var CACHE = 'wt-camp-202610311429';
 var BASE = ['./', 'index.html', 'manifest.webmanifest', 'icone-192.png', 'icone-512.png'];
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(BASE); }).catch(function () {}));
