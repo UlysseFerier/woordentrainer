@@ -686,6 +686,8 @@ canvas,#tel,button{-webkit-touch-callout:none;-webkit-user-select:none;user-sele
 .camp-bas .mini{font-size:12px;padding:5px 8px;background:rgba(38,45,85,.85)}
 .camp-rang{left:6px;top:6px;bottom:auto;font-size:12px}
 .camp-sync{position:absolute;right:6px;top:6px;display:flex;align-items:center;gap:5px;background:rgba(13,16,36,.82);border:0;padding:4px 8px;box-shadow:0 0 0 2px #000;color:var(--doux);font-family:var(--num);font-size:11px;cursor:pointer}
+.camp-opt{top:32px;color:var(--texte)}
+.opt-l{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}.opt-l button{font-family:var(--lex);font-size:12px;background:var(--pierre);color:var(--texte);border:0;padding:7px 9px;box-shadow:0 0 0 2px #000;text-align:left}.opt-l button.on{background:var(--braise);color:var(--encre)}.opt-l button small{display:block;opacity:.75;font-size:10px}
 .camp-sync i{width:8px;height:8px;background:#7a7f9a;box-shadow:0 0 0 1px #000}
 .camp-sync.ok i{background:#5cbf64}.camp-sync.ko i{background:#e2463a}.camp-sync.att i{background:#ffd24d}
 
@@ -803,6 +805,7 @@ canvas,#tel,button{-webkit-touch-callout:none;-webkit-user-select:none;user-sele
       <button class="fleche" id="camp-fleche">Expédition</button>
       <div class="camp-rang" id="camp-rang"></div>
       <button class="camp-sync" id="camp-sync"></button>
+      <button class="camp-sync camp-opt" id="camp-opt">Options</button>
       
     </div>
   </section>
@@ -3747,17 +3750,55 @@ function majGens() {
   if (niveauBat('taverne')) GENS.push({ role: 'chat', x: FX - 20, y: FY + 50, pause: 100, dir: 1, bete: true });
   GENS.cle = cle;
 }
+/* 01/11 : les villageois ne tournent plus tous autour du feu. Ils vont d'un lieu du camp à l'autre
+   (leur atelier, les portes des autres bâtiments, le tableau, le portail, le potager, la mare, l'allée,
+   un coin de la place), évitent de se marcher dessus, et suivent les chemins : on rejoint l'allée,
+   on la remonte en contournant la place du feu, puis on prend la ruelle jusqu'à sa destination. */
+function lieuxCamp() {
+  var l = [];
+  etat.camp.plots.forEach(function (p, i) { if (p.bat) { var pt = porteDe(i); l.push({ x: pt.x + (Math.random() - .5) * 8, y: pt.y + 7 + Math.random() * 3 }); } });
+  for (var k = 0; k < 2; k++) { var a = Math.random() * Math.PI * 2, r = 24 + Math.random() * 22; l.push({ x: FX + Math.cos(a) * r, y: FY + 10 + Math.sin(a) * r * .8 }); }
+  l.push({ x: TQX - 4 + (Math.random() - .5) * 8, y: TQY + 10 }); l.push({ x: GX + (Math.random() - .5) * 12, y: GY + 20 });
+  l.push({ x: POT.x + 10 + Math.random() * 20, y: POT.y + 26 });
+  if (typeof MARE !== 'undefined') l.push({ x: MARE.x + (Math.random() < .5 ? -1 : 1) * (MARE.rx + 5), y: MARE.y + (Math.random() - .5) * 6 });
+  var yy = Math.round(60 + Math.random() * (WH - 120)); l.push({ x: xAllee(yy) + (Math.random() - .5) * 6, y: yy });
+  return l;
+}
+function xAllee(y) { return typeof allee === 'function' ? allee(Math.round(y)) : FX; }
+function libreDe(g, c) { return !GENS.some(function (o) { return o !== g && !o.bete && (Math.hypot(o.x - c.x, o.y - c.y) < 11 || (o.tx != null && Math.hypot(o.tx - c.x, o.ty - c.y) < 11) || (o.chemin && o.chemin.length && Math.hypot(o.chemin[o.chemin.length - 1].x - c.x, o.chemin[o.chemin.length - 1].y - c.y) < 11)); }); }
 function cibleAleatoire(g) {
-  if (!g.bete && g.maison != null && Math.random() < .4) { var pt = porteDe(g.maison); return { x: pt.x + (Math.random() - .5) * 10, y: pt.y + 6 + Math.random() * 4 }; }
   if (g.bete) return { x: g.x + (Math.random() - .5) * 40, y: g.y + (Math.random() - .5) * 26 };
-  var a = Math.random() * Math.PI * 2, r = 16 + Math.random() * 22;
-  return { x: FX + Math.cos(a) * r, y: FY + 10 + Math.sin(a) * r * .8 };
+  if (g.maison != null && Math.random() < .3) { var pt = porteDe(g.maison); return { x: pt.x + (Math.random() - .5) * 10, y: pt.y + 6 + Math.random() * 4 }; }
+  var l = lieuxCamp(), c = null;
+  for (var t = 0; t < 8; t++) { var e = l[Math.floor(Math.random() * l.length)]; if (libreDe(g, e)) { c = e; break; } }
+  return c || l[Math.floor(Math.random() * l.length)];
+}
+/* le trajet : direct si c'est tout près, sinon par l'allée, en faisant le tour de la place du feu */
+function trajet(g, c) {
+  var c2 = { x: Math.max(8, Math.min(WW - 8, c.x)), y: Math.max(48, Math.min(WH - 8, c.y)) };
+  if (Math.abs(c2.x - g.x) < 28 && Math.abs(c2.y - g.y) < 40) return [c2];
+  var l = [{ x: xAllee(g.y), y: g.y }], y0 = g.y, y1 = c2.y, cote = (g.x + c2.x) / 2 < FX ? -1 : 1;
+  if (Math.min(y0, y1) < FY - 6 && Math.max(y0, y1) > FY + 6) {
+    var haut = y0 < y1;
+    l.push({ x: xAllee(FY - 28), y: haut ? FY - 28 : FY + 28 });
+    l.push({ x: FX + cote * 46, y: haut ? FY - 12 : FY + 30 }); l.push({ x: FX + cote * 46, y: haut ? FY + 30 : FY - 12 });
+    l.push({ x: xAllee(FY + 28), y: haut ? FY + 28 : FY - 28 });
+  }
+  l.push({ x: xAllee(y1), y: y1 }); l.push(c2);
+  return l.filter(function (p, i) { return i === l.length - 1 || Math.hypot(p.x - g.x, p.y - g.y) > 2; });
 }
 function bouger(g, vit) {
   if (g.pause > 0) { g.pause--; return false; }
-  if (g.tx == null) { var c = cibleAleatoire(g); g.tx = Math.max(56, Math.min(WW - 56, c.x)); g.ty = Math.max(60, Math.min(WH - 50, c.y)); if (g.maison != null) { g.tx = c.x; g.ty = c.y; } }
+  if (g.tx == null) {
+    if (!g.chemin || !g.chemin.length) { var c = cibleAleatoire(g); g.chemin = g.bete ? [{ x: Math.max(56, Math.min(WW - 56, c.x)), y: Math.max(60, Math.min(WH - 50, c.y)) }] : trajet(g, c); }
+    var w = g.chemin.shift(); g.tx = w.x; g.ty = w.y;
+  }
   var dx = g.tx - g.x, dy = g.ty - g.y, d = Math.hypot(dx, dy);
-  if (d < 1) { g.tx = null; g.pause = 60 + Math.floor(Math.random() * 220); if (Math.random() < .2) g.bulle = maintenant() + 1500; return false; }
+  if (d < 1) {
+    g.tx = null;
+    if (g.chemin && g.chemin.length) return true;   /* une étape du trajet : on enchaîne sans s'arrêter */
+    g.pause = 60 + Math.floor(Math.random() * 220); if (Math.random() < .2) g.bulle = maintenant() + 1500; return false;
+  }
   g.x += dx / d * vit; g.y += dy / d * vit; if (Math.abs(dx) > .2) g.dir = dx > 0 ? 1 : -1;
   return true;
 }
@@ -3990,6 +4031,7 @@ function solCamp() {
   }
   /* emplacements : terre battue aux coins arrondis */
   PLOTS.forEach(function (P, k) {
+    if (etat.camp.plots[k].bat) return;   /* 01/11 : une fois construit, le bâtiment pose sur l'herbe, sans cadre de terre */
     x.fillStyle = '#7a5a36'; x.fillRect(P[0] + 1, P[1] - 22, 46, 24); x.fillRect(P[0], P[1] - 21, 48, 22);
     x.fillStyle = '#9a7648'; x.fillRect(P[0] + 2, P[1] - 21, 44, 22); x.fillRect(P[0] + 1, P[1] - 20, 46, 20);
     for (var t = 0; t < 50; t++) { x.fillStyle = al() < .5 ? '#8a6a40' : '#b08a58'; x.fillRect(P[0] + 2 + Math.floor(al() * 44), P[1] - 20 + Math.floor(al() * 20), 2, 1); }
@@ -4506,7 +4548,7 @@ function ouvrirDepart() { voirMonde(); }
 function voirMonde() {
   fermerFeuille();
   var c = carteJeu();
-  if (DEPART.liste == null || !(zoneOuverte(DEPART.liste) && listeDeNum(DEPART.liste))) DEPART.liste = listeJouable();
+  if (DEPART.liste == null || !listeAutorisee(DEPART.liste)) DEPART.liste = listeJouable();
   voir('monde');
   if (!CARTE.base) fabriquerCarte();
   if (c.devoile) { CARTE.trans = { n: c.devoile, t0: maintenant(), dur: 1500 }; c.devoile = null; sauver(); setTimeout(function () { celebrer(T('Nouvelle contrée libérée !')); }, 300); }
@@ -12438,10 +12480,7 @@ function lotHdv(w, s, niv) {
   /* le prix : la valeur × un facteur entre 0,5 et 2 (plus souvent près de 1), en or ou en troc */
   var u = (R() + R() + R()) / 3, f = Math.exp((u - .5) * 2 * Math.log(2)), rem = Math.max(.7, 1 - .03 * niv);
   lot.f = f; var cible = Math.max(3, lot.v * f * rem);
-  if (R() < .3) {
-    var possibles = RES.filter(function (k) { return !lot.contenu[k]; }), kt = choixR(R, possibles);
-    lot.prix = {}; lot.prix[kt] = Math.max(2, Math.round(cible / ((VALEUR_RES[kt] || 1) * VAL_OR)));
-  } else lot.prix = { or: Math.round(cible) };
+  R(); lot.prix = { or: Math.round(cible) };   /* 01/11 : toujours en or (le tirage est gardé pour ne pas décaler la graine) */
   return lot;
 }
 function lotsHdv(niv) {
@@ -12522,6 +12561,32 @@ Object.assign(NL, {
   'Nouvelle étape : les cartes': 'Nieuwe stap: de kaarten', 'Retrouve maintenant les mots de tête.': 'Vind de woorden nu uit je hoofd.',
   /* la mine */
   'Filon d\'or': 'Goudader'
+});
+
+/* ═════════ le bouton Options du camp (01/11) ═════════
+   Choisir la liste étudiée (celles déjà ouvertes, plus celle de la semaine prochaine pour prendre
+   de l'avance), ajouter des mots à son deck quand on a fini plus tôt, couper les sons. */
+function feuilleOptions() {
+  var n = listeJouable(), l = LISTES.filter(function (x) { return listeAutorisee(x.n); }), nc = numCourant();
+  entrerZone(n);
+  var nbDeck = ZC.deck ? ZC.deck.length : 0, appris = MOTS.filter(estValide).length;
+  var h = '<h4 class="f-h">' + T('Liste étudiée') + '</h4><p class="f-sous">' + T('Les questions de tes expéditions viennent de cette liste.') + '</p><div class="opt-l">' +
+    l.map(function (li) { return '<button data-liste-opt="' + li.n + '" class="' + (li.n === n ? 'on' : '') + '">' + ech(nomListe(li)) + (li.n === nc ? '<small>' + T('la liste de la semaine') + '</small>' : li.n === nc + 1 ? '<small>' + T('en avance') + '</small>' : '') + '</button>'; }).join('') + '</div>';
+  h += '<h4 class="f-h">' + T('Mes mots') + '</h4><p class="f-sous">' + (ZC.deck ? T('{0} mots dans ton deck, dont {1} appris, sur {2} dans la liste.', nbDeck, appris, LISTE.length) : T('Tu n\'as pas encore choisi tes mots pour cette liste.')) + '</p>' +
+    '<button class="btn petit-b large" id="opt-mots">' + T(ZC.deck ? 'Ajouter des mots à mon deck' : 'Choisir mes mots') + '</button>';
+  h += '<h4 class="f-h">' + T('Son') + '</h4><div class="opt-l"><button id="opt-son" class="' + (etat.son ? 'on' : '') + '">' + T(etat.son ? 'Sons activés' : 'Sons coupés') + '</button></div>';
+  feuille('Options', h);
+  lier('[data-liste-opt]', function (d) { J().liste = +d.listeOpt; DEPART.liste = +d.listeOpt; sauver(); son('clic'); feuilleOptions(); });
+  $('opt-mots').onclick = function () { son('clic'); entrerZone(n); ZC.deckBrouillon = (ZC.deck || []).slice(); fermerFeuille(); vueDeck(n, function () { campVue(); }); };
+  $('opt-son').onclick = function () { etat.son = !etat.son; sauver(); son('clic'); feuilleOptions(); };
+}
+$('camp-opt').onclick = function (ev) { ev.stopPropagation(); son('clic'); feuilleOptions(); };
+Object.assign(NL, {
+  'Options': 'Opties', 'Liste étudiée': 'Lijst die je leert', 'Les questions de tes expéditions viennent de cette liste.': 'De vragen van je tochten komen uit deze lijst.',
+  'la liste de la semaine': 'de lijst van deze week', 'en avance': 'op voorsprong', 'Mes mots': 'Mijn woorden',
+  '{0} mots dans ton deck, dont {1} appris, sur {2} dans la liste.': '{0} woorden in je stapel, waarvan {1} geleerd, van de {2} in de lijst.',
+  'Tu n\'as pas encore choisi tes mots pour cette liste.': 'Je hebt je woorden voor deze lijst nog niet gekozen.',
+  'Ajouter des mots à mon deck': 'Woorden toevoegen aan mijn stapel', 'Choisir mes mots': 'Mijn woorden kiezen', 'Son': 'Geluid', 'Sons activés': 'Geluid aan', 'Sons coupés': 'Geluid uit'
 });
 
 /* ═════════ sauvegarde locale, listes en ligne et synchronisation à deux ═════════
@@ -12608,7 +12673,9 @@ function chargerListesEnLigne() {
   Promise.all(attentes).then(function () { if (nouvelles && vueActive === 'monde') { DEPART.liste = null; voirMonde(); } });
 }
 /* la liste sur laquelle on joue : celle de la semaine si elle est en ligne, sinon la dernière disponible */
+function listeAutorisee(n) { return !!listeDeNum(n) && (zoneOuverte(n) || n === numCourant() + 1); }
 function listeJouable() {
+  var ch = J && etat && etat.moi ? J().liste : null; if (ch && listeAutorisee(ch)) return ch;
   var n = numCourant(); if (listeDeNum(n)) return n;
   var l = LISTES.filter(function (x) { return x.n <= n && zoneOuverte(x.n); }); return l.length ? l[l.length - 1].n : LISTES[LISTES.length - 1].n;
 }
