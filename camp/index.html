@@ -13767,9 +13767,13 @@ var OBST = {
   eboulis: TR('Déblayer l\'éboulis', 'Het puin wegruimen'), glace: TR('Briser la glace', 'Het ijs breken'), lave: TR('Refroidir la lave', 'De lava afkoelen'),
   grille: TR('Forcer la grille', 'Het hek openbreken'), riviere: TR('Construire un pont', 'Een brug bouwen')
 };
+var OBST_BESOIN = { tronc: 3, ronces: 3, rocher: 4, eboulis: 4, glace: 4, lave: 5, grille: 4, riviere: 5, runes: 4 };
+var OBST_POOL = { lac: ['glace', 'rocher', 'runes', 'riviere'], volcan: ['lave', 'eboulis', 'runes'], mines: ['eboulis', 'rocher', 'grille', 'runes'], necro: ['grille', 'ronces', 'runes'], citadelle: ['grille', 'runes', 'eboulis'],
+  marais: ['riviere', 'ronces', 'tronc'], desert: ['rocher', 'eboulis', 'runes'], canyon: ['rocher', 'eboulis', 'runes'], col: ['rocher', 'glace', 'eboulis'], maudit: ['ronces', 'grille', 'runes'], fees: ['ronces', 'riviere', 'runes'], defaut: ['tronc', 'ronces', 'rocher', 'riviere', 'runes'] };
+OBST.runes = TR('Déchiffrer la porte runique', 'De runendeur ontcijferen');
 var NOM_ZONE = { depart: TR('Ton campement', 'Je kamp'), clairiere: TR('Une clairière', 'Een open plek'), mare: TR('Une mare', 'Een poel'), rochers: TR('Un chaos de rochers', 'Een rotsenchaos'),
   ruines: TR('Des ruines', 'Ruïnes'), bosquet: TR('Un bosquet', 'Een bosje'), campement: TR('Un campement de monstres', 'Een monsterkamp'), nid: TR('Le nid', 'Het nest') };
-var ACT_TXT = { pt: TR('Récolter', 'Verzamelen'), trace: TR('Examiner l\'empreinte', 'De voetafdruk bekijken'), coffre: TR('Ouvrir le coffre', 'De kist openen') };
+var ACT_TXT = { pt: TR('Récolter', 'Verzamelen'), trace: TR('Examiner l\'empreinte', 'De voetafdruk bekijken'), coffre: TR('Crocheter le coffre', 'De kist openbreken'), autel: TR('Prier à l\'autel', 'Bidden bij het altaar'), pnj: TR('Parler au voyageur', 'Praten met de reiziger'), fontaine: TR('Boire à la source', 'Drinken uit de bron'), piege: TR('Poser un piège', 'Een val zetten') };
 function tqLibre(M, i, j) { if (i < 0 || j < 0 || i >= M.W || j >= M.H) return false; var p = j * M.W + i; return !M.mur[p] && !M.bloque[p]; }
 function zoneDe(M, x, y) { var cx = Math.floor(x / TQ.zw), cy = Math.floor(y / TQ.zh); if (cx < 0 || cy < 0 || cx >= TQ.gc || cy >= TQ.gr) return null; var z = M.zoneAt[cy * TQ.gc + cx]; return z == null ? null : M.zones[z]; }
 function borne(v, a, b) { return Math.max(a, Math.min(b, v)); }
@@ -13781,7 +13785,7 @@ function genZones(k, q) {
     mode: 'explore', fait: 0, pas: 0, chutes: 0, act: null, but: null, amb: [], dir: 1, enRencontre: false };
   for (i = 0; i < TQ.gc * TQ.gr; i++) M.zoneAt.push(null);
   /* le chemin principal : une marche au hasard sur la grille 3 × 4, du bas vers le haut */
-  var L = q.type === 'chasse' ? 8 : 7, best = [];
+  var L = q.type === 'chasse' ? 7 : 6, best = [];
   for (var es = 0; es < 150 && best.length < L; es++) {
     var ch = [[Math.floor(Math.random() * TQ.gc), TQ.gr - 1]], pris = {}; pris[ch[0]] = 1;
     while (ch.length < L) {
@@ -13826,8 +13830,9 @@ function genZones(k, q) {
       for (j = ya; j <= yb; j++) for (i = x - 1; i <= x + 1; i++) { M.mur[j * W + i] = 0; res[j * W + i] = 1; }
       for (i = x - 1; i <= x + 1; i++) { tiles.push([i, fy - 1]); tiles.push([i, fy]); }
     }
-    var need = !a[2] || a[1] === 1 ? 1 : [1, 2, 2, 2, 3][Math.floor(Math.random() * 5)];
-    var o = { t: 'obst', kind: P.obst, tiles: tiles, need: need, done: 0, a: a[0], b: a[1], hor: hor };
+    var pool = OBST_POOL[R.b] || OBST_POOL.defaut, kind = mel(pool.filter(function (k) { return k !== M.dernierObst; }))[0] || pool[0]; M.dernierObst = kind;
+    var need = !a[2] || a[1] === 1 ? 2 : OBST_BESOIN[kind] || 3;
+    var o = { t: 'obst', kind: kind, tiles: tiles, need: need, done: 0, a: a[0], b: a[1], hor: hor };
     o.i = tiles.reduce(function (s, t) { return s + t[0]; }, 0) / tiles.length + .5; o.j = tiles.reduce(function (s, t) { return s + t[1]; }, 0) / tiles.length + .5;
     tiles.forEach(function (t) { M.bloque[t[1] * W + t[0]] = 1; });
     M.objs.push(o);
@@ -13871,9 +13876,11 @@ function genZones(k, q) {
   var autres = mel(M.zones.filter(function (z) { return z.n > 0; })), tour = 0;
   function zoneSuiv() { var z = autres[tour % autres.length]; tour++; return z; }
   function ajout(o, z) { var c = caseDans(z, 0); o.i = c[0] + .5; o.j = c[1] + .5; o.z = z.n; o.done = 0; M.objs.push(o); return o; }
-  if (q.type === 'recolte') for (var r = 0; r < q.n + 2; r++) ajout({ t: 'pt', k: q.cible, need: 1 }, zoneSuiv());
-  for (r = 0; r < 3; r++) ajout({ t: 'pt', k: ['herbes', 'or', 'cuir'][r], bonus: true, need: 1 }, zoneSuiv());
-  M.zones.forEach(function (z) { if (!z.chemin || z.kind === 'campement' || z.kind === 'ruines') ajout({ t: 'coffre', need: 2 }, z); });
+  if (q.type === 'recolte') for (var r = 0; r < q.n + 1; r++) ajout({ t: 'pt', k: q.cible, need: 2 }, zoneSuiv());
+  for (r = 0; r < 2; r++) ajout({ t: 'pt', k: ['herbes', 'or', 'cuir'][r], bonus: true, need: 2 }, zoneSuiv());
+  M.zones.forEach(function (z) { if (!z.chemin || z.kind === 'campement') ajout({ t: 'coffre', need: 3 }, z); if (z.kind === 'ruines') ajout({ t: 'autel', need: 3 }, z); if (z.kind === 'mare' && !M.aFontaine) { M.aFontaine = true; ajout({ t: 'fontaine', need: 2 }, z); } });
+  if (!M.objs.some(function (o) { return o.t === 'autel'; })) ajout({ t: 'autel', need: 3 }, zoneSuiv());
+  ajout({ t: 'pnj', need: 3 }, M.zones[Math.min(2, M.zones.length - 1)]);
   var pm = R.petits || [];
   function mob(id, z) { var c = caseDans(z, 2); M.mobs.push({ id: id, x: c[0] + .5, y: c[1] + .5, z: z.n, tx: null, ty: null, prochain: 0 }); }
   if (q.type === 'massacre') { for (var m = 0; m < q.n + 1; m++) mob(q.cible, zoneSuiv()); }
@@ -13885,7 +13892,8 @@ function genZones(k, q) {
     var pvM = Math.round(B0.pv * 1.1 * mu.pv * fo);
     M.monstre = { id: q.cible, x: zm.mx, y: zm.my, z: zm.n, tx: null, ty: null, prochain: 0, bouge: maintenant() + 18000, pv: pvM, pvMax: pvM, atk: Math.round(B0.atk * mu.atk * fo), revele: false, traces: 0, f1: false, f2: false, dort: false, casses: [] };
     var zt = M.zones.filter(function (z) { return z.n > 0 && z.n !== nid.n; });
-    for (var e = 0; e < besoinTraces() + 2; e++) ajout({ t: 'trace', need: 1 }, zt[e % zt.length]);
+    for (var e = 0; e < besoinTraces() + 1; e++) ajout({ t: 'trace', need: 2 }, zt[e % zt.length]);
+    ajout({ t: 'piege', need: 3 }, M.zones[zm.adj.filter(function (a) { return a !== nid.n; })[0] != null ? zm.adj.filter(function (a) { return a !== nid.n; })[0] : zm.n]);
   }
   var z0 = M.zones[0]; M.hx = Math.floor(z0.mx) + .5; M.hy = Math.floor(z0.my) + 1.5; M.dep = { x: M.hx, y: M.hy };
   return M;
@@ -14002,6 +14010,9 @@ function dessinerObst(x, M, o, ox, oy, now) {
       x.fillStyle = '#c8264a'; if (h > .4) x.fillRect(X + 2, Y + 4, 1, 1); if (h > .7) x.fillRect(X + 6, Y + 1, 1, 1); x.fillStyle = '#c9a46a'; x.fillRect(X + 3, Y + 2, 1, 1); x.fillRect(X + 6, Y + 5, 1, 1);
     } else if (o.kind === 'glace') {
       x.fillStyle = '#7ab8e0'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#bfe8ff'; x.fillRect(X + 1, Y, 5, 6); x.fillStyle = '#ffffff'; x.fillRect(X + 1, Y, 2, 1); x.fillRect(X + 1, Y + 1, 1, 2);
+    } else if (o.kind === 'runes') {
+      x.fillStyle = '#4a4858'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#6a6878'; x.fillRect(X, Y, 8, 2); x.fillStyle = '#34323e'; x.fillRect(X, Y + 7, 8, 1);
+      var al = (n + Math.floor(now / 400)) % 4 === 0 || n < o.done * 2; x.fillStyle = al ? '#7fe0ff' : '#2a6a8a'; x.fillRect(X + 2, Y + 2, 1, 4); x.fillRect(X + 2, Y + 4, 3, 1); x.fillRect(X + 5, Y + 3, 1, 3);
     } else if (o.kind === 'grille') {
       x.fillStyle = '#2a2a34'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#8a8a9a'; for (var g = 1; g < 8; g += 3) { if (o.hor) x.fillRect(X, Y + g, 8, 1); else x.fillRect(X + g, Y, 1, 8); } x.fillStyle = '#5a5a6a'; if (o.hor) x.fillRect(X + 3, Y, 1, 8); else x.fillRect(X, Y + 3, 8, 1);
     } else {
@@ -14021,6 +14032,16 @@ function dessinerObjet(x, M, o, ox, oy, now) {
     if (im.complete && im.width) x.drawImage(im, X - Math.round(im.width / 2), Y - im.height + 2 - bob);
   } else if (o.t === 'trace') {
     x.fillStyle = 'rgba(40,20,10,.7)'; x.fillRect(X - 3, Y - 2, 2, 3); x.fillRect(X + 1, Y, 2, 3); x.fillRect(X - 3, Y - 3, 1, 1); x.fillRect(X - 1, Y - 3, 1, 1); x.fillRect(X + 1, Y - 1, 1, 1); x.fillRect(X + 3, Y - 1, 1, 1);
+  } else if (o.t === 'autel') {
+    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X - 6, Y + 2, 12, 2); x.fillStyle = '#6a6878'; x.fillRect(X - 6, Y - 3, 12, 5); x.fillStyle = '#8a8898'; x.fillRect(X - 5, Y - 5, 10, 2); x.fillStyle = '#4a4858'; x.fillRect(X - 6, Y + 1, 12, 1);
+    var gl = .5 + Math.sin(now / 300) * .5; x.fillStyle = 'rgba(127,224,255,' + (.2 + gl * .3) + ')'; x.fillRect(X - 3, Y - 10, 6, 5); x.fillStyle = '#7fe0ff'; x.fillRect(X - 1, Y - 9, 2, 3);
+  } else if (o.t === 'pnj') {
+    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X - 3, Y + 2, 7, 2); x.fillStyle = '#5a4a6a'; x.fillRect(X - 3, Y - 6, 6, 8); x.fillStyle = '#7a6a8a'; x.fillRect(X - 2, Y - 9, 4, 4); x.fillStyle = '#e8d8b0'; x.fillRect(X - 1, Y - 7, 2, 2);
+    x.fillStyle = '#8a5a33'; x.fillRect(X + 3, Y - 9, 1, 11); if (Math.floor(now / 600) % 2) { x.fillStyle = '#ffffff'; x.fillRect(X + 1, Y - 14, 5, 3); x.fillRect(X + 2, Y - 11, 1, 1); }
+  } else if (o.t === 'fontaine') {
+    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X - 6, Y + 2, 12, 2); x.fillStyle = '#7a7884'; x.fillRect(X - 6, Y - 3, 12, 5); x.fillStyle = '#3a8ab8'; x.fillRect(X - 5, Y - 3, 10, 2); x.fillStyle = '#bff0ff'; if (Math.floor(now / 250) % 3) x.fillRect(X - 3 + Math.floor(now / 250) % 5, Y - 3, 2, 1); x.fillStyle = '#7fe0ff'; x.fillRect(X - 1, Y - 7 - (Math.floor(now / 200) % 2), 1, 4);
+  } else if (o.t === 'piege') {
+    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X - 5, Y + 1, 10, 2); x.fillStyle = '#6e4126'; for (var pq = -4; pq <= 4; pq += 2) { x.fillRect(X + pq, Y - 3 - (pq === 0 ? 2 : 0), 1, 4 + (pq === 0 ? 2 : 0)); } x.fillStyle = '#c9a46a'; x.fillRect(X - 5, Y - 1, 10, 1);
   } else if (o.t === 'coffre') {
     x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X - 5, Y + 2, 10, 2);
     x.fillStyle = '#6a4a28'; x.fillRect(X - 5, Y - 5, 10, 7); x.fillStyle = '#8a6a40'; x.fillRect(X - 5, Y - 6, 10, 3); x.fillStyle = '#ffd24d'; x.fillRect(X - 5, Y - 3, 10, 1); x.fillRect(X - 1, Y - 4, 2, 3);
@@ -14155,13 +14176,25 @@ async function finirAct(M, a) {
         mo.traces++; flotte(T('Une empreinte !') + ' ' + Math.min(mo.traces, besoinTraces()) + ' / ' + besoinTraces(), a.i, a.j - 1, 'fort', 1400);
         if (mo.traces >= besoinTraces()) { mo.revele = true; await banniere(T('Les traces mènent à {0}', T(BETES[mo.id].nom)), T('Sa position s\'affiche sur la carte.'), 1100); }
       } else { gagnerRes('cuir', .6); flotte('+' + nomRes('cuir'), a.i, a.j - 1, 'info'); }
+    } else if (a.t === 'autel') {
+      son('niveau'); H().pv = pvMax(); hud('hud-combat'); if (typeof rechargerComp === 'function') rechargerComp(9);
+      var zA = M.zones[a.z]; zA.adj.forEach(function (n) { var zz = M.zones[n]; if (!zz.vu) { zz.vu = true; zz.t0 = maintenant(); } });
+      flotte(T('Bénédiction : PV et compétences au plein, les environs se dévoilent'), a.i, a.j - 1, 'info', 2200);
+    } else if (a.t === 'fontaine') {
+      son('soin'); H().pv = Math.min(pvMax(), H().pv + Math.round(pvMax() * .6)); hud('hud-combat'); flotte(T('L\'eau fraîche te requinque'), a.i, a.j - 1, 'info', 1600);
+    } else if (a.t === 'piege') {
+      son('or'); M.piege = true; flotte(T('Piège posé : le grand monstre sera pris au début du combat'), a.i, a.j - 1, 'fort', 2200);
+    } else if (a.t === 'pnj') {
+      var mo2 = M.monstre; son('or');
+      if (mo2 && !mo2.mort && !mo2.revele) { mo2.revele = true; mo2.traces = besoinTraces(); flotte(T('« Je l\'ai vu passer par là ! »'), a.i, a.j - 1, 'info', 2000); }
+      else { var gO = gagnerRes('or', 1.5); var pk2 = galPieceZ(M); if (pk2) EXPE.butin[pk2] = (EXPE.butin[pk2] || 0) + 1; flotte(T('« Prends ça, pour la route. »') + ' +' + (gO || 1) + ' ' + nomRes('or') + (pk2 ? ' · ' + T(PIECES[pk2].nom) : ''), a.i, a.j - 1, 'fort', 2000); }
     } else if (a.t === 'coffre') {
       son('or'); var l = [], go = gagnerRes('or', 1.6); l.push('+' + (go || 1) + ' ' + nomRes('or'));
       var pm = (R.petits || []).filter(function (id) { return BETES[id]; });
       if (pm.length && Math.random() < .7) { var pk = tirerButin(BETES[mel(pm)[0]].loot); EXPE.butin[pk] = (EXPE.butin[pk] || 0) + 1; l.push('+1 ' + T(PIECES[pk].nom)); }
       if (R.recoltes && Math.random() < .5) { var rk = mel(R.recoltes)[0]; EXPE.butin[rk] = (EXPE.butin[rk] || 0) + 1; l.push('+1 ' + T(PIECES[rk].nom)); }
       flotte(l.join(' · '), a.i, a.j - 1, 'fort', 1700);
-      if (Math.random() < .12) dropObjet('coffre');
+      if (Math.random() < .25) dropObjet('coffre');
     }
   }
 }
@@ -14205,10 +14238,12 @@ function dessinerTerrain() {}
   var d = document.createElement('div'); d.id = 'mh-ex';
   d.innerHTML = '<canvas id="mh-cv" width="130" height="240"></canvas><div id="mh-info"></div><div id="mh-act" class="cache"></div><div id="mh-fl"></div>';
   $('scene-combat').parentNode.insertBefore(d, $('scene-combat'));
+  var mm = document.createElement('div'); mm.id = 'mh-mini'; mm.innerHTML = '<canvas id="mh-mcv" width="270" height="312"></canvas><small id="mh-mtxt"></small>'; $('scene-combat').parentNode.insertBefore(mm, $('scene-combat'));
   var st = document.createElement('style');
   st.textContent = '#mh-ex{display:none;position:relative;flex:1 1 0;min-height:0;overflow:hidden;background:#0c0918}#mh-cv{display:block;width:390px;image-rendering:pixelated}' +
-    '#v-combat.tq-ex #mh-ex{display:block}#v-combat.tq-ex #scene-combat,#v-combat.tq-ex .etat,#v-combat.tq-ex #mh-comp,#v-combat.tq-ex #boite{display:none!important}' +
-    '#v-combat.tq-ex.tq-q #boite{display:flex!important}#v-combat.tq-ex.tq-q #mh-ex{flex:0 0 300px}' +
+    '#v-combat.tq-ex #mh-ex{display:block;flex:0 0 300px}#v-combat.tq-ex #scene-combat,#v-combat.tq-ex .etat,#v-combat.tq-ex #mh-comp,#v-combat.tq-ex #boite{display:none!important}' +
+    '#v-combat.tq-ex.tq-q #boite{display:flex!important}' +
+    '#mh-mini{display:none;flex:1 1 0;min-height:0;align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:6px 0;background:#120e1e;box-shadow:inset 0 2px 0 #000}#v-combat.tq-ex:not(.tq-q) #mh-mini{display:flex}#mh-mini canvas{height:calc(100% - 24px);max-width:96%;image-rendering:pixelated;box-shadow:0 0 0 2px #000,0 0 0 4px #3a3450}#mh-mini small{font-family:var(--lex);font-size:11px;color:var(--doux)}' +
     '#mh-info{position:absolute;left:8px;top:8px;max-width:calc(100% - 16px);padding:4px 9px;background:rgba(13,16,36,.82);box-shadow:0 0 0 2px #000;color:#f1e4c2;font-family:var(--lex);font-size:14px;line-height:17px;pointer-events:none}' +
     '#mh-info small{display:block;color:var(--doux);font-size:11px;line-height:13px}' +
     '#mh-act{position:absolute;left:8px;right:8px;bottom:8px;padding:5px 9px;background:#b8862a;color:#1a1208;box-shadow:0 0 0 2px #000,inset 0 -3px 0 #8a5a1a;font-family:var(--lex);font-size:14px;line-height:16px;text-align:center;pointer-events:none}' +
@@ -14219,22 +14254,7 @@ function dessinerTerrain() {}
   $('mh-cv').addEventListener('pointerdown', function (ev) {
     var M = EXPE && EXPE.mh; if (!M || !C || C.famille !== 'traque' || M.mode !== 'explore' || M.enRencontre || M.trans || C.fini || !$('voile').classList.contains('cache')) return;
     var cv = $('mh-cv'), r = cv.getBoundingClientRect(), px = (ev.clientX - r.left) / r.width * cv.width, py = (ev.clientY - r.top) / r.height * cv.height;
-    var cam = M.cam || { x: 0, y: 0 }, tx = (px + cam.x) / 8, ty = (py + cam.y) / 8, ti = Math.floor(tx), tj = Math.floor(ty);
-    if (M.act) annulerAct(M);
-    /* un objet près du doigt, dans une zone déjà vue : on va agir dessus */
-    var best = null, bd = 1.7;
-    M.objs.forEach(function (o) {
-      if (o.ouvert) return; if (o.t === 'obst' ? !(M.zones[o.a].vu || M.zones[o.b].vu) : !M.zones[o.z].vu) return;
-      var d = o.t === 'obst' ? Math.min.apply(null, o.tiles.map(function (t) { return Math.hypot(t[0] + .5 - tx, t[1] + .5 - ty); })) : Math.hypot(o.i - tx, o.j - ty - .3);
-      if (d < bd) { bd = d; best = o; }
-    });
-    M.cible = { x: tx, y: ty, t0: maintenant() };
-    if (best) {
-      if (adjacentA(M, best)) { demarrerAct(M, best); return; }
-      var ch = versObjet(M, best); if (ch) { M.chemin = ch; M.but = best; son('clic'); return; }
-    }
-    var c2 = versCase(M, ti, tj); M.but = null;
-    if (c2 && c2.length) { M.chemin = c2; son('clic'); } else if (!c2) flotte(T('Pas de passage'), tx, ty, 'mal');
+    var cam = M.cam || { x: 0, y: 0 }; tapCarteZ(M, (px + cam.x) / 8, (py + cam.y) / 8);
   });
 })();
 function flotte(txt, i, j, cls, ms) {
@@ -14415,6 +14435,71 @@ Object.assign(NL, {
   'Touche la carte pour marcher, ou touche un obstacle, une plante, une empreinte, un coffre.': 'Tik op de kaart om te lopen, of tik op een obstakel, een plant, een voetafdruk, een kist.',
   'Touche la carte pour marcher. Les questions arrivent quand tu agis : ouvrir un passage, cueillir, examiner une empreinte, ouvrir un coffre.': 'Tik op de kaart om te lopen. De vragen komen als je iets doet: een doorgang openen, plukken, een voetafdruk bekijken, een kist openen.'
 });
+function galPieceZ(M) { var R = REGIONS[M.k], l = (R.recoltes || []).slice(); (R.petits || []).forEach(function (id) { var B0 = BETES[id]; if (B0 && B0.loot) l.push(B0.loot[0][0]); }); return l.length ? mel(l)[0] : null; }
+Object.assign(NL, {
+  'Bénédiction : PV et compétences au plein, les environs se dévoilent': 'Zegen: levenspunten en vaardigheden vol, de omgeving wordt zichtbaar', 'L\'eau fraîche te requinque': 'Het frisse water knapt je op',
+  'Piège posé : le grand monstre sera pris au début du combat': 'Val gezet: het grote monster zit vast bij het begin van het gevecht', '« Je l\'ai vu passer par là ! »': '« Ik heb hem daarlangs zien gaan! »', '« Prends ça, pour la route. »': '« Neem dit mee, voor onderweg. »'
+});
+
+/* toucher la carte (ou la minimap) : marcher, ou aller agir sur l'objet le plus proche */
+function tapCarteZ(M, tx, ty) {
+  var ti = Math.floor(tx), tj = Math.floor(ty);
+    if (M.act) annulerAct(M);
+    /* un objet près du doigt, dans une zone déjà vue : on va agir dessus */
+    var best = null, bd = M.tapLarge ? 2.6 : 1.7;
+    M.objs.forEach(function (o) {
+      if (o.ouvert) return; if (o.t === 'obst' ? !(M.zones[o.a].vu || M.zones[o.b].vu) : !M.zones[o.z].vu) return;
+      var d = o.t === 'obst' ? Math.min.apply(null, o.tiles.map(function (t) { return Math.hypot(t[0] + .5 - tx, t[1] + .5 - ty); })) : Math.hypot(o.i - tx, o.j - ty - .3);
+      if (d < bd) { bd = d; best = o; }
+    });
+    M.cible = { x: tx, y: ty, t0: maintenant() };
+    if (best) {
+      if (adjacentA(M, best)) { demarrerAct(M, best); return; }
+      var ch = versObjet(M, best); if (ch) { M.chemin = ch; M.but = best; son('clic'); return; }
+    }
+    var c2 = versCase(M, ti, tj); M.but = null;
+    if (c2 && c2.length) { M.chemin = c2; son('clic'); } else if (!c2) flotte(T('Pas de passage'), tx, ty, 'mal');
+}
+
+/* ── la minimap, en bas de l'écran tant qu'il n'y a rien à répondre ── */
+var MINI_T = 0;
+function dessinerMiniZ(M, now) {
+  if (now - MINI_T < 140) return; MINI_T = now;
+  var cv = $('mh-mcv'), x = cv.getContext('2d'), Z = 6, W = M.W, i, j, P = M.P;
+  x.setTransform(1, 0, 0, 1, 0, 0); x.fillStyle = '#0c0918'; x.fillRect(0, 0, cv.width, cv.height);
+  /* on cadre la minimap sur les zones déjà vues (plus une bordure), pour qu'elle reste lisible */
+  var vues = M.zones.filter(function (z) { return z.vu; }), x0 = Math.min.apply(null, vues.map(function (z) { return z.x0; })), y0 = Math.min.apply(null, vues.map(function (z) { return z.y0; })),
+    x1 = Math.max.apply(null, vues.map(function (z) { return z.x0 + TQ.zw; })), y1 = Math.max.apply(null, vues.map(function (z) { return z.y0 + TQ.zh; }));
+  x0 = Math.max(0, x0 - 4); y0 = Math.max(0, y0 - 4); x1 = Math.min(W, x1 + 4); y1 = Math.min(M.H, y1 + 4);
+  var sc = Math.min(cv.width / ((x1 - x0) * Z), cv.height / ((y1 - y0) * Z)), dx = (cv.width - (x1 - x0) * Z * sc) / 2 - x0 * Z * sc, dy = (cv.height - (y1 - y0) * Z * sc) / 2 - y0 * Z * sc;
+  M.miniT = { s: sc, dx: dx, dy: dy }; x.setTransform(sc, 0, 0, sc, dx, dy);
+  for (j = 0; j < M.H; j++) for (i = 0; i < W; i++) {
+    var z = zoneDe(M, i, j); if (!z || !z.vu) continue;
+    var p = j * W + i, m = M.mur[p];
+    x.fillStyle = m === 4 ? (P.eau === 'lave' ? '#a8322a' : '#3a6f9a') : m ? '#24321f' : P.sol[0]; x.fillRect(i * Z, j * Z, Z, Z);
+  }
+  M.objs.forEach(function (o) {
+    if (o.t === 'obst') { if (o.ouvert || !(M.zones[o.a].vu || M.zones[o.b].vu)) return; x.fillStyle = '#c9a46a'; o.tiles.forEach(function (t) { x.fillRect(t[0] * Z, t[1] * Z, Z, Z); }); return; }
+    if (!M.zones[o.z].vu) return;
+    x.fillStyle = { pt: '#8af59a', trace: '#a8693a', coffre: '#ffd24d', autel: '#7fe0ff', pnj: '#ffffff', fontaine: '#5fa8e0', piege: '#d9a36a' }[o.t] || '#ffffff';
+    x.fillRect(Math.floor(o.i) * Z - 1, Math.floor(o.j) * Z - 1, Z + 2, Z + 2);
+  });
+  M.mobs.forEach(function (b) { var z = zoneDe(M, b.x, b.y); if (!z || !z.vu) return; x.fillStyle = '#e2463a'; x.fillRect(Math.floor(b.x) * Z, Math.floor(b.y) * Z, Z, Z); });
+  var mo = M.monstre; if (mo && !mo.mort) { var zm = zoneDe(M, mo.x, mo.y); if (mo.revele || (zm && zm.vu)) { var cl = Math.floor(now / 300) % 2; x.fillStyle = '#1b1325'; x.fillRect(Math.floor(mo.x) * Z - 4, Math.floor(mo.y) * Z - 4, Z + 8, Z + 8); x.fillStyle = cl ? '#ff3a2a' : '#ffd24d'; x.fillRect(Math.floor(mo.x) * Z - 3, Math.floor(mo.y) * Z - 3, Z + 6, Z + 6); } }
+  var cam = M.cam; if (cam) { x.strokeStyle = 'rgba(255,255,255,.55)'; x.lineWidth = 1; x.strokeRect(cam.x / 8 * Z + .5, cam.y / 8 * Z + .5, $('mh-cv').width / 8 * Z, $('mh-cv').height / 8 * Z); }
+  x.fillStyle = Math.floor(now / 250) % 2 ? '#ffd24d' : '#ffffff'; x.fillRect(Math.floor(M.hx) * Z - 2, Math.floor(M.hy) * Z - 2, Z + 4, Z + 4);
+  $('mh-mtxt').textContent = T('Touche la carte ou la minimap pour te déplacer');
+}
+(function () {
+  $('mh-mcv').addEventListener('pointerdown', function (ev) {
+    var M = EXPE && EXPE.mh; if (!M || !C || C.famille !== 'traque' || M.mode !== 'explore' || M.enRencontre || M.trans || C.fini || !$('voile').classList.contains('cache')) return;
+    var cv = $('mh-mcv'), r = cv.getBoundingClientRect(), mt = M.miniT || { s: 1, dx: 0, dy: 0 }, px = (ev.clientX - r.left) / r.width * cv.width, py = (ev.clientY - r.top) / r.height * cv.height, tx = (px - mt.dx) / mt.s / 6, ty = (py - mt.dy) / mt.s / 6;
+    var z = zoneDe(M, tx, ty); if (!z || !z.vu) { flotte(T('Tu ne connais pas encore cet endroit'), M.hx, M.hy - 1, 'mal'); return; }
+    M.tapLarge = true; tapCarteZ(M, tx, ty); M.tapLarge = false;
+  });
+  (function boucleMini() { requestAnimationFrame(boucleMini); try { var M = EXPE && EXPE.mh, v = $('v-combat'); if (M && v.classList.contains('tq-ex') && !v.classList.contains('tq-q')) dessinerMiniZ(M, maintenant()); } catch (err) { console.error(err); } })();
+})();
+Object.assign(NL, { 'Touche la carte ou la minimap pour te déplacer': 'Tik op de kaart of de minikaart om te bewegen', 'Tu ne connais pas encore cet endroit': 'Deze plek ken je nog niet' });
 
 /* ═════════ 03/11 : la refonte visuelle — armures, armes, attaques, arbre de talents ═════════
    1) Chaque armure a sa silhouette : cornes, épaulières, col de fourrure, capuche, écailles, cape longue, robe.
@@ -15306,36 +15391,20 @@ async function combatUnique(juste, info) {
       majEtiquette(); majComp();
       if (e.pv <= 0) { await tuerU(e); return; }
       if (mo && await fuiteMH(e)) { H().pv = Math.min(pvMax(), H().pv + Math.round(pvMax() * .15)); hud('hud-combat'); return; }
-      if (gros && !e.rage && !e.fatigue && ((!e.r1 && e.pv <= e.pvMax * .7) || (!e.r2 && e.pv <= e.pvMax * .35))) await enrager(e);
     }
   } else {
-    var att = e.prepare; e.prepare = null;
-    await coupDuMonstre(e, att);
+    /* une erreur : le monstre en face frappe tout de suite (les autres attaquent quand leur jauge est pleine) */
+    await coupDuMonstre(e, null);
     if (!C || EXPE !== X) return 'fin';
     if (traque && M.mode !== 'combat') return;
     if (e.pv <= 0) { await tuerU(e); return; }
-    /* les autres membres du groupe profitent de l'erreur (un sur deux) */
-    if (C.groupe) { var autres = membres().filter(function (m) { return m !== e; }); for (var a = 0; a < autres.length; a++) { if (Math.random() < .5) { await agir(autres[a]); if (!C || EXPE !== X || C.vaincu) return 'fin'; } } }
   }
-  /* ── le tour du monstre : saignements, états, rage et fatigue, prochaine attaque ── */
+  /* ── après la réponse : le saignement de la bête et les traits des grands monstres ── */
   e = SC.ennemi; if (!e || !C || EXPE !== X) return;
   e.tour = (e.tour || 0) + 1;
   if (e.saigne > 0 && e.pv > 0) { var ds = Math.max(3, Math.round(e.pvMax * .03)); e.saigne--; e.pv = Math.max(0, e.pv - ds); synchroPV(e); nombre('-' + ds, 70, 26, 'mal'); if (e.pv <= 0) { majEtiquette(); await tuerU(e); return; } }
-  if (aTraitV(e, 'regen') && e.pv < e.pvMax && !(e.saigne > 0)) { var rg = Math.max(1, Math.round(e.pvMax * .04)); e.pv = Math.min(e.pvMax, e.pv + rg); nombre('+' + rg, 70, 20, 'soin'); }
-  if (aTraitV(e, 'appel') && !e.appele && e.pv < e.pvMax * .5 && C.groupe && membres().length < 3) { e.appele = true; nombre(T('Il appelle de l\'aide !'), 60, 18, 'mal'); renfort(creerEnnemi(BEST[e.best].appel || 'loup')); }
-  ['poison', 'brulure', 'saigne'].forEach(function (k) { if (et[k] > 0) { var dd = Math.max(2, Math.round(pvMax() * .05)); et[k]--; H().pv = Math.max(0, H().pv - dd); nombre('-' + dd + ' ' + T(NOMS_ETAT[k]), SC.heros.x + 10, 34, 'mal'); } });
-  if (et.gel > 0) et.gel--;
-  hud('hud-combat'); if (H().pv <= 0) { defaite(); return; }
-  if (e.rage) { e.rage--; if (!e.rage) { e.fatigue = 3; await banniere(T('{0} est épuisé !', T(e.nom)), T('Il bave et frappe mollement : c\'est le moment !'), 1000); } }
-  else if (e.fatigue) e.fatigue--;
+  hud('hud-combat');
   if (traque) { await traitTour(e); if (!SC.ennemi || M.mode !== 'combat' || EXPE !== X) return; }
-  if (e.etourdi) { e.etourdi--; }
-  else if (!e.prepare && !e.fatigue && !e.terre && e.tour % (gros ? (e.rage ? (traque && aTrait(e, 'frenesie') ? 1 : 2) : 3) : 4) === 0) {
-    e.prepare = mel(attaquesGen(e))[0];
-    majEtiquette();
-    var suite = e.prepare.type === 'rugissement' ? T('Raté : tu seras sonné.') : e.prepare.type === 'souffle' ? T('Raté : {0}.', T(SOUFFLES[e.prepare.el][1]).toLowerCase()) : T('Raté : coup double.');
-    await banniere(T('{0} {1} !', T(e.nom), T(e.prepare.nom)), T('Réponds juste pour esquiver.') + ' ' + suite, 1000);
-  }
   majEtiquette(); majComp();
 }
 combattreMH = function (juste) { return combatUnique(juste); };
@@ -15345,8 +15414,6 @@ consequence = async function (juste, info, opts) {
   return consequenceAvantCU(juste, info, opts);
 };
 /* les jauges en temps réel sont coupées : chacun agit à son tour */
-majAttaques = function () {};
-dessinerJauges = function () {};
 /* un nouveau combat repart sans états ni coup préparé ; les recharges, elles, restent d'un combat à l'autre */
 var sceneAvantCU = scene;
 scene = async function (f, opts) { if (EXPE) { var S = CB(); S.etats = {}; S.arme = null; S.garde = false; S.riposte = false; S.saigne = 0; S.critSuiv = false; } var r = sceneAvantCU(f, opts); setTimeout(function () { if (enCombatU() && typeof tuto === 'function') tuto('combat'); majComp(); }, 1500); return r; };
@@ -15354,19 +15421,37 @@ var entrerCombatAvantCU = entrerCombat;
 entrerCombat = async function (id, grand, ref) { var S = CB(); S.etats = {}; S.arme = null; S.garde = false; S.riposte = false; S.saigne = 0; return entrerCombatAvantCU(id, grand, ref); };
 
 /* ── la rangée des compétences, dans tous les combats ── */
-function utiliserComp(s) {
-  var S = CB(); if (!enCombatU()) return;
-  if (S.arme && S.arme.id === s.id) { CB().rech[s.id] = rechDe(s); S.arme = null; son('clic'); majComp(); return; }
-  if (!pretComp(s)) return;
-  if (S.arme && !S.arme.capture) CB().rech[S.arme.id] = rechDe(S.arme);
-  S.arme = null;
-  CB().rech[s.id] = 0; son('niveau');
-  if ((s.garde || s.soin || s.immediat || s.purifie) && typeof spawnVfx === 'function') spawnVfx(s.id);
-  if (s.garde) { S.garde = true; if (s.riposte) S.riposte = true; if (s.critSuiv) S.critSuiv = true; nombre(T(s.nom), SC.heros.x + 10, 24, 'info'); }
-  else if (s.soin || s.purifie) { if (s.soin) soigner(s.soin); if (s.purifie) { S.etats = {}; nombre(T('Purifié !'), SC.heros.x + 10, 20, 'soin'); } }
-  else if (s.immediat) { var en = SC.ennemi; if (s.etourdit && en) { en.etourdi = s.etourdit; en.prepare = null; nombre(T('Pris au piège !'), 70, 18, 'fort'); } if (s.saigne) S.saigne = s.saigne; nombre(T(s.nom), SC.heros.x + 10, 24, 'info'); majEtiquette(); }
-  else { S.arme = s; nombre(T('Prêt : {0}', T(s.nom)), SC.heros.x + 12, 24, 'info'); }
-  majComp();
+/* une compétence chargée agit tout de suite, sans attendre la réponse suivante */
+var COMP_EN_COURS = false;
+async function utiliserComp(s) {
+  var S = CB(), e = SC.ennemi, X = EXPE; if (!enCombatU() || !e || COMP_EN_COURS || (C && C.verrou) || !pretComp(s)) return;
+  COMP_EN_COURS = true; var verrou = C.verrou; C.verrou = true; CB().rech[s.id] = 0; son('niveau'); majComp();
+  try {
+    if (typeof spawnVfx === 'function') spawnVfx(s.id);
+    nombre(T(s.nom), SC.heros.x + 10, 22, 'info');
+    if (s.garde) { S.garde = true; if (s.riposte) S.riposte = true; if (s.critSuiv) S.critSuiv = true; }
+    if (s.soin) soigner(s.soin);
+    if (s.purifie) { S.etats = {}; C.poison = null; nombre(T('Purifié !'), SC.heros.x + 10, 30, 'soin'); }
+    if (s.saigne) S.saigne = s.saigne;
+    if (s.etourdit) { membres().forEach(function (m) { if (m === e || s.etourdit > 1) m.t = -s.etourdit * 2500; }); nombre(T('Étourdi !'), 70, 18, 'fort'); }
+    if (s.saigneM) saignerMonstre(e, s.saigneM);
+    if (s.mult || s.coups || s.brise) {
+      var st = STYLE_ARME[typeArme()] || STYLE_ARME.epee, coups = s.coups || 1;
+      for (var c = 0; c < coups && e.pv > 0 && C && EXPE === X; c++) {
+        var dn = Math.max(1, Math.round(degats('phrase').n * (s.mult || 1) * st.mult * (S.critSuiv ? 1.8 : 1))); S.critSuiv = false;
+        if (C.famille !== 'traque') dn = encaisseEnnemi(e, dn, (s.mult || 1) >= 2);
+        lancerCoupArme(); await frappeHeros(dn, 3, false, dn === 0); if (!C || EXPE !== X) return;
+        e.pv = Math.max(0, e.pv - dn); synchroPV(e); majEtiquette();
+        if (c < coups - 1) await attendre(120);
+      }
+      if (e.pv > 0 && e.parts && s.brise) await casserParties(e, true);
+    }
+    if (C && EXPE === X && e.pv <= 0 && !e.mort) {
+      await tuerU(e);
+      /* si le combat est fini, on passe à la suite sans attendre de réponse */
+      if (C && EXPE === X && (C.fini || (C.famille === 'traque' && EXPE.mh && EXPE.mh.mode !== 'combat'))) { COMP_EN_COURS = false; C.verrou = false; cacherQuestions(); prochaine(); return; }
+    }
+  } finally { COMP_EN_COURS = false; if (C) C.verrou = verrou; majComp(); majEtiquette(); }
 }
 majComp = function () {
   var bar = $('mh-comp'); if (!bar) return;
@@ -15381,10 +15466,10 @@ majComp = function () {
     for (var k = 0; k < r; k++) p += '<i' + (k < c ? ' class="ok"' : '') + '></i>';
     return '<button data-sk="' + i + '" class="' + (on ? 'on' : c >= r ? 'pret' : 'charge') + '">' + ech(T(s.nom)) + '<span class="pp">' + p + '</span></button>';
   }).join('');
-  if (C.famille === 'traque' && e && e.grand && e.pv <= e.pvMax * .25 && !e.mort) h += '<button data-cap="1" class="' + (S.arme && S.arme.capture ? 'on' : 'pret cap') + '">' + ech(T(CAPTURE.nom)) + '<span class="pp"><small>' + T('affaibli') + '</small></span></button>';
+  if (C.famille === 'traque' && e && e.grand && e.pv <= e.pvMax * .25 && !e.mort) h += '<button data-cap="1" class="' + 'pret cap' + '">' + ech(T(CAPTURE.nom)) + '<span class="pp"><small>' + T('affaibli') + '</small></span></button>';
   bar.innerHTML = h; bar.classList.toggle('g', l.length > 3);
   bar.querySelectorAll('[data-sk]').forEach(function (b) { b.onclick = function () { utiliserComp(l[+b.dataset.sk]); }; });
-  var bc = bar.querySelector('[data-cap]'); if (bc) bc.onclick = function () { S.arme = S.arme && S.arme.capture ? null : CAPTURE; son('clic'); majComp(); };
+  var bc = bar.querySelector('[data-cap]'); if (bc) bc.onclick = async function () { if (C.verrou || COMP_EN_COURS) return; COMP_EN_COURS = true; C.verrou = true; try { await capturerMH(SC.ennemi); } finally { COMP_EN_COURS = false; if (C) C.verrou = false; } if (C && EXPE && EXPE.mh && EXPE.mh.mode !== 'combat') { cacherQuestions(); prochaine(); } };
 };
 (function () {
   var st = document.createElement('style');
@@ -15433,6 +15518,25 @@ Object.assign(NL, {
   '+{0} de vivacité (recharges plus rapides)': '+{0} vlugheid (sneller opladen)', '+{0} de réserve (recharges plus courtes)': '+{0} reserve (korter opladen)', 'jamais sonné par un rugissement': 'nooit versuft door een brul',
   'Une erreur, et il frappe.': 'Een fout, en hij slaat.'
 });
+
+/* les jauges tournent aussi pendant les combats de chasse ; un grand monstre frappe un peu plus souvent */
+var membresAvantCU = membres;
+membres = function () { if (C && C.famille === 'traque' && EXPE && EXPE.mh && EXPE.mh.mode === 'combat' && SC.ennemi && !SC.ennemi.mort && SC.ennemi.atk) return [SC.ennemi]; return membresAvantCU(); };
+var entrerCombatAvantJauge = entrerCombat;
+entrerCombat = async function (id, grand, ref) { var r = await entrerCombatAvantJauge(id, grand, ref); var e = SC.ennemi, M = EXPE && EXPE.mh; if (e) { e.cdMul = grand ? .85 : 1; e.t = 0; if (grand && M && M.piege) { M.piege = false; e.t = -7000; nombre(T('Pris dans ton piège !'), 60, 16, 'fort'); } } return r; };
+/* la garde pare aussi les coups qui partent quand la jauge est pleine */
+var frapperDeAvantGarde = frapperDe;
+frapperDe = async function (e) {
+  var S = CB();
+  if (S.garde && C && !e.mort) { S.garde = false; nombre(T('Paré !'), SC.heros.x + 10, 26, 'info'); bip(700, 1000, .08, 'square', .04); e.attaque = true; e.charge = { t0: maintenant(), dur: 300 }; await attendre(200);
+    if (S.riposte && C) { S.riposte = false; var dr = Math.round(degats('phrase').n * 1.2); lancerCoupArme(); await frappeHeros(dr, 2, false); e.pv = Math.max(0, e.pv - dr); synchroPV(e); majEtiquette(); if (e.pv <= 0 && !e.mort) { e.attaque = false; await tuerU(e); return; } }
+    e.attaque = false; return; }
+  return frapperDeAvantGarde(e);
+};
+TUTOS.combat = [TR('Le combat', 'Het gevecht'), TR('Les monstres chargent leurs coups : quand leur jauge est pleine, ils frappent. Chaque bonne réponse te fait frapper, et plus vite tu réponds, plus fort tu frappes.', 'Monsters laden hun slag op: als hun meter vol is, slaan ze. Elk goed antwoord laat jou slaan, en hoe sneller je antwoordt, hoe harder.'),
+  TR('Chaque bonne réponse charge aussi tes compétences. Quand un bouton brille, touche-le : il agit tout de suite.', 'Elk goed antwoord laadt ook je vaardigheden op. Als een knop oplicht, tik erop: hij werkt meteen.'),
+  TR('Une erreur, et le monstre en face frappe aussitôt.', 'Een fout, en het monster tegenover je slaat meteen.')];
+Object.assign(NL, { 'Pris dans ton piège !': 'Gevangen in je val!', 'Paré !': 'Afgeweerd!', 'Étourdi !': 'Verdoofd!' });
 
 /* ═════════ 04/11 : trois vrais arbres de talents ═════════
    Guerrier, Chasseur, Érudit : treize nœuds chacun, qui se divisent en trois branches dès la racine.
