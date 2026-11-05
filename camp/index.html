@@ -13803,10 +13803,10 @@ function genZones(k, q) {
     if (!c) return; var nz = { n: M.zones.length, cx: c[0], cy: c[1], adj: [], vu: false, t0: 0, chemin: false }; M.zones.push(nz); M.zoneAt[c[1] * TQ.gc + c[0]] = nz.n; aretes.push([z.n, nz.n, false]);
   });
   aretes.forEach(function (a) { M.zones[a[0]].adj.push(a[1]); M.zones[a[1]].adj.push(a[0]); });
-  var der = bout - 1, sortes = ['clairiere', 'mare', 'rochers', 'ruines', 'bosquet', 'clairiere', 'campement', 'mare'];
+  var der = bout - 1, sortes = (typeof SORTES_B !== 'undefined' && SORTES_B[R.b]) || ['clairiere', 'mare', 'rochers', 'ruines', 'bosquet', 'clairiere', 'campement', 'mare'], sac = [];
   M.zones.forEach(function (z) {
     z.x0 = z.cx * TQ.zw; z.y0 = z.cy * TQ.zh; z.mx = z.x0 + TQ.zw / 2; z.my = z.y0 + TQ.zh / 2;
-    z.kind = z.n === 0 ? 'depart' : q.type === 'chasse' && z.n === der ? 'nid' : sortes[Math.floor(Math.random() * sortes.length)];
+    if (!sac.length) sac = mel(sortes); z.kind = z.n === 0 ? 'depart' : q.type === 'chasse' && z.n === der ? 'nid' : sac.pop();
   });
   /* chaque zone est tirée d'un modèle dessiné à la main (chasse_modeles.js), puis on creuse les sorties */
   var res = new Uint8Array(N);
@@ -14470,7 +14470,7 @@ function dessinerMiniZ(M, now) {
   $('mh-mcv').addEventListener('pointerdown', function (ev) {
     var M = EXPE && EXPE.mh; if (!M || !C || C.famille !== 'traque' || M.mode !== 'explore' || M.enRencontre || M.trans || C.fini || !$('voile').classList.contains('cache')) return;
     var cv = $('mh-mcv'), r = cv.getBoundingClientRect(), mt = M.miniT || { s: 1, dx: 0, dy: 0 }, px = (ev.clientX - r.left) / r.width * cv.width, py = (ev.clientY - r.top) / r.height * cv.height, tx = (px - mt.dx) / mt.s / 6, ty = (py - mt.dy) / mt.s / 6;
-    var z = zoneDe(M, tx, ty); if (!z || !z.vu) { flotte(T('Tu ne connais pas encore cet endroit'), M.hx, M.hy - 1, 'mal'); return; }
+    if (!zoneDe(M, tx, ty)) return;
     M.tapLarge = true; tapCarteZ(M, tx, ty); M.tapLarge = false;
   });
   (function boucleMini() { requestAnimationFrame(boucleMini); try { var M = EXPE && EXPE.mh, v = $('v-combat'); if (M && v.classList.contains('tq-ex') && !v.classList.contains('tq-q')) dessinerMiniZ(M, maintenant()); } catch (err) { console.error(err); } })();
@@ -16821,6 +16821,7 @@ function poserModeles(M, aretes, res, k) {
       if (ch === 'F') z.feu = [z.x0 + i, z.y0 + j];
       if (ch === 'M') z.spot = [z.x0 + i, z.y0 + j];
       if (ch === 'N') z.nidC = [z.x0 + i, z.y0 + j];
+      if (ch === 'U' || ch === 'Y') (z.objsPl || (z.objsPl = [])).push({ t: ch === 'U' ? 'puits' : 'meule', i: z.x0 + i, j: z.y0 + j });
     }
     /* des bords moins droits : quelques buissons ou rochers grignotent la lisière */
     for (j = z.y0 + 1; j < z.y0 + TQ.zh - 1; j++) for (i = z.x0 + 1; i < z.x0 + TQ.zw - 1; i++) {
@@ -16964,9 +16965,9 @@ function zoneAccessible(M, z) {
   cv.addEventListener('pointerdown', function (ev) {
     var M = EXPE && EXPE.mh; if (!M || !C || C.famille !== 'traque' || M.mode !== 'explore' || M.enRencontre || M.trans || C.fini || !$('voile').classList.contains('cache')) return;
     var r = cv.getBoundingClientRect(), mt = M.miniT || { s: 1, dx: 0, dy: 0 }, px = (ev.clientX - r.left) / r.width * cv.width, py = (ev.clientY - r.top) / r.height * cv.height, tx = (px - mt.dx) / mt.s / 6, ty = (py - mt.dy) / mt.s / 6;
-    var z = zoneDe(M, tx, ty); if (!z || z.vu || !zoneAccessible(M, z)) return;
-    /* zone inconnue mais ouverte : on marche jusqu'à son cœur */
-    ev.stopImmediatePropagation(); var s = solCentre(M, z); M.tapLarge = true; tapCarteZ(M, s[0], s[1]); M.tapLarge = false;
+    var z = zoneDe(M, tx, ty); if (!z || z.vu) return;
+    /* zone inconnue : on va jusqu'à son cœur si un passage est ouvert, sinon jusqu'à la porte à débloquer */
+    ev.stopImmediatePropagation(); M.tapLarge = true; tapCarteZ(M, tx, ty); M.tapLarge = false;
   }, true);
 })();
 var dessinerMiniZAvantAcc = dessinerMiniZ;
@@ -16984,6 +16985,185 @@ dessinerMiniZ = function (M, now) {
     x.fillStyle = '#ffd24d'; x.font = 'bold 30px monospace'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('?', (z.x0 + TQ.zw / 2) * Z, (z.y0 + TQ.zh / 2) * Z);
   });
 };
+
+/* ═════════ 05/11 : les plaines ═════════
+   Des zones dessinées pour les Collines Rousses : champs de blé et de lavande, ferme abandonnée, vieux moulin,
+   verger et ruches, ruisseau et son pont, tour de guet dans son enceinte. De nouvelles choses à faire :
+   puiser au puits (soigne), fouiller une meule de foin (ressources, parfois une pièce).
+   Légende en plus : f clôture · h botte de foin · W moulin (3×3) · Q pommier · K charrette · R ruche · E épouvantail ·
+   T tour (2×2) · m muret · X ferme (3×2) · w blé · _ sillons · d dalles · c coquelicots · l lavande · U puits · Y meule */
+Object.assign(MODELES, {
+  champ: [
+    ['###############', '#.fffff.fffff.#', '#.fwwwwwwwwwf.#', '#.fwwEwwwwwwf.#', '#.fffffwfffff.#', '#c...........c#', '#.............#', '#..,.......,..#', '#.____...____.#', '#.____.Y.____.#', '#.____...____.#', '#hh.c.....c.hh#', '###############'],
+    ['###############', '#.lllll.lllll.#', '#.............#', '#.lllll.lllll.#', '#.............#', '#c...K....hh.c#', '#.............#', '#...E.....Y...#', '#.____._____..#', '#.............#', '#.____._____..#', '#.c....,....c.#', '###############']],
+  ferme: [
+    ['###############', '#.XXX....fffff#', '#.XXX....f...f#', '#.ddd....f..Rf#', '#.ddd....ff.ff#', '#.............#', '#......U......#', '#.............#', '#.hh.....,..K.#', '#.h...ddd.....#', '#.....ddd..E..#', '#..c.......c..#', '###############']],
+  moulin: [
+    ['###############', '#..,......,...#', '#.WWW..wwwww..#', '#.WWW..wwwww..#', '#.WWW..wwwww..#', '#.dd..........#', '#.............#', '#..hh.....Y...#', '#.wwwww..wwww.#', '#.wwwww..wwww.#', '#.wwwww..wwww.#', '#....K....c...#', '###############']],
+  verger: [
+    ['###############', '#.Q..Q...Q..Q.#', '#.............#', '#...Q..Q..Q...#', '#.c.........c.#', '#...R.....R...#', '#......Y......#', '#...R.....R...#', '#.c.........c.#', '#...Q..Q..Q...#', '#.............#', '#.Q..Q...Q..Q.#', '###############']],
+  tertre: [
+    ['###############', '#..r...,...r..#', '#.r.mmm.mmm.r.#', '#...m.....m...#', '#...m.TT..m...#', '#.....TT......#', '#...m.....m...#', '#...m.,.,.m...#', '#.r.mmm.mmm.r.#', '#.....S.S.....#', '#.,.........,.#', '#..r...c...r..#', '###############']],
+  ruisseau: [
+    ['###############', '#............~#', '#.c.hh......~~#', '#..,.......~~.#', '#.........~~..#', '#.v......~~...#', '#.......~~....#', '#......==.....#', '#..Y..~~....E.#', '#....~~...dd..#', '#.K.~~....dd..#', '#..~~....c....#', '###############']]
+});
+Object.assign(MOD_CODE, { f: 12, h: 13, W: 14, Q: 16, K: 17, R: 18, E: 19, T: 20, m: 21, X: 22 });
+Object.assign(MOD_DECO, { w: 13, _: 14, d: 16, c: 17, l: 18 });
+var SORTES_B = { collines: ['champ', 'ferme', 'moulin', 'verger', 'ruisseau', 'tertre', 'champ', 'clairiere', 'rochers', 'campement'] };
+Object.assign(NOM_ZONE, { champ: TR('Un champ', 'Een akker'), ferme: TR('Une ferme abandonnée', 'Een verlaten boerderij'), moulin: TR('Le vieux moulin', 'De oude molen'),
+  verger: TR('Un verger', 'Een boomgaard'), ruisseau: TR('Un ruisseau', 'Een beek'), tertre: TR('Une tour de guet', 'Een wachttoren') });
+Object.assign(ACT_TXT, { puits: TR('Puiser au puits', 'Water putten'), meule: TR('Fouiller la meule de foin', 'De hooiberg doorzoeken') });
+
+/* ── le dessin des nouvelles cases ── */
+var artModeleAvantPl = artModele;
+artModele = function (x, M, i, j, m) {
+  if (m < 12) return artModeleAvantPl(x, M, i, j, m);
+  var X = i * 8, Y = j * 8, W = M.W, p = j * W + i, L = M.mur[p - 1] === m, R = M.mur[p + 1] === m, U = M.mur[p - W] === m, D = M.mur[p + W] === m, h = hcar(i, j, 31);
+  function ombre(a, b, w) { x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X + a, Y + b, w, 2); }
+  if (m === 12) {   /* clôture */
+    ombre(1, 6, 7); x.fillStyle = '#a8763e';
+    if (L || R || !(U || D)) { var a0 = L ? X : X + 2, a1 = R ? X + 8 : X + 6; x.fillRect(a0, Y + 2, a1 - a0, 1); x.fillRect(a0, Y + 5, a1 - a0, 1); }
+    if (U || D) { var b0 = U ? Y - 1 : Y + 1, b1 = D ? Y + 8 : Y + 6; x.fillRect(X + 4, b0, 1, b1 - b0); }
+    x.fillStyle = '#6a4426'; x.fillRect(X + 3, Y, 2, 7); x.fillStyle = '#8a5a32'; x.fillRect(X + 3, Y, 1, 6); return true;
+  }
+  if (m === 13) { ombre(0, 6, 8); x.fillStyle = '#b8902a'; x.fillRect(X + 1, Y + 1, 6, 6); x.fillRect(X, Y + 2, 8, 4); x.fillStyle = '#e8c050'; x.fillRect(X + 1, Y + 1, 5, 2); x.fillRect(X + 2, Y + 3, 3, 1); x.fillStyle = '#8a6a1a'; x.fillRect(X + 2, Y + 5, 4, 1); x.fillRect(X + 6, Y + 2, 1, 3); return true; }
+  if (m === 14) {   /* moulin, 3 × 3, dessiné depuis sa case en haut à gauche */
+    if (L || U) return true;
+    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X + 1, Y + 22, 24, 3);
+    x.fillStyle = '#a8987a'; x.fillRect(X + 3, Y + 4, 18, 20); x.fillStyle = '#c8b89a'; x.fillRect(X + 3, Y + 4, 12, 20);
+    x.fillStyle = '#8a7a5e'; for (var s = 0; s < 5; s++) x.fillRect(X + 4 + (s % 2) * 6, Y + 7 + s * 4, 4, 1);
+    x.fillStyle = '#4a3020'; x.fillRect(X + 9, Y + 16, 6, 8); x.fillStyle = '#2a2a3a'; x.fillRect(X + 11, Y + 9, 2, 3);
+    for (var k = 0; k < 9; k++) { var w = 6 + k * 2.2; x.fillStyle = k < 3 ? '#a84a3a' : '#8a3a2a'; x.fillRect(Math.round(X + 12 - w / 2), Y - 4 + k, Math.round(w), 1); }
+    var cx = X + 12, cy = Y + 1;
+    [[1, -1], [-1, -1], [1, 1], [-1, 1]].forEach(function (d) {
+      for (var t = 2; t < 15; t++) { x.fillStyle = '#6a4426'; x.fillRect(cx + d[0] * t, cy + d[1] * t, 1, 1); if (t > 4) { x.fillStyle = t % 3 ? '#f1e4c2' : '#c8b896'; x.fillRect(cx + d[0] * t + d[1], cy + d[1] * t - d[0], 1, 1); x.fillRect(cx + d[0] * t + 2 * d[1], cy + d[1] * t - 2 * d[0], 1, 1); } }
+    });
+    x.fillStyle = '#3a2a1a'; x.fillRect(cx - 1, cy - 1, 3, 3); return true;
+  }
+  if (m === 16) {   /* pommier */
+    x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X - 2, Y + 6, 12, 2);
+    x.fillStyle = '#5a3a22'; x.fillRect(X + 3, Y + 1, 2, 7);
+    x.fillStyle = '#2f6a34'; x.fillRect(X - 2, Y - 7, 12, 9); x.fillStyle = '#4a9a4a'; x.fillRect(X - 1, Y - 8, 10, 8); x.fillStyle = '#6ab85a'; x.fillRect(X, Y - 8, 5, 2); x.fillRect(X - 1, Y - 6, 2, 2);
+    x.fillStyle = '#e2463a'; x.fillRect(X + 1, Y - 4, 2, 2); x.fillRect(X + 6, Y - 6, 1, 1); x.fillRect(X + 6, Y - 2, 2, 2); x.fillRect(X + 3, Y - 1, 1, 1); if (h > .5) x.fillRect(X + 4, Y - 7, 1, 1);
+    return true;
+  }
+  if (m === 17) {   /* charrette */
+    ombre(-1, 7, 12); x.fillStyle = '#e8c050'; x.fillRect(X, Y - 1, 7, 3); x.fillStyle = '#8a5a32'; x.fillRect(X - 1, Y + 1, 10, 4); x.fillStyle = '#a8763e'; x.fillRect(X - 1, Y + 1, 10, 1);
+    x.fillStyle = '#6a4426'; x.fillRect(X + 8, Y + 3, 3, 1); x.fillStyle = '#3a2a1a'; x.fillRect(X + 1, Y + 4, 4, 4); x.fillStyle = '#c9a46a'; x.fillRect(X + 2, Y + 5, 2, 2); return true;
+  }
+  if (m === 18) {   /* ruche */
+    ombre(0, 6, 8); x.fillStyle = '#6a4426'; x.fillRect(X + 1, Y + 7, 6, 1); x.fillStyle = '#b8902a'; x.fillRect(X + 1, Y + 1, 6, 6); x.fillRect(X + 2, Y, 4, 1);
+    x.fillStyle = '#e8c050'; x.fillRect(X + 2, Y + 1, 2, 1); x.fillStyle = '#8a6a1a'; x.fillRect(X + 1, Y + 3, 6, 1); x.fillRect(X + 1, Y + 5, 6, 1);
+    x.fillStyle = '#2a1a10'; x.fillRect(X + 3, Y + 5, 2, 2); x.fillStyle = '#1a1a1a'; x.fillRect(X + 7, Y - 2, 1, 1); x.fillRect(X - 1, Y + 1, 1, 1); return true;
+  }
+  if (m === 19) {   /* épouvantail */
+    ombre(1, 7, 7); x.fillStyle = '#6a4426'; x.fillRect(X + 3, Y - 4, 2, 12); x.fillRect(X - 1, Y - 1, 10, 1);
+    x.fillStyle = '#5a7ab8'; x.fillRect(X + 1, Y - 2, 6, 5); x.fillStyle = '#3a5a98'; x.fillRect(X + 1, Y + 2, 6, 1); x.fillStyle = '#e8c050'; x.fillRect(X + 2, Y - 6, 4, 4); x.fillRect(X, Y - 1, 1, 2); x.fillRect(X + 7, Y - 1, 1, 2);
+    x.fillStyle = '#3a2a1a'; x.fillRect(X + 1, Y - 7, 6, 1); x.fillRect(X + 2, Y - 9, 4, 2); x.fillRect(X + 3, Y - 5, 1, 1); x.fillRect(X + 5, Y - 5, 1, 1); return true;
+  }
+  if (m === 20) {   /* tour de guet, 2 × 2 */
+    if (L || U) return true;
+    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X, Y + 14, 18, 3);
+    x.fillStyle = '#7a7268'; x.fillRect(X + 1, Y - 14, 14, 30); x.fillStyle = '#a8a096'; x.fillRect(X + 1, Y - 14, 9, 30);
+    x.fillStyle = '#5a554e'; for (var r2 = 0; r2 < 7; r2++) x.fillRect(X + 2 + (r2 % 2) * 5, Y - 10 + r2 * 4, 4, 1);
+    x.fillStyle = '#7a7268'; for (var c2 = 0; c2 < 4; c2++) x.fillRect(X + c2 * 4, Y - 18, 3, 4); x.fillRect(X, Y - 15, 16, 2);
+    x.fillStyle = '#1a1a24'; x.fillRect(X + 7, Y - 8, 2, 4); x.fillStyle = '#4a3020'; x.fillRect(X + 5, Y + 8, 6, 8);
+    x.fillStyle = '#c84a3a'; x.fillRect(X + 12, Y - 26, 1, 8); x.fillRect(X + 13, Y - 26, 4, 3); return true;
+  }
+  if (m === 21) {   /* muret de pierres sèches */
+    ombre(0, 6, 8); x.fillStyle = '#7a7468'; x.fillRect(X + 1, Y + 1, 6, 6);
+    if (L) x.fillRect(X, Y + 2, 2, 4); if (R) x.fillRect(X + 6, Y + 2, 2, 4); if (U) x.fillRect(X + 2, Y, 4, 2); if (D) x.fillRect(X + 2, Y + 6, 4, 2);
+    x.fillStyle = '#a8a296'; x.fillRect(X + 2, Y + 2, 2, 1); x.fillRect(X + 4, Y + 4, 2, 1); if (h > .5) x.fillRect(X + 1, Y + 5, 2, 1); return true;
+  }
+  if (m === 22) {   /* ferme en ruine, 3 × 2 */
+    if (L || U) return true;
+    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X, Y + 15, 25, 2);
+    x.fillStyle = '#c8b89a'; x.fillRect(X + 1, Y + 3, 22, 13); x.fillStyle = '#5a3a22'; x.fillRect(X + 1, Y + 3, 22, 1); x.fillRect(X + 1, Y + 9, 22, 1); x.fillRect(X + 8, Y + 3, 1, 13); x.fillRect(X + 16, Y + 3, 1, 13);
+    x.fillStyle = '#8a3a2a'; x.fillRect(X - 1, Y - 2, 26, 6); x.fillRect(X + 2, Y - 6, 20, 4); x.fillStyle = '#a84a3a'; x.fillRect(X + 2, Y - 6, 20, 1); x.fillRect(X - 1, Y - 2, 26, 1);
+    x.fillStyle = '#2a1a14'; x.fillRect(X + 14, Y - 4, 4, 3); x.fillRect(X + 16, Y - 1, 3, 2);
+    x.fillStyle = '#4a3020'; x.fillRect(X + 3, Y + 9, 4, 7); x.fillStyle = '#2a2a3a'; x.fillRect(X + 11, Y + 5, 3, 3); x.fillRect(X + 18, Y + 5, 3, 3); x.fillStyle = '#6a4426'; x.fillRect(X + 18, Y + 6, 3, 1); return true;
+  }
+  return false;
+};
+var decoModeleAvantPl = decoModele;
+decoModele = function (x, M, i, j, d) {
+  if (d < 13) return decoModeleAvantPl(x, M, i, j, d);
+  var X = i * 8, Y = j * 8, h = hcar(i, j, 29), h2 = hcar(i, j, 37);
+  if (d === 13) { x.fillStyle = '#b8962e'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#d8b850'; for (var a = 0; a < 4; a++) x.fillRect(X + 1 + a * 2, Y + 2 + ((a + i) % 2), 1, 6); x.fillStyle = '#f4dc80'; for (var b = 0; b < 4; b++) x.fillRect(X + 1 + b * 2, Y + 1 + ((b + i) % 2), 1, 2); x.fillStyle = '#8a6a1a'; x.fillRect(X, Y + 7, 8, 1); return true; }
+  if (d === 14) { x.fillStyle = '#7a5a3a'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#5a3e26'; x.fillRect(X, Y + 1, 8, 1); x.fillRect(X, Y + 5, 8, 1); if (h > .55) { x.fillStyle = '#7ab85a'; x.fillRect(X + Math.floor(h2 * 6), Y + 3, 1, 1); x.fillRect(X + Math.floor(h * 6), Y + 7, 1, 1); } return true; }
+  if (d === 16) { x.fillStyle = '#9a9488'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#6a665e'; x.fillRect(X, Y + 3, 8, 1); x.fillRect(X + (j % 2 ? 2 : 5), Y, 1, 3); x.fillRect(X + (j % 2 ? 5 : 2), Y + 4, 1, 4); x.fillStyle = '#b4aea2'; x.fillRect(X + 1, Y + 1, 1, 1); return true; }
+  if (d === 17) { x.fillStyle = M.P.herbe; x.fillRect(X + 2, Y + 4, 1, 3); x.fillRect(X + 5, Y + 3, 1, 4); x.fillStyle = '#e2463a'; x.fillRect(X + 1, Y + 2, 3, 2); x.fillRect(X + 4, Y + 1 + Math.floor(h * 2), 3, 2); x.fillStyle = '#1a1a1a'; x.fillRect(X + 2, Y + 3, 1, 1); x.fillRect(X + 5, Y + 2 + Math.floor(h * 2), 1, 1); return true; }
+  if (d === 18) { x.fillStyle = '#6a8a4a'; x.fillRect(X, Y + 5, 8, 3); x.fillStyle = '#9a6ac8'; for (var c = 0; c < 4; c++) x.fillRect(X + c * 2, Y + 1 + (c % 2), 1, 4); x.fillStyle = '#c8a0f0'; x.fillRect(X + 2, Y + 1, 1, 1); x.fillRect(X + 6, Y + 2, 1, 1); return true; }
+  return false;
+};
+
+/* ── le puits et la meule de foin ── */
+var dessinerObjetAvantPl = dessinerObjet;
+dessinerObjet = function (x, M, o, ox, oy, now) {
+  if (o.t !== 'puits' && o.t !== 'meule') return dessinerObjetAvantPl(x, M, o, ox, oy, now);
+  var X = Math.round(o.i * 8 - ox), Y = Math.round(o.j * 8 - oy);
+  x.fillStyle = 'rgba(0,0,0,.28)'; x.fillRect(X - 6, Y + 2, 12, 2);
+  if (o.t === 'puits') {
+    x.fillStyle = '#6a4426'; x.fillRect(X - 5, Y - 11, 1, 9); x.fillRect(X + 4, Y - 11, 1, 9); x.fillStyle = '#8a3a2a'; x.fillRect(X - 6, Y - 13, 12, 2); x.fillStyle = '#a84a3a'; x.fillRect(X - 6, Y - 13, 12, 1);
+    x.fillStyle = '#c9a46a'; x.fillRect(X, Y - 11, 1, 4); x.fillStyle = '#a8763e'; x.fillRect(X - 1, Y - 7, 3, 2);
+    x.fillStyle = '#8a8890'; x.fillRect(X - 5, Y - 4, 10, 6); x.fillStyle = '#aaa8b0'; x.fillRect(X - 5, Y - 4, 10, 1); x.fillRect(X - 3, Y - 1, 2, 1); x.fillRect(X + 2, Y, 2, 1);
+    x.fillStyle = '#3a6f9a'; x.fillRect(X - 3, Y - 3, 6, 1);
+  } else {
+    x.fillStyle = '#b8902a'; x.fillRect(X - 6, Y - 5, 12, 7); x.fillRect(X - 4, Y - 8, 8, 3); x.fillStyle = '#e8c050'; x.fillRect(X - 5, Y - 5, 7, 2); x.fillRect(X - 3, Y - 8, 5, 2); x.fillStyle = '#8a6a1a'; x.fillRect(X - 2, Y - 1, 1, 3); x.fillRect(X + 3, Y - 3, 1, 2);
+    if (Math.floor(now / 380 + o.i) % 5 === 0) { x.fillStyle = '#ffffff'; x.fillRect(X + 2, Y - 7, 1, 1); }
+  }
+};
+var finirActAvantPl = finirAct;
+finirAct = async function (M, a) {
+  if (a.t === 'puits') { a.t = 'fontaine'; return finirActAvantPl(M, a); }
+  if (a.t !== 'meule') return finirActAvantPl(M, a);
+  M.act = null; M.objs.splice(M.objs.indexOf(a), 1); son('or');
+  var k = mel(['herbes', 'cuir', 'bois'])[0], g = gagnerRes(k, .9), l = ['+' + (g || 1) + ' ' + nomRes(k)];
+  if (Math.random() < .45) { var pk = galPieceZ(M); if (pk) { EXPE.butin[pk] = (EXPE.butin[pk] || 0) + 1; l.push('+1 ' + T(PIECES[pk].nom)); } }
+  flotte(T('Dans le foin…') + ' ' + l.join(' · '), a.i, a.j - 1, 'fort', 1800);
+  if (Math.random() < .1) dropObjet('coffre');
+};
+var genZonesAvantPl = genZones;
+genZones = function (k, q) {
+  var M = genZonesAvantPl(k, q);
+  M.zones.forEach(function (z) {
+    (z.objsPl || []).forEach(function (o) {
+      var p = o.j * M.W + o.i; if (M.mur[p] || M.bloque[p]) return;
+      if (M.objs.some(function (x) { return x.t !== 'obst' && Math.floor(x.i) === o.i && Math.floor(x.j) === o.j; })) return;
+      M.objs.push({ t: o.t, need: 2, i: o.i + .5, j: o.j + .5, z: z.n, done: 0 });
+    });
+  });
+  return M;
+};
+genererTraque = genZones;
+
+/* ── toucher une zone inconnue : on marche jusqu'à la porte qui y mène (et on s'y met) ── */
+function porteVers(M, z) {
+  /* de la zone visée vers les zones déjà vues : la première arête qui en sort est la porte à ouvrir */
+  var vu = {}, f = [z.n]; vu[z.n] = 1;
+  for (var h = 0; h < f.length; h++) {
+    var a = M.zones[f[h]];
+    for (var n = 0; n < a.adj.length; n++) {
+      var b = M.zones[a.adj[n]];
+      if (b.vu) return M.objs.filter(function (o) { return o.t === 'obst' && ((o.a === a.n && o.b === b.n) || (o.b === a.n && o.a === b.n)); })[0] || null;
+      if (!vu[b.n]) { vu[b.n] = 1; f.push(b.n); }
+    }
+  }
+  return null;
+}
+var tapCarteZAvantPorte = tapCarteZ;
+tapCarteZ = function (M, tx, ty) {
+  var z = zoneDe(M, tx, ty);
+  if (!z || z.vu) return tapCarteZAvantPorte(M, tx, ty);
+  if (M.act) annulerAct(M);
+  if (zoneAccessible(M, z)) { var s = solCentre(M, z); return tapCarteZAvantPorte(M, s[0], s[1]); }
+  var o = porteVers(M, z); if (!o) return;
+  M.cible = { x: o.i, y: o.j, t0: maintenant() };
+  if (o.ouvert) { var s2 = solCentre(M, M.zones[M.zones[o.a].vu ? o.b : o.a]); return tapCarteZAvantPorte(M, s2[0], s2[1]); }
+  if (adjacentA(M, o)) { demarrerAct(M, o); return; }
+  var ch = versObjet(M, o); if (ch) { M.chemin = ch; M.but = o; son('clic'); }
+};
+Object.assign(NL, { 'Dans le foin…': 'In het hooi…' });
 
 /* ═════════ 04/11 : la galerie, et des géodes qu'on ouvre en trois gestes ═════════
    On répond à la chaîne : chaque bonne réponse est un coup de pioche, la galerie avance dans la roche.
@@ -17517,6 +17697,187 @@ Object.assign(NL, {
   'Réglages': 'Instellingen', 'Partage': 'Delen', 'Synchroniser maintenant': 'Nu synchroniseren', 'Le camp, les ressources et la carte sont partagés avec {0}.': 'Het kamp, de grondstoffen en de kaart worden gedeeld met {0}.',
   'Les idées de {0} pour toi': 'De ideeën van {0} voor jou', 'déjà choisi': 'al gekozen', '{0} n\'a pas encore donné d\'idées.': '{0} heeft nog geen ideeën gegeven.',
   'Tu en choisiras une quand tout ton deck sera validé.': 'Je kiest er een als je hele stapel gevalideerd is.'
+});
+
+/* ═════════ 05/11 : lisibilité ═════════
+   1. Les ateliers : la fiche de l'objet choisi est en haut et reste collée en défilant (stats, comparaison
+      avec ce que tu portes, chances de rareté, coût, bouton) ; la grille dessous ne montre que ce qu'on peut
+      fabriquer, l'onglet « Plus tard » garde le reste. Le bâtiment (description, amélioration) a son onglet.
+   2. Partout ailleurs, une fiche de détail placée sous une grille remonte au-dessus et reste visible.
+   3. Des icônes plus grandes (ressources, grilles, fiche perso).
+   4. Au camp, une plaque sous chaque bâtiment (nom, niveau, ▲ s'il peut monter) et une vue d'ensemble
+      en touchant le rang du camp. */
+
+/* ── 1. les ateliers ── */
+var ATEL_VUE = {}, BAT_TAB = {};
+var TYPE_NOM = { arme: TR('Arme', 'Wapen'), armure: TR('Armure', 'Harnas'), outil: TR('Outil', 'Gereedschap'), relique: TR('Relique', 'Relikwie'), potion: TR('Potion', 'Drankje'), elixir: TR('Élixir', 'Elixer'), compagnon: TR('Compagnon', 'Metgezel') };
+function porteMemeSlot(o) {
+  var h = H(), id = o.type === 'arme' ? h.arme : o.type === 'armure' ? h.armure : o.type === 'outil' ? h.outils[o.slot] : null;
+  return id && OBJ[id] ? OBJ[id] : null;
+}
+function statsDX(o, comp) {
+  if (o.txt && !o.inst) return '<span>' + ech(T(o.txt)) + '</span>';
+  var l = [];
+  for (var k in o.fx) {
+    if (!FX_TXT[k]) continue;
+    var v = o.fx[k], t = ech(T(FX_TXT[k], v)).replace(String(v), '<b>' + v + '</b>');
+    if (comp && comp.fx) { var w = comp.fx[k]; t += '<i class="' + (w == null || w < v ? 'mieux' : w > v ? 'moins' : '') + '">' + (w == null ? T('nouveau') : T('porté {0}', w)) + '</i>'; }
+    l.push('<span>' + t + '</span>');
+  }
+  return l.join('') || '<span>' + ech(fxTexte(o)) + '</span>';
+}
+function ficheDX(o, e, niv) {
+  var g = estGear(o), comp = g ? porteMemeSlot(o) : null;
+  var h = '<div class="dx-h"><div class="dx-ico"><img class="px" src="' + icoObjet(o) + '"></div><div class="dx-t"><b>' + ech(T(o.nom)) + '</b><small>' +
+    ech(T(TYPE_NOM[o.type] || '')) + ' · ' + T('niv. {0}', o.niv) + (e.n ? ' · ' + T('tu en as {0}', e.n) : '') + (e.verrou ? ' · <em>' + T('atelier niveau {0} requis', o.niv) + '</em>' : '') + '</small></div></div>';
+  h += '<div class="dx-st">' + statsDX(o, comp) + '</div>';
+  if (g) h += '<div class="dx-note">' + T('Valeurs en commun ; plus la rareté tirée est haute, plus la pièce est forte (jusqu\'à ×2,5).') + '</div>';
+  if (comp && comp.id !== o.id) h += '<div class="dx-cmp">' + T('Tu portes') + ' <img class="px" src="' + icoObjet(comp) + '"> ' + ech(nomRare(comp)) + '</div>';
+  if (g && e.fab) h += chancesHTML(o, niv);
+  h += '<div class="dx-bas"><span class="couts">' + (e.fab ? coutHTML(o.cout) : '') + '</span><button class="mini ' + (e.fab ? 'fab' : e.porte ? 'porte equipe' : 'equipe') + '" data-id="' + o.id + '"' + (e.verrou || !e.ok ? ' disabled' : '') + '>' + ech(e.bouton) + '</button></div>';
+  if (e.fab) h += manquesHTML(o.cout);
+  return h;
+}
+atelierHTML = function (bat, niv) {
+  var l = OBJETS.filter(function (o) { return o.bat === bat; }).sort(function (a, b) { return a.niv - b.niv; });
+  if (!l.length) return '';
+  var dispo = l.filter(function (o) { return o.niv <= niv; }), avenir = l.filter(function (o) { return o.niv > niv; });
+  var vue = ATEL_VUE[bat] || 'dispo'; if (!dispo.length) vue = 'avenir'; if (!avenir.length) vue = 'dispo';
+  if (!l.some(function (o) { return o.id === SEL[bat]; })) SEL[bat] = (dispo.filter(function (o) { return !possede(o.id); })[0] || dispo[0] || l[0]).id;
+  var o = OBJ[SEL[bat]], e = etatObjet(o, niv);
+  var h = '<div class="dx">' + ficheDX(o, e, niv) + '</div>';
+  h += '<div class="dx-filtre">' + (dispo.length ? '<button data-av="dispo" class="' + (vue === 'dispo' ? 'on' : '') + '">' + T('À fabriquer ({0})', dispo.length) + '</button>' : '') +
+    (avenir.length ? '<button data-av="avenir" class="' + (vue === 'avenir' ? 'on' : '') + '">' + T('Plus tard ({0})', avenir.length) + '</button>' : '') + '</div>';
+  h += '<div class="grille g5 dx-g">' + (vue === 'dispo' ? dispo : avenir).map(function (x) {
+    var ex = etatObjet(x, niv), badge = ex.verrou ? null : ex.n ? ex.n : null;
+    return tuileG(icoObjet(x), (SEL[bat] === x.id ? 'sel ' : '') + (ex.verrou ? 'pale ' : '') + (ex.porte ? 'porte ' : '') + (ex.equipe && !ex.porte ? 'a ' : ''), ' data-o="' + x.id + '"', badge, T(x.nom)).replace('</button>', '<em class="nv">' + x.niv + '</em></button>');
+  }).join('') + '</div>';
+  return h;
+};
+var lierAtelierAvantDX = lierAtelier;
+lierAtelier = function (bat, refaire) { lierAtelierAvantDX(bat, refaire); lier('[data-av]', function (d) { ATEL_VUE[bat] = d.av; son('clic'); refaire(); }); };
+var NOM_CONTENU = { forge: 'Fabriquer', armurerie: 'Fabriquer', atelier: 'Fabriquer', herboristerie: 'Préparer', sanctuaire: 'Reliques', taverne: 'Compagnons', marche: 'Commerce', tour: 'Enchanter', batisseur: 'Décorer', entrepot: 'Ventes' };
+function peutMonterBat(id, niv) { var b = BATIMENTS[id]; return !!b && niv < b.max && niv + 1 <= capBat() && peutPayer(coutBat(id, niv + 1)); }
+feuilleBat = function (i) {
+  var p = etat.camp.plots[i], b = BATIMENTS[p.bat], niv = p.niv, contenu;
+  if (p.bat === 'marche') contenu = onglets([['troc', 'Troc et vente'], ['vente', 'Vendre des pièces']], MARCHE_TAB) + (MARCHE_TAB === 'vente' ? venteHTML() + brocanteHTML(niv) : troqueHTML());
+  else if (p.bat === 'tour') contenu = enchantHTML(niv);
+  else if (p.bat === 'batisseur') contenu = decoHTML(niv);
+  else if (p.bat === 'entrepot') contenu = hdvHTML(niv);
+  else contenu = atelierHTML(p.bat, niv);
+  var tab = !contenu ? 'bat' : BAT_TAB[p.bat] || 'contenu', up = peutMonterBat(p.bat, niv);
+  var h = '<div class="onglets bt-tabs">' + (contenu ? '<button data-bt="contenu" class="' + (tab === 'contenu' ? 'on' : '') + '">' + ech(T(NOM_CONTENU[p.bat] || 'Fabriquer')) + '</button>' : '') +
+    '<button data-bt="bat" class="' + (tab === 'bat' ? 'on' : '') + '">' + T('Bâtiment') + (up ? ' <i class="bt-up">▲</i>' : '') + '</button></div>';
+  h += tab === 'bat' ? enteteBat(p.bat, niv) : contenu;
+  feuille(T('{0} · niveau {1}', T(b.nom), niv), h);
+  lier('[data-bt]', function (d) { BAT_TAB[p.bat] = d.bt; son('clic'); $('f-corps').scrollTop = 0; feuilleBat(i); });
+  if ($('f-up')) $('f-up').onclick = function () {
+    var c = coutBat(p.bat, niv + 1); if (!peutPayer(c) || niv + 1 > capBat()) return;
+    payer(c); p.niv++; CONSTR = { plot: i, t0: maintenant() }; STATIQUES = null; sauver(); bruit(.4, .06);
+    celebrer(T('{0} : niveau {1} !', T(b.nom), p.niv)); feuilleBat(i);
+  };
+  if (tab !== 'contenu') return;
+  lierAtelier(p.bat, function () { feuilleBat(i); });
+  if (p.bat === 'marche') { lier('[data-tab]', function (d) { MARCHE_TAB = d.tab; son('clic'); feuilleBat(i); }); if (MARCHE_TAB === 'vente') { lierVente(function () { feuilleBat(i); }); lierBrocante(function () { feuilleBat(i); }); } else lierTroc(function () { feuilleBat(i); }); }
+  if (p.bat === 'batisseur') lierDeco(function () { feuilleBat(i); });
+  if (p.bat === 'entrepot') lierHdv(function () { feuilleBat(i); });
+  if (p.bat === 'tour') lierEnchant(function () { feuilleBat(i); });
+};
+
+/* ── 2. une fiche de détail sous une grille remonte au-dessus et reste collée ── */
+var feuilleAvantDX = feuille;
+feuille = function (titre, html, retour) {
+  feuilleAvantDX(titre, html, retour);
+  var c = $('f-corps');
+  c.querySelectorAll(':scope > .detail').forEach(function (d) {
+    var g = d.previousElementSibling, n = 0;
+    while (g && n < 3 && !g.classList.contains('grille')) { g = g.previousElementSibling; n++; }
+    if (g && g.classList.contains('grille')) { c.insertBefore(d, g); d.classList.add('colle'); }
+  });
+};
+
+/* ── 4. au camp : les plaques des bâtiments, et la vue d'ensemble ── */
+var NOM_COURT = { herboristerie: TR('Herbes', 'Kruiden'), tailleur: TR('Pierre', 'Steen'), batisseur: TR('Bâtisseur', 'Bouwer'), entrepot: TR('Ventes', 'Veiling'), tour: TR('Enchanteur', 'Betoveraar'), sanctuaire: TR('Sanctuaire', 'Heiligdom') };
+function majPlaques() {
+  var cv = $('cv-camp'), z = cv && cv.parentNode; if (!z || !etat.camp) return;
+  var pq = $('camp-plaques'); if (!pq) { pq = document.createElement('div'); pq.id = 'camp-plaques'; z.appendChild(pq); }
+  var rc = cv.getBoundingClientRect(), rz = z.getBoundingClientRect(); if (!rc.width) return;
+  var sx = rc.width / cv.width, sy = rc.height / cv.height;
+  var W0 = rz.width;
+  pq.innerHTML = PLOTS.map(function (P, i) {
+    var p = etat.camp.plots[i]; if (!p) return ''; var id = p.bat || p.type, b = BATIMENTS[id]; if (!b) return '';
+    var up = p.bat ? peutMonterBat(p.bat, p.niv) : peutPayer(coutBat(id, 1));
+    var nom = T(NOM_COURT[id] || b.nom), lg = nom.length * 6.6 + (p.bat ? 18 : 6) + (up ? 10 : 0), cx = Math.max(lg / 2 + 2, Math.min(W0 - lg / 2 - 2, rc.left - rz.left + (P[0] + 24) * sx));
+    return '<span class="pq' + (p.bat ? '' : ' vide') + (up ? ' up' : '') + '" style="left:' + Math.round(cx) + 'px;top:' + Math.round(rc.top - rz.top + (P[1] + 1) * sy) + 'px">' +
+      ech(T(NOM_COURT[id] || b.nom)) + (p.bat ? ' <b>' + p.niv + '</b>' : '') + (up ? '<i>' + (p.bat ? '▲' : '+') + '</i>' : '') + '</span>';
+  }).join('');
+}
+var hudCampAvantPq = hudCamp;
+hudCamp = function () { hudCampAvantPq(); try { majPlaques(); } catch (err) { console.error(err); } };
+window.addEventListener('resize', function () { if (vueActive === 'camp') majPlaques(); });
+setInterval(function () { if (vueActive === 'camp') try { majPlaques(); } catch (err) {} }, 2500);
+function feuilleBatiments() {
+  var cap = capBat(), lignes = [];
+  var cf = coutFeu(etat.camp.feu), upF = etat.camp.feu < BATIMENTS.feu.max && peutPayer(cf) && (typeof feuMaxConquete !== 'function' || etat.camp.feu + 1 <= feuMaxConquete());
+  lignes.push('<button class="bl" data-feu="1"><span class="bl-i"><svg width="28" height="34" viewBox="0 0 7 9" shape-rendering="crispEdges"><rect x="3" y="0" width="1" height="2" fill="#ffd24d"/><rect x="2" y="2" width="3" height="3" fill="#ff9a3c"/><rect x="1" y="4" width="5" height="3" fill="#e2643a"/><rect x="3" y="4" width="1" height="2" fill="#ffd24d"/><rect x="1" y="7" width="5" height="2" fill="#6a4426"/></svg></span><span class="bl-t"><b>' + T('Grand feu') + '</b><small>' + T('Niveau {0} : les bâtiments montent jusqu\'au niveau {1}', etat.camp.feu, cap) + '</small></span>' + (upF ? '<em class="up">▲</em>' : '<em></em>') + '</button>');
+  etat.camp.plots.forEach(function (p, i) {
+    var id = p.bat || p.type, b = BATIMENTS[id]; if (!b) return;
+    var etatL, cls = '';
+    if (!p.bat) { etatL = peutPayer(coutBat(id, 1)) ? T('à construire') : T('pas encore construit'); cls = peutPayer(coutBat(id, 1)) ? 'up' : 'gris'; }
+    else if (p.niv >= b.max) etatL = T('max');
+    else if (p.niv + 1 > cap) { etatL = typeof capConquete === 'function' && p.niv + 1 > capConquete() ? T('nouvelle contrée') : T('Grand feu d\'abord'); cls = 'gris'; }
+    else if (peutPayer(coutBat(id, p.niv + 1))) { etatL = '▲'; cls = 'up'; }
+    else { etatL = T('ressources'); cls = 'gris'; }
+    lignes.push('<button class="bl' + (p.bat ? '' : ' vide') + '" data-pl="' + i + '"><span class="bl-i"><img class="px" src="' + rogne(sprBat(id, Math.max(1, p.niv || 1)), id + Math.max(1, p.niv || 1)) + '"></span><span class="bl-t"><b>' + ech(T(b.nom)) + '</b><small>' +
+      (p.bat ? T('Niveau {0} / {1}', p.niv, b.max) + ' · ' : '') + ech(T(b.passifTxt || b.desc || '')) + '</small></span><em class="' + cls + '">' + etatL + '</em></button>');
+  });
+  feuille(T('Les bâtiments'), '<div class="bl-liste">' + lignes.join('') + '</div>');
+  lier('[data-pl]', function (d) { son('clic'); feuillePlot(+d.pl); });
+  lier('[data-feu]', function () { son('clic'); feuilleFeu(); });
+}
+(function () {
+  var r = $('camp-rang'); if (r) r.onclick = function () { son('clic'); feuilleBatiments(); };
+  var st = document.createElement('style');
+  st.textContent =
+    /* icônes plus grandes */
+    '.res img{height:20px!important}.chip img{height:16px!important}.chip{font-size:14px}' +
+    '.tg{height:58px}.tg img{height:36px;width:auto;max-height:none;max-width:50px}.tg.bat img{height:48px}.potager .tg img{height:40px}' +
+    '.tf img{height:34px;max-width:46px}.tf.slot img{height:40px}.sac.geo .tf img{height:30px}' +
+    '.tg .nv{position:absolute;left:3px;top:1px;font-style:normal;font-family:var(--num);font-size:10px;font-weight:700;color:#bfc6ff;text-shadow:1px 1px 0 #000}' +
+    '.grille.g5.dx-g .tg{height:62px}.tg.pale img{opacity:.45}' +
+    /* la fiche collée en haut */
+    '.dx{position:sticky;top:-4px;z-index:5;background:#1b2044;margin:0 -12px 8px;padding:8px 12px 10px;box-shadow:0 2px 0 #000,0 8px 12px rgba(0,0,0,.45)}' +
+    '.dx-h{display:flex;gap:10px;align-items:center}.dx-ico{width:62px;height:62px;flex:0 0 62px;background:#2a3060;box-shadow:0 0 0 2px #000,inset 0 0 0 2px var(--or);display:flex;align-items:center;justify-content:center}' +
+    '.dx-ico img{height:48px;width:auto;max-width:56px;image-rendering:pixelated}.dx-t{min-width:0}.dx-t b{display:block;font-family:var(--px);font-size:18px;line-height:1.15}.dx-t small{color:var(--doux);font-size:12px}.dx-t em{color:#ff9a7a;font-style:normal}' +
+    '.dx-st{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 3px}.dx-st span{background:#2a3266;padding:3px 7px;font-size:13px;line-height:1.3;box-shadow:0 0 0 1px #000}' +
+    '.dx-st span b{color:#ffd24d;font-family:var(--num);font-size:15px}.dx-st span i{font-style:normal;font-size:11px;margin-left:5px;color:var(--doux)}.dx-st span i.mieux{color:#8af59a}.dx-st span i.moins{color:#ff8a7a}' +
+    '.dx-note{font-size:11px;color:var(--doux);margin:2px 0}.dx-cmp{font-size:12px;color:var(--doux);display:flex;align-items:center;gap:5px;margin:3px 0}.dx-cmp img{height:22px;image-rendering:pixelated}' +
+    '.dx .chances{margin:4px 0 2px}.dx-bas{display:flex;align-items:center;gap:8px;margin-top:7px}.dx-bas .couts{flex:1;display:flex;flex-wrap:wrap;gap:4px}' +
+    '.dx-bas .mini{min-width:112px;font-size:15px;padding:10px 10px}.dx-bas .mini.fab{background:var(--braise);color:var(--encre);box-shadow:inset 0 -3px 0 var(--braise2),0 0 0 2px #000}.dx-bas .mini.porte{background:#1f3a35;color:var(--seve);box-shadow:0 0 0 2px #000}' +
+    '.dx-filtre{display:flex;gap:6px;margin:0 0 6px}.dx-filtre button{flex:1;font-family:var(--px);font-size:14px;background:var(--pierre);color:var(--doux);border:0;padding:6px 4px;box-shadow:0 0 0 2px #000}.dx-filtre button.on{background:#3a4277;color:var(--texte);box-shadow:0 0 0 2px #000,inset 0 -3px 0 var(--or)}' +
+    '.bt-tabs .bt-up{font-style:normal;color:#8af59a}' +
+    '.f-corps .detail.colle{position:sticky;top:-4px;z-index:5;margin:0 0 8px}.detail>img{height:48px}' +
+    /* les plaques du camp */
+    '#camp-plaques{position:absolute;inset:0;pointer-events:none;z-index:2}' +
+    '#camp-plaques .pq{position:absolute;transform:translate(-50%,0);white-space:nowrap;font-family:var(--px);font-size:11px;line-height:1;padding:2px 5px 3px;background:rgba(13,16,36,.86);color:#f1e4c2;box-shadow:0 0 0 1px #000}' +
+    '#camp-plaques .pq b{color:#ffd24d;font-family:var(--num)}#camp-plaques .pq i{font-style:normal;color:#8af59a;margin-left:3px}#camp-plaques .pq.up{box-shadow:0 0 0 1px #000,inset 0 0 0 1px #8af59a}' +
+    '#camp-plaques .pq.vide{opacity:.7;color:#bfc6ff}' +
+    '.camp-rang{pointer-events:auto;cursor:pointer}.camp-rang::after{content:"▸ ' + ech(T('Bâtiments')) + '";display:block;font-size:10px;color:#8af59a;margin-top:2px}' +
+    /* la vue d'ensemble */
+    '.bl-liste{display:flex;flex-direction:column;gap:6px}.bl{display:flex;align-items:center;gap:10px;background:var(--pierre);border:0;padding:6px 10px;box-shadow:0 0 0 2px #000;color:var(--texte);text-align:left}' +
+    '.bl.vide{opacity:.75}.bl-i{width:56px;height:44px;flex:0 0 56px;display:flex;align-items:center;justify-content:center}.bl-i img{max-height:44px;max-width:56px;image-rendering:pixelated}.bl-feu{font-size:26px}' +
+    '.bl-t{flex:1;min-width:0}.bl-t b{display:block;font-family:var(--px);font-size:15px}.bl-t small{display:block;font-size:11px;color:var(--doux);line-height:1.3}' +
+    '.bl em{font-style:normal;font-family:var(--px);font-size:13px;color:var(--doux);white-space:nowrap}.bl em.up{color:#8af59a;font-size:16px}.bl em.gris{color:#8f96aa;font-size:11px}';
+  document.head.appendChild(st);
+})();
+Object.assign(NL, {
+  'Arme': 'Wapen', 'Armure': 'Harnas', 'Outil': 'Gereedschap', 'Relique': 'Relikwie', 'Potion': 'Drankje', 'Élixir': 'Elixer', 'Compagnon': 'Metgezel',
+  'nouveau': 'nieuw', 'porté {0}': 'gedragen {0}', 'niv. {0}': 'niv. {0}', 'atelier niveau {0} requis': 'werkplaats niveau {0} nodig', 'Tu portes': 'Je draagt',
+  'Valeurs en commun ; plus la rareté tirée est haute, plus la pièce est forte (jusqu\'à ×2,5).': 'Waarden bij gewoon; hoe hoger de getrokken zeldzaamheid, hoe sterker het stuk (tot ×2,5).',
+  'À fabriquer ({0})': 'Te maken ({0})', 'Plus tard ({0})': 'Later ({0})', 'Bâtiment': 'Gebouw', 'Fabriquer': 'Maken', 'Préparer': 'Bereiden', 'Reliques': 'Relikwieën', 'Compagnons': 'Metgezellen',
+  'Commerce': 'Handel', 'Enchanter': 'Betoveren', 'Décorer': 'Versieren', 'Ventes': 'Verkoop', 'Les bâtiments': 'De gebouwen', 'Bâtiments': 'Gebouwen', 'Grand feu': 'Groot vuur',
+  'Niveau {0} : les bâtiments montent jusqu\'au niveau {1}': 'Niveau {0}: gebouwen kunnen tot niveau {1}', 'à construire': 'te bouwen', 'pas encore construit': 'nog niet gebouwd',
+  'nouvelle contrée': 'nieuw gebied', 'max': 'max', 'Grand feu d\'abord': 'eerst het grote vuur', 'ressources': 'grondstoffen', 'Niveau {0} / {1}': 'Niveau {0} / {1}'
 });
 
 /* ═════════ démarrage ═════════ */
