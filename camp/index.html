@@ -13808,28 +13808,11 @@ function genZones(k, q) {
     z.x0 = z.cx * TQ.zw; z.y0 = z.cy * TQ.zh; z.mx = z.x0 + TQ.zw / 2; z.my = z.y0 + TQ.zh / 2;
     z.kind = z.n === 0 ? 'depart' : q.type === 'chasse' && z.n === der ? 'nid' : sortes[Math.floor(Math.random() * sortes.length)];
   });
-  /* on creuse chaque zone en une clairière aux bords irréguliers */
+  /* chaque zone est tirée d'un modèle dessiné à la main (chasse_modeles.js), puis on creuse les sorties */
   var res = new Uint8Array(N);
-  M.zones.forEach(function (z) {
-    var rx = TQ.zw / 2 - 1.3, ry = TQ.zh / 2 - 1.3;
-    for (j = z.y0; j < z.y0 + TQ.zh; j++) for (i = z.x0; i < z.x0 + TQ.zw; i++) {
-      var dx = (i + .5 - z.mx) / rx, dy = (j + .5 - z.my) / ry, n = (hcar(i, j, 11 + k) - .5) * .3;
-      if (Math.hypot(dx, dy) < 1 + n) M.mur[j * W + i] = 0;
-    }
-    for (j = -1; j <= 1; j++) for (i = -1; i <= 1; i++) res[(Math.floor(z.my) + j) * W + Math.floor(z.mx) + i] = 1;
-  });
-  /* les passages entre zones, et l'obstacle qui les barre */
+  poserModeles(M, aretes, res, k);
   aretes.forEach(function (a) {
-    var A = M.zones[a[0]], B = M.zones[a[1]], hor = A.cy === B.cy, tiles = [];
-    if (hor) {
-      var y = Math.floor(A.my), xa = Math.floor(Math.min(A.mx, B.mx)), xb = Math.floor(Math.max(A.mx, B.mx)), fr = Math.max(A.x0, B.x0);
-      for (i = xa; i <= xb; i++) for (j = y - 1; j <= y + 1; j++) { M.mur[j * W + i] = 0; res[j * W + i] = 1; }
-      for (j = y - 1; j <= y + 1; j++) { tiles.push([fr - 1, j]); tiles.push([fr, j]); }
-    } else {
-      var x = Math.floor(A.mx), ya = Math.floor(Math.min(A.my, B.my)), yb = Math.floor(Math.max(A.my, B.my)), fy = Math.max(A.y0, B.y0);
-      for (j = ya; j <= yb; j++) for (i = x - 1; i <= x + 1; i++) { M.mur[j * W + i] = 0; res[j * W + i] = 1; }
-      for (i = x - 1; i <= x + 1; i++) { tiles.push([i, fy - 1]); tiles.push([i, fy]); }
-    }
+    var tiles = a.tiles, hor = a.hor;
     var pool = OBST_POOL[R.b] || OBST_POOL.defaut, kind = mel(pool.filter(function (k) { return k !== M.dernierObst; }))[0] || pool[0]; M.dernierObst = kind;
     var need = !a[2] || a[1] === 1 ? 2 : OBST_BESOIN[kind] || 3;
     var o = { t: 'obst', kind: kind, tiles: tiles, need: need, done: 0, a: a[0], b: a[1], hor: hor };
@@ -13837,8 +13820,7 @@ function genZones(k, q) {
     tiles.forEach(function (t) { M.bloque[t[1] * W + t[0]] = 1; });
     M.objs.push(o);
   });
-  /* le décor de chaque zone : mare, rochers, ruines, tentes, bosquets */
-  function mettre(i, j, c) { var p = j * W + i; if (i < 1 || j < 1 || i >= W - 1 || j >= H - 1 || res[p] || M.mur[p]) return false; M.mur[p] = c; return true; }
+  function mettre(i, j, c) { var p = j * W + i; if (i < 1 || j < 1 || i >= W - 1 || j >= H - 1 || res[p] || M.mur[p] || M.deco[p]) return false; M.mur[p] = c; return true; }
   function amas(z, c, nb, taille) {
     for (var a = 0; a < nb; a++) {
       var i0 = z.x0 + 2 + Math.floor(Math.random() * (TQ.zw - 4)), j0 = z.y0 + 2 + Math.floor(Math.random() * (TQ.zh - 4));
@@ -13846,39 +13828,31 @@ function genZones(k, q) {
     }
   }
   M.zones.forEach(function (z) {
-    var cx = Math.floor(z.mx), cy = Math.floor(z.my);
-    if (z.kind === 'mare') { var ox = cx + (Math.random() < .5 ? -3 : 3), oy = cy + (Math.random() < .5 ? -2 : 2); for (j = oy - 2; j <= oy + 2; j++) for (i = ox - 3; i <= ox + 3; i++) if (Math.hypot((i - ox) / 3.2, (j - oy) / 2.2) < 1) mettre(i, j, 4); }
-    if (z.kind === 'rochers' || z.kind === 'nid') amas(z, 3, 5, 3);
-    if (z.kind === 'bosquet') amas(z, 2, 8, 3);
-    if (z.kind === 'clairiere' || z.kind === 'mare' || z.kind === 'campement') amas(z, 2, 2, 2);
-    if (z.kind === 'ruines') { [[-4, -3], [4, -3], [-4, 3], [4, 3], [-2, -4]].forEach(function (o) { mettre(cx + o[0], cy + o[1], 5); }); amas(z, 3, 2, 2); z.torches = [[cx - 4, cy - 4], [cx + 4, cy - 4]]; }
-    if (z.kind === 'campement' || z.kind === 'depart') { var tx = cx + (Math.random() < .5 ? -5 : 3), ty = cy - 4; var ok = true; for (j = 0; j < 2; j++) for (i = 0; i < 2; i++) if (res[(ty + j) * W + tx + i] || M.mur[(ty + j) * W + tx + i]) ok = false; if (ok) { for (j = 0; j < 2; j++) for (i = 0; i < 2; i++) M.mur[(ty + j) * W + tx + i] = 6; } if (mettre(cx + 2, cy + 2, 8)) z.feu = [cx + 2, cy + 2]; }
-    if (z.kind === 'nid') z.nidC = [cx, cy];
+    if (z.kind === 'ruines') z.torches = z.spot ? [[z.spot[0] - 2, z.spot[1] - 2], [z.spot[0] + 2, z.spot[1] - 2]] : null;
     if (P.tombes && z.kind !== 'depart') amas(z, 7, 3, 1);
   });
   /* ce qu'on ne peut pas atteindre redevient de la forêt */
-  var vu2 = new Uint8Array(N), f = [Math.floor(M.zones[0].my) * W + Math.floor(M.zones[0].mx)]; vu2[f[0]] = 1;
+  var s0 = solCentre(M, M.zones[0]), vu2 = new Uint8Array(N), f = [Math.floor(s0[1]) * W + Math.floor(s0[0])]; vu2[f[0]] = 1;
   while (f.length) { var u = f.pop(); [u - 1, u + 1, u - W, u + W].forEach(function (v) { if (v >= 0 && v < N && !vu2[v] && !M.mur[v]) { vu2[v] = 1; f.push(v); } }); }
   for (p = 0; p < N; p++) if (!M.mur[p] && !vu2[p]) M.mur[p] = 1;
-  for (p = 0; p < N; p++) if (!M.mur[p]) { var h = hcar(p % W, Math.floor(p / W), 5 + k); M.deco[p] = h > .93 ? 2 : h > .82 ? 1 : h < .04 ? 3 : 0; }
-  M.zones.forEach(function (z) { if (z.kind !== 'clairiere') return; for (j = z.y0; j < z.y0 + TQ.zh; j++) for (i = z.x0; i < z.x0 + TQ.zw; i++) if (!M.mur[j * W + i] && hcar(i, j, 9) > .72) M.deco[j * W + i] = 2; });
+  for (p = 0; p < N; p++) if (!M.mur[p] && !M.deco[p]) { var h = hcar(p % W, Math.floor(p / W), 5 + k); M.deco[p] = h > .93 ? 2 : h > .82 ? 1 : h < .04 ? 3 : 0; }
   /* le contenu : récoltes, coffres, empreintes, monstres */
   var occ = {};
   function caseDans(z, loin) {
     for (var t = 0; t < 260; t++) {
       var i2 = z.x0 + 1 + Math.floor(Math.random() * (TQ.zw - 2)), j2 = z.y0 + 1 + Math.floor(Math.random() * (TQ.zh - 2)), p2 = j2 * W + i2;
-      if (M.mur[p2] || M.bloque[p2] || occ[p2] || (res[p2] && t < 180)) continue;
+      if (M.mur[p2] || M.bloque[p2] || occ[p2] || M.deco[p2] >= 8 || (res[p2] && t < 180)) continue;
       if (loin && t < 180 && Math.hypot(i2 + .5 - z.mx, j2 + .5 - z.my) < loin) continue;
       occ[p2] = occ[p2 - 1] = occ[p2 + 1] = occ[p2 - W] = occ[p2 + W] = 1; return [i2, j2];
     }
-    return [Math.floor(z.mx), Math.floor(z.my)];
+    var sc = solCentre(M, z); return [Math.floor(sc[0]), Math.floor(sc[1])];
   }
   var autres = mel(M.zones.filter(function (z) { return z.n > 0; })), tour = 0;
   function zoneSuiv() { var z = autres[tour % autres.length]; tour++; return z; }
   function ajout(o, z) { var c = caseDans(z, 0); o.i = c[0] + .5; o.j = c[1] + .5; o.z = z.n; o.done = 0; M.objs.push(o); return o; }
   if (q.type === 'recolte') for (var r = 0; r < q.n + 1; r++) ajout({ t: 'pt', k: q.cible, need: 2 }, zoneSuiv());
   for (r = 0; r < 2; r++) ajout({ t: 'pt', k: ['herbes', 'or', 'cuir'][r], bonus: true, need: 2 }, zoneSuiv());
-  M.zones.forEach(function (z) { if (!z.chemin || z.kind === 'campement') ajout({ t: 'coffre', need: 3 }, z); if (z.kind === 'ruines') ajout({ t: 'autel', need: 3 }, z); if (z.kind === 'mare' && !M.aFontaine) { M.aFontaine = true; ajout({ t: 'fontaine', need: 2 }, z); } });
+  M.zones.forEach(function (z) { if (!z.chemin || z.kind === 'campement') ajout({ t: 'coffre', need: 3 }, z); if (z.kind === 'ruines') { var oa = ajout({ t: 'autel', need: 3 }, z); if (z.spot && !M.mur[z.spot[1] * W + z.spot[0]]) { oa.i = z.spot[0] + .5; oa.j = z.spot[1] + .5; occ[z.spot[1] * W + z.spot[0]] = 1; } } if (z.kind === 'mare' && !M.aFontaine) { M.aFontaine = true; ajout({ t: 'fontaine', need: 2 }, z); } });
   if (!M.objs.some(function (o) { return o.t === 'autel'; })) ajout({ t: 'autel', need: 3 }, zoneSuiv());
   ajout({ t: 'pnj', need: 3 }, M.zones[Math.min(2, M.zones.length - 1)]);
   var pm = R.petits || [];
@@ -13888,14 +13862,14 @@ function genZones(k, q) {
   M.zones.forEach(function (z) { if (z.kind === 'campement' && pm.length) mob(mel(pm)[0], z); });
   if (q.type === 'chasse') {
     var B0 = BETES[q.cible], mu = regionMult(k), fo = q.rec.fort || 1, zm = M.zones[Math.min(der - 1, Math.max(1, bout - 3))], nid = M.zones[der];
-    M.nid = { x: nid.mx, y: nid.my, z: nid.n };
+    var sn = solCentre(M, nid); M.nid = { x: sn[0], y: sn[1], z: nid.n }; var sm = solCentre(M, zm);
     var pvM = Math.round(B0.pv * 1.1 * mu.pv * fo);
-    M.monstre = { id: q.cible, x: zm.mx, y: zm.my, z: zm.n, tx: null, ty: null, prochain: 0, bouge: maintenant() + 18000, pv: pvM, pvMax: pvM, atk: Math.round(B0.atk * mu.atk * fo), revele: false, traces: 0, f1: false, f2: false, dort: false, casses: [] };
+    M.monstre = { id: q.cible, x: sm[0], y: sm[1], z: zm.n, tx: null, ty: null, prochain: 0, bouge: maintenant() + 18000, pv: pvM, pvMax: pvM, atk: Math.round(B0.atk * mu.atk * fo), revele: false, traces: 0, f1: false, f2: false, dort: false, casses: [] };
     var zt = M.zones.filter(function (z) { return z.n > 0 && z.n !== nid.n; });
     for (var e = 0; e < besoinTraces() + 1; e++) ajout({ t: 'trace', need: 2 }, zt[e % zt.length]);
     ajout({ t: 'piege', need: 3 }, M.zones[zm.adj.filter(function (a) { return a !== nid.n; })[0] != null ? zm.adj.filter(function (a) { return a !== nid.n; })[0] : zm.n]);
   }
-  var z0 = M.zones[0]; M.hx = Math.floor(z0.mx) + .5; M.hy = Math.floor(z0.my) + 1.5; M.dep = { x: M.hx, y: M.hy };
+  var z0 = solCentre(M, M.zones[0]); M.hx = z0[0]; M.hy = z0[1]; M.dep = { x: M.hx, y: M.hy };
   return M;
 }
 genererTraque = genZones;
@@ -13907,6 +13881,7 @@ var COUL_ART = { arbre: ['#2f6a34', '#3f8a4a', '#5aae5a'], arbreRose: ['#a05a9a'
 function artCase(x, M, i, j, m, prof) {
   var P = M.P, X = i * 8, Y = j * 8, h = hcar(i, j, M.k + 21), t = m === 1 ? P.mur : m === 2 ? P.veg : m === 3 ? 'rocher' : m === 4 ? P.eau : m === 5 ? 'pilier' : m === 6 ? 'tente' : m === 7 ? 'tombe' : m === 8 ? 'feu' : P.mur;
   var rc = P.rc || COUL_ART.roc;
+  if (m >= 9 && artModele(x, M, i, j, m)) return;
   if (t === 'eau' || t === 'lave' || t === 'glaceEau') {
     var e0 = t === 'lave' ? '#a8322a' : t === 'glaceEau' ? '#5a8ab8' : P.vase ? '#3d5f58' : '#3a6f9a', e1 = t === 'lave' ? '#e2643a' : t === 'glaceEau' ? '#8ab8e0' : P.vase ? '#4d7568' : '#4a8ab8';
     x.fillStyle = prof ? e0 : e1; x.fillRect(X, Y, 8, 8); x.fillStyle = e0; if (h > .5) x.fillRect(X + 1, Y + 5, 4, 1);
@@ -13971,6 +13946,7 @@ function fondTraque(M) {
     x.fillStyle = P.sol[h < .5 ? 1 : 0]; x.fillRect(X + Math.floor(h2 * 6), Y + Math.floor(h * 6), 2, 1);
     if (M.mur[p]) continue;
     var d = M.deco[p];
+    if (d >= 7 || d === 12) { decoModele(x, M, i, j, d); if (j > 0 && M.mur[p - W]) { x.fillStyle = 'rgba(0,0,0,.2)'; x.fillRect(X, Y, 8, 2); } continue; }
     if (d === 1) { x.fillStyle = P.herbe; x.fillRect(X + 2, Y + 4, 1, 2); x.fillRect(X + 3, Y + 3, 1, 3); x.fillRect(X + 4, Y + 4, 1, 2); }
     else if (d === 2) { x.fillStyle = P.herbe; x.fillRect(X + 3, Y + 4, 1, 2); x.fillStyle = P.fleur[Math.floor(h2 * P.fleur.length)]; x.fillRect(X + 2, Y + 3, 3, 1); x.fillRect(X + 3, Y + 2, 1, 3); x.fillStyle = '#ffd24d'; x.fillRect(X + 3, Y + 3, 1, 1); }
     else if (d === 3) { x.fillStyle = 'rgba(0,0,0,.18)'; x.fillRect(X + 3, Y + 5, 3, 1); x.fillStyle = '#9a968c'; x.fillRect(X + 3, Y + 4, 2, 1); }
@@ -14125,7 +14101,7 @@ function majTerrainZ(M, now) {
     else if (!mo.dort) {
       var dm = Math.hypot(mo.x - M.hx, mo.y - M.hy);
       if (zh === zm && zm.vu && dm < 4.6 && !M.act) { if (!mo.alerte) { mo.alerte = now; son('mal'); } avancer(M, mo, M.hx, M.hy, 1.9 * dt, true); }
-      else if (now > mo.bouge) { mo.bouge = now + 16000 + Math.random() * 10000; var dest = M.zones[mel(zm.adj)[0]]; mo.z = dest.n; mo.alerte = 0; mo.course = { t0: now, dur: 5000, x0: mo.x, y0: mo.y, x1: dest.mx, y1: dest.my }; }
+      else if (now > mo.bouge) { mo.bouge = now + 16000 + Math.random() * 10000; var dest = M.zones[mel(zm.adj)[0]], sd = solCentre(M, dest); mo.z = dest.n; mo.alerte = 0; mo.course = { t0: now, dur: 5000, x0: mo.x, y0: mo.y, x1: sd[0], y1: sd[1] }; }
       else { mo.alerte = 0; errer(M, mo, zm, now, .7, dt); }
     }
     if (!mo.course && zm.vu && !M.act && Math.hypot(mo.x - M.hx, mo.y - M.hy) < 1.7) { rencontreZ(M, mo.id, true); return; }
@@ -14145,7 +14121,7 @@ function bruitTraque(M) {
   var zh = zoneDe(M, M.hx, M.hy); if (!zh || zh.n === mo.z) return;
   var zm = M.zones[mo.z], vers = zm.adj.filter(function (a) { return a === zh.n; })[0];
   if (vers == null) return;
-  mo.z = vers; mo.course = { t0: maintenant(), dur: 4000, x0: mo.x, y0: mo.y, x1: zh.mx, y1: zh.my };
+  mo.z = vers; var sh = solCentre(M, zh); mo.course = { t0: maintenant(), dur: 4000, x0: mo.x, y0: mo.y, x1: sh[0], y1: sh[1] };
   flotte(T('Tu as fait du bruit… quelque chose approche !'), M.hx, M.hy - 2, 'mal', 1800);
 }
 explorerMH = async function (juste) {
@@ -15301,22 +15277,31 @@ function enCombatU() {
 }
 function estGros(e) { return !!(e && (e.grand || e.elite || (C && (C.famille === 'boss' || C.famille === 'bete')))); }
 
-/* chaque bonne réponse recharge les compétences : +1, +2 si elle est rapide ; le gel ralentit, la vivacité accélère */
+/* 05/11 : les compétences se chargent toutes seules, lentement, chacune de son côté (6 s par cran).
+   Le chargement n'avance que pendant qu'une question est ouverte, comme les jauges des monstres ; le gel le
+   ralentit de moitié, la vivacité l'accélère. Utiliser une compétence ne vide qu'elle. Les réponses ne chargent plus rien. */
+var CHARGE_MS = 6000, CHARGE_LAST = 0;
 var repondreAvantCU = repondre;
 repondre = async function (juste, opts) {
-  if (juste && EXPE && C && C.famille !== 'gardien') {
-    var st = STYLE_ARME[typeArme()] || STYLE_ARME.epee, v = vitesseMH(), n = 1 + (v >= .6 ? 1 : 0);
-    if (Math.random() < stat('mana') * .08 + Math.max(0, st.mana - 1)) n++;
-    if (CB().etats.gel > 0) n = Math.max(0, Math.floor(n / 2));
-    var avant = listeComp().filter(pretComp).length;
-    rechargerComp(n);
-    if (enCombatU() && v >= .6) nombre(T('Rapide !'), SC.heros.x + 8, 12, 'info');
-    if (listeComp().filter(pretComp).length > avant && enCombatU()) bip(1200, 1600, .06, 'triangle', .03);
-    majComp();
-  }
+  if (juste && EXPE && C && C.famille !== 'gardien' && enCombatU() && vitesseMH() >= .6) nombre(T('Rapide !'), SC.heros.x + 8, 12, 'info');
   return repondreAvantCU(juste, opts);
 };
-
+function vitesseCharge() {
+  var st = STYLE_ARME[typeArme()] || STYLE_ARME.epee, v = 1 + stat('mana') * .04 + Math.max(0, (st.mana || 1) - 1);
+  if (CB().etats.gel > 0) v *= .5; return v;
+}
+var majAttaquesAvantCh = majAttaques;
+majAttaques = function (now) {
+  majAttaquesAvantCh(now);
+  var dt = Math.min(80, now - (CHARGE_LAST || now)); CHARGE_LAST = now;
+  if (!enCombatU() || !C || C.fini || C.intro || C.sonne || !$('voile').classList.contains('cache')) return;
+  if (!(cur && !cur.fait && !C.verrou)) return;
+  var c = CB().rech, l = listeComp(), pas = dt / CHARGE_MS * vitesseCharge(), neuf = false;
+  l.forEach(function (sk) { var r = rechDe(sk), a = chargeDe(sk); if (a >= r) return; c[sk.id] = Math.min(r, a + pas); if (c[sk.id] >= r) neuf = true; });
+  if (neuf) { bip(1200, 1600, .06, 'triangle', .03); majComp(); return; }
+  var bs = document.querySelectorAll('#mh-comp [data-sk] .jc b');
+  bs.forEach(function (b, i) { var sk = l[i]; if (sk) b.style.width = Math.round(chargeDe(sk) / rechDe(sk) * 100) + '%'; });
+};
 /* ── les attaques annoncées ── */
 var ELEM_DROP = { cristal: 'gel', herbes: 'poison', cuir: 'saigne', fer: 'saigne', pierre: 'saigne', bois: 'poison', or: 'saigne' };
 function attaquesGen(e) {
@@ -15325,7 +15310,7 @@ function attaquesGen(e) {
   var el = ELEM_BETE[e.id] || (e.spr === 'dragon' ? 'brulure' : ELEM_DROP[e.drop] || 'saigne');
   return [{ type: 'charge', nom: TR('prend son élan', 'neemt een aanloop') }, { type: 'rugissement', nom: TR('pousse un rugissement assourdissant', 'brult oorverdovend') }, { type: 'souffle', el: el, nom: SOUFFLES[el][0] }];
 }
-SOUFFLES.gel[1] = TR('Gelé : tes compétences se rechargent moitié moins vite', 'Bevroren: je vaardigheden laden half zo snel op');
+SOUFFLES.gel[1] = TR('Gelé : tes compétences se chargent moitié moins vite', 'Bevroren: je vaardigheden laden half zo snel op');
 function aTraitV(e, t) { return !!(e && e.traits && e.traits.indexOf(t) !== -1); }
 
 /* ── le coup du monstre ── */
@@ -15463,7 +15448,7 @@ majComp = function () {
   var h = '<div class="mh-et">' + (etl.length ? ech(etl.join(' · ')) : '') + '</div>';
   h += l.map(function (s, i) {
     var r = rechDe(s), c = chargeDe(s), on = S.arme && S.arme.id === s.id, p = '';
-    for (var k = 0; k < r; k++) p += '<i' + (k < c ? ' class="ok"' : '') + '></i>';
+    p = '<em class="jc"><b style="width:' + Math.round(Math.min(1, c / r) * 100) + '%"></b></em>';
     return '<button data-sk="' + i + '" class="' + (on ? 'on' : c >= r ? 'pret' : 'charge') + '">' + ech(T(s.nom)) + '<span class="pp">' + p + '</span></button>';
   }).join('');
   if (C.famille === 'traque' && e && e.grand && e.pv <= e.pvMax * .25 && !e.mort) h += '<button data-cap="1" class="' + 'pret cap' + '">' + ech(T(CAPTURE.nom)) + '<span class="pp"><small>' + T('affaibli') + '</small></span></button>';
@@ -15476,7 +15461,7 @@ majComp = function () {
   st.textContent = '.mh-comp{flex-wrap:wrap}.mh-comp .mh-et{flex:0 0 100%;min-height:0;font-family:var(--lex);font-size:11px;line-height:12px;color:#ff8a7a;text-align:center}.mh-comp .mh-et:empty{display:none}' +
     '.mh-comp button{flex:1 1 0;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:38px}.mh-comp.g button{flex:0 0 calc(33.33% - 3px)}' +
     '.mh-comp .pp{display:flex;gap:2px;justify-content:center}.mh-comp .pp i{width:6px;height:6px;background:#14142e;box-shadow:0 0 0 1px #000}.mh-comp .pp i.ok{background:#7fd0ff}.mh-comp .pp small{font-size:9px;color:#c8f0c8}' +
-    '.mh-comp button.charge{opacity:.55}.mh-comp button.pret{background:#3a3a8a;box-shadow:0 0 0 2px #000,0 0 0 3px #7fd0ff,inset 0 -3px 0 #1a1a3a}.mh-comp button.pret .pp i{background:#ffd24d}.mh-comp button.cap{background:#3a6a3a}';
+    '.mh-comp .jc{display:block;width:100%;height:4px;background:#14102a;box-shadow:0 0 0 1px #000}.mh-comp .jc b{display:block;height:100%;background:#7fd0ff}.mh-comp button.pret .jc b{background:#ffd24d}' + '.mh-comp button.charge{opacity:.55}.mh-comp button.pret{background:#3a3a8a;box-shadow:0 0 0 2px #000,0 0 0 3px #7fd0ff,inset 0 -3px 0 #1a1a3a}.mh-comp button.pret .pp i{background:#ffd24d}.mh-comp button.cap{background:#3a6a3a}';
   document.head.appendChild(st);
 })();
 var poserQuestionAvantCU = poserQuestion;
@@ -15507,12 +15492,12 @@ dessusQuete = function (x, now) {
 /* la vivacité et la réserve remplacent le mana sur les objets */
 Object.assign(FX_TXT, { mana: '+{0} de vivacité (recharges plus rapides)', manaMax: '+{0} de réserve (recharges plus courtes)', tenace: 'jamais sonné par un rugissement' });
 TUTOS.combat = [TR('Le combat', 'Het gevecht'), TR('Chaque bonne réponse frappe. Plus tu réponds vite, plus tu frappes fort.', 'Elk goed antwoord slaat. Hoe sneller je antwoordt, hoe harder je slaat.'),
-  TR('Les boutons au-dessus des questions sont tes trois compétences (tu les choisis dans ta fiche, onglet Talents). Chacune se recharge en bonnes réponses ; une réponse rapide compte double. Un bouton qui brille est prêt.', 'De knoppen boven de vragen zijn je drie vaardigheden (je kiest ze in je fiche, tabblad Talenten). Elke vaardigheid laadt op met goede antwoorden; een snel antwoord telt dubbel. Een knop die oplicht is klaar.'),
+  TR('Les boutons au-dessus des questions sont tes trois compétences (tu les choisis dans ta fiche, onglet Talents). Chacune se charge toute seule, lentement. Un bouton qui brille est prêt : garde-le pour le bon moment.', 'De knoppen boven de vragen zijn je drie vaardigheden (je kiest ze in je fiche, tabblad Talenten). Elke vaardigheid laadt vanzelf, langzaam op. Een knop die oplicht is klaar: bewaar hem voor het juiste moment.'),
   TR('Une erreur, et le monstre frappe. Quand il prépare une attaque, réponds juste pour l\'esquiver !', 'Een fout, en het monster slaat. Als het een aanval voorbereidt, antwoord juist om te ontwijken!')];
 TUTOS.traque = [TR('La traque', 'De speurtocht'), TR('Touche la carte : ton héros y marche. Chaque zone se dévoile quand tu y entres.', 'Tik op de kaart: je held loopt erheen. Elke zone wordt zichtbaar als je erin komt.'),
   TR('Touche un obstacle, une plante, une empreinte ou un coffre : réponds juste pour agir. Une erreur fait juste rater l\'action.', 'Tik op een obstakel, een plant, een voetafdruk of een kist: antwoord juist om iets te doen. Een fout laat de actie gewoon mislukken.'),
   TR('Les monstres rôdent : s\'ils te touchent, c\'est le combat.', 'Monsters sluipen rond: raken ze je, dan begint het gevecht.')];
-TUTOS.traqueChasse = [TR('Trouver le grand monstre', 'Het grote monster vinden'), TR('Examine ses empreintes : avec trois, tu sais où il est.', 'Bekijk zijn voetafdrukken: met drie weet je waar hij is.'), TR('Blessé, il s\'enfuit : suis-le jusqu\'à son nid !', 'Gewond vlucht hij: volg hem tot in zijn nest!')];
+TUTOS.traqueChasse = [TR('Trouver le grand monstre', 'Het grote monster vinden'), TR('Examine ses empreintes : avec trois, tu sais où il est.', 'Bekijk zijn voetafdrukken: met drie weet je waar hij is.'), TR('À mi-vie, il entre en rage. Certains se replient une fois dans une zone voisine : suis-les !', 'Halverwege wordt hij razend. Sommige trekken zich één keer terug naar een zone ernaast: volg ze!')];
 Object.assign(NL, {
   'Rapide !': 'Snel!', 'Critique !': 'Kritiek!', 'Purifié !': 'Gezuiverd!', 'Tu tiens bon !': 'Je houdt stand!', 'Empoisonné': 'Vergiftigd', 'Il appelle de l\'aide !': 'Hij roept om hulp!',
   '+{0} de vivacité (recharges plus rapides)': '+{0} vlugheid (sneller opladen)', '+{0} de réserve (recharges plus courtes)': '+{0} reserve (korter opladen)', 'jamais sonné par un rugissement': 'nooit versuft door een brul',
@@ -15534,7 +15519,7 @@ frapperDe = async function (e) {
   return frapperDeAvantGarde(e);
 };
 TUTOS.combat = [TR('Le combat', 'Het gevecht'), TR('Les monstres chargent leurs coups : quand leur jauge est pleine, ils frappent. Chaque bonne réponse te fait frapper, et plus vite tu réponds, plus fort tu frappes.', 'Monsters laden hun slag op: als hun meter vol is, slaan ze. Elk goed antwoord laat jou slaan, en hoe sneller je antwoordt, hoe harder.'),
-  TR('Chaque bonne réponse charge aussi tes compétences. Quand un bouton brille, touche-le : il agit tout de suite.', 'Elk goed antwoord laadt ook je vaardigheden op. Als een knop oplicht, tik erop: hij werkt meteen.'),
+  TR('Tes compétences se chargent toutes seules, chacune de son côté. Quand un bouton brille, il est prêt : touche-le quand tu veux, il agit tout de suite et les autres continuent de charger.', 'Je vaardigheden laden vanzelf op, elk voor zich. Als een knop oplicht, is hij klaar: tik erop wanneer je wilt, hij werkt meteen en de andere laden verder op.'),
   TR('Une erreur, et le monstre en face frappe aussitôt.', 'Een fout, en het monster tegenover je slaat meteen.')];
 Object.assign(NL, { 'Pris dans ton piège !': 'Gevangen in je val!', 'Paré !': 'Afgeweerd!', 'Étourdi !': 'Verdoofd!' });
 
@@ -16790,6 +16775,215 @@ var frappeEnnemiAvantAtt = frappeEnnemi;
 frappeEnnemi = async function (dmg) { await elanAttaque(SC.ennemi); return frappeEnnemiAvantAtt(dmg); };
 var frapperDeAvantAtt = frapperDe;
 frapperDe = async function (e) { await elanAttaque(e); return frapperDeAvantAtt(e); };
+
+/* ═════════ 05/11 : des zones dessinées à la main ═════════
+   Chaque zone de traque est tirée d'un modèle (15 × 13 cases), retourné au hasard : gué, étang,
+   cercle de pierres, prairie d'herbes hautes, arbre géant, labyrinthe de haies, ravin et son pont,
+   champ d'éboulis, village en ruine, temple, campement de monstres, nid. Les sorties sont creusées
+   ensuite, du bord de la zone jusqu'au premier sol.
+   Légende : # bord · . sol · , herbes hautes · * fleurs · : chemin · v buisson · r rocher · ~ eau ·
+   o pierre de gué · = pont · P colonne · H tente (2×2) · F feu · t tombe · S menhir · A arbre géant (2×2) ·
+   C gouffre · B ossements · N nid · M emplacement d'autel */
+var MODELES = {
+  clairiere: [
+    ['###############', '#..,,...,,....#', '#.,*..S...*.,.#', '#...S.....S...#', '#.*...*.*...*.#', '#..S..*.*..S..#', '#.....*.*.....#', '#..S.......S..#', '#.*..S...S..,.#', '#..,...S...,..#', '#.v..,...,..v.#', '#..v.......v..#', '###############'],
+    ['###############', '#v,,,,,:,,,,,v#', '#,,,*,,:,,,*,,#', '#,v,,,,:,,,,,,#', '#,,,,,,:,,v,,,#', '#,,*,,,:,,,,*,#', '#:::::::::::::#', '#,,,,,,:,,,,,,#', '#,v,,*,:,,*,v,#', '#,,,,,,:,,,,,,#', '#,*,,,,:,,,,*,#', '#v,,,,,:,,,,,v#', '###############'],
+    ['###############', '#..v.......v..#', '#.v..,...,..v.#', '#....*...*....#', '#.,...AA....,.#', '#.....AA......#', '#..*.......*..#', '#.,..v...v..,.#', '#.....,.,.....#', '#.v.*.....*.v.#', '#..v.......v..#', '#.....v.v.....#', '###############']],
+  bosquet: [
+    ['###############', '#.....v.v.....#', '#.vvv.v.v.vvv.#', '#.v.........v.#', '#.v.vvv.vvv.v.#', '#...v.....v...#', '#.....v.v.....#', '#...v.....v...#', '#.v.vvv.vvv.v.#', '#.v.........v.#', '#.vvv.v.v.vvv.#', '#.....v.v.....#', '###############'],
+    ['###############', '#vv...vvv..vvv#', '#v..:::::...v.#', '#..:..v..:....#', '#.:..vvv..:.v.#', '#.:.v,,,v.:...#', '#.:..v*v..::::#', '#.::..v.....v.#', '#..:::...v..v.#', '#.v...:..vv...#', '#vv...:.....vv#', '#vvv..:..v.vvv#', '###############']],
+  mare: [
+    ['###############', '#..,,....~~...#', '#.v,.....~~.r.#', '#..*....~~~...#', '#.......~~....#', '#..r....~~..v.#', '#.......==....#', '#.,.....~~....#', '#..v...~~~..*.#', '#......~~.....#', '#.*...~~...r..#', '#....,~~......#', '###############'],
+    ['###############', '#.v.......,.v.#', '#...~~~~~.....#', '#..~~~~~~~~...#', '#.~~~oo~~~~~..#', '#.~~~..*~~~~.*#', '#.....o..o....#', '#.~~~~*..~~~..#', '#..~~~~oo~~~..#', '#...~~~~~~~...#', '#.*...~~~~..v.#', '#..v.......,..#', '###############']],
+  rochers: [
+    ['###############', '#..r....r..CC.#', '#.....r...CC..#', '#.r......CC.r.#', '#........CC...#', '#..r....CC....#', '#.......==....#', '#......CC...r.#', '#.r...CC......#', '#....CC....r..#', '#...CC........#', '#..CC....r....#', '###############'],
+    ['###############', '#.rr..r....rr.#', '#.r....rr.....#', '#...r.....r.r.#', '#.rr...r......#', '#.....rr..rr..#', '#.r...........#', '#...rr...r..r.#', '#.r....r......#', '#..r.r...rr.r.#', '#.......r.....#', '#.rr..r....r..#', '###############']],
+  ruines: [
+    ['###############', '#.PPP...PPP...#', '#.P.P...P.P.v.#', '#.P.....P.....#', '#.....:.......#', '#.PP.:::.PPP..#', '#....:M:...P..#', '#.PP.:::.P....#', '#.P...:..PPP..#', '#.P.P.......r.#', '#.PPP.r.PP.P..#', '#.......P.....#', '###############'],
+    ['###############', '#..P.P.P.P.P..#', '#.............#', '#.P.........P.#', '#...:::::::...#', '#.P.:.....:.P.#', '#...:..M..:...#', '#.P.:.....:.P.#', '#...:::::::...#', '#.P.........P.#', '#.............#', '#..P.P.P.P.P..#', '###############']],
+  campement: [
+    ['###############', '#.v.....,..v..#', '#..HH..r..HH..#', '#..HH.....HH..#', '#.............#', '#..r..:::..r..#', '#....:.F.:....#', '#..r..:::..r..#', '#.............#', '#..HH.....HH..#', '#..HH..r..HH..#', '#.v.....,..v..#', '###############']],
+  nid: [
+    ['###############', '#..rr.....rr..#', '#.r..,...,..r.#', '#.r.B.....B.r.#', '#....:::::....#', '#.,.:,,,,,:.,.#', '#...:,,N,,:...#', '#.,.:,,,,,:.,.#', '#....:::::....#', '#.r.B.....B.r.#', '#.r..,...,..r.#', '#..rr.....rr..#', '###############']],
+  depart: [
+    ['###############', '#.v..,.....v..#', '#.....HH......#', '#.....HH...,..#', '#..*.......*..#', '#.....:F:.....#', '#.....:::.....#', '#.,...........#', '#..v.......v..#', '#.....,.,.....#', '#.*.........*.#', '#..v...,...v..#', '###############']]
+};
+var MOD_CODE = { '#': 1, 'v': 2, 'r': 3, '~': 4, 'P': 5, 'H': 6, 't': 7, 'F': 8, 'A': 9, 'S': 10, 'C': 11 };
+var MOD_DECO = { ',': 12, '*': 2, ':': 7, '=': 8, 'o': 9, 'B': 10, 'N': 11 };
+/* on pose les modèles, on rend les bords irréguliers, puis on creuse les sorties */
+function poserModeles(M, aretes, res, k) {
+  var W = M.W, i, j;
+  M.zones.forEach(function (z) {
+    var l = MODELES[z.kind] || MODELES.clairiere, m = l[Math.floor(Math.random() * l.length)], fx = Math.random() < .5, fy = Math.random() < .5 && z.kind !== 'depart';
+    for (j = 0; j < TQ.zh; j++) for (i = 0; i < TQ.zw; i++) {
+      var si = fx ? TQ.zw - 1 - i : i, sj = fy ? TQ.zh - 1 - j : j, ch = (m[sj] || '')[si] || '#', p = (z.y0 + j) * W + z.x0 + i;
+      M.mur[p] = MOD_CODE[ch] != null ? MOD_CODE[ch] : 0; M.deco[p] = MOD_DECO[ch] || 0;
+      if (ch === 'F') z.feu = [z.x0 + i, z.y0 + j];
+      if (ch === 'M') z.spot = [z.x0 + i, z.y0 + j];
+      if (ch === 'N') z.nidC = [z.x0 + i, z.y0 + j];
+    }
+    /* des bords moins droits : quelques buissons ou rochers grignotent la lisière */
+    for (j = z.y0 + 1; j < z.y0 + TQ.zh - 1; j++) for (i = z.x0 + 1; i < z.x0 + TQ.zw - 1; i++) {
+      var bord = j === z.y0 + 1 || j === z.y0 + TQ.zh - 2 || i === z.x0 + 1 || i === z.x0 + TQ.zw - 2, q = j * W + i;
+      if (bord && !M.mur[q] && !M.deco[q] && hcar(i, j, 17 + k) < .3) M.mur[q] = M.P.veg === 'pilier' || M.P.veg === 'tombe' || M.P.veg === 'cristal' ? 3 : 2;
+    }
+  });
+  /* les sorties : du bord commun vers l'intérieur de chaque zone, jusqu'au premier sol ; l'obstacle se pose sur le bord */
+  aretes.forEach(function (a) {
+    var A = M.zones[a[0]], B = M.zones[a[1]], hor = A.cy === B.cy, tiles = [], L, R2, s;
+    if (hor) {
+      L = A.cx < B.cx ? A : B; R2 = L === A ? B : A; var y = L.y0 + 6, fr = R2.x0;
+      for (s = 0; s < 3; s++) { tiles.push([fr - 1, y - 1 + s]); tiles.push([fr, y - 1 + s]); }
+      [[fr - 1, -1], [fr, 1]].forEach(function (d) { for (var x = d[0], n = 0; n < 7; n++, x += d[1]) { var vide = true; for (s = -1; s <= 1; s++) { var q = (y + s) * W + x; if (M.mur[q] || n < 2) { vide = false; } } for (s = -1; s <= 1; s++) { var q2 = (y + s) * W + x; if (M.mur[q2] === 4 || M.mur[q2] === 11) M.deco[q2] = 8; M.mur[q2] = 0; res[q2] = 1; } if (vide && n >= 1) break; } });
+    } else {
+      L = A.cy < B.cy ? A : B; R2 = L === A ? B : A; var x0 = L.x0 + 7, fy = R2.y0;
+      for (s = 0; s < 3; s++) { tiles.push([x0 - 1 + s, fy - 1]); tiles.push([x0 - 1 + s, fy]); }
+      [[fy - 1, -1], [fy, 1]].forEach(function (d) { for (var y2 = d[0], n = 0; n < 7; n++, y2 += d[1]) { var vide = true; for (s = -1; s <= 1; s++) { var q = y2 * W + x0 + s; if (M.mur[q] || n < 2) { vide = false; } } for (s = -1; s <= 1; s++) { var q2 = y2 * W + x0 + s; if (M.mur[q2] === 4 || M.mur[q2] === 11) M.deco[q2] = 8; M.mur[q2] = 0; res[q2] = 1; } if (vide && n >= 1) break; } });
+    }
+    a.tiles = tiles; a.hor = hor;
+  });
+}
+function solCentre(M, z) {
+  if (z.sol) return z.sol;
+  var best = null, bd = 99, cx = z.spot ? z.spot[0] + .5 : z.mx, cy = z.spot ? z.spot[1] + .5 : z.my;
+  for (var j = z.y0 + 1; j < z.y0 + TQ.zh - 1; j++) for (var i = z.x0 + 1; i < z.x0 + TQ.zw - 1; i++) { var p = j * M.W + i; if (M.mur[p] || M.bloque[p]) continue; var d = Math.hypot(i + .5 - cx, j + .5 - cy); if (d < bd) { bd = d; best = [i + .5, j + .5]; } }
+  z.sol = best || [z.mx, z.my]; return z.sol;
+}
+/* les nouvelles cases : arbre géant, menhir, gouffre ; et les nouveaux sols : chemin, pont, gué, ossements, nid */
+function artModele(x, M, i, j, m) {
+  var X = i * 8, Y = j * 8, W = M.W;
+  if (m === 10) { x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X + 1, Y + 6, 7, 2); x.fillStyle = '#5a5868'; x.fillRect(X + 2, Y - 6, 4, 13); x.fillStyle = '#8a8898'; x.fillRect(X + 2, Y - 6, 2, 12); x.fillStyle = '#7fe0ff'; if (hcar(i, j, 3) > .5) x.fillRect(X + 3, Y - 2, 1, 3); return true; }
+  if (m === 11) { x.fillStyle = '#0c0918'; x.fillRect(X, Y, 8, 8); if (!M.mur[(j - 1) * W + i] || M.mur[(j - 1) * W + i] !== 11) { x.fillStyle = '#4a3a2a'; x.fillRect(X, Y, 8, 2); } x.fillStyle = '#1a1428'; x.fillRect(X + 2, Y + 4, 3, 1); return true; }
+  if (m === 9) {
+    if (M.mur[j * W + i - 1] === 9 || M.mur[(j - 1) * W + i] === 9) return true;
+    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X - 6, Y + 13, 28, 4);
+    x.fillStyle = '#4a2e1a'; x.fillRect(X + 2, Y - 2, 12, 18); x.fillStyle = '#6a4226'; x.fillRect(X + 3, Y - 2, 4, 18); x.fillStyle = '#3a2214'; x.fillRect(X + 9, Y + 4, 2, 6);
+    var c = COUL_ART[M.P.mur === 'arbreRose' ? 'arbreRose' : 'arbre'];
+    x.fillStyle = c[0]; x.fillRect(X - 10, Y - 18, 36, 18); x.fillRect(X - 6, Y - 22, 28, 26);
+    x.fillStyle = c[1]; x.fillRect(X - 8, Y - 20, 30, 15); x.fillRect(X - 4, Y - 23, 22, 20);
+    x.fillStyle = c[2]; x.fillRect(X - 4, Y - 21, 10, 5); x.fillRect(X - 7, Y - 17, 4, 3); x.fillRect(X + 10, Y - 19, 5, 3);
+    return true;
+  }
+  return false;
+}
+function decoModele(x, M, i, j, d) {
+  var X = i * 8, Y = j * 8, h = hcar(i, j, 13);
+  if (d === 7) { x.fillStyle = '#9a7a52'; x.fillRect(X, Y + 1, 8, 6); x.fillStyle = '#b8966a'; x.fillRect(X + Math.floor(h * 5), Y + 3, 2, 1); return true; }
+  if (d === 8) { x.fillStyle = '#3d5f58'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#8a6a40'; x.fillRect(X, Y + 1, 8, 6); x.fillStyle = '#6a4a28'; x.fillRect(X + 2, Y + 1, 1, 6); x.fillRect(X + 5, Y + 1, 1, 6); return true; }
+  if (d === 9) { x.fillStyle = '#3a6f9a'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#8a8890'; x.fillRect(X + 1, Y + 2, 6, 4); x.fillStyle = '#aaa8b0'; x.fillRect(X + 2, Y + 2, 3, 1); return true; }
+  if (d === 10) { x.fillStyle = '#e8d8b0'; x.fillRect(X + 1, Y + 3, 6, 1); x.fillRect(X + 2, Y + 1, 1, 5); x.fillRect(X + 5, Y + 1, 1, 5); x.fillStyle = '#b8a07a'; x.fillRect(X + 1, Y + 4, 6, 1); return true; }
+  if (d === 11) { x.fillStyle = '#8a6a3a'; x.fillRect(X - 3, Y + 1, 14, 6); x.fillStyle = '#c9a46a'; x.fillRect(X - 2, Y + 2, 12, 2); x.fillStyle = '#5a3a1a'; x.fillRect(X, Y + 4, 8, 2); x.fillStyle = '#f1e4c2'; x.fillRect(X + 2, Y + 2, 2, 2); x.fillRect(X + 5, Y + 3, 2, 2); return true; }
+  if (d === 12) { x.fillStyle = M.P.herbe; x.fillRect(X + 1, Y + 3, 1, 4); x.fillRect(X + 3, Y + 2, 1, 5); x.fillRect(X + 5, Y + 3, 1, 4); x.fillRect(X + 6, Y + 1, 1, 6); x.fillStyle = 'rgba(0,0,0,.15)'; x.fillRect(X, Y + 7, 8, 1); return true; }
+  return false;
+}
+
+/* ═════════ 05/11 : plus de fuite à répétition, des phases de combat ═════════
+   À la moitié de ses PV, un grand monstre passe en phase 2 : il change d'allure (piquants, contour rouge,
+   teinte sombre), frappe 20 % plus fort et charge ses coups 25 % plus vite.
+   Seuls quelques grands monstres rapides ou volants se replient une seule fois dans la zone voisine,
+   puis reviennent en phase 2 quand on les retrouve. Plus de nid ni de sommeil. */
+var FUYARDS = { reine: 1, crocdelune: 1, aigle: 1, 'dame-blanche': 1, 'dragon-lave': 1, 'loup-garou': 1, 'ver-sables': 1 };
+
+/* ── l'allure de la phase 2, fabriquée à partir de chaque image du monstre ── */
+var RAGE_C = new Map();
+function rageImg(s, blancV) {
+  if (!s) return s; var r = RAGE_C.get(s); if (r) return r;
+  var w = s.width, h = s.height, L = 1, H0 = 5, c = toile(w + L * 2, h + H0), x = c.getContext('2d');
+  var d = s.getContext('2d').getImageData(0, 0, w, h).data, op = function (i, j) { return i >= 0 && j >= 0 && i < w && j < h && d[(j * w + i) * 4 + 3] > 40; };
+  /* le contour */
+  x.fillStyle = blancV ? '#ffffff' : '#ff3a2a';
+  for (var j = -1; j <= h; j++) for (var i = -1; i <= w; i++) if (!op(i, j) && (op(i - 1, j) || op(i + 1, j) || op(i, j - 1) || op(i, j + 1))) x.fillRect(i + L, j + H0, 1, 1);
+  /* des piquants le long du dos */
+  for (var k = Math.floor(w * .2); k < Math.ceil(w * .8); k += 4) {
+    var top = -1; for (var jj = 0; jj < h; jj++) if (op(k, jj)) { top = jj; break; }
+    if (top < 0) continue;
+    x.fillStyle = blancV ? '#ffffff' : '#2a0a14'; x.fillRect(k + L, top + H0 - 3, 1, 3); x.fillRect(k + L - 1, top + H0 - 1, 3, 1);
+    x.fillStyle = blancV ? '#ffffff' : '#ff8a3a'; x.fillRect(k + L, top + H0 - 4, 1, 1);
+  }
+  /* le corps, assombri vers le rouge */
+  var b = toile(w, h), bx = b.getContext('2d'); bx.drawImage(s, 0, 0);
+  if (!blancV) { bx.globalCompositeOperation = 'source-atop'; bx.fillStyle = 'rgba(110,0,24,.38)'; bx.fillRect(0, 0, w, h); bx.globalCompositeOperation = 'source-over'; }
+  x.drawImage(b, L, H0);
+  RAGE_C.set(s, c); return c;
+}
+var sprAvantRage = spr, blancAvantRage = blanc;
+spr = function (nom, pal, cle) {
+  if (cle && /-R$/.test(cle)) {
+    var b = cle.slice(0, -2);
+    if (ATK[cle]) { ATK[b] = ATK[cle]; delete ATK[cle]; }
+    var s = sprAvantRage(nom, pal, b); if (ANIMC[b] && !ANIMC[cle]) ANIMC[cle] = ANIMC[b];
+    return rageImg(s, false);
+  }
+  return sprAvantRage(nom, pal, cle);
+};
+blanc = function (cle) { if (cle && /-R$/.test(cle)) return rageImg(blancAvantRage(cle.slice(0, -2)), true); return blancAvantRage(cle); };
+var majSpriteCasseAvantR = majSpriteCasse;
+majSpriteCasse = function (e) { majSpriteCasseAvantR(e); if (e && e.ph2 && !/-R$/.test(e.cle)) e.cle += '-R'; };
+
+/* ── le passage en phase 2 ── */
+function appliquerPh2(e) {
+  if (!e || e.ph2) return; e.ph2 = true; e.cleBase = e.cleBase || e.cle; e.cle += '-R';
+  e.atk = Math.round(e.atk * 1.2); e.cdMul = (e.cdMul || 1) * .75;
+  if (typeof relayout === 'function') relayout();
+}
+async function passerPh2(e) {
+  appliquerPh2(e); e.flash = maintenant() + 300; secouer(4, 420); son('mal');
+  await banniere(T('{0} entre en rage !', T(e.nom)), T('Phase 2 : coups plus forts et plus rapides.'), 1200);
+}
+fuiteMH = async function (e) {
+  var M = EXPE.mh, mo = M.monstre; if (!mo || mo.mort || mo.ph2 || e.pv > e.pvMax * .5) return false;
+  mo.ph2 = true;
+  if (!FUYARDS[mo.id] || mo.fui) { await passerPh2(e); return false; }
+  /* il se replie une seule fois, dans une zone voisine (de préférence par un passage déjà ouvert) */
+  mo.fui = true;
+  var zh = zoneDe(M, M.hx, M.hy), zm = M.zones[mo.z], ouvert = function (a) { return M.objs.some(function (o) { return o.t === 'obst' && o.ouvert && ((o.a === zm.n && o.b === a) || (o.b === zm.n && o.a === a)); }); };
+  var l = zm.adj.filter(function (a) { return !zh || a !== zh.n; }), l2 = l.filter(ouvert), n = (l2.length ? mel(l2) : l.length ? mel(l) : mel(zm.adj))[0], dest = M.zones[n], sd = solCentre(M, dest);
+  mo.z = dest.n; mo.revele = true; mo.alerte = 0; mo.course = { t0: maintenant() + 900, dur: 3200, x0: mo.x, y0: mo.y, x1: sd[0], y1: sd[1] }; mo.bouge = maintenant() + 40000; e.fuite = { t0: maintenant(), dur: 500 };
+  await attendre(450); SC.ennemi = null; M.mode = 'explore'; majComp();
+  await banniere(T('{0} se replie !', T(e.nom)), T('La bête blessée file dans la zone voisine. Elle reviendra en rage.'), 1400);
+  majInfoTraque(); return true;
+};
+var entrerCombatAvantPh = entrerCombat;
+entrerCombat = async function (id, grand, ref) {
+  var r = await entrerCombatAvantPh(id, grand, ref), e = SC.ennemi, M = EXPE && EXPE.mh;
+  if (grand && e && M && M.monstre && M.monstre.ph2 && !e.ph2) { appliquerPh2(e); await banniere(T('Revoilà {0}, en rage !', T(e.nom)), T('Phase 2 : coups plus forts et plus rapides.'), 1100); }
+  return r;
+};
+Object.assign(NL, {
+  '{0} entre en rage !': '{0} wordt razend!', 'Phase 2 : coups plus forts et plus rapides.': 'Fase 2: hardere en snellere slagen.', '{0} se replie !': '{0} trekt zich terug!',
+  'La bête blessée file dans la zone voisine. Elle reviendra en rage.': 'Het gewonde beest vlucht naar de zone ernaast. Het komt razend terug.', 'Revoilà {0}, en rage !': 'Daar is {0} weer, razend!'
+});
+
+/* ── la minimap : on peut viser une zone pas encore vue si un passage ouvert y mène ── */
+function zoneAccessible(M, z) {
+  if (z.vu) return true;
+  return M.objs.some(function (o) { return o.t === 'obst' && o.ouvert && ((o.a === z.n && M.zones[o.b].vu) || (o.b === z.n && M.zones[o.a].vu)); });
+}
+(function () {
+  var cv = $('mh-mcv');
+  cv.addEventListener('pointerdown', function (ev) {
+    var M = EXPE && EXPE.mh; if (!M || !C || C.famille !== 'traque' || M.mode !== 'explore' || M.enRencontre || M.trans || C.fini || !$('voile').classList.contains('cache')) return;
+    var r = cv.getBoundingClientRect(), mt = M.miniT || { s: 1, dx: 0, dy: 0 }, px = (ev.clientX - r.left) / r.width * cv.width, py = (ev.clientY - r.top) / r.height * cv.height, tx = (px - mt.dx) / mt.s / 6, ty = (py - mt.dy) / mt.s / 6;
+    var z = zoneDe(M, tx, ty); if (!z || z.vu || !zoneAccessible(M, z)) return;
+    /* zone inconnue mais ouverte : on marche jusqu'à son cœur */
+    ev.stopImmediatePropagation(); var s = solCentre(M, z); M.tapLarge = true; tapCarteZ(M, s[0], s[1]); M.tapLarge = false;
+  }, true);
+})();
+var dessinerMiniZAvantAcc = dessinerMiniZ;
+dessinerMiniZ = function (M, now) {
+  /* les zones ouvertes mais pas encore vues entrent dans le cadrage, en silhouette avec un « ? » */
+  var acc = M.zones.filter(function (z) { return !z.vu && zoneAccessible(M, z); });
+  if (!acc.length) return dessinerMiniZAvantAcc(M, now);
+  if (now - MINI_T < 140) return;
+  acc.forEach(function (z) { z.vu = true; z.faux = true; });
+  try { dessinerMiniZAvantAcc(M, now); } finally { acc.forEach(function (z) { z.vu = false; delete z.faux; }); }
+  var x = $('mh-mcv').getContext('2d'), Z = 6;
+  acc.forEach(function (z) {
+    x.fillStyle = 'rgba(12,9,24,.72)'; x.fillRect(z.x0 * Z, z.y0 * Z, TQ.zw * Z, TQ.zh * Z);
+    x.strokeStyle = 'rgba(255,255,255,.35)'; x.lineWidth = 1; x.setLineDash([3, 3]); x.strokeRect(z.x0 * Z + 2, z.y0 * Z + 2, TQ.zw * Z - 4, TQ.zh * Z - 4); x.setLineDash([]);
+    x.fillStyle = '#ffd24d'; x.font = 'bold 30px monospace'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('?', (z.x0 + TQ.zw / 2) * Z, (z.y0 + TQ.zh / 2) * Z);
+  });
+};
 
 /* ═════════ 04/11 : la galerie, et des géodes qu'on ouvre en trois gestes ═════════
    On répond à la chaîne : chaque bonne réponse est un coup de pioche, la galerie avance dans la roche.
