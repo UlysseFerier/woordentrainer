@@ -17880,6 +17880,310 @@ Object.assign(NL, {
   'nouvelle contrée': 'nieuw gebied', 'max': 'max', 'Grand feu d\'abord': 'eerst het grote vuur', 'ressources': 'grondstoffen', 'Niveau {0} / {1}': 'Niveau {0} / {1}'
 });
 
+/* ═════════ 05/11 : les constellations d'armes, façon Skyrim ═════════
+   Une constellation par type d'arme : Épée, Dague, Lance, Marteau (avec haches et masses), Arc, Poings.
+   On progresse en se servant de l'arme : chaque bonne réponse en combat donne de l'expérience au type d'arme
+   tenu (un grand monstre abattu en donne davantage). À chaque niveau de l'arme, un point à placer dans
+   SA constellation. Les étoiles : bonus permanents (à plusieurs rangs), améliorations des compétences de
+   l'arme, nouvelles compétences, et une étoile maîtresse au sommet. Les bonus d'une constellation ne
+   valent que l'arme correspondante en main.
+   L'affichage : un ciel en plein écran qu'on fait glisser au doigt ; toucher une étoile y fait voyager la
+   vue ; la fiche en bas montre l'étoile, ce qu'elle donne, d'où elle vient et où elle mène.
+   Les anciens arbres (Guerrier, Chasseur, Érudit) disparaissent : leur coût est remboursé. */
+var ORDRE_CST = ['epee', 'dague', 'lance', 'marteau', 'arc', 'poings'];
+/* la place des étoiles, sur un ciel de 100 × 140 : la racine en bas, trois branches de quatre étoiles, le sommet */
+var POS_CST = { r: [50, 128], L: [[33, 106], [21, 82], [15, 57], [24, 33]], M: [[50, 100], [55, 78], [47, 56], [52, 34]], R: [[67, 106], [79, 82], [85, 57], [76, 33]], cap: [50, 12] };
+function etoileC(id, nom, o) { o.id = id; o.nom = nom; o.rangs = o.rangs || 1; return o; }
+function cielC(c, ciel, racine, br, cap) { return { c: c, ciel: ciel, racine: racine, br: br, cap: cap }; }
+var CST = {
+  epee: cielC('#7fd0ff', TR('Le Duelliste', 'De Duellist'),
+    etoileC('ep0', TR('Maniement de l\'épée', 'Zwaardvaardigheid'), { rangs: 3, fx: { dmg: 5 } }), [
+      [TR('Parade', 'Pareren'), etoileC('ep1', TR('Garde haute', 'Hoge wering'), { rangs: 2, fx: { def: 3 } }), etoileC('ep2', TR('Garde parfaite', 'Perfecte wering'), { mod: { garde: { rech: -1 } } }),
+        etoileC('ep3', TR('Riposte', 'Riposte'), { actif: { id: 'ep-riposte', rech: 3, garde: 1, riposte: 1 } }), etoileC('ep4', TR('Mur d\'acier', 'Stalen muur'), { fx: { garde: 1, def: 4 } })],
+      [TR('Lame', 'Kling'), etoileC('ep5', TR('Fil aiguisé', 'Scherpe snede'), { rangs: 2, mod: { taille: { mult: .3 } } }), etoileC('ep6', TR('Coup précis affûté', 'Scherpe precieze slag'), { mod: { precis: { mult: .4 } } }),
+        etoileC('ep7', TR('Tourbillon', 'Wervelwind'), { actif: { id: 'ep-tourb', rech: 4, coups: 3, mult: .9 } }), etoileC('ep8', TR('Danse des lames', 'Dans der klingen'), { fx: { mana: 8, dmg: 5 } })],
+      [TR('Critique', 'Kritiek'), etoileC('ep9', TR('Œil du duelliste', 'Oog van de duellist'), { rangs: 3, fx: { crit: 3 } }), etoileC('ep10', TR('Point faible', 'Zwakke plek'), { fx: { brise: 1, crit: 3 } }),
+        etoileC('ep11', TR('Estocade', 'Steek'), { actif: { id: 'ep-estoc', rech: 5, mult: 2.5 } }), etoileC('ep12', TR('Premier sang', 'Eerste bloed'), { fx: { crit: 6, dmg: 6 } })]],
+    etoileC('ep13', TR('Lame légendaire', 'Legendarische kling'), { fx: { dmg: 12, atk: 4 } })),
+  dague: cielC('#8af59a', TR('L\'Ombre', 'De Schaduw'),
+    etoileC('dg0', TR('Maniement de la dague', 'Dolkvaardigheid'), { rangs: 3, fx: { crit: 3 } }), [
+      [TR('Poison', 'Gif'), etoileC('dg1', TR('Lame enduite', 'Ingesmeerde kling'), { rangs: 2, mod: { saignee: { saigne: 1 } } }), etoileC('dg2', TR('Venin', 'Venijn'), { actif: { id: 'dg-venin', rech: 3, saigneM: 5 } }),
+        etoileC('dg3', TR('Toxines', 'Gifstoffen'), { fx: { dmg: 6 } }), etoileC('dg4', TR('Mort lente', 'Trage dood'), { mod: { 'dg-venin': { saigneM: 3, rech: -1 } } })],
+      [TR('Vitesse', 'Snelheid'), etoileC('dg5', TR('Mains agiles', 'Vlugge handen'), { rangs: 3, fx: { mana: 5 } }), etoileC('dg6', TR('Rafale nourrie', 'Volle vlaag'), { mod: { rafale: { coups: 1 } } }),
+        etoileC('dg7', TR('Éventail', 'Waaier'), { actif: { id: 'dg-event', rech: 5, coups: 5, mult: .6 } }), etoileC('dg8', TR('Insaisissable', 'Ongrijpbaar'), { fx: { esquive: 8 } })],
+      [TR('Assassin', 'Sluipmoordenaar'), etoileC('dg9', TR('Pas feutrés', 'Zachte stappen'), { rangs: 2, fx: { esquive: 4 } }), etoileC('dg10', TR('Pas de côté vicieux', 'Gemene zijstap'), { mod: { pas: { critSuiv: 1 } } }),
+        etoileC('dg11', TR('Coup de grâce', 'Genadeslag'), { actif: { id: 'dg-grace', rech: 6, mult: 3 } }), etoileC('dg12', TR('Lame dans le dos', 'Mes in de rug'), { fx: { crit: 8 } })]],
+    etoileC('dg13', TR('Maître des ombres', 'Meester der schaduwen'), { fx: { crit: 6, dmg: 10 } })),
+  lance: cielC('#ffd24d', TR('La Phalange', 'De Falanx'),
+    etoileC('la0', TR('Maniement de la lance', 'Speervaardigheid'), { rangs: 3, fx: { atk: 2 } }), [
+      [TR('Rempart', 'Bolwerk'), etoileC('la1', TR('Pied ferme', 'Vaste voet'), { rangs: 2, fx: { def: 3, pv: 10 } }), etoileC('la2', TR('Contre vif', 'Snelle tegenstoot'), { mod: { contre: { rech: -1 } } }),
+        etoileC('la3', TR('Hérisson', 'Egel'), { actif: { id: 'la-heris', rech: 4, garde: 1, riposte: 1, etourdit: 1 } }), etoileC('la4', TR('Inébranlable', 'Onwrikbaar'), { fx: { tenace: 1, pv: 25 } })],
+      [TR('Allonge', 'Reikwijdte'), etoileC('la5', TR('Allonge', 'Reikwijdte'), { rangs: 2, fx: { dmg: 5 } }), etoileC('la6', TR('Charge furieuse', 'Woeste stormloop'), { mod: { charge: { mult: .5 } } }),
+        etoileC('la7', TR('Percée', 'Doorbraak'), { actif: { id: 'la-percee', rech: 4, mult: 1.8, brise: 1 } }), etoileC('la8', TR('Premier contact', 'Eerste contact'), { fx: { dmg: 8 } })],
+      [TR('Chasse', 'Jacht'), etoileC('la9', TR('Viser les jointures', 'Op de gewrichten mikken'), { rangs: 2, fx: { crit: 3 } }), etoileC('la10', TR('Transpercer net', 'Zuiver doorboren'), { mod: { transperce: { mult: .4 } } }),
+        etoileC('la11', TR('Clouer au sol', 'Aan de grond nagelen'), { actif: { id: 'la-clou', rech: 5, etourdit: 2, mult: 1.2 } }), etoileC('la12', TR('Brise-écailles', 'Schubbenbreker'), { fx: { brise: 1, atk: 4 } })]],
+    etoileC('la13', TR('Légion', 'Legioen'), { fx: { def: 6, dmg: 10 } })),
+  marteau: cielC('#e2463a', TR('Le Colosse', 'De Kolos'),
+    etoileC('ma0', TR('Poids du fer', 'Gewicht van ijzer'), { rangs: 3, fx: { dmg: 6 } }), [
+      [TR('Fracas', 'Geraas'), etoileC('ma1', TR('Bras de forge', 'Smidsarmen'), { rangs: 2, fx: { atk: 3 } }), etoileC('ma2', TR('Écrasement total', 'Totale verplettering'), { mod: { ecrase: { mult: .5 } } }),
+        etoileC('ma3', TR('Séisme', 'Aardbeving'), { actif: { id: 'ma-seisme', rech: 5, mult: 1.6, etourdit: 1 } }), etoileC('ma4', TR('Fracasseur', 'Verbrijzelaar'), { fx: { brise: 1, dmg: 6 } })],
+      [TR('Choc', 'Schok'), etoileC('ma5', TR('Sonner', 'Verdoven'), { rangs: 2, mod: { assomme: { mult: .3 } } }), etoileC('ma6', TR('Assommer longtemps', 'Lang verdoven'), { mod: { assomme: { etourdit: 1 } } }),
+        etoileC('ma7', TR('Brise-os lourd', 'Zware bottenbreker'), { mod: { briseos: { mult: .5 } } }), etoileC('ma8', TR('Coup de tonnerre', 'Donderslag'), { actif: { id: 'ma-tonnerre', rech: 7, mult: 3.2 } })],
+      [TR('Robustesse', 'Stevigheid'), etoileC('ma9', TR('Carrure', 'Postuur'), { rangs: 3, fx: { pv: 12 } }), etoileC('ma10', TR('Cuir épais', 'Dikke huid'), { rangs: 2, fx: { def: 3 } }),
+        etoileC('ma11', TR('Second souffle', 'Tweede adem'), { actif: { id: 'ma-souffle', rech: 5, soin: 40 } }), etoileC('ma12', TR('Roc', 'Rots'), { fx: { tenace: 1, garde: 1 } })]],
+    etoileC('ma13', TR('Titan', 'Titaan'), { fx: { atk: 6, pv: 30 } })),
+  arc: cielC('#c08af2', TR('Le Faucon', 'De Valk'),
+    etoileC('ar0', TR('Tir', 'Schieten'), { rangs: 3, fx: { crit: 2, dmg: 3 } }), [
+      [TR('Précision', 'Precisie'), etoileC('ar1', TR('Œil de faucon', 'Valkenoog'), { rangs: 3, fx: { crit: 3 } }), etoileC('ar2', TR('Pointe d\'acier', 'Stalen punt'), { mod: { percante: { mult: .6 } } }),
+        etoileC('ar3', TR('Tir visé', 'Gericht schot'), { actif: { id: 'ar-vise', rech: 5, mult: 2.4, brise: 1 } }), etoileC('ar4', TR('Tête chercheuse', 'Zoekende punt'), { fx: { crit: 8 } })],
+      [TR('Volées', 'Salvo\'s'), etoileC('ar5', TR('Carquois rapide', 'Snelle pijlkoker'), { rangs: 2, fx: { mana: 6 } }), etoileC('ar6', TR('Volée nourrie', 'Volle salvo'), { mod: { volee: { coups: 1 } } }),
+        etoileC('ar7', TR('Pluie de flèches', 'Pijlenregen'), { actif: { id: 'ar-pluie', rech: 6, coups: 5, mult: .8, saigneM: 3 } }), etoileC('ar8', TR('Archer né', 'Geboren boogschutter'), { fx: { dmg: 10 } })],
+      [TR('Pièges', 'Vallen'), etoileC('ar9', TR('Pas léger', 'Lichte tred'), { rangs: 2, fx: { esquive: 4 } }), etoileC('ar10', TR('Repli malin', 'Slimme terugtocht'), { mod: { repli: { critSuiv: 1 } } }),
+        etoileC('ar11', TR('Piège à loup', 'Wolfsklem'), { actif: { id: 'ar-piege', rech: 4, etourdit: 2 } }), etoileC('ar12', TR('Traqueur', 'Spoorzoeker'), { fx: { def: 4, esquive: 4 } })]],
+    etoileC('ar13', TR('Œil du ciel', 'Oog van de hemel'), { fx: { crit: 6, dmg: 8 } })),
+  poings: cielC('#ff9a3c', TR('Le Moine', 'De Monnik'),
+    etoileC('po0', TR('Poings nus', 'Blote vuisten'), { rangs: 3, fx: { atk: 3 } }), [
+      [TR('Souffle', 'Adem'), etoileC('po1', TR('Respiration', 'Ademhaling'), { rangs: 2, fx: { pv: 10 } }), etoileC('po2', TR('Souffle profond', 'Diepe adem'), { mod: { souffle: { soin: 15 } } }),
+        etoileC('po3', TR('Méditation', 'Meditatie'), { actif: { id: 'po-medit', rech: 4, soin: 20, purifie: 1 } }), etoileC('po4', TR('Corps de fer', 'IJzeren lijf'), { fx: { def: 6 } })],
+      [TR('Enchaînements', 'Combinaties'), etoileC('po5', TR('Jab', 'Jab'), { rangs: 2, fx: { mana: 6 } }), etoileC('po6', TR('Gros coup lourd', 'Zware vuistslag'), { mod: { poing: { mult: .4 } } }),
+        etoileC('po7', TR('Cent poings', 'Honderd vuisten'), { actif: { id: 'po-cent', rech: 5, coups: 6, mult: .5 } }), etoileC('po8', TR('Rythme', 'Ritme'), { fx: { dmg: 10 } })],
+      [TR('Esquive', 'Ontwijken'), etoileC('po9', TR('Jeu de jambes', 'Voetenwerk'), { rangs: 3, fx: { esquive: 3 } }), etoileC('po10', TR('Esquive', 'Ontwijking'), { actif: { id: 'po-esq', rech: 3, garde: 1, critSuiv: 1 } }),
+        etoileC('po11', TR('Contre-attaque', 'Tegenaanval'), { fx: { garde: 1 } }), etoileC('po12', TR('Paume sonnante', 'Verdovende palm'), { actif: { id: 'po-paume', rech: 5, etourdit: 2, mult: 1.5 } })]],
+    etoileC('po13', TR('Maître', 'Meester'), { fx: { atk: 6, esquive: 6 } }))
+};
+/* on relie les étoiles : la racine ouvre les trois branches, chaque étoile ouvre la suivante, la deuxième
+   étoile des côtés s'atteint aussi depuis le début de la branche du milieu, et le sommet depuis n'importe quel bout */
+var NOEUD_CST = {};
+ORDRE_CST.forEach(function (ty) {
+  var A = CST[ty], l = []; A.ty = ty;
+  A.racine.x = POS_CST.r[0]; A.racine.y = POS_CST.r[1]; A.racine.req = []; l.push(A.racine);
+  A.br.forEach(function (b, bi) {
+    var cle = ['L', 'M', 'R'][bi]; b.nomBr = b[0]; b.n = b.slice(1);
+    b.n.forEach(function (t, k) {
+      t.x = POS_CST[cle][k][0]; t.y = POS_CST[cle][k][1]; t.br = bi;
+      t.req = k === 0 ? [A.racine.id] : [b.n[k - 1].id];
+      if (k === 1 && bi !== 1) t.req.push(A.br[1][1].id);
+      l.push(t);
+    });
+  });
+  A.cap.x = POS_CST.cap[0]; A.cap.y = POS_CST.cap[1]; A.cap.req = A.br.map(function (b) { return b[4].id; }); A.cap.cap = true; l.push(A.cap);
+  A.l = l; l.forEach(function (t) { t.ty = ty; t.kids = []; NOEUD_CST[t.id] = t; if (t.actif) { t.actif.nom = t.nom; } });
+  l.forEach(function (t) { t.req.forEach(function (r) { NOEUD_CST[r].kids.push(t.id); }); });
+});
+Object.assign(VFX_DE, { 'ep-riposte': 'bouclier', 'ep-tourb': 'triple', 'ep-estoc': 'eclair', 'dg-venin': 'gouttes', 'dg-event': 'triple', 'dg-grace': 'croix', 'la-heris': 'bouclier', 'la-percee': 'ruee', 'la-clou': 'etoiles',
+  'ma-seisme': 'onde', 'ma-tonnerre': 'onde', 'ma-souffle': 'soin', 'ar-vise': 'eclair', 'ar-pluie': 'fleches', 'ar-piege': 'piege', 'po-medit': 'soin', 'po-cent': 'triple', 'po-esq': 'bouclier', 'po-paume': 'etoiles' });
+
+/* ── l'expérience des armes ── */
+function cstJ() { var j = J(); return j.cst || (j.cst = {}); }
+function armesJ() { var j = J(); return j.armesXP || (j.armesXP = {}); }
+function xpPour(n) { return 6 + 3 * n; }   /* expérience pour passer du niveau n au suivant */
+function niveauArme(ty) { var a = armesJ()[ty]; return a ? a.niv : 0; }
+function depensesCst(ty) { var c = cstJ(), n = 0; CST[ty].l.forEach(function (t) { n += c[t.id] || 0; }); return n; }
+function pointsCst(ty) { return Math.max(0, niveauArme(ty) - depensesCst(ty)); }
+function rangCst(id) { return cstJ()[id] || 0; }
+function cstAccessible(t) { return !t.req.length || t.req.some(function (r) { return rangCst(r) > 0; }); }
+function gagnerXPArme(n) {
+  var ty = typeArme(), A = armesJ(), a = A[ty] || (A[ty] = { xp: 0, niv: 0 }), monte = false;
+  a.xp += n;
+  while (a.xp >= xpPour(a.niv)) { a.xp -= xpPour(a.niv); a.niv++; monte = true; }
+  if (monte) { son('niveau'); try { nombre(T('{0} : niveau {1} !', T(NOM_TYPE[ty]), a.niv), SC.heros.x + 8, 6, 'fort'); } catch (err) {} }
+}
+var repondreAvantCst = repondre;
+repondre = async function (juste, opts) { if (juste && EXPE && C && enCombatU()) gagnerXPArme(1); return repondreAvantCst(juste, opts); };
+var tuerUAvantCst = tuerU;
+tuerU = async function (e) { if (e && (e.grand || e.elite)) gagnerXPArme(e.grand ? 8 : 3); return tuerUAvantCst(e); };
+
+/* ── les effets : les bonus de la constellation de l'arme tenue, et les compétences ── */
+var sourcesAvantCst = sources;
+sources = function () {
+  var l = sourcesAvantCst(); if (!J()) return l;
+  var ty = typeArme(), c = cstJ(); if (!CST[ty]) return l;
+  CST[ty].l.forEach(function (t) { var r = c[t.id]; if (!r || !t.fx) return; var f = {}; for (var k in t.fx) f[k] = t.fx[k] * r; l.push(f); });
+  return l;
+};
+function compModifiee(s, ty) {
+  var c = cstJ(), o = Object.assign({}, s), base = s.rech || Math.max(2, Math.round((s.cout || 30) / 11)), dr = 0;
+  CST[ty].l.forEach(function (t) {
+    var r = c[t.id], m = r && t.mod && t.mod[s.id]; if (!m) return;
+    for (var k in m) { if (k === 'rech') dr += m[k] * r; else if (k === 'mult') o.mult = Math.round(((o.mult || 1) + m[k] * r) * 100) / 100; else o[k] = (o[k] || 0) + m[k] * r; }
+  });
+  o.rech = Math.max(2, base + dr); return o;
+}
+poolComp = function () {
+  var ty = typeArme(), c = cstJ(), A = CST[ty], l = (COMPETENCES[ty] || COMPETENCES.poings).map(function (s) { return { cle: 'arme:' + s.id, s: A ? compModifiee(s, ty) : s, c: '#c9c6d6', src: T(NOM_TYPE[ty]) }; });
+  if (A) A.l.forEach(function (t) { if (t.actif && c[t.id]) l.push({ cle: t.id, s: compModifiee(t.actif, ty), c: A.c, src: T(A.ciel), noeud: t.id }); });
+  return l;
+};
+
+/* ── la migration : les anciens talents sont remboursés, et l'arme en main démarre au niveau 2 ── */
+function migrerCst() {
+  var j = J(); if (!j || j.cstMigre) return;
+  j.cstMigre = 1;
+  var tj = j.talents || {}, rendu = {};
+  Object.keys(tj).forEach(function (id) { var r = talentPar(id); if (!r || !r.t.cout) return; for (var k in r.t.cout) { rendu[k] = (rendu[k] || 0) + r.t.cout[k]; if (SPECIALES[k]) etat.camp.spe[k] = (etat.camp.spe[k] || 0) + r.t.cout[k]; else etat.camp.res[k] = (etat.camp.res[k] || 0) + r.t.cout[k]; } });
+  j.talents = {}; j.talentActif = null;
+  var ty = typeArme(), A = armesJ(); if (!A[ty]) A[ty] = { xp: 0, niv: 2 };
+  j.cstRendu = rendu; sauver();
+}
+
+/* ── le ciel ── */
+var CSTV = { ty: null, sel: null, cam: { x: 0, y: 0 }, echelle: 4 };
+function ouvrirConstellation(ty) {
+  migrerCst();
+  CSTV.ty = ty || (CST[typeArme()] ? typeArme() : 'epee'); CSTV.sel = null;
+  var d = $('cst'); if (!d) { d = document.createElement('div'); d.id = 'cst'; $('tel').appendChild(d); }
+  d.classList.remove('cache'); dessinerCst(true); if (typeof tuto === 'function') tuto('constel');
+}
+function fermerConstellation() { var d = $('cst'); if (d) d.classList.add('cache'); if (FICHE && FICHE.tab === 'talents') feuilleArbres(); }
+function fondCiel(ty) {
+  var A = CST[ty]; if (A.fond) return A.fond;
+  var W = 100 * CSTV.echelle, H = 140 * CSTV.echelle, c = toile(W, H), x = c.getContext('2d'), g = x.createRadialGradient(W / 2, H * .55, 20, W / 2, H * .55, W * .9);
+  g.addColorStop(0, melange(A.c, '#0b0a1c', .78)); g.addColorStop(1, '#07061a'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  for (var i = 0; i < 260; i++) { var h1 = hcar(i, 3, ty.length * 7), h2 = hcar(i, 9, ty.length * 3), h3 = hcar(i, 5, 11); x.fillStyle = h3 > .9 ? '#ffffff' : h3 > .6 ? '#bfc6ff' : '#6a6aa0'; x.fillRect(Math.floor(h1 * W), Math.floor(h2 * H), h3 > .95 ? 2 : 1, h3 > .95 ? 2 : 1); }
+  return (A.fond = c.toDataURL());
+}
+function effetTexte(t, r) {
+  /* r : le rang pour lequel on décrit l'effet */
+  if (t.actif) return T('Compétence : {0} · recharge {1}', texteComp(compModifiee(t.actif, t.ty)), compModifiee(t.actif, t.ty).rech);
+  if (t.mod) { var l = []; for (var sid in t.mod) { var s = (COMPETENCES[t.ty] || []).filter(function (x) { return x.id === sid; })[0] || (NOEUD_CST[Object.keys(NOEUD_CST).filter(function (k) { return NOEUD_CST[k].actif && NOEUD_CST[k].actif.id === sid; })[0]] || {}).actif, m = t.mod[sid], p = [];
+      if (m.mult) p.push(T('dégâts × +{0}', String(Math.round(m.mult * r * 100) / 100).replace('.', ','))); if (m.coups) p.push(T('+{0} coup(s)', m.coups * r)); if (m.rech) p.push(T('recharge {0}', m.rech * r));
+      if (m.etourdit) p.push(T('sonne {0} tour de plus', m.etourdit * r)); if (m.saigne) p.push(T('+{0} coup renforcé', m.saigne * r)); if (m.saigneM) p.push(T('saignement +{0} tours', m.saigneM * r)); if (m.soin) p.push(T('+{0} PV soignés', m.soin * r)); if (m.critSuiv) p.push(T('coup critique juste après'));
+      l.push((s ? T(s.nom) : sid) + ' : ' + p.join(', ')); }
+    return l.join(' · '); }
+  var f = {}; for (var k in t.fx) f[k] = t.fx[k] * r; return fxTexte({ fx: f, inst: true });
+}
+function dessinerCst(centrer) {
+  var d = $('cst'), ty = CSTV.ty, A = CST[ty], c = cstJ(), E = CSTV.echelle, pts = pointsCst(ty), a = armesJ()[ty] || { xp: 0, niv: 0 };
+  if (!CSTV.sel || NOEUD_CST[CSTV.sel].ty !== ty) CSTV.sel = (A.l.filter(function (t) { return !c[t.id] && cstAccessible(t); })[0] || A.racine).id;
+  var t = NOEUD_CST[CSTV.sel], tienne = typeArme() === ty;
+  var h = '<div class="cst-haut">' + ORDRE_CST.map(function (k) { var p = pointsCst(k); return '<button data-cty="' + k + '" class="' + (k === ty ? 'on' : '') + '" style="--c:' + CST[k].c + '">' + ech(T(NOM_TYPE[k])) + '<small>' + T('niv. {0}', niveauArme(k)) + (p ? ' · <b>+' + p + '</b>' : '') + '</small></button>'; }).join('') + '<button class="cst-x" id="cst-x">✕</button></div>';
+  h += '<div class="cst-xp" style="--c:' + A.c + '"><b>' + ech(T(A.ciel)) + '</b><span>' + T('{0} niveau {1}', T(NOM_TYPE[ty]), a.niv) + ' · ' + (pts ? '<em>' + T('{0} point(s) à placer', pts) + '</em>' : T('pas de point libre')) + '</span><i><u style="width:' + Math.round(a.xp / xpPour(a.niv) * 100) + '%"></u></i>' +
+    '<small>' + (tienne ? T('Tu tiens ce type d\'arme : chaque bonne réponse en combat le fait progresser.') : T('Équipe ce type d\'arme pour le faire progresser et profiter de ses étoiles.')) + '</small></div>';
+  /* les liens et les étoiles */
+  var lignes = '', etoiles = '';
+  A.l.forEach(function (n) {
+    n.req.forEach(function (rid) { var p = NOEUD_CST[rid], on = c[rid] && c[n.id], ouvert = c[rid] && !c[n.id];
+      lignes += '<line x1="' + p.x * E + '" y1="' + p.y * E + '" x2="' + n.x * E + '" y2="' + n.y * E + '" class="' + (on ? 'on' : ouvert ? 'ouv' : '') + '"/>'; });
+  });
+  A.l.forEach(function (n) {
+    var r = c[n.id] || 0, ok = cstAccessible(n), cl = 'et' + (r ? ' on' : ok ? ' dispo' : '') + (n.actif ? ' comp' : n.mod ? ' mod' : '') + (n.cap ? ' cap' : '') + (n.id === CSTV.sel ? ' sel' : '') + (r && r < n.rangs ? ' partiel' : '');
+    var pips = n.rangs > 1 ? '<span class="pips">' + Array.apply(null, Array(n.rangs)).map(function (_, i) { return '<i class="' + (i < r ? 'on' : '') + '"></i>'; }).join('') + '</span>' : '';
+    etoiles += '<button class="' + cl + '" data-et="' + n.id + '" style="left:' + n.x * E + 'px;top:' + n.y * E + 'px"><span class="coeur"></span>' + pips + '<span class="nom">' + ech(T(n.nom)) + '</span></button>';
+  });
+  h += '<div class="cst-ciel" id="cst-ciel" style="background-image:url(' + fondCiel(ty) + ')"><div class="cst-monde" id="cst-monde" style="width:' + 100 * E + 'px;height:' + 140 * E + 'px;--c:' + A.c + '"><svg width="' + 100 * E + '" height="' + 140 * E + '">' + lignes + '</svg>' + etoiles + '</div></div>';
+  /* la fiche de l'étoile choisie */
+  var r = c[t.id] || 0, ok = cstAccessible(t), max = r >= t.rangs, nomBr = t.br != null ? ' · ' + T('branche {0}', T(A.br[t.br].nomBr)) : '', sorte = t.cap ? T('Étoile maîtresse') : t.actif ? T('Nouvelle compétence') : t.mod ? T('Amélioration de compétence') : T('Bonus permanent');
+  var eq = equipesJ(), equipe = eq.indexOf(t.id) !== -1;
+  h += '<div class="cst-fiche" style="--c:' + A.c + '"><div class="cf-t"><b>' + ech(T(t.nom)) + '</b><small>' + sorte + nomBr + (t.rangs > 1 ? ' · ' + T('rang {0} / {1}', r, t.rangs) : r ? ' · ' + T('apprise') : '') + '</small></div>';
+  h += '<p class="cf-e">' + (r ? ech(effetTexte(t, r)) : '') + (r && !max ? '<br>' : '') + (!max ? '<span class="cf-suiv">' + (r ? T('Rang suivant : ') : '') + ech(effetTexte(t, r + 1)) + '</span>' : '') + '</p>';
+  var parents = t.req.map(function (id) { return '<button data-et="' + id + '" class="cf-nav' + (rangCst(id) ? ' on' : '') + '">↓ ' + ech(T(NOEUD_CST[id].nom)) + '</button>'; }).join('');
+  var enfants = t.kids.map(function (id) { return '<button data-et="' + id + '" class="cf-nav' + (rangCst(id) ? ' on' : '') + '">↑ ' + ech(T(NOEUD_CST[id].nom)) + '</button>'; }).join('');
+  h += '<div class="cf-navs">' + parents + enfants + '</div>';
+  if (!ok) h += '<p class="cf-req">' + (t.cap ? T('Il faut le bout d\'une des trois branches.') : T('Il faut d\'abord une étoile reliée en dessous.')) + '</p>';
+  h += '<div class="cf-bas">';
+  if (t.actif && r) h += '<button class="mini ' + (equipe ? 'porte equipe' : 'equipe') + '" id="cf-eq"' + (!equipe && (eq.length >= 3 || !tienne) ? ' disabled' : '') + '>' + T(equipe ? 'Retirer du combat' : !tienne ? 'Arme non tenue' : eq.length >= 3 ? 'Trois max' : 'Emporter au combat') + '</button>';
+  if (!max) h += '<button class="mini fab" id="cf-ap"' + (ok && pts > 0 ? '' : ' disabled') + '>' + (pts > 0 ? T('Apprendre (1 point)') : T('Pas de point')) + '</button>';
+  h += '</div></div>';
+  d.innerHTML = h;
+  /* les gestes */
+  d.querySelectorAll('[data-cty]').forEach(function (b) { b.onclick = function () { CSTV.ty = b.dataset.cty; CSTV.sel = null; son('clic'); dessinerCst(true); }; });
+  $('cst-x').onclick = function () { son('clic'); fermerConstellation(); };
+  d.querySelectorAll('[data-et]').forEach(function (b) { b.onclick = function (ev) { if (CSTV.glisse) return; ev.stopPropagation(); CSTV.sel = b.dataset.et; son('clic'); dessinerCst(true); }; });
+  if ($('cf-ap')) $('cf-ap').onclick = function () {
+    if (!cstAccessible(t) || pointsCst(ty) <= 0 || (c[t.id] || 0) >= t.rangs) return;
+    c[t.id] = (c[t.id] || 0) + 1; if (t.actif && c[t.id] === 1 && typeArme() === ty && equipesJ().length < 3) J().equipes.push(t.id);
+    sauver(); son('niveau'); celebrer(T('Étoile : {0}', T(t.nom))); CSTV.flash = t.id; dessinerCst(false);
+  };
+  if ($('cf-eq')) $('cf-eq').onclick = function () { var l = equipesJ(), ix = l.indexOf(t.id); if (ix !== -1) l.splice(ix, 1); else if (l.length < 3) l.push(t.id); sauver(); son('clic'); dessinerCst(false); };
+  /* la caméra : elle voyage jusqu'à l'étoile choisie, et on peut faire glisser le ciel */
+  var ciel = $('cst-ciel'), monde = $('cst-monde'), vw = ciel.clientWidth, vh = ciel.clientHeight;
+  function borner() { CSTV.cam.x = Math.min(40, Math.max(vw - 100 * E - 40, CSTV.cam.x)); CSTV.cam.y = Math.min(60, Math.max(vh - 140 * E - 60, CSTV.cam.y)); }
+  function poser(anim) { monde.style.transition = anim ? 'transform .5s cubic-bezier(.3,.7,.3,1)' : 'none'; monde.style.transform = 'translate(' + Math.round(CSTV.cam.x) + 'px,' + Math.round(CSTV.cam.y) + 'px)'; ciel.style.transition = monde.style.transition.replace('transform', 'background-position'); ciel.style.backgroundPosition = Math.round(CSTV.cam.x * .35 - 60) + 'px ' + Math.round(CSTV.cam.y * .35 - 80) + 'px'; }
+  var vieux = { x: CSTV.cam.x, y: CSTV.cam.y }; poser(false);
+  if (centrer) { CSTV.cam.x = vw / 2 - t.x * E; CSTV.cam.y = vh * .5 - t.y * E; borner(); requestAnimationFrame(function () { poser(true); }); }
+  else { CSTV.cam = vieux; poser(false); }
+  if (CSTV.flash) { var bf = d.querySelector('[data-et="' + CSTV.flash + '"]'); if (bf) bf.classList.add('eclat'); CSTV.flash = null; }
+  var dep = null;
+  ciel.onpointerdown = function (ev) { dep = { x: ev.clientX, y: ev.clientY, cx: CSTV.cam.x, cy: CSTV.cam.y, bouge: false }; CSTV.glisse = false; };
+  ciel.onpointermove = function (ev) { if (!dep) return; var dx = ev.clientX - dep.x, dy = ev.clientY - dep.y; if (!dep.bouge && Math.hypot(dx, dy) < 8) return; dep.bouge = true; CSTV.glisse = true; CSTV.cam.x = dep.cx + dx; CSTV.cam.y = dep.cy + dy; borner(); poser(false); };
+  ciel.onpointerup = ciel.onpointercancel = ciel.onpointerleave = function () { dep = null; setTimeout(function () { CSTV.glisse = false; }, 0); };
+}
+
+/* ── l'onglet Talents de la fiche : ce qu'on emporte, et le niveau de chaque arme ── */
+feuilleArbres = function () {
+  migrerCst();
+  var eq = equipesJ(), pool = poolComp(), parCle = {}, ty = typeArme(); pool.forEach(function (p) { parCle[p.cle] = p; });
+  var html = onglets([['equip', 'Équipement'], ['sac', 'Le sac'], ['geodes', 'Géodes'], ['talents', 'Talents']], 'talents');
+  html += '<button class="btn large cst-ouvrir" id="cst-ouvrir" style="--c:' + (CST[ty] || CST.epee).c + '">✦ ' + T('Constellation : {0}', T((CST[ty] || CST.epee).ciel)) + (pointsCst(ty) ? ' <b>+' + pointsCst(ty) + '</b>' : '') + '</button>';
+  html += '<div class="arb-eq"><span>' + T('En combat') + '</span>' + [0, 1, 2].map(function (i) { var p = eq[i] && parCle[eq[i]]; return '<b class="' + (p ? 'on' : '') + '"' + (p ? ' style="--c:' + p.c + '" data-eq-ret="' + eq[i] + '"' : '') + '>' + (p ? ech(T(p.s.nom)) : T('libre')) + '</b>'; }).join('') + '</div>';
+  html += '<div class="arb-pool"><p class="f-sous">' + T('Tu emportes trois compétences au combat : celles de ton arme et celles apprises dans sa constellation.') + '</p>' + pool.map(function (p) {
+    var on = eq.indexOf(p.cle) !== -1, plein = eq.length >= 3 && !on;
+    return '<button data-eq-pool="' + p.cle + '" class="' + (on ? 'on' : '') + '" style="--c:' + p.c + '"' + (plein ? ' disabled' : '') + '><b>' + ech(T(p.s.nom)) + '</b><small>' + ech(p.src) + ' · ' + T('recharge {0}', rechDe(p.s)) + '</small><i>' + ech(texteComp(p.s)) + '</i></button>';
+  }).join('') + '</div>';
+  html += '<h4 class="f-h">' + T('Tes armes') + '</h4><div class="cst-liste">' + ORDRE_CST.map(function (k) {
+    var a = armesJ()[k] || { xp: 0, niv: 0 }, p = pointsCst(k);
+    return '<button data-cst="' + k + '" style="--c:' + CST[k].c + '"' + (k === ty ? ' class="tenue"' : '') + '><b>' + ech(T(NOM_TYPE[k])) + '</b><small>' + ech(T(CST[k].ciel)) + ' · ' + T('niv. {0}', a.niv) + (p ? ' · <em>+' + p + '</em>' : '') + '</small><i><u style="width:' + Math.round(a.xp / xpPour(a.niv) * 100) + '%"></u></i></button>';
+  }).join('') + '</div>';
+  var rendu = J().cstRendu; if (rendu && Object.keys(rendu).length) { html += '<p class="f-sous">' + T('Les anciens talents ont été remboursés : ') + Object.keys(rendu).map(function (k) { return rendu[k] + ' ' + nomRes(k); }).join(', ') + '.</p>'; }
+  feuille(etat.moi === 'ulysse' ? 'Ulysse' : 'Jasmien', html);
+  lier('[data-tab]', function (d) { FICHE.tab = d.tab; FICHE.legende = ''; son('clic'); feuilleHeros(); });
+  lier('[data-eq-ret]', function (d) { var l = equipesJ(), ix = l.indexOf(d.eqRet); if (ix !== -1) l.splice(ix, 1); sauver(); son('clic'); feuilleArbres(); });
+  lier('[data-eq-pool]', function (d) { var l = equipesJ(), ix = l.indexOf(d.eqPool); if (ix !== -1) l.splice(ix, 1); else if (l.length < 3) l.push(d.eqPool); else return; sauver(); son('clic'); feuilleArbres(); });
+  lier('[data-cst]', function (d) { son('clic'); ouvrirConstellation(d.cst); });
+  $('cst-ouvrir').onclick = function () { son('clic'); ouvrirConstellation(); };
+};
+/* un point à placer se voit sur le bouton de la fiche */
+var hudCampAvantCst = hudCamp;
+hudCamp = function () { hudCampAvantCst(); try { var b = $('b-fiche'), n = 0; if (b && J()) { ORDRE_CST.forEach(function (k) { n += pointsCst(k); }); b.classList.toggle('pts', n > 0); b.dataset.pts = n; } } catch (err) {} };
+
+TUTOS.constel = [TR('Les constellations', 'De sterrenbeelden'), TR('Chaque type d\'arme a sa constellation. Plus tu te bats avec une arme, plus elle monte de niveau : un point à chaque niveau.', 'Elk soort wapen heeft zijn sterrenbeeld. Hoe meer je met een wapen vecht, hoe hoger zijn niveau: een punt per niveau.'),
+  TR('Touche une étoile pour y voyager. Fais glisser le ciel pour regarder autour. Une étoile s\'allume quand une étoile reliée en dessous est apprise.', 'Tik op een ster om ernaartoe te reizen. Sleep de hemel om rond te kijken. Een ster licht op als een verbonden ster eronder geleerd is.'),
+  TR('Les bonus d\'une constellation ne valent qu\'avec son arme en main.', 'De bonussen van een sterrenbeeld gelden alleen met dat wapen in de hand.')];
+(function () {
+  var st = document.createElement('style');
+  st.textContent =
+    '#cst{position:absolute;inset:0;z-index:60;display:flex;flex-direction:column;background:#07061a;color:#f1e4c2;font-family:var(--lex)}#cst.cache{display:none}' +
+    '.cst-haut{display:flex;gap:4px;padding:8px 8px 6px;background:#0d0c24;box-shadow:0 2px 0 #000}.cst-haut button{flex:1;min-width:0;border:0;padding:5px 2px;background:#1a1838;color:var(--c);font-family:var(--px);font-size:12px;box-shadow:0 0 0 2px #000;line-height:1.1}' +
+    '.cst-haut button small{display:block;font-family:var(--num);font-size:10px;color:#a8a2c8}.cst-haut button small b{color:#8af59a}.cst-haut button.on{background:#2a2658;box-shadow:0 0 0 2px #000,inset 0 -3px 0 var(--c)}' +
+    '.cst-haut .cst-x{flex:0 0 34px;color:#f1e4c2;font-size:16px}' +
+    '.cst-xp{padding:6px 12px 7px;background:#0d0c24;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center}.cst-xp b{font-family:var(--px);font-size:16px;color:var(--c)}.cst-xp span{font-size:12px;text-align:right}.cst-xp em{font-style:normal;color:#8af59a;font-weight:700}' +
+    '.cst-xp i{grid-column:1/3;height:5px;background:#1a1838;box-shadow:0 0 0 1px #000}.cst-xp i u{display:block;height:100%;background:var(--c)}.cst-xp small{grid-column:1/3;font-size:11px;color:#a8a2c8}' +
+    '.cst-ciel{position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none;cursor:grab;background-color:#07061a;background-size:520px 700px;background-repeat:no-repeat;image-rendering:pixelated}.cst-monde{position:absolute;left:0;top:0}.cst-monde svg{position:absolute;inset:0}' +
+    '.cst-monde line{stroke:#3a3868;stroke-width:2;stroke-dasharray:3 5}.cst-monde line.ouv{stroke:var(--c);stroke-opacity:.6;stroke-dasharray:6 4}.cst-monde line.on{stroke:var(--c);stroke-width:3;stroke-dasharray:none;filter:drop-shadow(0 0 4px var(--c))}' +
+    '.et{position:absolute;width:0;height:0;border:0;padding:0;background:none}.et .coeur{position:absolute;left:-11px;top:-11px;width:22px;height:22px;background:#2a2850;box-shadow:0 0 0 2px #000,inset 0 0 0 2px #4a4878;transform:rotate(45deg)}' +
+    '.et.comp .coeur{border-radius:50%;transform:none}.et.cap .coeur{left:-16px;top:-16px;width:32px;height:32px}' +
+    '.et.dispo .coeur{background:#1a1838;box-shadow:0 0 0 2px #000,inset 0 0 0 2px var(--c),0 0 10px var(--c);animation:cstp 1.2s ease-in-out infinite}' +
+    '.et.on .coeur{background:var(--c);box-shadow:0 0 0 2px #000,0 0 14px var(--c),0 0 4px #fff}.et.partiel .coeur{background:linear-gradient(135deg,var(--c) 50%,#1a1838 50%)}' +
+    '.et.sel .coeur{outline:3px solid #fff;outline-offset:3px}.et.eclat .coeur{animation:csteclat .7s ease-out}' +
+    '.et .nom{position:absolute;left:0;top:16px;transform:translateX(-50%);width:84px;text-align:center;font-family:var(--px);font-size:11px;line-height:1.1;color:#8a86b0;text-shadow:1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000;pointer-events:none}' +
+    '.et.cap .nom{top:21px}.et.dispo .nom{color:#f1e4c2}.et.on .nom{color:var(--c)}.et.sel .nom{color:#fff;font-weight:700}' +
+    '.et .pips{position:absolute;left:0;top:-24px;transform:translateX(-50%);display:flex;gap:2px}.et .pips i{width:5px;height:5px;background:#2a2850;box-shadow:0 0 0 1px #000}.et .pips i.on{background:#ffd24d}' +
+    '.cst-br{position:absolute;transform:translateX(-50%);font-family:var(--px);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--c);opacity:.55;pointer-events:none;white-space:nowrap}' +
+    '@keyframes cstp{50%{box-shadow:0 0 0 2px #000,inset 0 0 0 2px var(--c),0 0 18px var(--c)}}@keyframes csteclat{0%{transform:rotate(45deg) scale(2.2);box-shadow:0 0 30px #fff}100%{transform:rotate(45deg) scale(1)}}' +
+    '.cst-fiche{background:#12112c;padding:9px 12px 12px;box-shadow:0 -2px 0 #000,inset 0 3px 0 var(--c);min-height:150px}.cf-t b{display:block;font-family:var(--px);font-size:18px;color:var(--c)}.cf-t small{font-size:11px;color:#a8a2c8}' +
+    '.cf-e{margin:5px 0 4px;font-size:13px;line-height:1.35}.cf-suiv{color:#ffd24d}.cf-req{margin:2px 0;font-size:12px;color:#ff8a7a}' +
+    '.cf-navs{display:flex;flex-wrap:wrap;gap:5px;margin:5px 0}.cf-nav{border:0;padding:4px 8px;background:#1e1c44;color:#c8c4ec;font-family:var(--px);font-size:12px;box-shadow:0 0 0 1px #000}.cf-nav.on{color:var(--c)}' +
+    '.cf-bas{display:flex;gap:8px;margin-top:6px}.cf-bas .mini{flex:1;font-size:15px;padding:10px 8px}.cf-bas .mini.fab{background:var(--braise);color:var(--encre);box-shadow:inset 0 -3px 0 var(--braise2),0 0 0 2px #000}.cf-bas .mini.porte{background:#1f3a35;color:var(--seve)}' +
+    '.cst-ouvrir{margin:6px 0 4px;background:#1a1838;color:var(--c);box-shadow:0 0 0 2px #000,inset 0 0 0 2px var(--c);font-family:var(--px);font-size:16px}.cst-ouvrir b{color:#8af59a}' +
+    '.cst-liste{display:grid;grid-template-columns:1fr 1fr;gap:6px}.cst-liste button{border:0;padding:6px 8px;text-align:left;background:#1a1838;color:#f1e4c2;box-shadow:0 0 0 2px #000,inset 3px 0 0 var(--c)}.cst-liste button.tenue{box-shadow:0 0 0 2px #000,inset 0 0 0 2px var(--c)}' +
+    '.cst-liste b{display:block;font-family:var(--px);font-size:14px;color:var(--c)}.cst-liste small{display:block;font-size:11px;color:#a8a2c8}.cst-liste em{font-style:normal;color:#8af59a;font-weight:700}.cst-liste i{display:block;height:4px;margin-top:4px;background:#0d0c24}.cst-liste i u{display:block;height:100%;background:var(--c)}' +
+    '#b-fiche.pts{position:relative}#b-fiche.pts::after{content:attr(data-pts);position:absolute;right:-4px;top:-4px;min-width:14px;height:14px;padding:0 2px;background:#8af59a;color:#0d0c24;font-family:var(--num);font-size:10px;font-weight:700;line-height:14px;text-align:center;box-shadow:0 0 0 1px #000}';
+  document.head.appendChild(st);
+})();
+Object.assign(NL, {
+  '{0} : niveau {1} !': '{0}: niveau {1}!', '{0} niveau {1}': '{0} niveau {1}', '{0} point(s) à placer': '{0} punt(en) te verdelen', 'pas de point libre': 'geen vrij punt',
+  'Tu tiens ce type d\'arme : chaque bonne réponse en combat le fait progresser.': 'Je hebt dit soort wapen vast: elk goed antwoord in een gevecht laat het groeien.',
+  'Équipe ce type d\'arme pour le faire progresser et profiter de ses étoiles.': 'Rust dit soort wapen uit om het te laten groeien en van zijn sterren te genieten.',
+  'Étoile maîtresse': 'Meesterster', 'Nouvelle compétence': 'Nieuwe vaardigheid', 'Amélioration de compétence': 'Verbetering van een vaardigheid', 'Bonus permanent': 'Blijvende bonus',
+  'rang {0} / {1}': 'rang {0} / {1}', 'apprise': 'geleerd', 'Rang suivant : ': 'Volgende rang: ', 'Il faut le bout d\'une des trois branches.': 'Je hebt het einde van een van de drie takken nodig.',
+  'Il faut d\'abord une étoile reliée en dessous.': 'Eerst een verbonden ster eronder.', 'Retirer du combat': 'Uit het gevecht halen', 'Arme non tenue': 'Wapen niet in de hand', 'Emporter au combat': 'Meenemen in het gevecht',
+  'Apprendre (1 point)': 'Leren (1 punt)', 'Pas de point': 'Geen punt', 'Étoile : {0}': 'Ster: {0}', 'Compétence : {0} · recharge {1}': 'Vaardigheid: {0} · opladen {1}',
+  'dégâts × +{0}': 'schade × +{0}', '+{0} coup(s)': '+{0} slag(en)', 'sonne {0} tour de plus': 'verdooft {0} beurt langer', '+{0} coup renforcé': '+{0} versterkte slag', 'saignement +{0} tours': 'bloeden +{0} beurten',
+  '+{0} PV soignés': '+{0} levenspunten genezen', 'coup critique juste après': 'meteen daarna een kritieke slag', 'Constellation : {0}': 'Sterrenbeeld: {0}',
+  'Tu emportes trois compétences au combat : celles de ton arme et celles apprises dans sa constellation.': 'Je neemt drie vaardigheden mee in het gevecht: die van je wapen en die uit zijn sterrenbeeld.',
+  'Tes armes': 'Je wapens', 'branche {0}': 'tak {0}', 'Les anciens talents ont été remboursés : ': 'De oude talenten zijn terugbetaald: '
+});
+
 /* ═════════ démarrage ═════════ */
 function voir(n) {
   vueActive = n;
