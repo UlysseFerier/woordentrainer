@@ -846,8 +846,7 @@ canvas,#tel,button{-webkit-touch-callout:none;-webkit-user-select:none;user-sele
       <canvas id="cv-combat" width="96" height="72"></canvas>
       <div class="etiq" id="etiq"><div class="nom" id="e-nom"></div><div id="e-barre"></div></div>
       <div class="couche" id="couche"></div>
-      <div class="combo cache" id="combo"></div>
-      <button class="btn cache" id="b-heroique">Frappe héroïque</button>
+      
       <button class="btn cache" id="b-remonter">Remonter le chariot</button>
     </div>
     <div class="etat"><div class="crans" id="cb-crans"></div><div class="lib" id="cb-lib"></div></div>
@@ -1175,7 +1174,7 @@ var ZONES = {
   5: { lieu: 'La tour de l\'horloge', sp: 'rouage', mod: 'Temps compté : +40 % de butin, monstres plus durs', fx: { butin: 40, pvMob: 30 } },
   6: { lieu: 'La route marchande', sp: 'sceau', mod: 'Commerce : +40 % d\'or', fx: { 'or%': 40 } },
   7: { lieu: 'La mine des apprentis', sp: 'encre', mod: 'Discipline : les coups de rappel frappent +50 %', fx: { 'rappel%': 50 } },
-  8: { lieu: 'Le bois des humeurs', sp: 'larme', mod: 'Cœurs ardents : la frappe héroïque se charge plus vite', fx: { combo: 1 } },
+  8: { lieu: 'Le bois des humeurs', sp: 'larme', mod: 'Cœurs ardents : les compétences se chargent plus vite', fx: { combo: 1 } },
   9: { lieu: 'Les ateliers teinturiers', sp: 'teinture', mod: 'Mille teintes : +30 % de spéciales', fx: { 'special%': 30 } },
   10: { lieu: 'La forêt sauvage', sp: 'croc', mod: 'Sauvage : monstres coriaces (+25 % PV), +30 % de butin', fx: { pvMob: 25, butin: 30 } }
 };
@@ -1352,7 +1351,7 @@ var OBJETS = [
   I('calice', 'sanctuaire', 4, 'relique', 'Calice de source', { 'soin%': 60 }, { cristal: 20, herbes: 30 }, { c: '#5fd0e0' }),
   I('trefle', 'sanctuaire', 5, 'relique', 'Trèfle d\'argent', { crit: 12 }, { cristal: 25, herbes: 15 }, { c: '#9ae0a0' }),
   I('sphinx', 'sanctuaire', 5, 'relique', 'Œil du sphinx', { 'cristal%': 40, 'special%': 15 }, { cristal: 30, encre: 2 }, { c: '#c08af2', txt: '+40 % de cristal et +15 % de spéciales' }),
-  I('golem-c', 'sanctuaire', 6, 'relique', 'Cœur de golem', { soinHero: 30, pv: 20 }, { pierre: 60, cristal: 25 }, { c: '#c3c9dc', txt: '+20 PV max, et la frappe héroïque soigne 30 PV' }),
+  I('golem-c', 'sanctuaire', 6, 'relique', 'Cœur de golem', { soinHero: 30, pv: 20 }, { pierre: 60, cristal: 25 }, { c: '#c3c9dc', txt: '+20 PV max, et chaque compétence soigne 30 PV' }),
   I('larme-f', 'sanctuaire', 6, 'relique', 'Larme figée', { combo: 1, crit: 8 }, { cristal: 30, larme: 3 }, { c: '#f08ae0' }),
   I('fer-ch', 'sanctuaire', 7, 'relique', 'Fer à cheval', { 'special%': 30 }, { fer: 40, cristal: 20 }, { c: '#c8d4e0' }),
   I('totem', 'sanctuaire', 8, 'relique', 'Totem de l\'alpha', { 'compagnon%': 50 }, { cuir: 50, croc: 3 }, { c: '#f3ead2' }),
@@ -1531,7 +1530,6 @@ function stat(k) { var t = 0; sources().forEach(function (f) { if (f[k]) t += f[
 function pvMax() { return 100 + stat('pv'); }
 function attaque() { return stat('atk'); }
 function defense() { return stat('def'); }
-function comboMax() { return Math.max(3, 6 - stat('combo')); }
 var BASE = { qcm: 12, phrase: 18, rappel: 30 };
 function degats(mode) {
   var b = (BASE[mode] + attaque()) * (1 + (stat('dmg') + stat(mode + '%')) / 100);
@@ -3256,7 +3254,7 @@ var APPORTS = [null,
   [['pierre', 'or'], 'Savoir ancien : les cartes frappent +40 %', { 'rappel%': 40 }, 'encre'],
   [['or', 'bois'], 'Trésors enfouis : +40 % d\'or', { 'or%': 40 }, 'ferrure'],
   [['or', 'cristal'], 'Pillards du désert : +30 % de butin', { butin: 30 }, 'ambre'],
-  [['bois', 'herbes'], 'Cœur sauvage : la frappe héroïque se charge plus vite', { combo: 1 }, 'croc'],
+  [['bois', 'herbes'], 'Cœur sauvage : les compétences se chargent plus vite', { combo: 1 }, 'croc'],
   [['pierre', 'fer'], 'Roche dure : +2 en attaque', { atk: 2 }, 'teinture'],
   [['herbes', 'cristal'], 'Magie des fées : +30 % de composantes rares', { 'special%': 30 }, 'larme'],
   [['cuir', 'pierre'], 'Vent porteur : 20 % des coups reçus esquivés', { esquive: 20 }, 'plumet'],
@@ -4219,9 +4217,9 @@ var FX_TXT = {
   butin: '+{0} % de butin', recolte: '+{0} % en récolte', 'or%': '+{0} % d\'or', 'special%': '+{0} % de spéciales', 'soin%': '+{0} % de soins',
   'bois%': '+{0} % de bois', 'pierre%': '+{0} % de pierre', 'fer%': '+{0} % de fer', 'herbes%': '+{0} % d\'herbes', 'cuir%': '+{0} % de cuir', 'cristal%': '+{0} % de cristal',
   'qcm%': '+{0} % sur les coups légers', 'phrase%': '+{0} % sur les coups moyens', 'rappel%': '+{0} % sur les coups forts', dmg: '+{0} % de dégâts',
-  combo: 'frappe héroïque plus tôt (jauge −{0})', garde: 'pare {0} coup par rencontre', esquive: '{0} % d\'esquive', compagnon: 'inflige {0} dégâts à chaque bonne réponse',
+  combo: 'compétences chargées plus vite (+{0}0 %)', garde: 'pare {0} coup par rencontre', esquive: '{0} % d\'esquive', compagnon: 'inflige {0} dégâts à chaque bonne réponse',
   'compagnon%': '+{0} % de dégâts du compagnon', soin: 'rend {0} PV', soinPhrase: 'chaque phrase réussie soigne {0} PV', cible: '+{0} % de la ressource visée',
-  echo: 'un coup gratuit par mot appris', soinHero: 'la frappe héroïque soigne {0} PV', potionDepart: 'une potion offerte', pvMob: 'monstres +{0} % PV', geode: 'géodes : {0} coup de pioche en moins'
+  echo: 'un coup gratuit par mot appris', soinHero: 'chaque compétence soigne {0} PV', potionDepart: 'une potion offerte', pvMob: 'monstres +{0} % PV', geode: 'géodes : {0} coup de pioche en moins'
 };
 function fxTexte(o) {
   if (o.txt && !o.inst) return T(o.txt);
@@ -4245,7 +4243,7 @@ function rangCamp() {
 }
 function campVue(retour) {
   var revient = !!EXPE;
-  EXPE = null; C = null; cur = null; combo = 0;
+  EXPE = null; C = null; cur = null;
   if (revient) { HEROC.x = GX; HEROC.y = GY + 12; allerVers(FX - 22, FY + 22); }
   var rg = rangCamp(); $('camp-rang').innerHTML = '<b>' + ech(T(rg.nom)) + '</b>' + (rg.suiv ? '<small>' + T('{0} / {1}', rg.total, rg.suiv[0]) + '</small>' : '');
   H().pv = pvMax();
@@ -5069,7 +5067,7 @@ function choisirMorceau(b, o) {
    on remplit le chariot, on remonte avant l'éboulement. Donjon : une carte
    de salles dont on voit le type, on choisit son chemin. Quêtes : combats
    au rythme, l'ennemi frappe quand sa jauge est pleine. */
-var C = null, combo = 0;
+var C = null;
 var NOMS_BOSS = { 1: 'Vieille-Suie', 2: 'Gloutonnerie', 3: 'Fièvre-des-Marais', 4: 'La Commère', 5: 'Tic-Tac', 6: 'Cendregueule', 7: 'Maître Férule', 8: 'Cœur-de-Braise', 9: 'Arlequin', 10: 'Croc-Sauvage' };
 var PAL_BOSS = { 7: { R: '#3a4a9a', r: '#22306a', o: '#7fd0ff', O: '#c8f0ff', m: '#2a2a5a', M: '#4a4a8a' }, 8: { R: '#c84a9a', r: '#8a2a6a', o: '#ffd24d', O: '#fff0a0', m: '#5a2a5a', M: '#8a4a8a' }, 9: { R: '#7a4ab8', r: '#4e2c80', o: '#5fd0e0', O: '#c8f8ff', m: '#2a5a5a', M: '#4a8a8a' }, 10: { R: '#4a7a3a', r: '#2a4a22', o: '#c9955a', O: '#f1d0a0', m: '#3a3a22', M: '#5a5a3a' } };
 var NOM_PHASE = { qcm: 'Choix', phrase: 'Phrase', rappel: 'Carte' };
@@ -5091,7 +5089,7 @@ function nouvelleExpe(mode, n) {
   EXPE.budget = mode === 'boss' ? BUDGET : Infinity;
   if (DEPART.evt) { EXPE.evt = DEPART.evt; DEPART.evt = null; }
   if (mode !== 'boss' && bonusJourDispo()) { EXPE.bonus = 2; J().bonusJour = jourCle(); }
-  H().pv = pvMax(); combo = 0; session = { derniers: [], depuisRappel: 0 }; recents = [];
+  H().pv = pvMax(); session = { derniers: [], depuisRappel: 0 }; recents = [];
   groupeDe();
   J().journal.exp++; sauver();
 }
@@ -5161,8 +5159,8 @@ async function scene(f, opts) {
     var pe = { nom: 'Le butin', spr: 'caisse', cle: 'caisse', prop: true, coffre: true, pv: 1, pvMax: 1, x: 0, base: 60, flash: 0 }; placer(pe); SC.ennemi = pe;
   } else if (f === 'gardien') {
     var bi = ZC.fiche.bilan || { ok: 0, err: 0 };
-    await apparition({ nom: 'Gardien de pierre', spr: 'golem', cle: 'golem', pv: BILAN_OK - bi.ok, pvMax: BILAN_OK, atk: 6, x: 0, base: 61, flash: 0 });
-    titre = 'Le gardien de pierre'; sous = T('Pour le vaincre : {0} bonnes réponses sur tes mots appris.', BILAN_OK);
+    await apparition({ nom: 'Gardien de pierre', spr: 'golem', cle: 'golem', pv: (BILAN_OK - bi.ok) * PV_GARDIEN, pvMax: BILAN_OK * PV_GARDIEN, atk: 6, x: 0, base: 61, flash: 0 });
+    titre = 'Le gardien de pierre'; sous = T('{0} PV. Chaque bonne réponse sur tes mots appris lui en retire {1}.', BILAN_OK * PV_GARDIEN, PV_GARDIEN);
   } else if (f === 'boss') {
     /* le boss de la liste, c'est le gardien de la contrée : plus fort loin du camp */
     var G = CONTREES[EXPE.contree].g, rgB = rangContree(EXPE.contree), pvB = Math.round(DIFF.gardienPv * (1 + DIFF.gardienPvRang * rgB));
@@ -5192,6 +5190,7 @@ async function scene(f, opts) {
 }
 /* la difficulté : des monstres bien plus solides qu'au début, qui grandissent avec la distance au camp,
    et plus encore dans la contrée qu'on est en train de conquérir (ses 15 monstres doivent se mériter) */
+var PV_GARDIEN = 120;
 var DIFF = { pv: 2.2, atk: 1.6, pvRang: .45, atkRang: .25, conquetePv: 1.35, conqueteAtk: 1.25, gardienPv: 900, gardienPvRang: .3, gardienAtk: 14, gardienAtkRang: .25 };
 function enConquete() { var cj = etat.camp.carte; return !!(EXPE && cj && cj.conquete && EXPE.contree === cj.conquete); }
 function creerMob(id, pv, atk, elite, pvBrut) {
@@ -5455,7 +5454,6 @@ function majEtiquette() {
   }
   if (f === 'arbre' || f === 'chasse' || f === 'grotte' || f === 'potager') { etiquetteLieu(f); return; }
   if (estQJ(f)) { if (EXPE.qj) etiquetteQuete(f); return; }
-  if (f === 'gardien') { $('e-nom').textContent = T(e.nom); for (i = 0; i < BILAN_OK; i++) h += '<span class="' + (i >= e.pv ? 'vide' : '') + '"></span>'; $('e-barre').innerHTML = '<div class="segs">' + h + '</div>'; return; }
   if (estCombat()) {
     if (!e) return;
     var autres = membres().length - 1;
@@ -5481,12 +5479,7 @@ function majBande() {
   }
   $('cb-lib').textContent = lib;
 }
-function majCombo() {
-  var z = $('combo'), mx = comboMax(), h = '', ok = C && estCombat() && C.famille !== 'gardien';
-  for (var i = 0; i < mx; i++) h += '<i class="' + (i < combo ? 'on' : '') + '"></i>';
-  z.innerHTML = h; z.classList.toggle('cache', !ok);
-  $('b-heroique').classList.toggle('cache', !(ok && combo >= mx && !C.verrou && SC.ennemi && !SC.ennemi.mort && !C.sonne));
-}
+function majCombo() {}   /* 09/11 : la frappe héroïque n'existe plus */
 function majBarre() {
   if (!EXPE) return;
   var h = '<span class="et">';
@@ -5549,7 +5542,6 @@ async function repondre(juste, opts) {
   if (!C) return 'fin';
   C.verrou = true; cur.fait = true; arreterChrono(); majCombo(); majRemonter();
   var info = opts.sansAlgo || cur.revision ? { valide: false } : appliquerAlgo(juste, cur.mode);
-  if (juste) combo = Math.min(comboMax(), combo + 1); else combo = Math.floor(combo / 2);
   C.n++; EXPE.q++;
   sauver(); majBande(); majCombo(); majBarre();
   if (juste && cur.mode === 'phrase' && stat('soinPhrase')) soigner(stat('soinPhrase'));
@@ -5618,8 +5610,8 @@ async function consequence(juste, info, opts) {
   /* combats */
   if (juste) {
     if (f === 'gardien') {
-      await frappeHeros(0, 2, false, true);
-      e.pv = info.bilan === 'ok' ? 0 : BILAN_OK - (ZC.fiche.bilan ? ZC.fiche.bilan.ok : 0); majEtiquette();
+      await frappeHeros(PV_GARDIEN, 2);
+      e.pv = info.bilan === 'ok' ? 0 : (BILAN_OK - (ZC.fiche.bilan ? ZC.fiche.bilan.ok : 0)) * PV_GARDIEN; majEtiquette();
       if (info.bilan === 'ok') { await mortEnnemi(); C.bilanFini = true; gagnerSpeciale(1); gagnerRes('cristal', 1); await banniere('Le gardien s\'effondre', 'Le groupe suivant de mots s\'ouvre.', 1400); }
       return finTour(info);
     }
@@ -5838,21 +5830,6 @@ async function piege(n) {
   son('mal'); SC.heros.rouge = maintenant() + 160; secouer(2, 180);
   var hs = sprHeros(); nombre('-' + n, SC.heros.x + hs.width / 2, SC.heros.base - hs.height - 2, 'mal');
   encaisser(n); await attendre(300);
-}
-async function heroique() {
-  if (!C || C.verrou || !estCombat() || C.famille === 'gardien' || combo < comboMax() || !SC.ennemi || SC.ennemi.mort || C.sonne) return;
-  C.verrou = true; combo = 0; majCombo(); arreterChrono();
-  var e = SC.ennemi, dmg = Math.round(3 * (BASE.phrase + attaque()) * (1 + stat('dmg') / 100));
-  SC.eclair = maintenant() + 140; son('niveau');
-  await banniere('Frappe héroïque !', null, 500);
-  dmg = encaisseEnnemi(e, dmg, true); await frappeHeros(dmg, 3); secouer(5, 400);
-  e.pv = Math.max(0, e.pv - dmg); if (C.famille === 'boss') ZC.boss.pv = e.pv;
-  majEtiquette();
-  if (stat('soinHero')) soigner(stat('soinHero'));
-  if (e.pv <= 0) await ennemiAbattu();
-  if (!C) return;
-  C.verrou = false; majCombo(); hud('hud-combat');
-  if (sceneFinie() && cur && !cur.fait) { cur.fait = true; prochaine(); }
 }
 function frappeHeros(dmg, force, crit, muet) {
   return (async function () {
@@ -7140,11 +7117,11 @@ function formerGroupe(f, opts) {
 }
 function renfort(e) { placerMembre(e, Math.min(2, membres().length)); e.entree = { t0: maintenant(), dur: 380 }; e.t = 0; e.cd = delaiAttaque(e, membres().length + 1); C.groupe.push(e); relayout(); }
 /* les coups du héros passent par les traits de l'ennemi */
-function encaisseEnnemi(e, n, heroique) {
+function encaisseEnnemi(e, n, perce) {
   if (!e || !e.traits) return n;
-  if (e.traits.indexOf('esquive') !== -1 && !heroique && Math.random() < .22) { nombre('Esquivé !', e.x + 8, 24, 'mal'); return 0; }
+  if (e.traits.indexOf('esquive') !== -1 && !perce && Math.random() < .22) { nombre('Esquivé !', e.x + 8, 24, 'mal'); return 0; }
   if (e.bouclier > 0) {
-    if (heroique || (cur && cur.mode === 'rappel')) { e.bouclier = 0; nombre('Bouclier brisé !', e.x + 8, 20, 'fort'); son('coup', 3); }
+    if (perce || (cur && cur.mode === 'rappel')) { e.bouclier = 0; nombre('Bouclier brisé !', e.x + 8, 20, 'fort'); son('coup', 3); }
     else { e.bouclier--; nombre(e.bouclier ? 'Bouclier !' : 'Bouclier brisé !', e.x + 8, 20, e.bouclier ? 'mal' : 'fort'); return Math.max(1, Math.round(n * .25)); }
   }
   if (e.traits.indexOf('carapace') !== -1) n = Math.max(1, Math.round(n * .6));
@@ -12184,7 +12161,7 @@ Object.assign(NL, {
   'Il fait trop noir : rallume la lanterne': 'Te donker: steek de lantaarn weer aan',
   '{0} : à trouver dans la liste {2} ({1}){3}': '{0}: te vinden in lijst {2} ({1}){3}',
   '{0} : en battant un gardien de liste': '{0}: door een lijstbewaker te verslaan',
-  'frappe héroïque plus tôt (jauge −{0})': 'heldenslag sneller klaar (meter −{0})',
+  'compétences chargées plus vite (+{0}0 %)': 'vaardigheden sneller geladen (+{0}0 %)',
   'pare {0} coup par rencontre': 'blokkeert {0} slag per gevecht',
   'inflige {0} dégâts à chaque bonne réponse': 'doet {0} schade bij elk goed antwoord',
   'un coup gratuit par mot appris': 'een gratis slag per geleerd woord',
@@ -12268,7 +12245,7 @@ Object.assign(NL, {
   'Vue dégagée : +10 % de coups critiques': 'Vrij zicht: +10 % voltreffers', 'Eau claire : soins +50 %': 'Helder water: genezing +50 %',
   'Galeries étayées : +2 en défense': 'Gestutte gangen: +2 verdediging', 'Savoir ancien : les cartes frappent +40 %': 'Oude kennis: kaarten slaan 40 % harder',
   'Trésors enfouis : +40 % d\'or': 'Begraven schatten: +40 % goud', 'Pillards du désert : +30 % de butin': 'Woestijnrovers: +30 % buit',
-  'Cœur sauvage : la frappe héroïque se charge plus vite': 'Wild hart: de heldenslag laadt sneller', 'Roche dure : +2 en attaque': 'Hard gesteente: +2 aanval',
+  'Cœur sauvage : les compétences se chargent plus vite': 'Wild hart: de vaardigheden laden sneller', 'Roche dure : +2 en attaque': 'Hard gesteente: +2 aanval',
   'Magie des fées : +30 % de composantes rares': 'Feeënmagie: +30 % zeldzame onderdelen', 'Vent porteur : 20 % des coups reçus esquivés': 'Meewind: 20 % van de klappen ontweken',
   'Glace pure : +40 % de cristal': 'Zuiver ijs: +40 % kristal', 'Forges des géants : +3 en défense': 'Reuzensmidsen: +3 verdediging',
   'Feu ardent : +3 en attaque': 'Laaiend vuur: +3 aanval', 'Runes de rappel : les cartes frappent +50 %': 'Herinneringsrunen: kaarten slaan 50 % harder',
@@ -12346,7 +12323,7 @@ Object.assign(NL, {
   'Maison du bâtisseur': 'Bouwmeestershuis', 'Décorations du camp. Son niveau ouvre les plus belles.': 'Versieringen voor het kamp. Zijn niveau opent de mooiste.', '+2 % de butin par niveau': '+2 % buit per niveau',
   '+30 % de cristal, et un coup de pioche de moins pour ouvrir une géode': '+30 % kristal, en één houweelslag minder om een geode te openen',
   'chaque mot appris donne un coup gratuit en combat': 'elk geleerd woord geeft een gratis slag in gevechten', '+40 % de cristal et +15 % de spéciales': '+40 % kristal en +15 % zeldzame onderdelen',
-  '+20 PV max, et la frappe héroïque soigne 30 PV': '+20 max. LP, en de heldenslag geneest 30 LP',
+  '+20 PV max, et chaque compétence soigne 30 PV': '+20 max. LP, en elke vaardigheid geneest 30 LP',
   'Vieille hachette': 'Oude handbijl', 'Pioche rouillée': 'Roestig houweel', 'Arc de fortune': 'Noodboog',
   /* potager, géodes, décorations */
   'Herbes sauvages': 'Wilde kruiden', 'Lavande': 'Lavendel', 'Tournesol': 'Zonnebloem', 'Fleur de lune': 'Maanbloem', 'Commune': 'Gewoon',
@@ -12436,7 +12413,7 @@ Object.assign(NL, {
   '+{0} % sur les coups légers': '+{0} % op lichte slagen', '+{0} % sur les coups moyens': '+{0} % op middelzware slagen', '+{0} % sur les coups forts': '+{0} % op zware slagen',
   '+{0} % de dégâts': '+{0} % schade', '{0} % d\'esquive': '{0} % ontwijken', '+{0} % de dégâts du compagnon': '+{0} % schade van je metgezel',
   'chaque phrase réussie soigne {0} PV': 'elke goede zin geneest {0} LP', '+{0} % de la ressource visée': '+{0} % van de gekozen grondstof',
-  'la frappe héroïque soigne {0} PV': 'de heldenslag geneest {0} LP', 'une potion offerte': 'een gratis drankje', 'monstres +{0} % PV': 'monsters +{0} % LP',
+  'chaque compétence soigne {0} PV': 'elke vaardigheid geneest {0} LP', 'une potion offerte': 'een gratis drankje', 'monstres +{0} % PV': 'monsters +{0} % LP',
   'géodes : {0} coup de pioche en moins': 'geodes: {0} houweelslag minder'
 });
 /* expéditions sans fin, 4 ou 5 réponses par étape, la conquête */
@@ -13479,10 +13456,12 @@ etiquetteQuete = function (f) {
   if (f !== 'traque') return etiquetteQueteAvantMH(f);
   var M = EXPE.mh, q = M.q, h = '', i;
   if (M.mode === 'combat' && SC.ennemi) {
-    var e = SC.ennemi, n = 12, pl = Math.ceil(e.pv / e.pvMax * n);
+    /* 09/11 : une vraie barre de PV, avec les chiffres, et le seuil de la phase 2 pour les grands */
+    var e = SC.ennemi, pc = Math.max(0, 100 * e.pv / e.pvMax);
     $('e-nom').textContent = T(e.nom) + (e.prepare ? ' · ' + T('attaque !') : '');
-    for (i = 0; i < n; i++) h += '<span class="' + (i < pl ? 'rouge' : 'vide') + '"></span>';
-    if (e.parts) e.parts.forEach(function (p) { h += '<span class="' + (p.casse ? 'vert' : 'vide') + '" title="' + ech(T(p.nom)) + '" style="margin-left:4px"></span>'; });
+    var parts = e.parts ? '<span class="pv-parts">' + e.parts.map(function (p) { return '<i class="' + (p.casse ? 'on' : '') + '" title="' + ech(T(p.nom)) + '"></i>'; }).join('') + '</span>' : '';
+    $('e-barre').innerHTML = '<div class="pv-l"><div class="barre pv-b"><i style="width:' + pc + '%"></i>' + (e.grand && !e.ph2 ? '<s></s>' : '') + '<b>' + Math.ceil(e.pv) + ' / ' + e.pvMax + '</b></div>' + parts + '</div>';
+    return;
   } else {
     var tot = q.type === 'chasse' ? besoinTraces() : q.n, ok = q.type === 'chasse' ? Math.min(M.monstre.traces, tot) : M.fait;
     $('e-nom').textContent = q.type === 'recolte' ? T('{0} : {1} / {2}', T(PIECES[q.cible].nom), M.fait, q.n) : q.type === 'massacre' ? T('{0} : {1} / {2}', T(BETES[q.cible].nom), M.fait, q.n) : M.monstre.revele ? T('{0} est repéré', T(BETES[q.cible].nom)) : T('Traces : {0} / {1}', ok, tot);
@@ -13689,8 +13668,6 @@ function utiliserComp(s) {
 }
 var poserQuestionAvantMH = poserQuestion;
 poserQuestion = function (t, f) { MH_T0 = performance.now(); var r = poserQuestionAvantMH(t, f); if (C && C.famille === 'traque') majComp(); return r; };
-var majComboAvantMH = majCombo;
-majCombo = function () { majComboAvantMH(); if (C && C.famille === 'traque') $('b-heroique').classList.add('cache'); };
 var finExpeditionAvantMH = finExpedition;
 finExpedition = function (a) { $('mh-comp').classList.add('cache'); $('mh-aide').classList.add('cache'); $('v-combat').classList.remove('traque'); var r = finExpeditionAvantMH(a); if (typeof tuto === 'function' && J().mh && Object.keys(J().mh.tues || {}).length) setTimeout(function () { tuto('pieces'); }, 1800); return r; };
 
@@ -15466,8 +15443,6 @@ majComp = function () {
 })();
 var poserQuestionAvantCU = poserQuestion;
 poserQuestion = function (t, f) { var r = poserQuestionAvantCU(t, f); majComp(); return r; };
-var majComboAvantCU = majCombo;
-majCombo = function () { majComboAvantCU(); if (enCombatU() || (C && C.famille === 'traque')) $('b-heroique').classList.add('cache'); };
 var finExpeditionAvantCU = finExpedition;
 finExpedition = function (a) { $('mh-comp').classList.add('cache'); $('v-combat').classList.remove('tq-ex', 'tq-q'); return finExpeditionAvantCU(a); };
 /* l'étiquette dit ce que fait le monstre, dans tous les combats */
@@ -17951,22 +17926,35 @@ var CST = {
         etoileC('po11', TR('Contre-attaque', 'Tegenaanval'), { fx: { garde: 1 } }), etoileC('po12', TR('Paume sonnante', 'Verdovende palm'), { actif: { id: 'po-paume', rech: 5, etourdit: 2, mult: 1.5 } })]],
     etoileC('po13', TR('Maître', 'Meester'), { fx: { atk: 6, esquive: 6 } }))
 };
-/* on relie les étoiles : la racine ouvre les trois branches, chaque étoile ouvre la suivante, la deuxième
-   étoile des côtés s'atteint aussi depuis le début de la branche du milieu, et le sommet depuis n'importe quel bout */
+/* 09/11 : un vrai réseau, plus trois couloirs. Seize étoiles par ciel, sur cinq étages :
+   la racine ; trois départs ; quatre étoiles ; quatre étoiles ; trois étoiles ; le sommet.
+   Presque chaque étoile s'atteint par deux chemins, les branches se croisent et se rejoignent. */
+var EXTRA_CST = {
+  epee: [etoileC('ep14', TR('Pas du bretteur', 'Schermerspas'), { rangs: 2, fx: { esquive: 3 } }), etoileC('ep15', TR('Volonté', 'Wilskracht'), { rangs: 2, fx: { pv: 12 } })],
+  dague: [etoileC('dg14', TR('Doigts fins', 'Fijne vingers'), { rangs: 2, fx: { crit: 2 } }), etoileC('dg15', TR('Souffle court', 'Korte adem'), { rangs: 2, fx: { mana: 5 } })],
+  lance: [etoileC('la14', TR('Garde basse', 'Lage wering'), { rangs: 2, fx: { def: 2 } }), etoileC('la15', TR('Élan', 'Vaart'), { rangs: 2, fx: { dmg: 4 } })],
+  marteau: [etoileC('ma14', TR('Épaules larges', 'Brede schouders'), { rangs: 2, fx: { pv: 15 } }), etoileC('ma15', TR('Rage', 'Woede'), { rangs: 2, fx: { atk: 2 } })],
+  arc: [etoileC('ar14', TR('Main sûre', 'Vaste hand'), { rangs: 2, fx: { dmg: 4 } }), etoileC('ar15', TR('Vent arrière', 'Rugwind'), { rangs: 2, fx: { mana: 5 } })],
+  poings: [etoileC('po14', TR('Cuir tanné', 'Gelooid leer'), { rangs: 2, fx: { def: 2 } }), etoileC('po15', TR('Second souffle', 'Tweede adem'), { rangs: 2, fx: { mana: 5 } })]
+};
+/* place [x, y] et étoiles d'où l'on peut venir (par leur nom dans le gabarit) */
+var GABARIT_CST = {
+  L1: [28, 112, ['R0']], M1: [50, 105, ['R0']], R1: [72, 112, ['R0']],
+  a: [14, 89, ['L1']], b: [37, 85, ['L1', 'M1']], c: [63, 85, ['M1', 'R1']], d: [86, 89, ['R1']],
+  e: [12, 63, ['a', 'b']], f: [35, 59, ['b']], g: [65, 59, ['c']], h: [88, 63, ['c', 'd']],
+  i: [22, 37, ['e', 'f']], j: [50, 41, ['f', 'g']], k: [78, 37, ['g', 'h']],
+  CAP: [50, 14, ['i', 'j', 'k']]
+};
 var NOEUD_CST = {};
 ORDRE_CST.forEach(function (ty) {
-  var A = CST[ty], l = []; A.ty = ty;
-  A.racine.x = POS_CST.r[0]; A.racine.y = POS_CST.r[1]; A.racine.req = []; l.push(A.racine);
-  A.br.forEach(function (b, bi) {
-    var cle = ['L', 'M', 'R'][bi]; b.nomBr = b[0]; b.n = b.slice(1);
-    b.n.forEach(function (t, k) {
-      t.x = POS_CST[cle][k][0]; t.y = POS_CST[cle][k][1]; t.br = bi;
-      t.req = k === 0 ? [A.racine.id] : [b.n[k - 1].id];
-      if (k === 1 && bi !== 1) t.req.push(A.br[1][1].id);
-      l.push(t);
-    });
-  });
-  A.cap.x = POS_CST.cap[0]; A.cap.y = POS_CST.cap[1]; A.cap.req = A.br.map(function (b) { return b[4].id; }); A.cap.cap = true; l.push(A.cap);
+  var A = CST[ty], B = A.br, X = EXTRA_CST[ty]; A.ty = ty;
+  B.forEach(function (b) { b.nomBr = b[0]; b.n = b.slice(1); });
+  var place = { R0: A.racine, L1: B[0].n[0], a: B[0].n[1], e: B[0].n[2], i: B[0].n[3], M1: B[1].n[0], c: B[1].n[1], f: B[1].n[2], j: B[1].n[3], b: X[0], g: X[1], R1: B[2].n[0], d: B[2].n[1], h: B[2].n[2], k: B[2].n[3], CAP: A.cap };
+  var brDe = { L1: 0, a: 0, e: 0, i: 0, M1: 1, b: 1, c: 1, f: 1, g: 1, j: 1, R1: 2, d: 2, h: 2, k: 2 };
+  A.racine.x = 50; A.racine.y = 132; A.racine.req = [];
+  Object.keys(GABARIT_CST).forEach(function (nom) { var gb = GABARIT_CST[nom], t = place[nom]; t.x = gb[0]; t.y = gb[1]; t.req = gb[2].map(function (r) { return place[r].id; }); if (brDe[nom] != null) t.br = brDe[nom]; });
+  A.cap.cap = true;
+  var l = [A.racine, place.L1, place.M1, place.R1, place.a, place.b, place.c, place.d, place.e, place.f, place.g, place.h, place.i, place.j, place.k, A.cap];
   A.l = l; l.forEach(function (t) { t.ty = ty; t.kids = []; NOEUD_CST[t.id] = t; if (t.actif) { t.actif.nom = t.nom; } });
   l.forEach(function (t) { t.req.forEach(function (r) { NOEUD_CST[r].kids.push(t.id); }); });
 });
@@ -18079,7 +18067,7 @@ function dessinerCst(centrer) {
   var parents = t.req.map(function (id) { return '<button data-et="' + id + '" class="cf-nav' + (rangCst(id) ? ' on' : '') + '">↓ ' + ech(T(NOEUD_CST[id].nom)) + '</button>'; }).join('');
   var enfants = t.kids.map(function (id) { return '<button data-et="' + id + '" class="cf-nav' + (rangCst(id) ? ' on' : '') + '">↑ ' + ech(T(NOEUD_CST[id].nom)) + '</button>'; }).join('');
   h += '<div class="cf-navs">' + parents + enfants + '</div>';
-  if (!ok) h += '<p class="cf-req">' + (t.cap ? T('Il faut le bout d\'une des trois branches.') : T('Il faut d\'abord une étoile reliée en dessous.')) + '</p>';
+  if (!ok) h += '<p class="cf-req">' + T('Il faut d\'abord une des étoiles reliées en dessous.') + '</p>';
   h += '<div class="cf-bas">';
   if (t.actif && r) h += '<button class="mini ' + (equipe ? 'porte equipe' : 'equipe') + '" id="cf-eq"' + (!equipe && (eq.length >= 3 || !tienne) ? ' disabled' : '') + '>' + T(equipe ? 'Retirer du combat' : !tienne ? 'Arme non tenue' : eq.length >= 3 ? 'Trois max' : 'Emporter au combat') + '</button>';
   if (!max) h += '<button class="mini fab" id="cf-ap"' + (ok && pts > 0 ? '' : ' disabled') + '>' + (pts > 0 ? T('Apprendre (1 point)') : T('Pas de point')) + '</button>';
@@ -18274,6 +18262,412 @@ Object.assign(NL, {
   document.head.appendChild(st);
 })();
 
+/* ═════════ 09/11 : un lot de retours ═════════
+   1. Une quête qui a tout ce qu'il faut se termine toujours (garde-fou).
+   2. La fenêtre de fabrication ou d'enchantement cache l'écran derrière : on ne voit plus le résultat avant la fin.
+   3-4. Toucher le camp sur la carte zoome dessus : les lieux de récolte et les événements sont posés autour.
+   5. Plus de donjon ; l'or ne vient plus que des quêtes (et du commerce).
+   6. La Maison du bâtisseur devient le Comptoir des chasseurs (acheter, vendre le matériel de quête) ;
+      la beauté du camp suit son niveau.
+   8. De nouveaux boutons de compétences en combat.
+   11. La pastille de la fiche ne compte que l'arme tenue ; les autres armes sont listées dans Compétences.
+   12. Des enchantements qui ont du sens pour chaque pièce, et les anciens incohérents sont convertis. */
+
+/* ── 1. le garde-fou des quêtes ── */
+setInterval(function () {
+  var M = EXPE && EXPE.mh; if (!M || !C || C.famille !== 'traque') return;
+  if (M.q.type === 'recolte' && M.fait >= M.q.n && !M.fini) { quetaMHReussie(); return; }
+  if (!C.fini || M.finLance) { M.finT = 0; return; }
+  if (M.act || M.mode !== 'explore' || M.enRencontre || M.trans || !$('voile').classList.contains('cache') || (REVEL && !REVEL.fini)) { M.finT = 0; return; }
+  var now = maintenant(); if (!M.finT) { M.finT = now; return; }
+  if (now - M.finT > 1400) { M.finLance = true; cacherQuestions(); apresScene(); }
+}, 500);
+var apresSceneAvant0911 = apresScene;
+apresScene = async function () { var M = EXPE && EXPE.mh; if (M && C && C.fini) { if (M.finLance === 'fait') return; M.finLance = 'fait'; } return apresSceneAvant0911(); };
+
+/* ── 5. l'or : seulement les quêtes de chasse (et le commerce, hors expédition) ── */
+var gagnerAvantOr = gagner;
+gagner = function (k, n, pas) { if (k === 'or' && EXPE && !EXPE.mh) return 0; return gagnerAvantOr(k, n, pas); };
+['mine', 'potager', 'donjon'].forEach(function (d) { if (DEST_RES[d]) DEST_RES[d] = DEST_RES[d].filter(function (k) { return k !== 'or'; }); if (LIEUX_DEF[d]) LIEUX_DEF[d].res = LIEUX_DEF[d].res.filter(function (k) { return k !== 'or'; }); });
+Object.keys(EVTS).forEach(function (t) { if (EVTS[t].genre === 'crypte') delete EVTS[t]; else EVTS[t].res = EVTS[t].res.filter(function (k) { return k !== 'or'; }); });
+
+/* ── 3-4. les événements vivent autour du camp, et le camp se zoome ── */
+evenementsActifs = function () {
+  var j = J(), auj = numJour(aujourdhui()), faits = j.evts || {};
+  return (j.evtsCarte || []).filter(function (e) { return e.fin >= auj && !faits[e.id] && EVTS[e.type]; }).map(function (e) { return { id: e.id, type: e.type, zone: 1, jours: e.fin - auj + 1 }; });
+};
+tirerEvenement = function () {
+  var j = J(), actifs = evenementsActifs(), avant = Math.round(chanceEvt() * 100);
+  j.evtChance = Math.min(1, chanceEvt() + CHANCE_EVT.pas);
+  var r = { avant: avant, chance: Math.round(j.evtChance * 100) };
+  if (actifs.length >= CHANCE_EVT.max || Math.random() >= j.evtChance) return r;
+  var deja = actifs.map(function (e) { return e.type; }).concat((j.evtsCarte || []).slice(-3).map(function (e) { return e.type; }));
+  var types = Object.keys(EVTS).filter(function (t) { return (!EVTS[t].si || EVTS[t].si(1)) && deja.indexOf(t) === -1; });
+  if (!types.length) return r;
+  var t = mel(types)[0], auj = numJour(aujourdhui());
+  j.evtsCarte = (j.evtsCarte || []).filter(function (e) { return e.fin >= auj; }).slice(-8).concat([{ id: 'e' + Date.now().toString(36) + ':' + t + ':1', type: t, zone: 1, fin: auj + CHANCE_EVT.duree - 1 }]);
+  j.evtChance = CHANCE_EVT.apres; r.nouveau = { type: t, zone: 1 }; r.chance = Math.round(CHANCE_EVT.apres * 100);
+  return r;
+};
+var CAMPZ = { sel: null };
+var LIEUX_CAMP = ['foret', 'mine', 'chasse', 'grotte', 'potager'];
+function lieuxEnvirons() {
+  var l = LIEUX_CAMP.map(function (k) { return { k: k }; });
+  evenementsActifs().forEach(function (ev) { l.push({ k: 'evt', ev: ev }); });
+  return l;
+}
+function cleLieu(L) { return L.k === 'evt' ? L.ev.id : L.k; }
+function dezoomCamp() {
+  var M = $('mo-monde'), Z = $('mo-lieux'); if (!M) return;
+  if (M.classList.contains('zcamp')) { M.classList.remove('zoom', 'zcamp'); M.style.transform = ''; }
+  if (Z && Z.dataset.camp) { Z.innerHTML = ''; Z.style.transform = ''; delete Z.dataset.camp; }
+}
+function zoomCamp() {
+  var M = $('mo-monde'), Z = $('mo-lieux'), P = $('mo-panneau'), W = 390, s = 3;
+  var haut = 86, bas = P && !P.classList.contains('cache') ? P.offsetTop : 800;
+  var cx = MW.cx * 2 * s, cy = MW.cy * 2 * s, tx = Math.round(W / 2 - cx), ty = Math.round((haut + bas) / 2 - cy);
+  M.style.transformOrigin = '0 0'; M.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')'; M.classList.add('zoom', 'zcamp');
+  Z.style.transform = 'translate(' + tx + 'px,' + ty + 'px)'; Z.dataset.camp = '1';
+  var l = lieuxEnvirons(), n = l.length, rx = 132, ry = Math.min(118, (bas - haut) / 2 - 34), h = '<span class="cz-camp" style="left:' + cx + 'px;top:' + (cy + 22) + 'px">' + T('Le camp') + '</span>';
+  l.forEach(function (L, i) {
+    var a = -Math.PI / 2 + i * 2 * Math.PI / n, X = Math.round(cx + Math.cos(a) * rx), Y = Math.round(cy + Math.sin(a) * ry) + 14, k = cleLieu(L), def = L.k === 'evt' ? EVTS[L.ev.type] : LIEUX_DEF[L.k];
+    h += '<button class="lieu cz' + (L.k === 'evt' ? ' evt' : '') + (CAMPZ.sel === k ? ' sel' : '') + '" data-cz="' + ech(k) + '" style="left:' + X + 'px;top:' + Y + 'px">' +
+      '<img class="px" src="' + vignetteLieu(L, 1) + '">' + (L.k === 'evt' ? '<i class="evt-pt">!</i>' : '') + '<span class="lz-nom">' + ech(T(def.nom)) + '</span></button>';
+  });
+  Z.innerHTML = h;
+  Z.querySelectorAll('[data-cz]').forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); CAMPZ.sel = b.dataset.cz; son('clic'); panneauMonde(); }; });
+}
+function partirEvtCamp(ev) {
+  var D = EVTS[ev.type]; preparerEvts(); DEPART.contree = 1;
+  if (D.genre === 'caravane') { caravane(ev, 1); return; }
+  if (D.genre === 'activite') {
+    marquerEvt(ev.id); DEPART.evt = { type: ev.type, id: ev.id, reste: D.reste }; lancerDepart(D.mode, DEPART.liste);
+    setTimeout(function () { if (EXPE && EXPE.evt && EXPE.evt.id === ev.id) celebrer(T(D.nom)); }, 700); return;
+  }
+  if (D.genre === 'fortuit') { marquerEvt(ev.id); DEPART.evt = { type: ev.type, id: ev.id }; lancerDepart('evenement', DEPART.liste); return; }
+  var bete = BETE_REGION[REGION_BIOME[CONTREES[1].b]] || 'troll';
+  DEPART.evt = { type: ev.type, id: ev.id, groupes: (D.groupes || [[bete]]).map(function (g) { return g.slice(); }) };
+  lancerDepart('evenement', DEPART.liste);
+}
+var panneauMondeAvantCamp = panneauMonde;
+panneauMonde = function () {
+  if (MW.sel !== 'camp') { dezoomCamp(); return panneauMondeAvantCamp(); }
+  var P = $('mo-panneau'), l = lieuxEnvirons(), L = l.filter(function (x) { return cleLieu(x) === CAMPZ.sel; })[0];
+  var h = '<button class="mo-ferme" id="mo-ferme">×</button><div class="mo-tete"><div><b>' + T('Les environs du camp') + '</b><span class="mo-etat e-libre">' + T('Récolte') + '</span></div></div>';
+  var el = H().elixirPret && OBJ[H().elixirPret];
+  if (bonusJourDispo() || el) h += '<p class="bonus-jour">' + (bonusJourDispo() ? T('Premier départ du jour : butin double sur tes {0} premières réponses.', BUDGET) : '') + (el ? ' ' + T('Élixir prêt : {0}.', T(el.nom)) : '') + '</p>';
+  if (!L) h += '<p class="mo-desc">' + T('Touche un lieu autour du camp pour voir ce qu\'on y trouve. Les événements (!) durent deux jours.') + '</p>' + chanceHTML();
+  else {
+    var evt = L.k === 'evt', def = evt ? EVTS[L.ev.type] : LIEUX_DEF[L.k], res = (evt ? def.res : DEST_RES[L.k] || def.res || []).filter(function (k) { return k !== 'or' && k !== 'objet'; });
+    h += '<div class="mo-lieu' + (evt ? ' evt' : '') + '"><div class="ml-tete"><b>' + ech(T(def.nom)) + '</b>' + (evt ? '<small>' + T(L.ev.jours > 1 ? 'encore {0} jours' : 'dernier jour !', L.ev.jours) + '</small>' : '') + '</div>' +
+      '<p>' + ech(T(def.desc)) + '</p><div class="ml-res">' + (res.length ? '<span class="ml-l">' + T('On y trouve :') + '</span>' + res.map(function (k) { return '<span class="chip">' + img(icoDest(k), 15) + ' ' + ech(nomRes(k)) + '</span>'; }).join('') : '') +
+      ((evt ? def.res : []).indexOf('objet') !== -1 ? '<span class="chip">' + T('un objet') + '</span>' : '') + '</div>' +
+      '<button class="btn large" id="cz-partir">' + T(evt ? 'Y aller' : 'Partir') + '</button></div>';
+  }
+  P.innerHTML = h; P.classList.remove('cache');
+  zoomCamp();
+  $('mo-ferme').onclick = function (ev) { ev.stopPropagation(); son('clic'); MW.sel = null; CAMPZ.sel = null; MONDE_CLE = ''; majMonde(); };
+  if ($('cz-partir')) $('cz-partir').onclick = function () { son('clic'); if (L.k === 'evt') partirEvtCamp(L.ev); else { DEPART.contree = 1; lancerDepart(L.k, DEPART.liste); } };
+};
+
+/* ── 6. le Comptoir des chasseurs, à la place de la Maison du bâtisseur ── */
+Object.assign(BATIMENTS.batisseur, { nom: 'Comptoir des chasseurs', desc: 'On y vend et on y achète le matériel de quête : pièces de monstres et récoltes des contrées. Son niveau ouvre les contrées lointaines.' });
+NOM_CONTENU.batisseur = 'Commerce'; NOM_COURT.batisseur = TR('Comptoir', 'Beurs');
+var CPT = { tab: 'vendre', sel: null }, REGION_PIECE = null;
+function regionDePiece(id) {
+  if (!REGION_PIECE) { REGION_PIECE = {}; REGIONS.forEach(function (R, k) { (R.recoltes || []).forEach(function (p) { if (REGION_PIECE[p] == null) REGION_PIECE[p] = k; }); (R.petits || []).concat(R.grands || []).forEach(function (b) { var B0 = BETES[b]; (B0 && B0.loot || []).forEach(function (e) { if (REGION_PIECE[e[0]] == null) REGION_PIECE[e[0]] = k; }); }); }); }
+  return REGION_PIECE[id] != null ? REGION_PIECE[id] : 0;
+}
+function prixPiece(id) {
+  var k = regionDePiece(id), r = (PIECES[id] && PIECES[id].r) || 0, base = (6 + k * 4) * (1 + r * .6), nv = niveauBat('batisseur');
+  return { vente: Math.max(1, Math.round(base * (1 + nv * .04))), achat: Math.max(2, Math.round(base * 2.4 * (1 - nv * .03))) };
+}
+function piecesAVendre() { return Object.keys(PIECES).filter(function (id) { return stock(id) > 0; }).sort(function (a, b) { return regionDePiece(a) - regionDePiece(b); }); }
+function piecesAAcheter(niv) { var ouv = regionsOuvertes(); return Object.keys(PIECES).filter(function (id) { var k = regionDePiece(id); return k < ouv && k <= niv + 1; }).sort(function (a, b) { return regionDePiece(a) - regionDePiece(b); }); }
+decoHTML = function (niv) {
+  var l = CPT.tab === 'vendre' ? piecesAVendre() : piecesAAcheter(niv);
+  var h = '<div class="onglets"><button data-cpt-tab="vendre" class="' + (CPT.tab === 'vendre' ? 'on' : '') + '">' + T('Vendre') + '</button><button data-cpt-tab="acheter" class="' + (CPT.tab === 'acheter' ? 'on' : '') + '">' + T('Acheter') + '</button></div>';
+  if (!l.length) return h + '<p class="f-sous">' + T(CPT.tab === 'vendre' ? 'Tu n\'as aucune pièce de quête à vendre : elles se trouvent dans les contrées de chasse.' : 'Rien à acheter pour l\'instant : ouvre des contrées de chasse.') + '</p>';
+  if (l.indexOf(CPT.sel) === -1) CPT.sel = l[0];
+  var id = CPT.sel, p = prixPiece(id), n = stock(id), R = REGIONS[regionDePiece(id)];
+  h += '<div class="grille g6">' + l.map(function (x) { return tuileG(icoRes(x), CPT.sel === x ? 'sel ' : '', ' data-cpt="' + x + '"', stock(x) || null, nomRes(x)); }).join('') + '</div>';
+  h += '<div class="detail"><img class="px" src="' + icoRes(id) + '"><div class="n"><b>' + ech(nomRes(id)) + '</b><small>' + ech(T(R.nom)) + ' · ' + T('tu en as {0}', n) + '</small><span class="couts">' +
+    (CPT.tab === 'vendre' ? T('Le comptoir paie {0} or pièce', p.vente) : T('Prix : {0} or pièce', p.achat)) + '</span></div><div class="cpt-b">' +
+    (CPT.tab === 'vendre' ? '<button class="mini fab" data-cpt-v="1"' + (n ? '' : ' disabled') + '>' + T('Vendre 1') + '</button><button class="mini" data-cpt-v="' + n + '"' + (n > 1 ? '' : ' disabled') + '>' + T('Tout ({0} or)', p.vente * n) + '</button>'
+      : '<button class="mini fab" data-cpt-a="1"' + (stock('or') >= p.achat ? '' : ' disabled') + '>' + T('Acheter 1') + '</button><button class="mini" data-cpt-a="5"' + (stock('or') >= p.achat * 5 ? '' : ' disabled') + '>' + T('Acheter 5') + '</button>') + '</div></div>';
+  return h;
+};
+lierDeco = function (refaire) {
+  lier('[data-cpt-tab]', function (d) { CPT.tab = d.cptTab; son('clic'); refaire(); });
+  lier('[data-cpt]', function (d) { CPT.sel = d.cpt; son('clic'); refaire(); });
+  lier('[data-cpt-v]', function (d) { var id = CPT.sel, q = Math.min(+d.cptV, stock(id)); if (!q) return; var pv = prixPiece(id).vente * q; payer(objet1(id, q)); crediter('or', pv); son('or'); celebrer(T('+{0} or', pv)); sauver(); hudCamp(); refaire(); });
+  lier('[data-cpt-a]', function (d) { var id = CPT.sel, q = +d.cptA, pa = prixPiece(id).achat * q; if (stock('or') < pa) return; payer({ or: pa }); crediter(id, q); son('or'); celebrer(T('+{0} {1}', q, nomRes(id))); sauver(); hudCamp(); refaire(); });
+};
+function objet1(k, n) { var o = {}; o[k] = n; return o; }
+/* la beauté du camp suit son niveau : chaque palier pose de nouvelles décorations, toutes seules */
+var PALIERS_DECO = { chemins: [3, 12, 30], fleurs: [2, 8, 18, 35], cloture: [5, 15, 28], lanternes: [10, 22, 40], arbres: [6, 16, 32], fontaine: [20, 45], bannieres: [8, 25], puits: [14], statue: [50] };
+function embellirCamp() {
+  if (!etat || !etat.camp) return;
+  var t = rangCamp().total, change = false;
+  ORDRE_DECOS.forEach(function (k) { var p = PALIERS_DECO[k] || [], n = p.filter(function (s) { return t >= s; }).length; n = Math.min(n, DECOS[k].niveaux.length - 1); if (n > (etat.camp.deco[k] || 0)) { etat.camp.deco[k] = n; change = true; } });
+  if (change) { SOL = null; STATIQUES = null; sauver(); }
+}
+
+/* ── 8. les boutons de compétences ── */
+var GLYPHES = {
+  frappe: ['......#', '.....#.', '#...#..', '.#.#...', '..#....', '.#.#...', '#......'],
+  multi: ['..#..#.', '.#..#..', '#..#..#', '..#..#.', '.#..#..', '#..#...', '.......'],
+  garde: ['.#####.', '#######', '###.###', '##...##', '.##.##.', '..###..', '...#...'],
+  soin: ['.##.##.', '#######', '#######', '.#####.', '..###..', '...#...', '.......'],
+  choc: ['...#...', '#..#..#', '.#####.', '###.###', '.#####.', '#..#..#', '...#...'],
+  sang: ['...#...', '..###..', '.#####.', '#######', '#######', '.#####.', '..###..'],
+  brise: ['..###..', '.##.##.', '##..#.#', '#..##..', '..##..#', '.##.##.', '..###..']
+};
+var COUL_GLYPHE = { frappe: '#ffb35a', multi: '#ff7a5a', garde: '#7fd0ff', soin: '#8af59a', choc: '#ffd24d', sang: '#ff5a6a', brise: '#c08af2' };
+function sorteComp(s) { return s.soin ? 'soin' : s.garde ? 'garde' : s.etourdit ? 'choc' : (s.coups || 1) >= 3 ? 'multi' : s.saigne || s.saigneM ? 'sang' : s.brise ? 'brise' : 'frappe'; }
+function glypheSVG(g, c) { var r = ''; GLYPHES[g].forEach(function (l, j) { for (var i = 0; i < 7; i++) if (l[i] === '#') r += '<rect x="' + i + '" y="' + j + '" width="1" height="1"/>'; }); return '<svg viewBox="0 0 7 7" shape-rendering="crispEdges" fill="' + c + '">' + r + '</svg>'; }
+function courtComp(s) {
+  var l = [];
+  if (s.mult && s.mult !== 1) l.push('×' + String(s.mult).replace('.', ','));
+  if ((s.coups || 1) > 1) l.push(T('{0} coups', s.coups));
+  if (s.soin) l.push('+' + s.soin + ' ' + T('PV'));
+  if (s.garde) l.push(T('pare'));
+  if (s.etourdit) l.push(T('sonne'));
+  if (s.saigne || s.saigneM) l.push(T('saigne'));
+  return l.slice(0, 2).join(' · ');
+}
+var majCompAvant0911 = majComp;
+majComp = function () {
+  majCompAvant0911();
+  var bar = $('mh-comp'); if (!bar || bar.classList.contains('cache')) return;
+  var l = listeComp();
+  bar.querySelectorAll('[data-sk]').forEach(function (b) {
+    var s = l[+b.dataset.sk]; if (!s) return;
+    var g = sorteComp(s), c = COUL_GLYPHE[g], r = rechDe(s), ch = chargeDe(s), pret = ch >= r, pct = Math.round(Math.min(1, ch / r) * 100);
+    b.className = 'sk ' + (b.classList.contains('on') ? 'on ' : '') + (pret ? 'pret' : 'charge'); b.style.setProperty('--c', c);
+    b.innerHTML = '<em class="jc"><b style="width:' + pct + '%"></b></em><span class="sk-g">' + glypheSVG(g, c) + '</span><span class="sk-t"><b>' + ech(T(s.nom)) + '</b><small>' + (pret ? T('prêt !') : ech(courtComp(s))) + '</small></span>';
+  });
+};
+(function () {
+  var st = document.createElement('style');
+  st.textContent =
+    '.pv-l{display:flex;align-items:center;gap:6px}.barre.pv-b{flex:1;height:12px}.barre.pv-b b{display:block;font-family:var(--num);font-size:10px;line-height:12px}.barre.pv-b s{position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;background:#ffd24d;box-shadow:0 0 0 1px #000}.pv-parts{display:flex;gap:3px}.pv-parts i{width:8px;height:8px;background:#14102a;box-shadow:0 0 0 1px #000}.pv-parts i.on{background:#5cbf64}' +
+    '#pop-butin.pop-butin,.pop-butin{background:rgba(5,6,16,.96);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}' +
+    '.mh-comp button.sk{position:relative;overflow:hidden;flex:1 1 0;min-width:0;display:flex;flex-direction:row;align-items:center;gap:6px;padding:5px 6px;min-height:46px;background:#1b1830;color:#d8d2ec;text-align:left;opacity:1;box-shadow:0 0 0 2px #000,inset 0 0 0 1px #3a3456}' +
+    '.mh-comp button.sk .jc{position:absolute;inset:0;width:auto;height:auto;background:none;box-shadow:none;z-index:0}.mh-comp button.sk .jc b{display:block;height:100%;background:var(--c);opacity:.16;transition:width .2s linear}' +
+    '.mh-comp button.sk .sk-g{position:relative;z-index:1;flex:0 0 28px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:#0e0c1c;box-shadow:0 0 0 1px #000,inset 0 0 0 1px var(--c)}.mh-comp button.sk .sk-g svg{width:18px;height:18px;display:block}' +
+    '.mh-comp button.sk .sk-t{position:relative;z-index:1;min-width:0;line-height:1.1}.mh-comp button.sk .sk-t b{display:block;font-family:var(--px);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mh-comp button.sk .sk-t small{display:block;font-family:var(--num);font-size:10px;color:#8f88aa;white-space:nowrap}' +
+    '.mh-comp button.sk.charge .sk-g svg{opacity:.4}.mh-comp button.sk.charge .sk-t b{color:#a8a0c4}' +
+    '.mh-comp button.sk.pret{background:#2a2350;box-shadow:0 0 0 2px #000,0 0 0 3px var(--c),0 0 12px var(--c);animation:skPret 1.1s ease-in-out infinite}.mh-comp button.sk.pret .jc b{opacity:.3}.mh-comp button.sk.pret .sk-t b{color:#fff}.mh-comp button.sk.pret .sk-t small{color:var(--c);font-weight:700}' +
+    '.mh-comp button.sk:active{transform:translateY(1px)}@keyframes skPret{50%{box-shadow:0 0 0 2px #000,0 0 0 3px var(--c),0 0 3px var(--c)}}' +
+    '#mo-monde.zcamp #mo-labels{opacity:0}.lieu.cz{transform:translate(-50%,-60%)}.lieu.cz img{height:54px;max-width:66px}.lieu.cz .lz-nom{font-size:11px}.lieu.cz .evt-pt{top:-4px;right:2px}' +
+    '.cz-camp{position:absolute;transform:translate(-50%,0);font-family:var(--px);font-size:12px;color:#ffd24d;background:rgba(14,17,40,.85);box-shadow:0 0 0 1px #000;padding:1px 6px;pointer-events:none}' +
+    '.cpt-b{display:flex;flex-direction:column;gap:5px}.cpt-b .mini{min-width:96px}' +
+    '.cp-autres{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:2px 0 6px;font-size:12px;color:var(--doux)}.cp-autres button{border:0;padding:5px 8px;background:#1a1838;color:var(--c);font-family:var(--px);font-size:12px;box-shadow:0 0 0 2px #000,inset 0 0 0 1px var(--c)}.cp-autres b{color:#8af59a}';
+  document.head.appendChild(st);
+})();
+/* la frappe héroïque n'est plus : ses deux effets passent aux compétences */
+var vitesseChargeAvantCombo = vitesseCharge;
+vitesseCharge = function () { return vitesseChargeAvantCombo() * (1 + stat('combo') * .1); };
+var utiliserCompAvantSoin = utiliserComp;
+utiliserComp = async function (s) { var avant = CB().rech[s && s.id]; var r = await utiliserCompAvantSoin(s); if (stat('soinHero') && s && CB().rech[s.id] !== avant && H().pv > 0) { H().pv = Math.min(pvMax(), H().pv + stat('soinHero')); hud('hud-combat'); } return r; };
+
+/* ── 11. la pastille : l'arme en main seulement ; les autres armes sont listées dans Compétences ── */
+var hudCampAvant0911 = hudCamp;
+hudCamp = function () {
+  hudCampAvant0911();
+  try { var b = $('b-fiche'); if (b && J()) { var n = pointsCst(typeArme()); b.classList.toggle('pts', n > 0); b.dataset.pts = n; } migrerEnchants(); embellirCamp(); } catch (err) { console.error(err); }
+};
+var feuilleCompetencesAvantAutres = feuilleCompetences;
+feuilleCompetences = function () {
+  feuilleCompetencesAvantAutres();
+  var ty = typeArme(), l = ORDRE_CST.filter(function (k) { return k !== ty && pointsCst(k) > 0; }), b = $('cst-ouvrir'); if (!l.length || !b) return;
+  b.insertAdjacentHTML('afterend', '<div class="cp-autres"><span>' + T('Points à placer pour d\'autres armes :') + '</span>' + l.map(function (k) { return '<button data-cpa="' + k + '" style="--c:' + CST[k].c + '">' + ech(T(NOM_TYPE[k])) + ' <b>+' + pointsCst(k) + '</b></button>'; }).join('') + '</div>');
+  lier('[data-cpa]', function (d) { son('clic'); ouvrirConstellation(d.cpa); });
+};
+feuilleArbres = feuilleCompetences;
+
+/* ── 12. des enchantements qui ont du sens ── */
+Object.assign(ENCH_POOL, {
+  arme: ['atk', 'atk', 'crit', 'dmg', 'vol', 'mana'],
+  armure: ['def', 'def', 'pv', 'pv', 'esquive', 'soin%'],
+  relique: ['atk', 'def', 'pv', 'crit', 'esquive', 'dmg', 'soin%', 'mana', 'vente%'],
+  hache: ['bois%', 'bois%', 'bois%', 'recolte', 'butin'],
+  pioche: ['pierre%', 'fer%', 'cristal%', 'recolte', 'butin'],
+  arc: ['cuir%', 'cuir%', 'cuir%', 'recolte', 'butin'],
+  sac: ['butin', 'recolte', 'herbes%', 'cristal%', 'vente%']
+});
+ENCH_U.mana = 2;
+Object.assign(FX_TXT, {
+  butin: '+{0} % sur tout le butin d\'expédition', recolte: '+{0} % sur les récoltes (forêt, mine, chasse)', vol: '{0} % de chance de butin double sur les monstres',
+  'special%': '+{0} % de trouvailles rares', 'or%': '+{0} % d\'or des quêtes'
+});
+var CONV_ENCH = { 'special%': 'recolte', 'or%': 'butin', 'herbes%': 'bois%', 'compagnon%': 'dmg', crit: 'cuir%' };
+function migrerEnchants() {
+  var j = J(); if (!j || j.ench0911) return; j.ench0911 = 1;
+  mesObjets().forEach(function (o) {
+    if (!o.rec || !o.rec.ench) return; var pool = poolEnch(o), ch = false;
+    o.rec.ench.forEach(function (e) {
+      if (!e || pool.indexOf(e.k) !== -1) return;
+      var nk = pool.indexOf(CONV_ENCH[e.k]) !== -1 ? CONV_ENCH[e.k] : pool[0];
+      e.v = Math.max(1, Math.round(e.v / (ENCH_U[e.k] || 3) * (ENCH_U[nk] || 3))); e.k = nk; ch = true;
+    });
+    if (ch) o.fx = fusionFx(o.rec);
+  });
+  sauver();
+}
+
+Object.assign(NL, {
+  'Comptoir des chasseurs': 'Jagersbeurs', 'On y vend et on y achète le matériel de quête : pièces de monstres et récoltes des contrées. Son niveau ouvre les contrées lointaines.': 'Hier verkoop en koop je questmateriaal: monsterstukken en oogst uit de gebieden. Zijn niveau opent verre gebieden.',
+  'Vendre': 'Verkopen', 'Acheter': 'Kopen', 'Tu n\'as aucune pièce de quête à vendre : elles se trouvent dans les contrées de chasse.': 'Je hebt geen questmateriaal om te verkopen: dat vind je in de jachtgebieden.',
+  'Rien à acheter pour l\'instant : ouvre des contrées de chasse.': 'Nog niets te koop: open jachtgebieden.', 'Le comptoir paie {0} or pièce': 'De beurs betaalt {0} goud per stuk', 'Prix : {0} or pièce': 'Prijs: {0} goud per stuk',
+  'Vendre 1': '1 verkopen', 'Tout ({0} or)': 'Alles ({0} goud)', 'Acheter 1': '1 kopen', 'Acheter 5': '5 kopen', '+{0} {1}': '+{0} {1}',
+  'Les environs du camp': 'De omgeving van het kamp', 'Touche un lieu autour du camp pour voir ce qu\'on y trouve. Les événements (!) durent deux jours.': 'Tik op een plek rond het kamp om te zien wat je er vindt. Gebeurtenissen (!) duren twee dagen.',
+  'encore {0} jours': 'nog {0} dagen', 'dernier jour !': 'laatste dag!', 'On y trouve :': 'Je vindt er:', 'un objet': 'een voorwerp', 'Y aller': 'Erheen gaan', 'Partir': 'Vertrekken', 'Le camp': 'Het kamp',
+  '{0} coups': '{0} slagen', 'PV': 'LP', 'pare': 'pareert', 'sonne': 'verdooft', 'saigne': 'bloedt', 'prêt !': 'klaar!',
+  'Points à placer pour d\'autres armes :': 'Punten te verdelen voor andere wapens:', 'Il faut d\'abord une des étoiles reliées en dessous.': 'Eerst een van de verbonden sterren eronder.',
+  '+{0} % sur tout le butin d\'expédition': '+{0} % op alle buit van een tocht', '+{0} % sur les récoltes (forêt, mine, chasse)': '+{0} % op de oogst (bos, mijn, jacht)',
+  '{0} % de chance de butin double sur les monstres': '{0} % kans op dubbele buit bij monsters', '+{0} % de trouvailles rares': '+{0} % zeldzame vondsten', '+{0} % d\'or des quêtes': '+{0} % goud uit queesten',
+  '{0} PV. Chaque bonne réponse sur tes mots appris lui en retire {1}.': '{0} LP. Elk goed antwoord op je geleerde woorden haalt er {1} af.',
+  'Pierre': 'Steen', 'Commerce': 'Handel', 'Comptoir': 'Beurs'
+});
+
+/* ═════════ 09/11 : les boutiques, direction B « la vitrine » ═════════
+   En haut, l'objet choisi sur un socle : nom, stats en barres (la barre dorée est l'objet, le trait blanc ce
+   que tu portes), chances de rareté, coût et un seul bouton doré. Dessous, des onglets soulignés et une
+   grille de tuiles carrées (niveau en coin, quantité en bas). Le bâtiment se range derrière « ▲ Améliorer ».
+   Les autres écrans de magasin (marché, tour, hôtel des ventes) prennent le même habit par le style. */
+
+function barresStats(o, comp) {
+  var l = []; for (var k in o.fx) if (FX_TXT[k]) l.push(k);
+  if (!l.length) return '';
+  return '<table class="vit-st">' + l.map(function (k) {
+    var v = o.fx[k], w = comp && comp.fx ? comp.fx[k] || 0 : 0, ref = Math.max(v, w, 1) * 1.25;
+    var lib = T(FX_TXT[k], v).replace(String(v), '').replace(/^\s*[+]?\s*%?\s*(de |d'|du )?/, '').replace(/\s+/g, ' ').trim();
+    return '<tr><td>' + ech(lib) + '</td><td class="j"><span class="jauge"><u style="width:' + Math.round(v / ref * 100) + '%"></u>' + (w ? '<i style="left:' + Math.round(w / ref * 100) + '%"></i>' : '') + '</span></td><td class="v">' + v + (w && w !== v ? '<small class="' + (v > w ? 'up' : 'dn') + '">' + (v > w ? '▲' : '▼') + Math.abs(v - w) + '</small>' : '') + '</td></tr>';
+  }).join('') + '</table>';
+}
+function vitrineHTML(o, e, niv) {
+  var g = estGear(o), comp = g ? porteMemeSlot(o) : null, h = '<div class="vit">';
+  h += '<div class="vit-t"><div class="socle"><img class="px" src="' + icoObjet(o) + '"></div><div class="vit-n"><b>' + ech(T(o.nom)) + '</b><small>' + ech(T(TYPE_NOM[o.type] || '')) + ' · ' + T('niv. {0}', o.niv) + (e.n ? ' · ' + T('tu en as {0}', e.n) : '') + '</small>' +
+    (e.verrou ? '<small class="vit-req">' + T('atelier niveau {0} requis', o.niv) + '</small>' : '') + '</div></div>';
+  h += g ? barresStats(o, comp) || '<p class="vit-txt">' + ech(fxTexte(o)) + '</p>' : '<p class="vit-txt">' + ech(o.txt ? T(o.txt) : fxTexte(o)) + '</p>';
+  if (comp && comp.id !== o.id) h += '<small class="vit-note">' + T('Trait blanc : ce que donne {0}', nomRare(comp)) + '</small>';
+  else if (g) h += '<small class="vit-note">' + T('Valeurs en commun ; la rareté tirée les multiplie (jusqu\'à ×2,5).') + '</small>';
+  if (g && e.fab) h += chancesHTML(o, niv);
+  h += '<div class="vit-pied"><span class="couts">' + (e.fab ? coutHTML(o.cout) : '') + '</span><button class="vit-bp ' + (e.fab ? 'fab' : e.porte ? 'porte equipe' : 'equipe') + '" data-id="' + o.id + '"' + (e.verrou || !e.ok ? ' disabled' : '') + '>' + ech(e.bouton) + '</button></div>';
+  if (e.fab) h += manquesHTML(o.cout);
+  return h + '</div>';
+}
+atelierHTML = function (bat, niv) {
+  var l = OBJETS.filter(function (o) { return o.bat === bat; }).sort(function (a, b) { return a.niv - b.niv; });
+  if (!l.length) return '';
+  var dispo = l.filter(function (o) { return o.niv <= niv; }), avenir = l.filter(function (o) { return o.niv > niv; });
+  var vue = ATEL_VUE[bat] || 'dispo'; if (!dispo.length) vue = 'avenir'; if (!avenir.length) vue = 'dispo';
+  if (!l.some(function (o) { return o.id === SEL[bat]; })) SEL[bat] = (dispo.filter(function (o) { return !possede(o.id); })[0] || dispo[0] || l[0]).id;
+  var o = OBJ[SEL[bat]], h = vitrineHTML(o, etatObjet(o, niv), niv);
+  h += '<div class="vit-tabs">' + (dispo.length ? '<button data-av="dispo" class="' + (vue === 'dispo' ? 'on' : '') + '">' + T('À fabriquer ({0})', dispo.length) + '</button>' : '') +
+    (avenir.length ? '<button data-av="avenir" class="' + (vue === 'avenir' ? 'on' : '') + '">' + T('Plus tard ({0})', avenir.length) + '</button>' : '') + '</div>';
+  h += '<div class="vit-g">' + (vue === 'dispo' ? dispo : avenir).map(function (x) {
+    var ex = etatObjet(x, niv);
+    return '<button class="vt' + (SEL[bat] === x.id ? ' sel' : '') + (ex.verrou ? ' verrou' : '') + (ex.porte ? ' porte' : '') + '" data-o="' + x.id + '" title="' + ech(T(x.nom)) + '"><em>' + x.niv + '</em><img class="px" src="' + icoObjet(x) + '">' + (ex.n ? '<u>' + ex.n + '</u>' : '') + '</button>';
+  }).join('') + '</div>';
+  return h;
+};
+/* ── la feuille du bâtiment : le magasin d'abord, l'amélioration derrière un petit bouton ── */
+feuilleBat = function (i) {
+  var p = etat.camp.plots[i], b = BATIMENTS[p.bat], niv = p.niv, contenu;
+  if (p.bat === 'marche') contenu = '<div class="vit-tabs">' + [['troc', 'Troc et vente'], ['vente', 'Vendre des pièces']].map(function (o) { return '<button data-tab="' + o[0] + '" class="' + (MARCHE_TAB === o[0] ? 'on' : '') + '">' + ech(T(o[1])) + '</button>'; }).join('') + '</div>' + (MARCHE_TAB === 'vente' ? venteHTML() + brocanteHTML(niv) : troqueHTML());
+  else if (p.bat === 'tour') contenu = enchantHTML(niv);
+  else if (p.bat === 'batisseur') contenu = decoHTML(niv);
+  else if (p.bat === 'entrepot') contenu = hdvHTML(niv);
+  else contenu = atelierHTML(p.bat, niv);
+  var tab = !contenu ? 'bat' : BAT_TAB[p.bat] || 'contenu', up = peutMonterBat(p.bat, niv);
+  var h = '<div class="vit-bar"><span>' + T('niveau {0} / {1}', niv, b.max) + '</span>' + (tab === 'bat' ? (contenu ? '<button data-bt="contenu">‹ ' + T('Retour au magasin') + '</button>' : '') : '<button data-bt="bat" class="' + (up ? 'up' : '') + '">▲ ' + T('Améliorer') + '</button>') + '</div>';
+  h += tab === 'bat' ? enteteBat(p.bat, niv) : contenu;
+  feuille(T(b.nom), h);
+  $('f-corps').classList.add('boutique');
+  lier('[data-bt]', function (d) { BAT_TAB[p.bat] = d.bt; son('clic'); $('f-corps').scrollTop = 0; feuilleBat(i); });
+  if ($('f-up')) $('f-up').onclick = function () {
+    var c = coutBat(p.bat, niv + 1); if (!peutPayer(c) || niv + 1 > capBat()) return;
+    payer(c); p.niv++; CONSTR = { plot: i, t0: maintenant() }; STATIQUES = null; sauver(); bruit(.4, .06);
+    celebrer(T('{0} : niveau {1} !', T(b.nom), p.niv)); feuilleBat(i);
+  };
+  if (tab !== 'contenu') return;
+  lierAtelier(p.bat, function () { feuilleBat(i); });
+  if (p.bat === 'marche') { lier('[data-tab]', function (d) { MARCHE_TAB = d.tab; son('clic'); feuilleBat(i); }); if (MARCHE_TAB === 'vente') { lierVente(function () { feuilleBat(i); }); lierBrocante(function () { feuilleBat(i); }); } else lierTroc(function () { feuilleBat(i); }); }
+  if (p.bat === 'batisseur') lierDeco(function () { feuilleBat(i); });
+  if (p.bat === 'entrepot') lierHdv(function () { feuilleBat(i); });
+  if (p.bat === 'tour') lierEnchant(function () { feuilleBat(i); });
+};
+var feuilleAvantB = feuille;
+feuille = function (t, h, r) { $('f-corps').classList.remove('boutique'); return feuilleAvantB(t, h, r); };
+/* ── le Comptoir, en vitrine ── */
+decoHTML = function (niv) {
+  var l = CPT.tab === 'vendre' ? piecesAVendre() : piecesAAcheter(niv), h = '';
+  var tabs = '<div class="vit-tabs"><button data-cpt-tab="vendre" class="' + (CPT.tab === 'vendre' ? 'on' : '') + '">' + T('Vendre') + '</button><button data-cpt-tab="acheter" class="' + (CPT.tab === 'acheter' ? 'on' : '') + '">' + T('Acheter') + '</button></div>';
+  if (!l.length) return tabs + '<p class="f-sous">' + T(CPT.tab === 'vendre' ? 'Tu n\'as aucune pièce de quête à vendre : elles se trouvent dans les contrées de chasse.' : 'Rien à acheter pour l\'instant : ouvre des contrées de chasse.') + '</p>';
+  if (l.indexOf(CPT.sel) === -1) CPT.sel = l[0];
+  var id = CPT.sel, p = prixPiece(id), n = stock(id), R = REGIONS[regionDePiece(id)], or = stock('or');
+  h += '<div class="vit"><div class="vit-t"><div class="socle"><img class="px" src="' + icoRes(id) + '"></div><div class="vit-n"><b>' + ech(nomRes(id)) + '</b><small>' + ech(T(R.nom)) + '</small></div></div>' +
+    '<table class="vit-st"><tr><td>' + T('Tu en as') + '</td><td></td><td class="v">' + n + '</td></tr><tr><td>' + T('Le comptoir paie') + '</td><td></td><td class="v">' + p.vente + '</td></tr><tr><td>' + T('Il la revend') + '</td><td></td><td class="v">' + p.achat + '</td></tr></table>' +
+    '<div class="vit-pied"><span class="couts">' + chip('or', or) + '</span>' +
+    (CPT.tab === 'vendre' ? '<button class="vit-bs" data-cpt-v="' + n + '"' + (n > 1 ? '' : ' disabled') + '>' + T('Tout ({0} or)', p.vente * n) + '</button><button class="vit-bp" data-cpt-v="1"' + (n ? '' : ' disabled') + '>' + T('Vendre 1') + '</button>'
+      : '<button class="vit-bs" data-cpt-a="5"' + (or >= p.achat * 5 ? '' : ' disabled') + '>' + T('Acheter 5') + '</button><button class="vit-bp" data-cpt-a="1"' + (or >= p.achat ? '' : ' disabled') + '>' + T('Acheter 1') + '</button>') + '</div></div>';
+  h += tabs + '<div class="vit-g">' + l.map(function (x) { return '<button class="vt' + (CPT.sel === x ? ' sel' : '') + '" data-cpt="' + x + '" title="' + ech(nomRes(x)) + '"><img class="px" src="' + icoRes(x) + '">' + (stock(x) ? '<u>' + stock(x) + '</u>' : '') + '</button>'; }).join('') + '</div>';
+  return h;
+};
+/* ── en partant récolter : ce que le camp a déjà, en haut de la carte et dans la fiche du lieu ── */
+function stocksHTML() { return ['bois', 'pierre', 'fer', 'cuir', 'herbes', 'cristal', 'or'].map(function (k) { return '<span title="' + ech(nomRes(k)) + '"><img class="px" src="' + icoRes(k) + '">' + stock(k) + '</span>'; }).join(''); }
+(function () {
+  var d = document.createElement('div'); d.id = 'mo-stocks'; d.className = 'mo-stocks'; var v = $('v-monde'); if (v) v.appendChild(d);
+})();
+var majMondeAvantStocks = majMonde;
+majMonde = function () { var d = $('mo-stocks'); if (d) d.innerHTML = '<b>' + T('Au camp') + '</b>' + stocksHTML(); return majMondeAvantStocks(); };
+var zoomCampAvantStocks = zoomCamp;
+zoomCamp = function () {
+  zoomCampAvantStocks();
+  /* les fiches des lieux disent combien on en a déjà */
+  var P = $('mo-panneau'); if (!P) return;
+  P.querySelectorAll('.ml-res .chip').forEach(function (c) { var im = c.querySelector('img'); if (!im) return; var k = ['bois', 'pierre', 'fer', 'cuir', 'herbes', 'cristal'].filter(function (r) { return im.getAttribute('src') === icoDest(r); })[0]; if (k && !c.querySelector('em')) c.insertAdjacentHTML('beforeend', '<em>' + T('tu as {0}', stock(k)) + '</em>'); });
+};
+(function () {
+  var st = document.createElement('style');
+  st.textContent =
+    /* la vitrine */
+    '.vit{position:sticky;top:-4px;z-index:5;margin:0 -12px 6px;padding:12px 12px 10px;background:radial-gradient(circle at 20% 30%,#3a4277 0,#1b2044 62%);box-shadow:0 2px 0 #000,inset 0 0 0 2px #4a5290,0 8px 12px rgba(0,0,0,.4)}' +
+    '.vit-t{display:grid;grid-template-columns:88px 1fr;gap:12px;align-items:center}.socle{position:relative;height:84px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,rgba(255,210,77,.33) 0,transparent 66%)}' +
+    '.socle img{height:62px;max-width:80px;image-rendering:pixelated;position:relative;z-index:1;filter:drop-shadow(0 4px 0 rgba(0,0,0,.5))}.socle::after{content:"";position:absolute;bottom:6px;left:16px;right:16px;height:6px;background:rgba(0,0,0,.35)}' +
+    '.vit-n b{display:block;font-family:var(--px);font-size:19px;line-height:1.1}.vit-n small{display:block;color:var(--doux);font-size:11px;margin-top:2px}.vit-n .vit-req{color:#ff9a7a}' +
+    '.vit-st{width:100%;border-collapse:collapse;margin:8px 0 2px;font-size:12px}.vit-st td{padding:3px 0;vertical-align:middle}.vit-st td.j{width:42%;padding:0 8px}.vit-st td.v{text-align:right;font-family:var(--num);font-size:14px;color:var(--or);white-space:nowrap}' +
+    '.vit-st td.v small{font-size:10px;margin-left:4px}.vit-st td.v small.up{color:#8af59a}.vit-st td.v small.dn{color:#ff8a7a}' +
+    '.vit-st .jauge{display:block;position:relative;height:7px;background:#0d1024;box-shadow:0 0 0 1px #000}.vit-st .jauge u{position:absolute;left:0;top:0;bottom:0;background:var(--or)}.vit-st .jauge i{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;background:#fff;box-shadow:0 0 0 1px #000}' +
+    '.vit-txt{margin:8px 0 2px;font-size:13px;line-height:1.4}.vit-note{display:block;color:var(--doux);font-size:10.5px;margin:2px 0}.vit .chances{margin:4px 0 0}' +
+    '.vit-pied{display:flex;align-items:center;gap:8px;margin-top:9px}.vit-pied .couts{flex:1;display:flex;flex-wrap:wrap;gap:4px}' +
+    '.vit-bp{border:0;font-family:var(--px);font-size:16px;padding:10px 16px;background:var(--or);color:#2a1c12;box-shadow:0 0 0 2px #000,inset 0 -4px 0 #c49a1c;cursor:pointer}.vit-bp.porte{background:#1f3a35;color:var(--seve);box-shadow:0 0 0 2px #000}' +
+    '.vit-bs{border:0;font-family:var(--px);font-size:14px;padding:9px 12px;background:var(--pierre2);color:var(--texte);box-shadow:0 0 0 2px #000,inset 0 -3px 0 #262d55}.vit-bp:disabled,.vit-bs:disabled{filter:grayscale(1);opacity:.5}' +
+    '.vit-tabs{display:flex;gap:6px;margin:6px 0 8px}.vit-tabs button{flex:1;border:0;padding:7px 4px;font-family:var(--px);font-size:14px;color:var(--doux);background:none;box-shadow:inset 0 -2px 0 #2a2f5a}.vit-tabs button.on{color:var(--or);box-shadow:inset 0 -3px 0 var(--or)}' +
+    '.vit-g{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.vt{position:relative;aspect-ratio:1;border:0;padding:0;background:var(--pierre);box-shadow:0 0 0 2px #000;display:flex;align-items:center;justify-content:center}' +
+    '.vt img{height:60%;max-width:80%;image-rendering:pixelated}.vt em{position:absolute;left:3px;top:2px;font-style:normal;font-family:var(--num);font-size:10px;color:#bfc6ff;text-shadow:1px 1px 0 #000}.vt u{position:absolute;right:3px;bottom:1px;text-decoration:none;font-family:var(--num);font-size:11px;color:#fff;text-shadow:1px 1px 0 #000,-1px -1px 0 #000}' +
+    '.vt.sel{background:#3a4277;box-shadow:0 0 0 2px #000,0 0 0 4px var(--or)}.vt.verrou img{opacity:.35}.vt.porte::after{content:"";position:absolute;right:3px;top:3px;width:6px;height:6px;background:var(--seve);box-shadow:0 0 0 1px #000}' +
+    '.vit-bar{display:flex;align-items:center;justify-content:space-between;margin:0 0 6px;font-family:var(--px);font-size:13px;color:var(--doux)}.vit-bar button{border:0;background:none;font-family:var(--px);font-size:13px;color:var(--doux);padding:4px 6px;box-shadow:inset 0 0 0 1px #3a4277}.vit-bar button.up{color:#8af59a;box-shadow:inset 0 0 0 1px #8af59a}' +
+    /* les autres écrans de magasin prennent le même habit */
+    '.f-corps.boutique .onglets{gap:6px}.f-corps.boutique .onglets button{background:none;box-shadow:inset 0 -2px 0 #2a2f5a;font-size:14px}.f-corps.boutique .onglets button.on{background:none;color:var(--or);box-shadow:inset 0 -3px 0 var(--or)}' +
+    '.f-corps.boutique .grille .tg{height:auto;aspect-ratio:1;box-shadow:0 0 0 2px #000}.f-corps.boutique .grille .tg.sel{background:#3a4277;box-shadow:0 0 0 2px #000,0 0 0 4px var(--or)}.f-corps.boutique .grille.g6{grid-template-columns:repeat(5,1fr);gap:7px}' +
+    '.f-corps.boutique .detail{background:radial-gradient(circle at 15% 40%,#3a4277 0,#1b2044 62%);box-shadow:0 0 0 2px #000,inset 0 0 0 2px #4a5290;padding:10px 12px}.f-corps.boutique .detail>img{height:56px;filter:drop-shadow(0 3px 0 rgba(0,0,0,.5))}' +
+    '.f-corps.boutique .detail .mini.fab,.f-corps.boutique .btn.petit-b,.f-corps.boutique .vente-choix .btn{background:var(--or);color:#2a1c12;box-shadow:0 0 0 2px #000,inset 0 -4px 0 #c49a1c;font-family:var(--px)}' +
+    '.f-corps.boutique .vente-choix .btn.sec{background:var(--pierre2);color:var(--texte);box-shadow:0 0 0 2px #000,inset 0 -3px 0 #262d55}.f-corps.boutique .ameliore{background:#1b2044}' +
+    /* les stocks sur la carte */
+    '.mo-stocks{position:absolute;left:10px;right:10px;top:50px;z-index:2;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px 10px;padding:4px 8px;background:rgba(14,17,40,.9);box-shadow:0 0 0 2px #000;font-family:var(--num);font-size:13px;pointer-events:none}' +
+    '.mo-stocks b{font-family:var(--px);font-size:11px;color:var(--doux);font-weight:400}.mo-stocks span{display:flex;align-items:center;gap:3px}.mo-stocks img{height:16px;image-rendering:pixelated}' +
+    '.mh-comp button.sk .sk-t b{white-space:normal;font-size:11.5px;line-height:1.05;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.mh-comp button.sk{gap:5px;padding:4px 5px}' +
+    '#mo-panneau .ml-res .chip em{font-style:normal;color:var(--doux);font-size:10px;margin-left:4px}';
+  document.head.appendChild(st);
+})();
+Object.assign(NL, { 'Trait blanc : ce que donne {0}': 'Witte streep: wat {0} geeft', 'Valeurs en commun ; la rareté tirée les multiplie (jusqu\'à ×2,5).': 'Waarden bij gewoon; de getrokken zeldzaamheid vermenigvuldigt ze (tot ×2,5).',
+  'niveau {0} / {1}': 'niveau {0} / {1}', 'Retour au magasin': 'Terug naar de winkel', 'Améliorer': 'Verbeteren', 'Tu en as': 'Je hebt er', 'Le comptoir paie': 'De beurs betaalt', 'Il la revend': 'Hij verkoopt het voor',
+  'Au camp': 'In het kamp', 'tu as {0}': 'je hebt {0}' });
+
 /* ═════════ démarrage ═════════ */
 function voir(n) {
   vueActive = n;
@@ -18368,7 +18762,6 @@ $('camp-res').onclick = function () { son('clic'); feuilleHeros(); };
 $('f-fermer').onclick = function () { son('clic'); fermerFeuille(); };
 $('f-retour').onclick = function () { son('clic'); if (FEUILLE && FEUILLE.retour) FEUILLE.retour(); };
 $('feuille').onclick = function (e) { if (e.target === $('feuille')) fermerFeuille(); };
-$('b-heroique').onclick = heroique;
 document.addEventListener('click', function (e) { var m = $('p-menu'); if (!m.classList.contains('cache') && !m.contains(e.target) && e.target.id !== 'p-trou') m.classList.add('cache'); });
 /* outils */
 function rafraichir() { if (vueActive === 'camp') campVue(); majOutils(); }
