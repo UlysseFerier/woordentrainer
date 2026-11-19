@@ -13389,14 +13389,10 @@ Object.assign(NL, {
   'Termine d\'abord : {0}': 'Voltooi eerst: {0}', 'Rapporter {0} × {1}': 'Breng {0} × {1} mee', 'Abattre {0} × {1}': 'Versla {0} × {1}', 'Trouver et abattre {0}': 'Vind en versla {0}', 'plus fort': 'sterker'
 });
 
-/* ═════════ 03/11 : la traque — explorer la contrée, trouver la bête, la combattre ═════════
-   Une quête de chasse se joue sur une petite carte de la contrée : neuf zones reliées.
-   Chaque bonne réponse est une action : aller dans la zone voisine qu'on a touchée, ou fouiller la zone
-   où l'on est (sans rien toucher). Une erreur : l'action rate (et la bête peut bouger, ou un petit monstre
-   en profiter). On fouille pour récolter, ou pour relever les traces d'un grand monstre : trois traces,
-   et l'on sait où il est. En combat, chaque bonne réponse frappe et remplit le mana (plus vite, plus de mana) ;
-   les compétences de l'arme coûtent du mana. Quand la bête prépare une attaque, une bonne réponse l'esquive.
-   Les parties cassées et le dépeçage donnent les pièces. */
+/* ═════════ 03/11 : la traque — partir en quête, trouver la bête, la combattre ═════════
+   (19/11 : la petite carte à explorer a été supprimée ; la quête se joue maintenant comme une récolte,
+   rencontre après rencontre — voir le bloc « 19/11 (soir) : la piste ».)
+   En combat, les parties cassées et le dépeçage donnent les pièces. */
 var MH_T0 = 0;
 QJ.push('traque');
 function regionMult(k) { return { pv: 1 + .45 * k, atk: 1 + .25 * k }; }
@@ -13405,40 +13401,13 @@ function lancerChasseMH(k, q) {
   if (!ZC.deck) { vueDeck(n, function () { lancerChasseMH(k, q); }); return; }
   DEPART.contree = ancienneDe(REGIONS[k].b);
   nouvelleExpe('traque', n); EXPE.res = 'or'; EXPE.contree = DEPART.contree; DEPART.contree = 1;
-  EXPE.mh = genererTraque(k, q);
+  EXPE.mh = nouvellePiste(k, q);
   if (bilanDu()) { scene('gardien'); return; }
   scene('traque');
 }
 var debutModeAvantMH = debutMode;
 debutMode = function () { if (EXPE && EXPE.mode === 'traque') { scene('traque'); return; } debutModeAvantMH(); };
 
-/* ── la petite carte de la contrée ── */
-function genererTraque(k, q) {
-  var R = REGIONS[k], al = Math.random, zones = [], i, j;
-  for (j = 0; j < 3; j++) for (i = 0; i < 3; i++) zones.push({ x: 16 + i * 32 + Math.round((al() - .5) * 10), y: 16 + j * 20 + Math.round((al() - .5) * 6), adj: [], vu: false, connu: false, recolte: 0, mobs: [], traces: 0 });
-  function lier(a, b) { if (zones[a].adj.indexOf(b) === -1) { zones[a].adj.push(b); zones[b].adj.push(a); } }
-  /* toutes les liaisons de la grille, sauf deux ou trois au hasard (la carte reste d'un seul tenant) */
-  var aretes = []; for (j = 0; j < 3; j++) for (i = 0; i < 3; i++) { var p = j * 3 + i; if (i < 2) aretes.push([p, p + 1]); if (j < 2) aretes.push([p, p + 3]); }
-  aretes = mel(aretes); var gardees = aretes.slice();
-  for (var r = 0; r < 3; r++) { var e = gardees[r]; var essai = gardees.filter(function (x) { return x !== e; }); if (connexe(essai)) gardees = essai; }
-  function connexe(ar) { var vu = { 0: 1 }, f = [0]; while (f.length) { var a = f.shift(); ar.forEach(function (x) { var b = x[0] === a ? x[1] : x[1] === a ? x[0] : -1; if (b >= 0 && !vu[b]) { vu[b] = 1; f.push(b); } }); } return Object.keys(vu).length === 9; }
-  gardees.forEach(function (x) { lier(x[0], x[1]); });
-  var depart = 6, loin = [2, 0, 8][Math.floor(al() * 3)], autres = [0, 1, 2, 3, 4, 5, 7, 8];
-  var M = { k: k, q: q, zones: zones, pos: depart, nid: loin, intention: null, mode: 'explore', pas: 0, fait: 0, mana: 0, arme: null, garde: false, saigne: 0, kills: 0 };
-  zones.forEach(function (z) { z.connu = true; }); zones[depart].vu = true;
-  var pm = R.petits || [];
-  function placerMob(id, z) { zones[z].mobs.push(id); }
-  if (q.type === 'recolte') { var tas = mel(autres.concat([depart])).slice(0, 4); for (var c = 0; c < q.n + 2; c++) zones[tas[c % tas.length]].recolte++; mel(autres).slice(0, 2).forEach(function (z) { placerMob(mel(pm)[0], z); }); }
-  if (q.type === 'massacre') { var zs = mel(autres); for (var m = 0; m < q.n + 1; m++) placerMob(q.cible, zs[m % zs.length]); placerMob(mel(pm.filter(function (x) { return x !== q.cible; }))[0] || q.cible, zs[zs.length - 1]); }
-  if (q.type === 'chasse') {
-    var B0 = BETES[q.cible], mu = regionMult(k), f = q.rec.fort || 1, zm = mel([0, 1, 2, 5, 8].filter(function (z) { return z !== depart; }))[0];
-    M.monstre = { id: q.cible, zone: zm, pv: Math.round(B0.pv * 1.3 * mu.pv * f), pvMax: Math.round(B0.pv * 1.3 * mu.pv * f), atk: Math.round(B0.atk * mu.atk * f), revele: false, traces: 0, trail: [zm], f1: false, f2: false, dort: false, casses: [] };
-    mel(autres.filter(function (z) { return z !== zm; })).slice(0, 2).forEach(function (z) { placerMob(mel(pm)[0], z); });
-  }
-  return M;
-}
-function zoneMH(i) { return EXPE.mh.zones[i]; }
-function voisinsMH(a, b) { return zoneMH(a).adj.indexOf(b) !== -1; }
 function besoinTraces() { return Math.max(1, 3 - stat('pistage')); }
 
 /* ── la scène ── */
@@ -13446,15 +13415,11 @@ var DECOR_REG = { bois: 'foret', foret: 'foret', fees: 'foret', maudit: 'foret',
 var sceneQueteAvantMH = sceneQuete, etiquetteQueteAvantMH = etiquetteQuete, consequenceQueteAvantMH = consequenceQuete, dessusQueteAvantMH = dessusQuete;
 sceneQuete = function (f) {
   if (f !== 'traque') return sceneQueteAvantMH(f);
-  var M = EXPE.mh, q = M.q; EXPE.qj = { n: 1, fait: 0 };
-  SC.decor = DECOR_REG[REGIONS[M.k].b] || 'plaine'; SC.heros.outil = 'arme'; SC.heros.x = 12; SC.tapQ = tapTraque; SC.ennemi = null;
-  majComp();
-  setTimeout(function () { if (typeof tuto === 'function') { tuto('traque'); if (q.type === 'chasse') tuto('traqueChasse'); } }, 1500);
-  return [T(q.titre), T('Touche une zone voisine pour y aller, ou rien pour fouiller ici. Chaque bonne réponse est une action.')];
+  return scenePiste();
 };
 etiquetteQuete = function (f) {
   if (f !== 'traque') return etiquetteQueteAvantMH(f);
-  var M = EXPE.mh, q = M.q, h = '', i;
+  var M = EXPE.mh;
   if (M.mode === 'combat' && SC.ennemi) {
     /* 09/11 : une vraie barre de PV, avec les chiffres, et le seuil de la phase 2 pour les grands */
     var e = SC.ennemi, pc = Math.max(0, 100 * e.pv / e.pvMax);
@@ -13462,79 +13427,20 @@ etiquetteQuete = function (f) {
     var parts = e.parts ? '<span class="pv-parts">' + e.parts.map(function (p) { return '<i class="' + (p.casse ? 'on' : '') + '" title="' + ech(T(p.nom)) + '"></i>'; }).join('') + '</span>' : '';
     $('e-barre').innerHTML = '<div class="pv-l"><div class="barre pv-b"><i style="width:' + pc + '%"></i>' + (e.grand && !e.ph2 ? '<s></s>' : '') + '<b>' + Math.ceil(e.pv) + ' / ' + e.pvMax + '</b></div>' + parts + '</div>';
     return;
-  } else {
-    var tot = q.type === 'chasse' ? besoinTraces() : q.n, ok = q.type === 'chasse' ? Math.min(M.monstre.traces, tot) : M.fait;
-    $('e-nom').textContent = q.type === 'recolte' ? T('{0} : {1} / {2}', T(PIECES[q.cible].nom), M.fait, q.n) : q.type === 'massacre' ? T('{0} : {1} / {2}', T(BETES[q.cible].nom), M.fait, q.n) : M.monstre.revele ? T('{0} est repéré', T(BETES[q.cible].nom)) : T('Traces : {0} / {1}', ok, tot);
-    for (i = 0; i < tot; i++) h += '<span class="' + (i < ok || (q.type === 'chasse' && M.monstre.revele) ? 'vert' : 'vide') + '"></span>';
   }
-  $('e-barre').innerHTML = '<div class="segs">' + h + '</div>';
+  etiquettePiste();
 };
 consequenceQuete = function (f, juste) {
   if (f !== 'traque') return consequenceQueteAvantMH(f, juste);
-  return EXPE.mh.mode === 'combat' ? combattreMH(juste) : explorerMH(juste);
+  return EXPE.mh.mode === 'combat' ? combattreMH(juste) : consequencePiste(juste);
 };
-function tapTraque(p) {
-  var M = EXPE && EXPE.mh; if (!M || M.mode !== 'explore' || !C || C.fini) return;
-  var best = null, bd = 9; M.zones.forEach(function (z, i) { var d = Math.hypot(z.x - p.x, z.y - p.y); if (d < bd) { bd = d; best = i; } });
-  if (best == null) return;
-  if (best === M.pos) { M.intention = null; son('clic'); return; }
-  if (!voisinsMH(M.pos, best)) { nombre(T('Trop loin'), p.x, p.y - 4, 'mal'); return; }
-  M.intention = M.intention === best ? null : best; son('clic');
-}
-
-/* ── explorer ── */
-async function explorerMH(juste) {
-  var M = EXPE.mh, X = EXPE;
-  M.pas++;
-  if (!juste) {
-    nombre(T('Tu t\'égares…'), 48, 20, 'mal'); M.intention = null;
-    var z0 = zoneMH(M.pos);
-    if (z0.mobs.length && Math.random() < .5) { await banniere(T('Embuscade !'), null, 700); if (EXPE !== X) return 'fin'; await entrerCombat(z0.mobs[0]); return; }
-    if (M.monstre && !M.monstre.mort && Math.random() < .5) { if (await bougerMonstre()) return; }
-    majEtiquette(); return;
-  }
-  if (M.intention != null && voisinsMH(M.pos, M.intention)) {
-    var dest = M.intention; M.intention = null; M.pos = dest;
-    var z = zoneMH(dest); z.vu = true; z.connu = true; z.adj.forEach(function (a) { zoneMH(a).connu = true; }); bip(400, 600, .06, 'triangle', .04);
-    if (M.monstre && !M.monstre.mort && M.monstre.zone === dest) { await banniere(T('{0} est là !', T(BETES[M.monstre.id].nom)), M.monstre.dort ? T('Il dort… frappe fort !') : null, 900); if (EXPE !== X) return 'fin'; await entrerCombat(M.monstre.id, true); return; }
-    if (z.mobs.length) { await entrerCombat(z.mobs[0]); return; }
-    if (z.recolte && M.q.type === 'recolte') nombre(T('Quelque chose pousse ici'), 48, 20, 'info');
-  } else await fouillerMH();
-  if (M.fini) return;
-  if (M.monstre && !M.monstre.mort && M.pas % 5 === 0) await bougerMonstre();
-  majEtiquette();
-}
-async function fouillerMH() {
-  var M = EXPE.mh, z = zoneMH(M.pos), q = M.q;
-  SC.geste = { type: 'recolte', t0: maintenant(), dur: 400 };
-  if (q.type === 'recolte' && z.recolte > 0) {
-    z.recolte--; M.fait++; EXPE.butin[q.cible] = (EXPE.butin[q.cible] || 0) + 1; son('or');
-    nombre('+1 ' + T(PIECES[q.cible].nom), 48, 20, 'fort');
-    if (M.fait >= q.n) await quetaMHReussie();
-    return;
-  }
-  var mo = M.monstre;
-  if (q.type === 'chasse' && mo && !mo.revele && (mo.trail.indexOf(M.pos) !== -1 || voisinsMH(M.pos, mo.zone) || mo.zone === M.pos)) {
-    mo.traces++; z.traces++; son('or'); nombre(T('Une trace !'), 48, 20, 'fort');
-    if (mo.traces >= besoinTraces()) { mo.revele = true; await banniere(T('Les traces mènent à {0}', T(BETES[mo.id].nom)), T('Sa position s\'affiche sur la carte.'), 1100); }
-    return;
-  }
-  if (Math.random() < .35) { gagnerRes(Math.random() < .5 ? 'herbes' : 'or', .8); return; }
-  nombre(T(q.type === 'chasse' && mo && !mo.revele ? 'Pas de trace ici…' : 'Rien d\'intéressant'), 48, 20, 'info');
-}
-async function bougerMonstre() {
-  var M = EXPE.mh, mo = M.monstre; if (!mo || mo.mort || mo.dort) return false;
-  var choix = zoneMH(mo.zone).adj; mo.zone = mel(choix)[0]; mo.trail.push(mo.zone); if (mo.trail.length > 4) mo.trail.shift();
-  if (mo.zone === M.pos) { await banniere(T('{0} surgit !', T(BETES[mo.id].nom)), null, 900); await entrerCombat(mo.id, true); return true; }
-  return false;
-}
 
 /* ── combattre ── */
 async function entrerCombat(id, grand) {
   var M = EXPE.mh, B0 = BETES[id], mu = regionMult(M.k), e;
   if (grand) { var mo = M.monstre; e = { id: id, nom: B0.nom, spr: B0.spr, pal: B0.pal || null, cle: B0.spr + (B0.pal ? '-p' + id : ''), pv: mo.pv, pvMax: mo.pvMax, atk: mo.atk, x: 0, base: 62, flash: 0, grand: true, tour: 0, parts: (B0.parts || []).map(function (p) { return { nom: p.nom, piece: p.piece, seuil: p.seuil, casse: mo.casses.indexOf(p.piece) !== -1 }; }) }; }
   else e = { id: id, nom: B0.nom, spr: B0.spr, pal: B0.pal || null, cle: B0.spr + (B0.pal ? '-p' + id : ''), pv: pvChasse(B0, M.k), pvMax: pvChasse(B0, M.k), atk: Math.round(B0.atk * mu.atk), x: 0, base: 60, flash: 0, tour: 0 };
-  M.mode = 'combat'; M.intention = null; SC.heros.x = 12;
+  M.mode = 'combat'; SC.heros.x = 12;
   await apparition(e); majComp(); majEtiquette();
   setTimeout(function () { if (typeof tuto === 'function') tuto('combat'); }, 600);
 }
@@ -13595,19 +13501,12 @@ async function casserParties(e, force) {
     }
   }
 }
-async function fuiteMH(e) {
-  var M = EXPE.mh, mo = M.monstre, dest = null;
-  if (!mo.f1 && e.pv <= e.pvMax * .5) { mo.f1 = true; var loin = M.zones.map(function (z, i) { return i; }).filter(function (i) { return i !== M.pos && !voisinsMH(M.pos, i); }); dest = mel(loin.length ? loin : [M.nid])[0]; }
-  else if (!mo.f2 && e.pv <= e.pvMax * .2) { mo.f2 = true; dest = M.nid === M.pos ? mel(zoneMH(M.pos).adj)[0] : M.nid; mo.dort = true; }
-  if (dest == null) return false;
-  mo.zone = dest; mo.revele = true; mo.trail = [dest]; e.fuite = { t0: maintenant(), dur: 500 };
-  await attendre(450); SC.ennemi = null; M.mode = 'explore'; majComp();
-  await banniere(T('{0} s\'enfuit !', T(e.nom)), T(mo.dort ? 'Il boite vers son nid pour dormir. Suis-le !' : 'Il fuit vers une autre zone. Suis-le sur la carte !'), 1300);
-  majEtiquette(); return true;
-}
+/* la bête ne s'enfuit plus : on la combat jusqu'au bout (le passage en phase 2 est plus bas) */
+async function fuiteMH() { return false; }
 function tirerButin(loot) { var t = 0; loot.forEach(function (l) { t += l[1]; }); var r = Math.random() * t; for (var i = 0; i < loot.length; i++) { r -= loot[i][1]; if (r < 0) return loot[i][0]; } return loot[0][0]; }
 async function abattuMH(e) {
   var M = EXPE.mh, B0 = BETES[e.id], X = EXPE;
+  if (SC.ennemi !== e) SC.ennemi = e;
   await mortEnnemi(); if (EXPE !== X) return;
   var J0 = J(); J0.mh = J0.mh || { faites: {}, tues: {} }; J0.mh.tues[e.id] = (J0.mh.tues[e.id] || 0) + 1;
   gagnerRes('or', e.grand ? 4 : 1.2);
@@ -13619,9 +13518,22 @@ async function abattuMH(e) {
     if (Math.random() < .75) { var k2 = tirerButin(B0.loot); EXPE.butin[k2] = (EXPE.butin[k2] || 0) + 1; nombre('+1 ' + T(PIECES[k2].nom), 62, 22, 'fort'); }
     retirerMob(e);
   }
+  if (EXPE !== X || !C) return;
+  /* une meute : la bête suivante prend la place de celle qui tombe */
+  if (C.groupe) {
+    C.groupe = C.groupe.filter(function (m) { return !m.mort && m.pv > 0; });
+    if (C.groupe.length) { SC.ennemi = C.groupe[0]; relayout(); majEtiquette(); majComp(); return; }
+    C.groupe = null;
+  }
   await attendre(300); if (EXPE !== X) return;
-  SC.ennemi = null; M.mode = 'explore'; majComp(); majEtiquette();
+  SC.ennemi = null; M.mode = 'explore'; if (M.etape && M.etape.combat) M.etape.finie = true;
+  majComp(); majEtiquette();
   if ((M.q.type === 'chasse' && e.grand && e.id === M.q.cible) || (M.q.type === 'massacre' && M.fait >= M.q.n)) await quetaMHReussie();
+}
+/* un petit monstre abattu : il soigne un peu (on enchaîne les rencontres), et il compte pour un massacre */
+function retirerMob(e) {
+  var M = EXPE.mh; H().pv = Math.min(pvMax(), H().pv + Math.round(pvMax() * .15)); hud('hud-combat');
+  if (M.q.type === 'massacre' && e.id === M.q.cible) { M.fait++; nombre(T('{0} : {1} / {2}', T(BETES[M.q.cible].nom), Math.min(M.fait, M.q.n), M.q.n), 48, 8, 'fort'); }
 }
 async function quetaMHReussie() {
   var M = EXPE.mh, q = M.q, J0 = J(); if (M.fini) return; M.fini = true;
@@ -13671,7 +13583,7 @@ poserQuestion = function (t, f) { MH_T0 = performance.now(); var r = poserQuesti
 var finExpeditionAvantMH = finExpedition;
 finExpedition = function (a) { $('mh-comp').classList.add('cache'); $('mh-aide').classList.add('cache'); $('v-combat').classList.remove('traque'); var r = finExpeditionAvantMH(a); if (typeof tuto === 'function' && J().mh && Object.keys(J().mh.tues || {}).length) setTimeout(function () { tuto('pieces'); }, 1800); return r; };
 
-/* ── le dessin : la carte de la contrée par-dessus la scène, en exploration ── */
+/* ── le dessin : l'alerte au-dessus de la bête qui prépare un coup ── */
 dessusQuete = function (x, now) {
   dessusQueteAvantMH(x, now);
   if (!C || C.famille !== 'traque' || !EXPE || !EXPE.mh) return;
@@ -13680,7 +13592,6 @@ dessusQuete = function (x, now) {
     var e = SC.ennemi; if (e && e.prepare && !e.mort && Math.floor(now / 200) % 2) { var b = ennemiBoite(); if (b) { x.fillStyle = '#ff3a2a'; x.fillRect(b.x + (b.s.width >> 1), b.y - 9, 2, 5); x.fillRect(b.x + (b.s.width >> 1), b.y - 3, 2, 2); } }
     return;
   }
-  dessinerTerrain(x, now);
 };
 /* l'arme en main, selon son type */
 var dessinerOutilSceneAvantMH = dessinerOutilScene;
@@ -13704,755 +13615,13 @@ var rareteResAvantMH = rareteRes;
 rareteRes = function (k, n) { var p = PIECES[k]; if (p) return p.r >= 3 ? 4 : p.r >= 1 ? 3 : n >= 3 ? 2 : 1; return rareteResAvantMH(k, n); };
 
 Object.assign(NL, {
-  'Touche une zone voisine pour y aller, ou rien pour fouiller ici. Chaque bonne réponse est une action.': 'Tik op een naburige zone om erheen te gaan, of nergens om hier te zoeken. Elk goed antwoord is een actie.',
-  'attaque !': 'valt aan!', '{0} : {1} / {2}': '{0}: {1} / {2}', '{0} est repéré': '{0} is gevonden', 'Traces : {0} / {1}': 'Sporen: {0} / {1}', 'Trop loin': 'Te ver',
-  'Tu t\'égares…': 'Je verdwaalt…', 'Embuscade !': 'Hinderlaag!', '{0} est là !': '{0} is hier!', 'Il dort… frappe fort !': 'Hij slaapt… sla hard!', 'Quelque chose pousse ici': 'Hier groeit iets',
-  'Une trace !': 'Een spoor!', 'Les traces mènent à {0}': 'De sporen leiden naar {0}', 'Sa position s\'affiche sur la carte.': 'Zijn plaats verschijnt op de kaart.', 'Pas de trace ici…': 'Hier geen sporen…',
-  'Rien d\'intéressant': 'Niets interessants', '{0} surgit !': '{0} duikt op!', 'Esquivé !': 'Ontweken!', 'Étourdi !': 'Verdoofd!', 'Réveil brutal !': 'Ruw ontwaken!', 'Paré !': 'Afgeweerd!',
+  'attaque !': 'valt aan!', '{0} : {1} / {2}': '{0}: {1} / {2}', '{0} est repéré': '{0} is gevonden', 'Traces : {0} / {1}': 'Sporen: {0} / {1}',
+  'Embuscade !': 'Hinderlaag!', '{0} est là !': '{0} is hier!', 'Il dort… frappe fort !': 'Hij slaapt… sla hard!',
+  'Une trace !': 'Een spoor!', 'Les traces mènent à {0}': 'De sporen leiden naar {0}', '{0} surgit !': '{0} duikt op!', 'Esquivé !': 'Ontweken!', 'Étourdi !': 'Verdoofd!', 'Réveil brutal !': 'Ruw ontwaken!', 'Paré !': 'Afgeweerd!',
   'Coup puissant !': 'Krachtige slag!', 'se prépare à attaquer': 'maakt zich klaar om aan te vallen', '{0} {1} !': '{0} {1}!', 'Réponds juste pour esquiver.': 'Antwoord juist om te ontwijken.',
-  'Partie cassée : {0} !': 'Lichaamsdeel gebroken: {0}!', '{0} s\'enfuit !': '{0} vlucht!', 'Il boite vers son nid pour dormir. Suis-le !': 'Hij strompelt naar zijn nest om te slapen. Volg hem!',
-  'Il fuit vers une autre zone. Suis-le sur la carte !': 'Hij vlucht naar een andere zone. Volg hem op de kaart!', '{0} est abattu !': '{0} is verslagen!', 'Dépeçage : {0}': 'Buit: {0}',
-  'Mana': 'Mana', 'Pris au piège !': 'In de val!', 'Prêt : {0}': 'Klaar: {0}', 'Bonne réponse : y aller': 'Goed antwoord: erheen', 'Bonne réponse : fouiller ici': 'Goed antwoord: hier zoeken'
+  'Partie cassée : {0} !': 'Lichaamsdeel gebroken: {0}!', '{0} est abattu !': '{0} is verslagen!', 'Dépeçage : {0}': 'Buit: {0}',
+  'Mana': 'Mana', 'Pris au piège !': 'In de val!', 'Prêt : {0}': 'Klaar: {0}'
 });
-
-/* ═════════ 04/11 : la traque en plein écran, par zones ═════════
-   La carte prend tout l'écran ; on touche où aller, le héros y marche, sans souffle ni limite.
-   Une traque, ce sont 7 à 10 zones (clairière, mare, ruines, campement de monstres, nid…) qui se dévoilent
-   en entier quand on y entre. Les questions arrivent quand on agit : dégager l'obstacle qui barre le
-   passage vers la zone suivante (1 à 3 bonnes réponses), cueillir, examiner une empreinte, ouvrir un coffre.
-   Une erreur fait seulement rater l'action. Les monstres se voient et rôdent ; quand ils te touchent,
-   c'est la rencontre, et l'on bascule dans la vue de combat. */
-var TQ = { zw: 15, zh: 13, gc: 3, gr: 4, ts: 8, lw: 130 };
-var PAYS2 = {
-  bois: { sol: ['#5e9e4c', '#56944a'], herbe: '#7ab85a', mur: 'arbre', veg: 'buisson', eau: 'eau', obst: 'tronc', amb: 'lucioles', fleur: ['#ffd24d', '#ff9ad8', '#ffffff'] },
-  foret: { sol: ['#30603a', '#2a5634'], herbe: '#3f7a46', mur: 'sapin', veg: 'sapin', eau: 'eau', obst: 'tronc', amb: 'feuilles', fleur: ['#bfe8ff', '#ffffff'] },
-  collines: { sol: ['#b4a462', '#a8985a'], herbe: '#c8b870', mur: 'rocher', veg: 'buisson', eau: 'eau', obst: 'rocher', amb: 'pollen', fleur: ['#e2463a', '#ffd24d'] },
-  marais: { sol: ['#5f7a50', '#56704a'], herbe: '#6f8a58', mur: 'eau', veg: 'roseau', eau: 'eau', obst: 'riviere', amb: 'brume', fleur: ['#c8e860'], vase: true },
-  canyon: { sol: ['#c8744a', '#be6a42'], herbe: '#d88a5a', mur: 'roc', veg: 'cactus', eau: 'eau', obst: 'rocher', amb: 'poussiere', fleur: ['#ffd24d'], rc: ['#7a3a22', '#a8583a', '#d08a62'] },
-  fees: { sol: ['#5aa070', '#52966a'], herbe: '#7ac08a', mur: 'arbreRose', veg: 'champi', eau: 'eau', obst: 'ronces', amb: 'lucioles', fleur: ['#ff9ad8', '#bfe8ff', '#ffffff'] },
-  mines: { sol: ['#8a8070', '#807666'], herbe: '#968c7c', mur: 'roc', veg: 'cristal', eau: 'eau', obst: 'eboulis', amb: 'poussiere', fleur: ['#7fe0ff'] },
-  desert: { sol: ['#e2c484', '#d8b878'], herbe: '#ecd29a', mur: 'roc', veg: 'cactus', eau: 'eau', obst: 'rocher', amb: 'poussiere', fleur: ['#ff9ad8'], rc: ['#a07850', '#c8a070', '#ecd29a'] },
-  lac: { sol: ['#e6ecf6', '#d8e0ee'], herbe: '#f4f8ff', mur: 'sapinNeige', veg: 'sapinNeige', eau: 'glaceEau', obst: 'glace', amb: 'neige', fleur: ['#7fb8e0'] },
-  col: { sol: ['#a0b48a', '#96aa80'], herbe: '#b4c89a', mur: 'rocher', veg: 'sapin', eau: 'eau', obst: 'rocher', amb: 'neige', fleur: ['#ffffff', '#bfe8ff'] },
-  volcan: { sol: ['#4a3a3a', '#423434'], herbe: '#5a4444', mur: 'roc', veg: 'rocNoir', eau: 'lave', obst: 'lave', amb: 'braises', fleur: ['#ff9a3c'], rc: ['#1e1616', '#3a2a2a', '#5a4444'] },
-  maudit: { sol: ['#4a3c5c', '#42354f'], herbe: '#5a4a6e', mur: 'mort', veg: 'mort', eau: 'eau', obst: 'ronces', amb: 'lucioles', fleur: ['#c8a0ff'] },
-  necro: { sol: ['#5e6050', '#565848'], herbe: '#6e7060', mur: 'mort', veg: 'tombe', eau: 'eau', obst: 'grille', amb: 'brume', fleur: ['#c8e860'], tombes: true },
-  citadelle: { sol: ['#3a3540', '#33303a'], herbe: '#4a4550', mur: 'roc', veg: 'pilier', eau: 'lave', obst: 'grille', amb: 'poussiere', fleur: ['#e2463a'], rc: ['#22202a', '#3a3540', '#5a5560'] }
-};
-var OBST = {
-  tronc: TR('Dégager le tronc', 'De boomstam wegruimen'), ronces: TR('Tailler les ronces', 'De doornstruiken snoeien'), rocher: TR('Pousser les rochers', 'De rotsen wegduwen'),
-  eboulis: TR('Déblayer l\'éboulis', 'Het puin wegruimen'), glace: TR('Briser la glace', 'Het ijs breken'), lave: TR('Refroidir la lave', 'De lava afkoelen'),
-  grille: TR('Forcer la grille', 'Het hek openbreken'), riviere: TR('Construire un pont', 'Een brug bouwen')
-};
-var OBST_BESOIN = { tronc: 3, ronces: 3, rocher: 4, eboulis: 4, glace: 4, lave: 5, grille: 4, riviere: 5, runes: 4 };
-var OBST_POOL = { lac: ['glace', 'rocher', 'runes', 'riviere'], volcan: ['lave', 'eboulis', 'runes'], mines: ['eboulis', 'rocher', 'grille', 'runes'], necro: ['grille', 'ronces', 'runes'], citadelle: ['grille', 'runes', 'eboulis'],
-  marais: ['riviere', 'ronces', 'tronc'], desert: ['rocher', 'eboulis', 'runes'], canyon: ['rocher', 'eboulis', 'runes'], col: ['rocher', 'glace', 'eboulis'], maudit: ['ronces', 'grille', 'runes'], fees: ['ronces', 'riviere', 'runes'], defaut: ['tronc', 'ronces', 'rocher', 'riviere', 'runes'] };
-OBST.runes = TR('Déchiffrer la porte runique', 'De runendeur ontcijferen');
-var NOM_ZONE = { depart: TR('Ton campement', 'Je kamp'), clairiere: TR('Une clairière', 'Een open plek'), mare: TR('Une mare', 'Een poel'), rochers: TR('Un chaos de rochers', 'Een rotsenchaos'),
-  ruines: TR('Des ruines', 'Ruïnes'), bosquet: TR('Un bosquet', 'Een bosje'), campement: TR('Un campement de monstres', 'Een monsterkamp'), nid: TR('Le nid', 'Het nest') };
-var ACT_TXT = { pt: TR('Récolter', 'Verzamelen'), trace: TR('Examiner l\'empreinte', 'De voetafdruk bekijken'), coffre: TR('Crocheter le coffre', 'De kist openbreken'), autel: TR('Prier à l\'autel', 'Bidden bij het altaar'), pnj: TR('Parler au voyageur', 'Praten met de reiziger'), fontaine: TR('Boire à la source', 'Drinken uit de bron'), piege: TR('Poser un piège', 'Een val zetten') };
-function tqLibre(M, i, j) { if (i < 0 || j < 0 || i >= M.W || j >= M.H) return false; var p = j * M.W + i; return !M.mur[p] && !M.bloque[p]; }
-function zoneDe(M, x, y) { var cx = Math.floor(x / TQ.zw), cy = Math.floor(y / TQ.zh); if (cx < 0 || cy < 0 || cx >= TQ.gc || cy >= TQ.gr) return null; var z = M.zoneAt[cy * TQ.gc + cx]; return z == null ? null : M.zones[z]; }
-function borne(v, a, b) { return Math.max(a, Math.min(b, v)); }
-
-/* ── la génération ── */
-function genZones(k, q) {
-  var R = REGIONS[k], P = PAYS2[R.b] || PAYS2.bois, W = TQ.gc * TQ.zw, H = TQ.gr * TQ.zh, N = W * H, i, j, p;
-  var M = { k: k, q: q, P: P, W: W, H: H, mur: new Uint8Array(N).fill(1), bloque: new Uint8Array(N), deco: new Uint8Array(N), zones: [], zoneAt: [], objs: [], mobs: [], chemin: [], cam: null,
-    mode: 'explore', fait: 0, pas: 0, chutes: 0, act: null, but: null, amb: [], dir: 1, enRencontre: false };
-  for (i = 0; i < TQ.gc * TQ.gr; i++) M.zoneAt.push(null);
-  /* le chemin principal : une marche au hasard sur la grille 3 × 4, du bas vers le haut */
-  var L = q.type === 'chasse' ? 7 : 6, best = [];
-  for (var es = 0; es < 150 && best.length < L; es++) {
-    var ch = [[Math.floor(Math.random() * TQ.gc), TQ.gr - 1]], pris = {}; pris[ch[0]] = 1;
-    while (ch.length < L) {
-      var d = ch[ch.length - 1], v = [[0, -1], [1, 0], [-1, 0], [0, 1]].map(function (o) { return [d[0] + o[0], d[1] + o[1]]; }).filter(function (c) { return c[0] >= 0 && c[1] >= 0 && c[0] < TQ.gc && c[1] < TQ.gr && !pris[c]; });
-      if (!v.length) break; var c0 = mel(v)[0]; pris[c0] = 1; ch.push(c0);
-    }
-    if (ch.length > best.length) best = ch;
-  }
-  best.forEach(function (c, n) { M.zones.push({ n: n, cx: c[0], cy: c[1], adj: [], vu: n === 0, t0: 0, chemin: true }); M.zoneAt[c[1] * TQ.gc + c[0]] = n; });
-  var bout = M.zones.length, aretes = []; for (i = 1; i < bout; i++) aretes.push([i - 1, i, true]);
-  /* une ou deux impasses à côté du chemin, pour un coffre ou une cueillette */
-  mel(M.zones.slice(1, bout - 1)).forEach(function (z) {
-    if (M.zones.length - bout >= 2) return;
-    var c = mel([[1, 0], [-1, 0], [0, 1], [0, -1]]).map(function (o) { return [z.cx + o[0], z.cy + o[1]]; }).filter(function (c) { return c[0] >= 0 && c[1] >= 0 && c[0] < TQ.gc && c[1] < TQ.gr && M.zoneAt[c[1] * TQ.gc + c[0]] == null; })[0];
-    if (!c) return; var nz = { n: M.zones.length, cx: c[0], cy: c[1], adj: [], vu: false, t0: 0, chemin: false }; M.zones.push(nz); M.zoneAt[c[1] * TQ.gc + c[0]] = nz.n; aretes.push([z.n, nz.n, false]);
-  });
-  aretes.forEach(function (a) { M.zones[a[0]].adj.push(a[1]); M.zones[a[1]].adj.push(a[0]); });
-  var der = bout - 1, sortes = (typeof SORTES_B !== 'undefined' && SORTES_B[R.b]) || ['clairiere', 'mare', 'rochers', 'ruines', 'bosquet', 'clairiere', 'campement', 'mare'], sac = [];
-  M.zones.forEach(function (z) {
-    z.x0 = z.cx * TQ.zw; z.y0 = z.cy * TQ.zh; z.mx = z.x0 + TQ.zw / 2; z.my = z.y0 + TQ.zh / 2;
-    if (!sac.length) sac = mel(sortes); z.kind = z.n === 0 ? 'depart' : q.type === 'chasse' && z.n === der ? 'nid' : sac.pop();
-  });
-  /* chaque zone est tirée d'un modèle dessiné à la main (chasse_modeles.js), puis on creuse les sorties */
-  var res = new Uint8Array(N);
-  poserModeles(M, aretes, res, k);
-  aretes.forEach(function (a) {
-    var tiles = a.tiles, hor = a.hor;
-    var pool = OBST_POOL[R.b] || OBST_POOL.defaut, kind = mel(pool.filter(function (k) { return k !== M.dernierObst; }))[0] || pool[0]; M.dernierObst = kind;
-    var need = !a[2] || a[1] === 1 ? 2 : OBST_BESOIN[kind] || 3;
-    var o = { t: 'obst', kind: kind, tiles: tiles, need: need, done: 0, a: a[0], b: a[1], hor: hor };
-    o.i = tiles.reduce(function (s, t) { return s + t[0]; }, 0) / tiles.length + .5; o.j = tiles.reduce(function (s, t) { return s + t[1]; }, 0) / tiles.length + .5;
-    tiles.forEach(function (t) { M.bloque[t[1] * W + t[0]] = 1; });
-    M.objs.push(o);
-  });
-  function mettre(i, j, c) { var p = j * W + i; if (i < 1 || j < 1 || i >= W - 1 || j >= H - 1 || res[p] || M.mur[p] || M.deco[p]) return false; M.mur[p] = c; return true; }
-  function amas(z, c, nb, taille) {
-    for (var a = 0; a < nb; a++) {
-      var i0 = z.x0 + 2 + Math.floor(Math.random() * (TQ.zw - 4)), j0 = z.y0 + 2 + Math.floor(Math.random() * (TQ.zh - 4));
-      mettre(i0, j0, c); for (var b = 1; b < taille; b++) { var o = [[1, 0], [0, 1], [-1, 0], [0, -1]][Math.floor(Math.random() * 4)]; i0 += o[0]; j0 += o[1]; mettre(i0, j0, c); }
-    }
-  }
-  M.zones.forEach(function (z) {
-    if (z.kind === 'ruines') z.torches = z.spot ? [[z.spot[0] - 2, z.spot[1] - 2], [z.spot[0] + 2, z.spot[1] - 2]] : null;
-    if (P.tombes && z.kind !== 'depart') amas(z, 7, 3, 1);
-  });
-  /* ce qu'on ne peut pas atteindre redevient de la forêt */
-  var s0 = solCentre(M, M.zones[0]), vu2 = new Uint8Array(N), f = [Math.floor(s0[1]) * W + Math.floor(s0[0])]; vu2[f[0]] = 1;
-  while (f.length) { var u = f.pop(); [u - 1, u + 1, u - W, u + W].forEach(function (v) { if (v >= 0 && v < N && !vu2[v] && !M.mur[v]) { vu2[v] = 1; f.push(v); } }); }
-  for (p = 0; p < N; p++) if (!M.mur[p] && !vu2[p]) M.mur[p] = 1;
-  for (p = 0; p < N; p++) if (!M.mur[p] && !M.deco[p]) { var h = hcar(p % W, Math.floor(p / W), 5 + k); M.deco[p] = h > .93 ? 2 : h > .82 ? 1 : h < .04 ? 3 : 0; }
-  /* le contenu : récoltes, coffres, empreintes, monstres */
-  var occ = {};
-  function caseDans(z, loin) {
-    for (var t = 0; t < 260; t++) {
-      var i2 = z.x0 + 1 + Math.floor(Math.random() * (TQ.zw - 2)), j2 = z.y0 + 1 + Math.floor(Math.random() * (TQ.zh - 2)), p2 = j2 * W + i2;
-      if (M.mur[p2] || M.bloque[p2] || occ[p2] || M.deco[p2] >= 8 || (res[p2] && t < 180)) continue;
-      if (loin && t < 180 && Math.hypot(i2 + .5 - z.mx, j2 + .5 - z.my) < loin) continue;
-      occ[p2] = occ[p2 - 1] = occ[p2 + 1] = occ[p2 - W] = occ[p2 + W] = 1; return [i2, j2];
-    }
-    var sc = solCentre(M, z); return [Math.floor(sc[0]), Math.floor(sc[1])];
-  }
-  var autres = mel(M.zones.filter(function (z) { return z.n > 0; })), tour = 0;
-  function zoneSuiv() { var z = autres[tour % autres.length]; tour++; return z; }
-  function ajout(o, z) { var c = caseDans(z, 0); o.i = c[0] + .5; o.j = c[1] + .5; o.z = z.n; o.done = 0; M.objs.push(o); return o; }
-  if (q.type === 'recolte') for (var r = 0; r < q.n + 1; r++) ajout({ t: 'pt', k: q.cible, need: 2 }, zoneSuiv());
-  for (r = 0; r < 2; r++) ajout({ t: 'pt', k: ['herbes', 'or', 'cuir'][r], bonus: true, need: 2 }, zoneSuiv());
-  M.zones.forEach(function (z) { if (!z.chemin || z.kind === 'campement') ajout({ t: 'coffre', need: 3 }, z); if (z.kind === 'ruines') { var oa = ajout({ t: 'autel', need: 3 }, z); if (z.spot && !M.mur[z.spot[1] * W + z.spot[0]]) { oa.i = z.spot[0] + .5; oa.j = z.spot[1] + .5; occ[z.spot[1] * W + z.spot[0]] = 1; } } if (z.kind === 'mare' && !M.aFontaine) { M.aFontaine = true; ajout({ t: 'fontaine', need: 2 }, z); } });
-  if (!M.objs.some(function (o) { return o.t === 'autel'; })) ajout({ t: 'autel', need: 3 }, zoneSuiv());
-  ajout({ t: 'pnj', need: 3 }, M.zones[Math.min(2, M.zones.length - 1)]);
-  var pm = R.petits || [];
-  function mob(id, z) { var c = caseDans(z, 2); M.mobs.push({ id: id, x: c[0] + .5, y: c[1] + .5, z: z.n, tx: null, ty: null, prochain: 0 }); }
-  if (q.type === 'massacre') { for (var m = 0; m < q.n + 1; m++) mob(q.cible, zoneSuiv()); }
-  else for (m = 0; m < 3; m++) mob(mel(pm)[0], zoneSuiv());
-  M.zones.forEach(function (z) { if (z.kind === 'campement' && pm.length) mob(mel(pm)[0], z); });
-  if (q.type === 'chasse') {
-    var B0 = BETES[q.cible], mu = regionMult(k), fo = q.rec.fort || 1, zm = M.zones[Math.min(der - 1, Math.max(1, bout - 3))], nid = M.zones[der];
-    var sn = solCentre(M, nid); M.nid = { x: sn[0], y: sn[1], z: nid.n }; var sm = solCentre(M, zm);
-    var pvM = Math.round(pvChasse(B0, k) * fo);
-    M.monstre = { id: q.cible, x: sm[0], y: sm[1], z: zm.n, tx: null, ty: null, prochain: 0, bouge: maintenant() + 18000, pv: pvM, pvMax: pvM, atk: Math.round(B0.atk * mu.atk * fo), revele: false, traces: 0, f1: false, f2: false, dort: false, casses: [] };
-    var zt = M.zones.filter(function (z) { return z.n > 0 && z.n !== nid.n; });
-    for (var e = 0; e < besoinTraces() + 1; e++) ajout({ t: 'trace', need: 2 }, zt[e % zt.length]);
-    ajout({ t: 'piege', need: 3 }, M.zones[zm.adj.filter(function (a) { return a !== nid.n; })[0] != null ? zm.adj.filter(function (a) { return a !== nid.n; })[0] : zm.n]);
-  }
-  var z0 = solCentre(M, M.zones[0]); M.hx = z0[0]; M.hy = z0[1]; M.dep = { x: M.hx, y: M.hy };
-  return M;
-}
-genererTraque = genZones;
-tapTraque = function () {};
-
-/* ── le dessin du fond, fait une fois par traque ── */
-var COUL_ART = { arbre: ['#2f6a34', '#3f8a4a', '#5aae5a'], arbreRose: ['#a05a9a', '#d88ad0', '#f4c0ec'], sapin: ['#143820', '#1f5a2c', '#2e7a3c'], sapinNeige: ['#1f4a3a', '#2e6a4a', '#ffffff'],
-  mort: ['#3a2e48', '#5a4a6e', '#8a7a98'], buisson: ['#2f6a34', '#4a9a4a', '#7ac06a'], rocher: ['#5a564e', '#8a867c', '#bab6ac'], roc: ['#3a3430', '#5a5048', '#7a7068'] };
-function artCase(x, M, i, j, m, prof) {
-  var P = M.P, X = i * 8, Y = j * 8, h = hcar(i, j, M.k + 21), t = m === 1 ? P.mur : m === 2 ? P.veg : m === 3 ? 'rocher' : m === 4 ? P.eau : m === 5 ? 'pilier' : m === 6 ? 'tente' : m === 7 ? 'tombe' : m === 8 ? 'feu' : P.mur;
-  var rc = P.rc || COUL_ART.roc;
-  if (m >= 9 && artModele(x, M, i, j, m)) return;
-  if (t === 'eau' || t === 'lave' || t === 'glaceEau') {
-    var e0 = t === 'lave' ? '#a8322a' : t === 'glaceEau' ? '#5a8ab8' : P.vase ? '#3d5f58' : '#3a6f9a', e1 = t === 'lave' ? '#e2643a' : t === 'glaceEau' ? '#8ab8e0' : P.vase ? '#4d7568' : '#4a8ab8';
-    x.fillStyle = prof ? e0 : e1; x.fillRect(X, Y, 8, 8); x.fillStyle = e0; if (h > .5) x.fillRect(X + 1, Y + 5, 4, 1);
-    if (!prof && t === 'lave') { x.fillStyle = '#ffd24d'; x.fillRect(X + 2 + Math.floor(h * 4), Y + 2, 2, 1); }
-    if (!prof && t === 'glaceEau') { x.fillStyle = '#ffffff'; x.fillRect(X + 1, Y + 1, 3, 1); }
-    if (j > 0 && !M.mur[(j - 1) * M.W + i]) { x.fillStyle = t === 'lave' ? '#3a2a2a' : 'rgba(255,255,255,.35)'; x.fillRect(X, Y, 8, 1); }
-    return;
-  }
-  if (t === 'arbre' || t === 'arbreRose' || t === 'buisson') {
-    var c = COUL_ART[t === 'buisson' ? 'buisson' : t];
-    if (prof && t !== 'buisson') { x.fillStyle = c[0]; x.fillRect(X, Y - 2, 8, 10); x.fillStyle = c[1]; x.fillRect(X + Math.floor(h * 4), Y - 1, 4, 3); x.fillRect(X + 1, Y + 4, 3, 2); x.fillStyle = c[2]; x.fillRect(X + 1 + Math.floor(h * 4), Y - 1, 2, 1); return; }
-    x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X + 1, Y + 6, 7, 2);
-    if (t === 'buisson') { x.fillStyle = c[0]; x.fillRect(X + 1, Y + 2, 6, 5); x.fillStyle = c[1]; x.fillRect(X + 1, Y + 1, 6, 4); x.fillRect(X, Y + 2, 8, 3); x.fillStyle = c[2]; x.fillRect(X + 2, Y + 1, 2, 1); if (P.fleur && h > .6) { x.fillStyle = P.fleur[0]; x.fillRect(X + 5, Y + 3, 1, 1); } return; }
-    x.fillStyle = '#5a3a22'; x.fillRect(X + 3, Y + 4, 2, 4);
-    x.fillStyle = c[0]; x.fillRect(X + 1, Y - 2, 6, 7); x.fillRect(X, Y - 1, 8, 5);
-    x.fillStyle = c[1]; x.fillRect(X + 1, Y - 3, 6, 6); x.fillRect(X, Y - 2, 8, 4);
-    x.fillStyle = c[2]; x.fillRect(X + 2, Y - 3, 3, 2); x.fillRect(X + 1, Y - 2, 1, 2);
-    return;
-  }
-  if (t === 'sapin' || t === 'sapinNeige') {
-    var s = COUL_ART[t];
-    if (prof) { x.fillStyle = s[0]; x.fillRect(X, Y - 2, 8, 10); x.fillStyle = s[1]; x.fillRect(X + 2, Y - 2, 4, 3); x.fillRect(X + 1, Y + 2, 6, 3); if (t === 'sapinNeige') { x.fillStyle = '#ffffff'; x.fillRect(X + 3, Y - 2, 2, 1); } return; }
-    x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X + 1, Y + 6, 7, 2); x.fillStyle = '#4a2e1a'; x.fillRect(X + 3, Y + 5, 2, 3);
-    x.fillStyle = s[0]; x.fillRect(X + 3, Y - 4, 2, 2); x.fillRect(X + 2, Y - 2, 4, 2); x.fillRect(X + 1, Y, 6, 2); x.fillRect(X, Y + 2, 8, 3);
-    x.fillStyle = s[1]; x.fillRect(X + 3, Y - 4, 1, 2); x.fillRect(X + 2, Y - 2, 2, 2); x.fillRect(X + 1, Y, 3, 2); x.fillRect(X, Y + 2, 4, 2);
-    if (t === 'sapinNeige') { x.fillStyle = '#ffffff'; x.fillRect(X + 3, Y - 4, 2, 1); x.fillRect(X + 2, Y - 2, 2, 1); x.fillRect(X + 1, Y, 2, 1); x.fillRect(X, Y + 2, 3, 1); }
-    return;
-  }
-  if (t === 'mort') {
-    var mo = COUL_ART.mort; if (prof) { x.fillStyle = '#2a2236'; x.fillRect(X, Y, 8, 8); x.fillStyle = mo[0]; x.fillRect(X + 2, Y, 1, 8); x.fillRect(X + 5 + Math.floor(h * 2), Y + 1, 1, 6); return; }
-    x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X + 1, Y + 6, 6, 2); x.fillStyle = mo[1]; x.fillRect(X + 3, Y - 2, 2, 10); x.fillRect(X + 1, Y, 2, 1); x.fillRect(X, Y - 1, 1, 1); x.fillRect(X + 5, Y + 1, 2, 1); x.fillRect(X + 6, Y, 1, 1);
-    x.fillStyle = mo[2]; x.fillRect(X + 3, Y - 2, 1, 6); return;
-  }
-  if (t === 'rocher' || t === 'roc' || t === 'rocNoir') {
-    var r = t === 'rocher' ? COUL_ART.rocher : rc;
-    if (prof) { x.fillStyle = r[0]; x.fillRect(X, Y, 8, 8); x.fillStyle = r[1]; x.fillRect(X + Math.floor(h * 4), Y + 1, 4, 2); return; }
-    x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X, Y + 6, 8, 2);
-    x.fillStyle = r[0]; x.fillRect(X, Y + 1, 8, 6); x.fillStyle = r[1]; x.fillRect(X + 1, Y, 6, 5); x.fillStyle = r[2]; x.fillRect(X + 2, Y, 3, 2); x.fillRect(X + 1, Y + 1, 1, 1);
-    if (t === 'rocNoir') { x.fillStyle = '#e2643a'; x.fillRect(X + 5, Y + 4, 1, 2); }
-    return;
-  }
-  if (t === 'roseau') { x.fillStyle = '#3d5f58'; x.fillRect(X, Y + 4, 8, 4); x.fillStyle = '#6a9a4a'; [1, 3, 5, 6].forEach(function (o, n) { x.fillRect(X + o, Y - 1 + n % 2, 1, 7); }); x.fillStyle = '#7a5a3a'; x.fillRect(X + 1, Y - 2, 1, 2); x.fillRect(X + 5, Y - 1, 1, 2); return; }
-  if (t === 'cactus') { x.fillStyle = 'rgba(0,0,0,.2)'; x.fillRect(X + 1, Y + 6, 6, 2); x.fillStyle = '#3a7a3a'; x.fillRect(X + 3, Y - 2, 3, 9); x.fillRect(X + 1, Y + 1, 2, 3); x.fillRect(X + 6, Y, 2, 3); x.fillStyle = '#5aa04a'; x.fillRect(X + 3, Y - 2, 1, 8); if (h > .6) { x.fillStyle = '#ff9ad8'; x.fillRect(X + 4, Y - 3, 1, 1); } return; }
-  if (t === 'champi') { x.fillStyle = 'rgba(0,0,0,.2)'; x.fillRect(X + 1, Y + 6, 6, 2); x.fillStyle = '#f1e4c2'; x.fillRect(X + 3, Y + 2, 2, 5); x.fillStyle = h > .5 ? '#d84a7a' : '#b85ad8'; x.fillRect(X, Y - 1, 8, 3); x.fillRect(X + 1, Y - 2, 6, 1); x.fillStyle = '#ffffff'; x.fillRect(X + 2, Y - 1, 1, 1); x.fillRect(X + 5, Y, 1, 1); return; }
-  if (t === 'cristal') { x.fillStyle = 'rgba(0,0,0,.2)'; x.fillRect(X + 1, Y + 6, 6, 2); x.fillStyle = '#3a8ab8'; x.fillRect(X + 2, Y, 2, 7); x.fillRect(X + 5, Y + 2, 2, 5); x.fillStyle = '#7fe0ff'; x.fillRect(X + 2, Y, 1, 5); x.fillRect(X + 5, Y + 2, 1, 3); x.fillStyle = '#ffffff'; x.fillRect(X + 2, Y, 1, 1); return; }
-  if (t === 'pilier') { x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X, Y + 6, 8, 2); x.fillStyle = '#7a7480'; x.fillRect(X + 1, Y + 4, 6, 4); x.fillStyle = '#a8a2ae'; x.fillRect(X + 2, Y - 4, 4, 9); x.fillStyle = '#7a7480'; x.fillRect(X + 5, Y - 4, 1, 9); x.fillStyle = '#c8c2ce'; x.fillRect(X + 1, Y - 5, 6, 2); if (h > .5) { x.fillStyle = '#5a9a4a'; x.fillRect(X + 2, Y + 1, 1, 3); } return; }
-  if (t === 'tombe') { x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X + 1, Y + 6, 6, 2); x.fillStyle = '#8a8a80'; x.fillRect(X + 2, Y, 4, 7); x.fillRect(X + 3, Y - 1, 2, 1); x.fillStyle = '#5a5a50'; x.fillRect(X + 3, Y + 1, 2, 1); x.fillRect(X + 3, Y + 2, 2, 3); x.fillStyle = '#aaaa9e'; x.fillRect(X + 2, Y, 1, 6); return; }
-  if (t === 'feu') { x.fillStyle = '#5a5048'; x.fillRect(X + 1, Y + 4, 6, 3); x.fillStyle = '#3a2a1a'; x.fillRect(X + 2, Y + 3, 4, 2); return; }
-  if (t === 'tente') {
-    var p = j * M.W + i; if (M.mur[p - 1] === 6 || M.mur[p - M.W] === 6) return;
-    x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X, Y + 14, 16, 2);
-    for (var k2 = 0; k2 < 12; k2++) { x.fillStyle = k2 < 6 ? '#c84a3a' : '#a8382a'; x.fillRect(X + 8 - Math.round(k2 * .66) - 1, Y + 2 + k2, Math.round(k2 * 1.33) + 2, 1); }
-    x.fillStyle = '#f1e4c2'; x.fillRect(X + 7, Y + 1, 2, 1); x.fillStyle = '#2a1a14'; x.fillRect(X + 7, Y + 8, 2, 6); return;
-  }
-}
-function fondTraque(M) {
-  if (M.fond) return M.fond;
-  var W = M.W, H = M.H, c = toile(W * 8, H * 8), x = c.getContext('2d'), P = M.P, i, j, p;
-  for (j = 0; j < H; j++) for (i = 0; i < W; i++) {
-    p = j * W + i; var X = i * 8, Y = j * 8, h = hcar(i, j, M.k + 3), h2 = hcar(i, j, M.k + 8);
-    x.fillStyle = P.sol[h < .5 ? 0 : 1]; x.fillRect(X, Y, 8, 8);
-    x.fillStyle = P.sol[h < .5 ? 1 : 0]; x.fillRect(X + Math.floor(h2 * 6), Y + Math.floor(h * 6), 2, 1);
-    if (M.mur[p]) continue;
-    var d = M.deco[p];
-    if (d >= 7 || d === 12) { decoModele(x, M, i, j, d); if (j > 0 && M.mur[p - W]) { x.fillStyle = 'rgba(0,0,0,.2)'; x.fillRect(X, Y, 8, 2); } continue; }
-    if (d === 1) { x.fillStyle = P.herbe; x.fillRect(X + 2, Y + 4, 1, 2); x.fillRect(X + 3, Y + 3, 1, 3); x.fillRect(X + 4, Y + 4, 1, 2); }
-    else if (d === 2) { x.fillStyle = P.herbe; x.fillRect(X + 3, Y + 4, 1, 2); x.fillStyle = P.fleur[Math.floor(h2 * P.fleur.length)]; x.fillRect(X + 2, Y + 3, 3, 1); x.fillRect(X + 3, Y + 2, 1, 3); x.fillStyle = '#ffd24d'; x.fillRect(X + 3, Y + 3, 1, 1); }
-    else if (d === 3) { x.fillStyle = 'rgba(0,0,0,.18)'; x.fillRect(X + 3, Y + 5, 3, 1); x.fillStyle = '#9a968c'; x.fillRect(X + 3, Y + 4, 2, 1); }
-    if (j > 0 && M.mur[p - W]) { x.fillStyle = 'rgba(0,0,0,.2)'; x.fillRect(X, Y, 8, 2); }
-  }
-  for (j = 0; j < H; j++) for (i = 0; i < W; i++) {
-    p = j * W + i; var m = M.mur[p]; if (!m) continue;
-    var prof = m === 1 && (i === 0 || j === 0 || i === W - 1 || j === H - 1 || (M.mur[p - 1] && M.mur[p + 1] && M.mur[p - W] && M.mur[p + W] && M.mur[p + W - 1] && M.mur[p + W + 1]));
-    artCase(x, M, i, j, m, prof);
-  }
-  M.fond = c; return c;
-}
-
-/* ── les obstacles, les objets, les monstres ── */
-function dessinerObst(x, M, o, ox, oy, now) {
-  var P = M.P, sec = o.hit && now - o.hit < 260 ? (Math.floor(now / 40) % 2 ? 1 : -1) : 0, reste = 1 - o.done / o.need;
-  o.tiles.forEach(function (t, n) {
-    var X = Math.round(t[0] * 8 - ox) + sec, Y = Math.round(t[1] * 8 - oy), h = hcar(t[0], t[1], 4);
-    if (o.ouvert) {
-      if (o.kind === 'riviere') { x.fillStyle = '#3d5f58'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#8a6a40'; x.fillRect(X, Y + 1, 8, 6); x.fillStyle = '#6a4a28'; for (var b = 0; b < 8; b += 3) x.fillRect(X + (o.hor ? b : 0), Y + (o.hor ? 1 : b), o.hor ? 1 : 8, o.hor ? 6 : 1); }
-      else if (o.kind === 'lave') { x.fillStyle = '#3a2a2a'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#5a4444'; x.fillRect(X + 1, Y + 2, 3, 2); }
-      return;
-    }
-    if (o.kind === 'riviere' || o.kind === 'lave') {
-      x.fillStyle = o.kind === 'lave' ? '#c8463a' : '#3d6f7a'; x.fillRect(X, Y, 8, 8);
-      x.fillStyle = o.kind === 'lave' ? '#ffd24d' : 'rgba(255,255,255,.5)'; if (Math.floor(now / 300 + n) % 3 === 0) x.fillRect(X + 1 + Math.floor(h * 4), Y + 3, 3, 1);
-      if (o.done) { x.fillStyle = o.kind === 'lave' ? '#3a2a2a' : '#8a6a40'; x.fillRect(X, Y + 2, Math.round(8 * (1 - reste)), 4); }
-      return;
-    }
-    x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X, Y + 6, 8, 2);
-    if (o.kind === 'tronc') {
-      x.fillStyle = '#5a3a22'; if (o.hor) x.fillRect(X + 1, Y, 6, 8); else x.fillRect(X, Y + 1, 8, 6);
-      x.fillStyle = '#8a5a33'; if (o.hor) x.fillRect(X + 2, Y, 2, 8); else x.fillRect(X, Y + 2, 8, 2);
-      if (n === 0 || n === o.tiles.length - 1) { x.fillStyle = '#c9a46a'; x.fillRect(X + 2, Y + 2, 4, 4); x.fillStyle = '#8a5a33'; x.fillRect(X + 3, Y + 3, 2, 2); }
-    } else if (o.kind === 'ronces') {
-      x.fillStyle = '#2a4a2a'; x.fillRect(X, Y + 1, 8, 6); x.fillStyle = '#4a6a3a'; x.fillRect(X + 1, Y, 3, 3); x.fillRect(X + 4, Y + 3, 3, 3);
-      x.fillStyle = '#c8264a'; if (h > .4) x.fillRect(X + 2, Y + 4, 1, 1); if (h > .7) x.fillRect(X + 6, Y + 1, 1, 1); x.fillStyle = '#c9a46a'; x.fillRect(X + 3, Y + 2, 1, 1); x.fillRect(X + 6, Y + 5, 1, 1);
-    } else if (o.kind === 'glace') {
-      x.fillStyle = '#7ab8e0'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#bfe8ff'; x.fillRect(X + 1, Y, 5, 6); x.fillStyle = '#ffffff'; x.fillRect(X + 1, Y, 2, 1); x.fillRect(X + 1, Y + 1, 1, 2);
-    } else if (o.kind === 'runes') {
-      x.fillStyle = '#4a4858'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#6a6878'; x.fillRect(X, Y, 8, 2); x.fillStyle = '#34323e'; x.fillRect(X, Y + 7, 8, 1);
-      var al = (n + Math.floor(now / 400)) % 4 === 0 || n < o.done * 2; x.fillStyle = al ? '#7fe0ff' : '#2a6a8a'; x.fillRect(X + 2, Y + 2, 1, 4); x.fillRect(X + 2, Y + 4, 3, 1); x.fillRect(X + 5, Y + 3, 1, 3);
-    } else if (o.kind === 'grille') {
-      x.fillStyle = '#2a2a34'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#8a8a9a'; for (var g = 1; g < 8; g += 3) { if (o.hor) x.fillRect(X, Y + g, 8, 1); else x.fillRect(X + g, Y, 1, 8); } x.fillStyle = '#5a5a6a'; if (o.hor) x.fillRect(X + 3, Y, 1, 8); else x.fillRect(X, Y + 3, 8, 1);
-    } else {
-      var r = o.kind === 'eboulis' ? ['#5a5048', '#7a7068', '#9a9088'] : P.rc || COUL_ART.rocher;
-      x.fillStyle = r[0]; x.fillRect(X, Y + 1, 8, 6); x.fillStyle = r[1]; x.fillRect(X + 1, Y, 5, 5); x.fillStyle = r[2]; x.fillRect(X + 2, Y, 2, 2);
-    }
-    if (o.done) { x.fillStyle = '#140f24'; for (var f = 0; f < o.done * 2; f++) x.fillRect(X + Math.floor(hcar(f, n, 2) * 7), Y + Math.floor(hcar(n, f, 3) * 7), 1, 2); }
-  });
-}
-var IMG_RES = {};
-function imgRes(k) { if (!IMG_RES[k]) { IMG_RES[k] = new Image(); IMG_RES[k].src = icoRes(k); } return IMG_RES[k]; }
-function sprBete(id) { var B0 = BETES[id]; return spr(B0.spr, B0.pal || null, B0.spr + (B0.pal ? '-p' + id : '')); }
-function dessinerObjet(x, M, o, ox, oy, now) {
-  var X = Math.round(o.i * 8 - ox), Y = Math.round(o.j * 8 - oy), bob = Math.floor(now / 350 + o.i) % 2;
-  if (o.t === 'pt') {
-    var im = imgRes(o.k); x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X - 3, Y + 2, 6, 2);
-    if (im.complete && im.width) x.drawImage(im, X - Math.round(im.width / 2), Y - im.height + 2 - bob);
-  } else if (o.t === 'trace') {
-    x.fillStyle = 'rgba(40,20,10,.7)'; x.fillRect(X - 3, Y - 2, 2, 3); x.fillRect(X + 1, Y, 2, 3); x.fillRect(X - 3, Y - 3, 1, 1); x.fillRect(X - 1, Y - 3, 1, 1); x.fillRect(X + 1, Y - 1, 1, 1); x.fillRect(X + 3, Y - 1, 1, 1);
-  } else if (o.t === 'autel') {
-    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X - 6, Y + 2, 12, 2); x.fillStyle = '#6a6878'; x.fillRect(X - 6, Y - 3, 12, 5); x.fillStyle = '#8a8898'; x.fillRect(X - 5, Y - 5, 10, 2); x.fillStyle = '#4a4858'; x.fillRect(X - 6, Y + 1, 12, 1);
-    var gl = .5 + Math.sin(now / 300) * .5; x.fillStyle = 'rgba(127,224,255,' + (.2 + gl * .3) + ')'; x.fillRect(X - 3, Y - 10, 6, 5); x.fillStyle = '#7fe0ff'; x.fillRect(X - 1, Y - 9, 2, 3);
-  } else if (o.t === 'pnj') {
-    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X - 3, Y + 2, 7, 2); x.fillStyle = '#5a4a6a'; x.fillRect(X - 3, Y - 6, 6, 8); x.fillStyle = '#7a6a8a'; x.fillRect(X - 2, Y - 9, 4, 4); x.fillStyle = '#e8d8b0'; x.fillRect(X - 1, Y - 7, 2, 2);
-    x.fillStyle = '#8a5a33'; x.fillRect(X + 3, Y - 9, 1, 11); if (Math.floor(now / 600) % 2) { x.fillStyle = '#ffffff'; x.fillRect(X + 1, Y - 14, 5, 3); x.fillRect(X + 2, Y - 11, 1, 1); }
-  } else if (o.t === 'fontaine') {
-    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X - 6, Y + 2, 12, 2); x.fillStyle = '#7a7884'; x.fillRect(X - 6, Y - 3, 12, 5); x.fillStyle = '#3a8ab8'; x.fillRect(X - 5, Y - 3, 10, 2); x.fillStyle = '#bff0ff'; if (Math.floor(now / 250) % 3) x.fillRect(X - 3 + Math.floor(now / 250) % 5, Y - 3, 2, 1); x.fillStyle = '#7fe0ff'; x.fillRect(X - 1, Y - 7 - (Math.floor(now / 200) % 2), 1, 4);
-  } else if (o.t === 'piege') {
-    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X - 5, Y + 1, 10, 2); x.fillStyle = '#6e4126'; for (var pq = -4; pq <= 4; pq += 2) { x.fillRect(X + pq, Y - 3 - (pq === 0 ? 2 : 0), 1, 4 + (pq === 0 ? 2 : 0)); } x.fillStyle = '#c9a46a'; x.fillRect(X - 5, Y - 1, 10, 1);
-  } else if (o.t === 'coffre') {
-    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X - 5, Y + 2, 10, 2);
-    x.fillStyle = '#6a4a28'; x.fillRect(X - 5, Y - 5, 10, 7); x.fillStyle = '#8a6a40'; x.fillRect(X - 5, Y - 6, 10, 3); x.fillStyle = '#ffd24d'; x.fillRect(X - 5, Y - 3, 10, 1); x.fillRect(X - 1, Y - 4, 2, 3);
-    if (o.done) { x.fillStyle = '#140f24'; x.fillRect(X - 1, Y - 2, 2, 1); }
-  }
-  /* une étincelle pour dire « on peut agir ici » */
-  if (Math.floor(now / 500 + o.i * 3) % 3 === 0) { x.fillStyle = '#ffffff'; x.fillRect(X + 3, Y - 8 + bob, 1, 1); x.fillRect(X + 2, Y - 7 + bob, 3, 1); x.fillRect(X + 3, Y - 6 + bob, 1, 1); }
-}
-function dessinerBeteT(x, id, px, py, sc, flip, now, ombre) {
-  var s = sprBete(id), w = Math.round(s.width * sc), h = Math.round(s.height * sc), X = Math.round(px - w / 2), Y = Math.round(py - h + 2);
-  x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X + 2, Y + h - 1, w - 4, 2);
-  if (flip) { x.save(); x.translate(X + w, Y); x.scale(-1, 1); x.drawImage(s, 0, 0, w, h); x.restore(); } else x.drawImage(s, X, Y, w, h);
-  return { x: X, y: Y, w: w, h: h };
-}
-
-/* ── le temps réel : marche, zones, monstres, rencontres ── */
-function vueZone(M, now) {
-  var z = zoneDe(M, M.hx, M.hy); if (!z || z.vu) return;
-  z.vu = true; z.t0 = now; bip(500, 900, .12, 'triangle', .05);
-  flotte(T(NOM_ZONE[z.kind]), z.mx, z.y0 + 2, 'info', 1800);
-}
-function adjacentA(M, o) {
-  if (o.t === 'obst') return o.tiles.some(function (t) { return Math.abs(t[0] + .5 - M.hx) <= 1.6 && Math.abs(t[1] + .5 - M.hy) <= 1.6; });
-  return Math.abs(o.i - M.hx) <= 1.6 && Math.abs(o.j - M.hy) <= 1.6;
-}
-function cheminBFS(M, but) {
-  var W = M.W, N = W * M.H, de = Math.floor(M.hy) * W + Math.floor(M.hx), prec = new Int32Array(N).fill(-2), f = [de], fin = -1; prec[de] = -1;
-  for (var h = 0; h < f.length; h++) {
-    var u = f[h]; if (but(u % W, Math.floor(u / W))) { fin = u; break; }
-    var vs = [u - 1, u + 1, u - W, u + W];
-    for (var n = 0; n < 4; n++) { var v = vs[n]; if (v >= 0 && v < N && prec[v] === -2 && !M.mur[v] && !M.bloque[v] && !(n < 2 && Math.floor(v / W) !== Math.floor(u / W))) { prec[v] = u; f.push(v); } }
-  }
-  if (fin < 0) return null;
-  var ch = []; for (var c = fin; c !== de && c >= 0; c = prec[c]) ch.unshift([c % W + .5, Math.floor(c / W) + .5]);
-  return ch;
-}
-function versCase(M, ti, tj) {
-  if (!tqLibre(M, ti, tj)) { var best = null, bd = 9; for (var b = -2; b <= 2; b++) for (var a = -2; a <= 2; a++) if (tqLibre(M, ti + a, tj + b) && Math.hypot(a, b) < bd) { bd = Math.hypot(a, b); best = [ti + a, tj + b]; } if (!best) return null; ti = best[0]; tj = best[1]; }
-  return cheminBFS(M, function (i, j) { return i === ti && j === tj; });
-}
-function versObjet(M, o) {
-  var cases = o.t === 'obst' ? o.tiles : [[Math.floor(o.i), Math.floor(o.j)]];
-  return cheminBFS(M, function (i, j) { return cases.some(function (t) { return Math.abs(t[0] - i) + Math.abs(t[1] - j) === 1 || (o.t !== 'obst' && t[0] === i && t[1] === j); }); });
-}
-function errer(M, o, z, now, vit, dt) {
-  if (now > o.prochain && o.tx == null) {
-    o.prochain = now + 900 + Math.random() * 1600;
-    for (var t = 0; t < 6; t++) { var ti = z.x0 + 1 + Math.floor(Math.random() * (TQ.zw - 2)), tj = z.y0 + 1 + Math.floor(Math.random() * (TQ.zh - 2)); if (tqLibre(M, ti, tj) && Math.hypot(ti - o.x, tj - o.y) < 5) { o.tx = ti + .5; o.ty = tj + .5; break; } }
-  }
-  if (o.tx != null) avancer(M, o, o.tx, o.ty, vit * dt, true);
-}
-function avancer(M, o, tx, ty, pas, libre) {
-  var dx = tx - o.x, dy = ty - o.y, L = Math.hypot(dx, dy); if (L < .05) { o.tx = null; return; }
-  var nx = o.x + dx / L * Math.min(pas, L), ny = o.y + dy / L * Math.min(pas, L);
-  if (!libre || tqLibre(M, Math.floor(nx), Math.floor(ny))) { o.x = nx; o.y = ny; o.flip = dx > 0; } else o.tx = null;
-}
-function majTerrainZ(M, now) {
-  var dt = Math.min(60, now - (M.tPrec || now)) / 1000; M.tPrec = now;
-  if (M.mode !== 'explore' || !C || C.fini || M.enRencontre || M.trans) return;
-  /* la marche */
-  if (M.chemin.length) {
-    var cib = M.chemin[0], dx = cib[0] - M.hx, dy = cib[1] - M.hy, L = Math.hypot(dx, dy), v = 5.2 * dt;
-    if (L <= v) { M.hx = cib[0]; M.hy = cib[1]; M.chemin.shift(); vueZone(M, now); }
-    else { M.hx += dx / L * v; M.hy += dy / L * v; if (dx) M.dir = dx < 0 ? -1 : 1; }
-    M.marche = true;
-  } else M.marche = false;
-  if (!M.chemin.length && M.but && !M.act) { var o = M.but; M.but = null; if (adjacentA(M, o)) demarrerAct(M, o); }
-  var zh = zoneDe(M, M.hx, M.hy);
-  /* les petits monstres rôdent ; s'ils te voient, ils foncent sur toi */
-  for (var n = 0; n < M.mobs.length; n++) {
-    var b = M.mobs[n], z = M.zones[b.z], d = Math.hypot(b.x - M.hx, b.y - M.hy);
-    if (zh === z && z.vu && d < 3.6 && !M.act) { if (!b.alerte) { b.alerte = now; bip(900, 1300, .08, 'square', .04); } avancer(M, b, M.hx, M.hy, 2.5 * dt, true); }
-    else { b.alerte = 0; errer(M, b, z, now, 1.1, dt); }
-    if (d < .95 && z.vu && !M.act) { rencontreZ(M, b.id, false, b); return; }
-  }
-  /* le grand monstre : il erre, change de zone de temps en temps, et charge quand il te voit */
-  var mo = M.monstre;
-  if (mo && !mo.mort) {
-    var zm = M.zones[mo.z];
-    if (mo.course) { var p = Math.max(0, Math.min(1, (now - mo.course.t0) / mo.course.dur)); mo.x = mo.course.x0 + (mo.course.x1 - mo.course.x0) * p; mo.y = mo.course.y0 + (mo.course.y1 - mo.course.y0) * p - Math.sin(p * Math.PI * 6) * .15; mo.flip = mo.course.x1 > mo.course.x0; if (p >= 1) mo.course = null; }
-    else if (!mo.dort) {
-      var dm = Math.hypot(mo.x - M.hx, mo.y - M.hy);
-      if (zh === zm && zm.vu && dm < 4.6 && !M.act) { if (!mo.alerte) { mo.alerte = now; son('mal'); } avancer(M, mo, M.hx, M.hy, 1.9 * dt, true); }
-      else if (now > mo.bouge) { mo.bouge = now + 16000 + Math.random() * 10000; var dest = M.zones[mel(zm.adj)[0]], sd = solCentre(M, dest); mo.z = dest.n; mo.alerte = 0; mo.course = { t0: now, dur: 5000, x0: mo.x, y0: mo.y, x1: sd[0], y1: sd[1] }; }
-      else { mo.alerte = 0; errer(M, mo, zm, now, .7, dt); }
-    }
-    if (!mo.course && zm.vu && !M.act && Math.hypot(mo.x - M.hx, mo.y - M.hy) < 1.7) { rencontreZ(M, mo.id, true); return; }
-  }
-}
-
-/* ── les actions : chaque bonne réponse avance l'action, une erreur la fait rater ── */
-function nomAct(o) { return o.t === 'obst' ? T(OBST[o.kind]) : o.t === 'pt' ? T(ACT_TXT.pt) + ' : ' + nomRes(o.k) : T(ACT_TXT[o.t]); }
-function demarrerAct(M, o) {
-  M.act = o; M.chemin = []; M.but = null; son('clic');
-  if (o.i < M.hx - .3) M.dir = -1; else if (o.i > M.hx + .3) M.dir = 1;
-  majInfoTraque(); majVueTraque(); prochaine();
-}
-function annulerAct(M) { if (!M.act) return; M.act = null; if (cur) cur.fait = true; cacherQuestions(); if (C) C.verrou = false; majInfoTraque(); majVueTraque(); }
-function bruitTraque(M) {
-  var mo = M.monstre; if (!mo || mo.mort || mo.dort || mo.course || Math.random() > .3) return;
-  var zh = zoneDe(M, M.hx, M.hy); if (!zh || zh.n === mo.z) return;
-  var zm = M.zones[mo.z], vers = zm.adj.filter(function (a) { return a === zh.n; })[0];
-  if (vers == null) return;
-  mo.z = vers; var sh = solCentre(M, zh); mo.course = { t0: maintenant(), dur: 4000, x0: mo.x, y0: mo.y, x1: sh[0], y1: sh[1] };
-  flotte(T('Tu as fait du bruit… quelque chose approche !'), M.hx, M.hy - 2, 'mal', 1800);
-}
-explorerMH = async function (juste) {
-  var M = EXPE.mh, a = M.act, X = EXPE; M.pas++;
-  if (!a) return;
-  if (!juste) { a.hit = maintenant(); flotte(T('Raté…'), a.i, a.j - 1, 'mal'); son('mal'); bruitTraque(M); majInfoTraque(); return; }
-  a.done++; a.hit = maintenant(); bip(300 + a.done * 120, 500 + a.done * 160, .07, 'square', .05); SC.geste = { type: 'recolte', t0: maintenant(), dur: 400 };
-  if (a.done < a.need) { flotte(a.done + ' / ' + a.need, a.i, a.j - 1, 'fort'); majInfoTraque(); return; }
-  await finirAct(M, a); if (EXPE !== X) return 'fin';
-  majInfoTraque();
-};
-async function finirAct(M, a) {
-  M.act = null; var q = M.q, R = REGIONS[M.k];
-  if (a.t === 'obst') {
-    a.ouvert = true; a.tiles.forEach(function (t) { M.bloque[t[1] * M.W + t[0]] = 0; }); son('niveau');
-    for (var k = 0; k < 18; k++) M.amb.push({ x: a.i * 8 + (Math.random() - .5) * 14, y: a.j * 8 + (Math.random() - .5) * 10, vx: (Math.random() - .5) * .8, vy: -.4 - Math.random() * .6, vie: 40, c: Math.random() < .5 ? '#ffd24d' : '#f1e4c2', t: 'eclat' });
-    flotte(T('Passage ouvert !'), a.i, a.j - 1, 'fort', 1300);
-  } else {
-    M.objs.splice(M.objs.indexOf(a), 1);
-    if (a.t === 'pt') {
-      if (!a.bonus && q.type === 'recolte' && a.k === q.cible) {
-        M.fait++; EXPE.butin[a.k] = (EXPE.butin[a.k] || 0) + 1; son('or'); flotte('+1 ' + T(PIECES[a.k].nom), a.i, a.j - 1, 'fort');
-        if (M.fait >= q.n) { await quetaMHReussie(); return; }
-      } else { var g = gagnerRes(a.k, a.k === 'or' ? 1 : .9); son('or'); flotte('+' + (g || 1) + ' ' + nomRes(a.k), a.i, a.j - 1, 'fort'); }
-    } else if (a.t === 'trace') {
-      var mo = M.monstre; son('or');
-      if (mo && !mo.revele) {
-        mo.traces++; flotte(T('Une empreinte !') + ' ' + Math.min(mo.traces, besoinTraces()) + ' / ' + besoinTraces(), a.i, a.j - 1, 'fort', 1400);
-        if (mo.traces >= besoinTraces()) { mo.revele = true; await banniere(T('Les traces mènent à {0}', T(BETES[mo.id].nom)), T('Sa position s\'affiche sur la carte.'), 1100); }
-      } else { gagnerRes('cuir', .6); flotte('+' + nomRes('cuir'), a.i, a.j - 1, 'info'); }
-    } else if (a.t === 'autel') {
-      son('niveau'); H().pv = pvMax(); hud('hud-combat'); if (typeof rechargerComp === 'function') rechargerComp(9);
-      var zA = M.zones[a.z]; zA.adj.forEach(function (n) { var zz = M.zones[n]; if (!zz.vu) { zz.vu = true; zz.t0 = maintenant(); } });
-      flotte(T('Bénédiction : PV et compétences au plein, les environs se dévoilent'), a.i, a.j - 1, 'info', 2200);
-    } else if (a.t === 'fontaine') {
-      son('soin'); H().pv = Math.min(pvMax(), H().pv + Math.round(pvMax() * .6)); hud('hud-combat'); flotte(T('L\'eau fraîche te requinque'), a.i, a.j - 1, 'info', 1600);
-    } else if (a.t === 'piege') {
-      son('or'); M.piege = true; flotte(T('Piège posé : le grand monstre sera pris au début du combat'), a.i, a.j - 1, 'fort', 2200);
-    } else if (a.t === 'pnj') {
-      var mo2 = M.monstre; son('or');
-      if (mo2 && !mo2.mort && !mo2.revele) { mo2.revele = true; mo2.traces = besoinTraces(); flotte(T('« Je l\'ai vu passer par là ! »'), a.i, a.j - 1, 'info', 2000); }
-      else { var gO = gagnerRes('or', 1.5); var pk2 = galPieceZ(M); if (pk2) EXPE.butin[pk2] = (EXPE.butin[pk2] || 0) + 1; flotte(T('« Prends ça, pour la route. »') + ' +' + (gO || 1) + ' ' + nomRes('or') + (pk2 ? ' · ' + T(PIECES[pk2].nom) : ''), a.i, a.j - 1, 'fort', 2000); }
-    } else if (a.t === 'coffre') {
-      son('or'); var l = [], go = gagnerRes('or', 1.6); l.push('+' + (go || 1) + ' ' + nomRes('or'));
-      var pm = (R.petits || []).filter(function (id) { return BETES[id]; });
-      if (pm.length && Math.random() < .7) { var pk = tirerButin(BETES[mel(pm)[0]].loot); EXPE.butin[pk] = (EXPE.butin[pk] || 0) + 1; l.push('+1 ' + T(PIECES[pk].nom)); }
-      if (R.recoltes && Math.random() < .5) { var rk = mel(R.recoltes)[0]; EXPE.butin[rk] = (EXPE.butin[rk] || 0) + 1; l.push('+1 ' + T(PIECES[rk].nom)); }
-      flotte(l.join(' · '), a.i, a.j - 1, 'fort', 1700);
-      if (Math.random() < .25) dropObjet('coffre');
-    }
-  }
-}
-
-/* ── la rencontre : un éclair, des bandes noires, et l'on bascule dans le combat ── */
-function rencontreZ(M, id, grand, ref) {
-  if (M.enRencontre) return;
-  M.enRencontre = true; M.chemin = []; M.but = null; bip(200, 900, .25, 'sawtooth', .06);
-  M.trans = { t0: maintenant(), dur: 800, fin: async function () {
-    if (!C || !EXPE || EXPE.mh !== M) return;
-    M.trans = null; M.mode = 'combat'; majVueTraque();
-    if (grand) await banniere(T('{0} est là !', T(BETES[id].nom)), M.monstre.dort ? T('Il dort… frappe fort !') : null, 900);
-    if (!C || !EXPE || EXPE.mh !== M) return;
-    await entrerCombat(id, grand, ref); M.enRencontre = false;
-    if (C && !C.fini && M.mode === 'combat') prochaine();
-  } };
-}
-function retirerMob(e) { H().pv = Math.min(pvMax(), H().pv + Math.round(pvMax() * .2)); hud('hud-combat'); var M = EXPE.mh, ix = M.mobs.indexOf(e.mobRef); if (ix !== -1) M.mobs.splice(ix, 1); if (M.q.type === 'massacre' && e.id === M.q.cible) M.fait++; }
-fuiteMH = async function (e) {
-  var M = EXPE.mh, mo = M.monstre, dest = null, zh = zoneDe(M, M.hx, M.hy);
-  if (!mo.f1 && e.pv <= e.pvMax * .5) {
-    mo.f1 = true;
-    /* la zone la plus loin de toi sur le graphe, hors du nid */
-    var dist = {}, f = [zh ? zh.n : 0]; dist[f[0]] = 0;
-    for (var h = 0; h < f.length; h++) M.zones[f[h]].adj.forEach(function (a) { if (dist[a] == null) { dist[a] = dist[f[h]] + 1; f.push(a); } });
-    var loin = M.zones.filter(function (z) { return z.n !== M.nid.z && z.n !== (zh && zh.n); }).sort(function (a, b) { return (dist[b.n] || 0) - (dist[a.n] || 0); })[0];
-    dest = loin || M.zones[M.nid.z];
-  } else if (!mo.f2 && e.pv <= e.pvMax * .2) { mo.f2 = true; dest = M.zones[M.nid.z]; mo.dort = true; }
-  if (!dest) return false;
-  mo.z = dest.n; mo.revele = true; mo.alerte = 0; mo.course = { t0: maintenant() + 900, dur: 3200, x0: mo.x, y0: mo.y, x1: dest.mx, y1: dest.my }; mo.bouge = maintenant() + 20000; e.fuite = { t0: maintenant(), dur: 500 };
-  await attendre(450); SC.ennemi = null; M.mode = 'explore'; majComp();
-  await banniere(T('{0} s\'enfuit !', T(e.nom)), T(mo.dort ? 'Il boite vers son nid pour dormir. Suis-le !' : 'Il fuit vers une autre zone. Suis-le sur la carte !'), 1300);
-  majInfoTraque(); return true;
-};
-var entrerCombatAvantZ = entrerCombat;
-entrerCombat = async function (id, grand, ref) { var r = await entrerCombatAvantZ(id, grand); if (SC.ennemi && ref) SC.ennemi.mobRef = ref; return r; };
-function dessinerTerrain() {}
-
-/* ── la vue : la carte en plein écran, et les questions seulement quand on agit ── */
-(function () {
-  var d = document.createElement('div'); d.id = 'mh-ex';
-  d.innerHTML = '<canvas id="mh-cv" width="130" height="240"></canvas><div id="mh-info"></div><div id="mh-act" class="cache"></div><div id="mh-fl"></div>';
-  $('scene-combat').parentNode.insertBefore(d, $('scene-combat'));
-  var mm = document.createElement('div'); mm.id = 'mh-mini'; mm.innerHTML = '<canvas id="mh-mcv" width="270" height="312"></canvas><small id="mh-mtxt"></small>'; $('scene-combat').parentNode.insertBefore(mm, $('scene-combat'));
-  var st = document.createElement('style');
-  st.textContent = '#mh-ex{display:none;position:relative;flex:1 1 0;min-height:0;overflow:hidden;background:#0c0918}#mh-cv{display:block;width:390px;image-rendering:pixelated}' +
-    '#v-combat.tq-ex #mh-ex{display:block;flex:0 0 300px}#v-combat.tq-ex #scene-combat,#v-combat.tq-ex .etat,#v-combat.tq-ex #mh-comp,#v-combat.tq-ex #boite{display:none!important}' +
-    '#v-combat.tq-ex.tq-q #boite{display:flex!important}' +
-    '#mh-mini{display:none;flex:1 1 0;min-height:0;align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:6px 0;background:#120e1e;box-shadow:inset 0 2px 0 #000}#v-combat.tq-ex:not(.tq-q) #mh-mini{display:flex}#mh-mini canvas{height:calc(100% - 24px);max-width:96%;image-rendering:pixelated;box-shadow:0 0 0 2px #000,0 0 0 4px #3a3450}#mh-mini small{font-family:var(--lex);font-size:11px;color:var(--doux)}' +
-    '#mh-info{position:absolute;left:8px;top:8px;max-width:calc(100% - 16px);padding:4px 9px;background:rgba(13,16,36,.82);box-shadow:0 0 0 2px #000;color:#f1e4c2;font-family:var(--lex);font-size:14px;line-height:17px;pointer-events:none}' +
-    '#mh-info small{display:block;color:var(--doux);font-size:11px;line-height:13px}' +
-    '#mh-act{position:absolute;left:8px;right:8px;bottom:8px;padding:5px 9px;background:#b8862a;color:#1a1208;box-shadow:0 0 0 2px #000,inset 0 -3px 0 #8a5a1a;font-family:var(--lex);font-size:14px;line-height:16px;text-align:center;pointer-events:none}' +
-    '#mh-act small{display:block;font-size:11px;color:#3a2a10}#mh-act .pips{display:inline-flex;gap:3px;margin-left:6px;vertical-align:middle}#mh-act .pips i{width:9px;height:9px;background:#5a3a10;box-shadow:0 0 0 1px #000}#mh-act .pips i.ok{background:#fff3b0}' +
-    '#mh-fl{position:absolute;inset:0;pointer-events:none;overflow:hidden}.mh-f{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;font-family:var(--lex);font-weight:700;font-size:14px;color:#ffffff;text-shadow:0 2px 0 #000,2px 0 0 #000,-2px 0 0 #000,0 -2px 0 #000;animation:mhFl var(--d,1.1s) ease-out forwards}' +
-    '.mh-f.mal{color:#ff8a7a}.mh-f.fort{color:#ffd24d}.mh-f.info{color:#bfe3ff}@keyframes mhFl{0%{opacity:0;margin-top:6px}12%{opacity:1;margin-top:0}75%{opacity:1}100%{opacity:0;margin-top:-22px}}';
-  document.head.appendChild(st);
-  $('mh-cv').addEventListener('pointerdown', function (ev) {
-    var M = EXPE && EXPE.mh; if (!M || !C || C.famille !== 'traque' || M.mode !== 'explore' || M.enRencontre || M.trans || C.fini || !$('voile').classList.contains('cache')) return;
-    var cv = $('mh-cv'), r = cv.getBoundingClientRect(), px = (ev.clientX - r.left) / r.width * cv.width, py = (ev.clientY - r.top) / r.height * cv.height;
-    var cam = M.cam || { x: 0, y: 0 }; tapCarteZ(M, (px + cam.x) / 8, (py + cam.y) / 8);
-  });
-})();
-function flotte(txt, i, j, cls, ms) {
-  var M = EXPE && EXPE.mh, cv = $('mh-cv'); if (!M || !cv) return;
-  var cam = M.cam || { x: 0, y: 0 }, d = document.createElement('div'); d.className = 'mh-f ' + (cls || '');
-  d.style.left = borne(((i * 8 - cam.x) / cv.width) * 100, 12, 88) + '%'; d.style.top = borne(((j * 8 - cam.y) / cv.height) * 100, 12, 92) + '%'; d.style.setProperty('--d', ((ms || 1100) / 1000) + 's'); d.textContent = txt;
-  $('mh-fl').appendChild(d); setTimeout(function () { d.remove(); }, (ms || 1100) + 60);
-}
-function majInfoTraque() {
-  var M = EXPE && EXPE.mh; if (!M || !$('mh-info')) return;
-  var q = M.q, l = q.type === 'recolte' ? T('{0} : {1} / {2}', T(PIECES[q.cible].nom), M.fait, q.n) : q.type === 'massacre' ? T('{0} : {1} / {2}', T(BETES[q.cible].nom), M.fait, q.n) :
-    M.monstre.mort ? T('{0} est abattu !', T(BETES[q.cible].nom)) : M.monstre.revele ? T('{0} est repéré', T(BETES[q.cible].nom)) : T('Empreintes : {0} / {1}', Math.min(M.monstre.traces, besoinTraces()), besoinTraces());
-  var aide = M.pas < 3 && !M.act ? '<small>' + T('Touche la carte pour marcher, ou touche un obstacle, une plante, une empreinte, un coffre.') + '</small>' : '';
-  $('mh-info').innerHTML = ech(l) + aide;
-  var a = M.act, b = $('mh-act'); b.classList.toggle('cache', !a);
-  if (a) { var p = ''; for (var i = 0; i < a.need; i++) p += '<i' + (i < a.done ? ' class="ok"' : '') + '></i>'; b.innerHTML = ech(nomAct(a)) + '<span class="pips">' + p + '</span><small>' + T('Touche la carte pour laisser') + '</small>'; }
-}
-function majVueTraque() {
-  var v = $('v-combat'), M = EXPE && EXPE.mh, ex = !!(M && C && C.famille === 'traque' && (M.mode === 'explore' || M.trans));
-  if (v.classList.contains('tq-ex') !== ex) {
-    v.classList.toggle('tq-ex', ex);
-    if (ex && M) { M.transIn = { t0: maintenant(), dur: 450 }; M.cam = null; majInfoTraque(); }
-  }
-  var qv = ex && !!(M && M.act); if (v.classList.contains('tq-q') !== qv) v.classList.toggle('tq-q', qv);
-}
-/* après une réponse : en exploration, s'il n'y a plus d'action en cours, la carte reprend tout l'écran */
-var prochaineAvantZ = prochaine;
-prochaine = function () {
-  var M = EXPE && EXPE.mh;
-  if (C && C.famille === 'traque' && M && M.mode === 'explore' && !M.act) {
-    cacherQuestions(); C.verrou = false; majVueTraque(); majInfoTraque();
-    if (sceneFinie()) apresScene();
-    return;
-  }
-  return prochaineAvantZ();
-};
-var sceneQueteAvantZ = sceneQuete;
-sceneQuete = function (f) {
-  var r = sceneQueteAvantZ(f); if (f !== 'traque') return r;
-  SC.tapQ = null; var M = EXPE.mh; M.cam = null; M.transIn = { t0: maintenant(), dur: 600 }; majVueTraque(); majInfoTraque();
-  return [r[0], T('Touche la carte pour marcher. Les questions arrivent quand tu agis : ouvrir un passage, cueillir, examiner une empreinte, ouvrir un coffre.')];
-};
-
-/* ── le dessin, image par image ── */
-function dessinerTraque(now) {
-  var M = EXPE.mh, cv = $('mh-cv'), el = $('mh-ex');
-  var hL = Math.max(60, Math.round(el.clientHeight / 3)); if (cv.height !== hL) { cv.height = hL; cv.style.height = (hL * 3) + 'px'; }
-  var x = cv.getContext('2d'), w = cv.width, h = cv.height; x.imageSmoothingEnabled = false;
-  majTerrainZ(M, now);
-  var vx = borne(M.hx * 8 - w / 2, 0, M.W * 8 - w), vy = borne(M.hy * 8 - h * .55, 0, M.H * 8 - h);
-  if (!M.cam) M.cam = { x: vx, y: vy }; else { M.cam.x += (vx - M.cam.x) * .18; M.cam.y += (vy - M.cam.y) * .18; }
-  var ox = Math.round(M.cam.x), oy = Math.round(M.cam.y), P = M.P;
-  x.fillStyle = '#0c0918'; x.fillRect(0, 0, w, h);
-  x.drawImage(fondTraque(M), -ox, -oy);
-  /* l'eau qui scintille, les fleurs qui bougent */
-  var i0 = Math.max(0, Math.floor(ox / 8)), j0 = Math.max(0, Math.floor(oy / 8)), i1 = Math.min(M.W - 1, i0 + Math.ceil(w / 8) + 1), j1 = Math.min(M.H - 1, j0 + Math.ceil(h / 8) + 1), i, j;
-  for (j = j0; j <= j1; j++) for (i = i0; i <= i1; i++) {
-    var p = j * M.W + i, m = M.mur[p];
-    if (m === 4 || (m === 1 && (P.mur === 'eau'))) { if (Math.floor(now / 380 + hcar(i, j, 2) * 9) % 6 === 0) { x.fillStyle = P.eau === 'lave' ? '#ffd24d' : 'rgba(255,255,255,.55)'; x.fillRect(i * 8 - ox + 1 + Math.floor(hcar(i, j, 6) * 4), j * 8 - oy + 3, 3, 1); } }
-    else if (!m && M.deco[p] === 2 && Math.floor(now / 600 + i) % 4 === 0) { x.fillStyle = P.herbe; x.fillRect(i * 8 - ox + 4, j * 8 - oy + 3, 1, 1); }
-  }
-  /* feux de camp et torches */
-  M.zones.forEach(function (z) {
-    if (!z.vu) return;
-    var fl = [];
-    if (z.feu) fl.push([z.feu[0] * 8 + 4, z.feu[1] * 8 + 3, 1]);
-    if (z.torches) z.torches.forEach(function (t) { if (!M.mur[t[1] * M.W + t[0]]) fl.push([t[0] * 8 + 4, t[1] * 8 + 2, 0]); });
-    fl.forEach(function (f) {
-      var X = f[0] - ox, Y = f[1] - oy, k = Math.floor(now / 90 + f[0]) % 3;
-      x.fillStyle = 'rgba(255,180,80,.12)'; x.fillRect(X - 9, Y - 7, 18, 14);
-      if (!f[2]) { x.fillStyle = '#5a3a22'; x.fillRect(X, Y, 1, 4); }
-      x.fillStyle = '#e2463a'; x.fillRect(X - 1 - (f[2] ? 1 : 0), Y - 2, 3 + (f[2] ? 2 : 0), 3); x.fillStyle = '#ffd24d'; x.fillRect(X - (k === 1 ? 1 : 0), Y - 3 - k, 2, 3);
-      if (f[2] && Math.random() < .05) M.amb.push({ x: f[0], y: f[1] - 4, vx: (Math.random() - .5) * .1, vy: -.25, vie: 50, c: 'rgba(200,200,200,.5)', t: 'fumee' });
-    });
-  });
-  /* les objets et les obstacles des zones vues */
-  M.objs.forEach(function (o) {
-    if (o.t === 'obst') { if (M.zones[o.a].vu || M.zones[o.b].vu) dessinerObst(x, M, o, ox, oy, now); return; }
-    if (M.zones[o.z].vu) dessinerObjet(x, M, o, ox, oy, now);
-  });
-  /* les êtres, triés de haut en bas */
-  var etres = [];
-  M.mobs.forEach(function (b) { if (M.zones[b.z].vu && zoneDe(M, b.x, b.y) && zoneDe(M, b.x, b.y).vu) etres.push({ y: b.y, f: function () { var r = dessinerBeteT(x, b.id, b.x * 8 - ox, b.y * 8 - oy, .5, b.flip, now); if (b.alerte && now - b.alerte < 1400) { x.fillStyle = '#140f24'; x.fillRect(r.x + r.w / 2 - 2, r.y - 9, 5, 8); x.fillStyle = '#ffd24d'; x.fillRect(r.x + r.w / 2 - 1, r.y - 8, 3, 4); x.fillRect(r.x + r.w / 2 - 1, r.y - 3, 3, 1); } } }); });
-  var mo = M.monstre, zmv = mo && !mo.mort && (zoneDe(M, mo.x, mo.y) || M.zones[mo.z]);
-  if (mo && !mo.mort && zmv && zmv.vu) etres.push({ y: mo.y, f: function () { var r = dessinerBeteT(x, mo.id, mo.x * 8 - ox, mo.y * 8 - oy, .72, mo.flip, now); if (mo.dort && Math.floor(now / 600) % 2) { x.fillStyle = '#ffffff'; x.fillRect(r.x + r.w - 2, r.y - 4, 3, 1); x.fillRect(r.x + r.w - 1, r.y - 3, 1, 1); x.fillRect(r.x + r.w - 2, r.y - 2, 3, 1); } } });
-  etres.push({ y: M.hy, f: function () {
-    var hs = sprHerosDe(etat.moi), hw = Math.round(hs.width * .5), hh = Math.round(hs.height * .5), hx = Math.round(M.hx * 8 - ox - hw / 2), hy = Math.round(M.hy * 8 - oy - hh + 2) - (M.marche && Math.floor(now / 120) % 2 ? 1 : 0);
-    if (M.act && Math.floor(now / 200) % 2) hy -= 1;
-    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(hx + 2, hy + hh - 1, hw - 4, 2);
-    if (M.dir === -1) { x.save(); x.translate(hx + hw, hy); x.scale(-1, 1); x.drawImage(hs, 0, 0, hw, hh); x.restore(); } else x.drawImage(hs, hx, hy, hw, hh);
-  } });
-  etres.sort(function (a, b) { return a.y - b.y; }).forEach(function (e) { e.f(); });
-  /* l'ambiance de la contrée */
-  ambianceTraque(M, x, ox, oy, w, h, now);
-  /* le brouillard des zones qu'on n'a pas encore vues */
-  M.zones.forEach(function (z) {
-    var a = z.vu ? (z.t0 ? Math.max(0, 1 - (now - z.t0) / 700) : 0) : 1; if (a <= 0) return;
-    var X = z.x0 * 8 - ox, Y = z.y0 * 8 - oy, Wp = TQ.zw * 8, Hp = TQ.zh * 8; if (X > w || Y > h || X + Wp < 0 || Y + Hp < 0) return;
-    x.fillStyle = 'rgba(12,9,24,' + (.93 * a) + ')'; x.fillRect(X, Y, Wp, Hp);
-    for (var b = 0; b < 7; b++) { var bx = X + ((hcar(z.n, b, 3) * Wp + now / (60 + b * 9)) % Wp), by = Y + 8 + hcar(b, z.n, 4) * (Hp - 16); x.fillStyle = 'rgba(80,70,120,' + (.16 * a) + ')'; x.fillRect(Math.round(bx) - 9, Math.round(by) - 3, 18, 6); x.fillRect(Math.round(bx) - 5, Math.round(by) - 6, 10, 12); }
-  });
-  for (var cy = 0; cy < TQ.gr; cy++) for (var cx = 0; cx < TQ.gc; cx++) if (M.zoneAt[cy * TQ.gc + cx] == null) { x.fillStyle = 'rgba(12,9,24,.45)'; x.fillRect(cx * TQ.zw * 8 - ox, cy * TQ.zh * 8 - oy, TQ.zw * 8, TQ.zh * 8); }
-  /* les obstacles restent visibles par-dessus le brouillard */
-  M.objs.forEach(function (o) { if (o.t === 'obst' && !o.ouvert && (M.zones[o.a].vu || M.zones[o.b].vu)) dessinerObst(x, M, o, ox, oy, now); });
-  /* le grand monstre repéré : un repère rouge, même dans le brouillard */
-  if (mo && !mo.mort && mo.revele && !(zmv && zmv.vu)) {
-    var mxp = borne(mo.x * 8 - ox, 4, w - 5), myp = borne(mo.y * 8 - oy, 6, h - 4), bob = Math.floor(now / 300) % 2;
-    x.fillStyle = '#140f24'; x.fillRect(mxp - 4, myp - 5 - bob, 9, 8); x.fillStyle = '#e2463a'; x.fillRect(mxp - 3, myp - 4 - bob, 7, 6); x.fillStyle = '#ffd24d'; x.fillRect(mxp - 2, myp - 3 - bob, 2, 1); x.fillRect(mxp + 1, myp - 3 - bob, 2, 1); x.fillRect(mxp - 1, myp - bob, 3, 1);
-  }
-  /* la destination */
-  if (M.chemin.length && M.cible && Math.floor(now / 200) % 2) { var tcx = Math.round(M.cible.x * 8 - ox), tcy = Math.round(M.cible.y * 8 - oy); x.fillStyle = '#ffd24d'; x.fillRect(tcx - 3, tcy, 7, 1); x.fillRect(tcx, tcy - 3, 1, 7); }
-  /* les transitions : l'éclair de la rencontre, et les bandes qui s'ouvrent au retour */
-  if (M.trans) {
-    var pt = (now - M.trans.t0) / M.trans.dur;
-    if (pt < .4) { if (Math.floor(pt * 10) % 2 === 0) { x.fillStyle = 'rgba(255,255,255,.85)'; x.fillRect(0, 0, w, h); } }
-    else { var k2 = Math.min(1, (pt - .4) / .6), n = 8; x.fillStyle = '#000'; for (var bd = 0; bd < n; bd++) { var bh = h / n; x.fillRect(bd % 2 ? w - w * k2 : 0, Math.floor(bd * bh), Math.ceil(w * k2), Math.ceil(bh)); } }
-    if (pt >= 1 && !M.trans.lance) { M.trans.lance = true; M.trans.fin(); }
-  } else if (M.transIn) {
-    var pi = (now - M.transIn.t0) / M.transIn.dur; if (pi >= 1) M.transIn = null;
-    else { x.fillStyle = '#000'; var hb = Math.round(h / 2 * (1 - pi)); x.fillRect(0, 0, w, hb); x.fillRect(0, h - hb, w, hb); }
-  }
-}
-function ambianceTraque(M, x, ox, oy, w, h, now) {
-  var P = M.P, t = P.amb, r = Math.random();
-  if (M.amb.length < 40) {
-    var X = ox + Math.random() * w, Y = oy + Math.random() * h;
-    if (t === 'lucioles' && r < .25) M.amb.push({ x: X, y: Y, vx: (Math.random() - .5) * .2, vy: (Math.random() - .5) * .2, vie: 160, c: P.mur === 'arbreRose' ? '#ffb0f0' : '#d8ff7a', t: 'luciole' });
-    if (t === 'feuilles' && r < .12) M.amb.push({ x: X, y: oy - 2, vx: .25 + Math.random() * .2, vy: .3, vie: 260, c: Math.random() < .5 ? '#4a8a3a' : '#c88a3a', t: 'feuille' });
-    if (t === 'neige' && r < .45) M.amb.push({ x: X, y: oy - 2, vx: (Math.random() - .5) * .15, vy: .35 + Math.random() * .2, vie: 300, c: '#ffffff', t: 'neige' });
-    if (t === 'braises' && r < .3) M.amb.push({ x: X, y: oy + h + 2, vx: (Math.random() - .5) * .2, vy: -.4 - Math.random() * .3, vie: 260, c: Math.random() < .5 ? '#ff9a3c' : '#ffd24d', t: 'braise' });
-    if ((t === 'poussiere' || t === 'pollen') && r < .2) M.amb.push({ x: X, y: Y, vx: .2 + Math.random() * .2, vy: (Math.random() - .5) * .08, vie: 200, c: t === 'pollen' ? 'rgba(255,255,230,.8)' : 'rgba(230,200,160,.6)', t: 'poussiere' });
-    if (t === 'brume' && r < .04) M.amb.push({ x: ox - 20, y: Y, vx: .12 + Math.random() * .1, vy: 0, vie: 900, c: 'rgba(220,235,225,.09)', t: 'brume' });
-  }
-  /* des papillons dans les clairières */
-  M.zones.forEach(function (z) {
-    if (!z.vu || (z.kind !== 'clairiere' && z.kind !== 'depart')) return;
-    for (var b = 0; b < 2; b++) {
-      var bx = z.mx * 8 + Math.sin(now / 1300 + b * 2 + z.n) * 30 - ox, by = z.my * 8 + Math.cos(now / 1700 + b * 3) * 18 - oy, ail = Math.floor(now / 140 + b) % 2;
-      if (bx < -4 || by < -4 || bx > w + 4 || by > h + 4) continue;
-      x.fillStyle = P.fleur[b % P.fleur.length]; x.fillRect(Math.round(bx) - 1 - ail, Math.round(by), 1 + ail, 2); x.fillRect(Math.round(bx) + 1, Math.round(by), 1 + ail, 2); x.fillStyle = '#140f24'; x.fillRect(Math.round(bx), Math.round(by), 1, 2);
-    }
-  });
-  M.amb = M.amb.filter(function (a) {
-    a.vie--; a.x += a.vx; a.y += a.vy; if (a.t === 'feuille') a.vx = .25 + Math.sin(now / 300 + a.y) * .25; if (a.t === 'eclat') a.vy += .03;
-    if (a.vie <= 0) return false;
-    var X = Math.round(a.x - ox), Y = Math.round(a.y - oy);
-    if (a.t === 'luciole') { if (Math.floor(now / 250 + a.vie) % 3) { x.fillStyle = a.c; x.fillRect(X, Y, 1, 1); x.fillStyle = 'rgba(216,255,122,.2)'; x.fillRect(X - 1, Y - 1, 3, 3); } }
-    else if (a.t === 'brume') { x.fillStyle = a.c; x.fillRect(X, Y, 34, 6); x.fillRect(X + 6, Y - 3, 20, 12); }
-    else if (a.t === 'fumee') { x.fillStyle = a.c; x.fillRect(X, Y, 2, 2); }
-    else { x.fillStyle = a.c; x.fillRect(X, Y, a.t === 'feuille' ? 2 : 1, 1); }
-    return true;
-  });
-}
-(function boucleTraque() {
-  requestAnimationFrame(boucleTraque);
-  try {
-    majVueTraque();
-    var M = EXPE && EXPE.mh;
-    if (M && C && C.famille === 'traque' && vueActive === 'combat' && $('v-combat').classList.contains('tq-ex')) dessinerTraque(maintenant());
-  } catch (err) { console.error(err); }
-})();
-
-/* comme dans Monster Hunter : on peut s'évanouir deux fois ; on se réveille au campement, la bête garde ses blessures */
-var defaiteAvantMH = defaite;
-defaite = async function () {
-  var M = EXPE && EXPE.mh;
-  if (!C || C.famille !== 'traque' || !M || M.chutes >= 2) return defaiteAvantMH();
-  M.chutes++; H().pv = Math.round(pvMax() * .6); SC.heros.ko = false; SC.ennemi = null; M.mode = 'explore'; M.enRencontre = false; M.act = null;
-  M.hx = M.dep.x; M.hy = M.dep.y; M.chemin = []; M.but = null; if (M.monstre) { M.monstre.tx = null; M.monstre.bouge = maintenant() + 12000; M.monstre.alerte = 0; }
-  M.mobs.forEach(function (b) { b.alerte = 0; });
-  majComp(); hud('hud-combat'); majVueTraque(); majInfoTraque(); son('mal');
-  await banniere(T('Tu t\'évanouis…'), T('Retour au campement. Chutes avant l\'échec : {0}', 2 - M.chutes), 1600);
-};
-Object.assign(NL, {
-  'Tu t\'évanouis…': 'Je valt flauw…', 'Retour au campement. Chutes avant l\'échec : {0}': 'Terug naar het kamp. Keren flauwvallen voor het mislukt: {0}',
-  'Tu as fait du bruit… quelque chose approche !': 'Je hebt lawaai gemaakt… er komt iets aan!', 'Raté…': 'Mis…', 'Passage ouvert !': 'Doorgang vrij!', 'Une empreinte !': 'Een voetafdruk!',
-  'Pas de passage': 'Geen doorgang', 'Touche la carte pour laisser': 'Tik op de kaart om het te laten', 'Empreintes : {0} / {1}': 'Voetafdrukken: {0} / {1}',
-  'Touche la carte pour marcher, ou touche un obstacle, une plante, une empreinte, un coffre.': 'Tik op de kaart om te lopen, of tik op een obstakel, een plant, een voetafdruk, een kist.',
-  'Touche la carte pour marcher. Les questions arrivent quand tu agis : ouvrir un passage, cueillir, examiner une empreinte, ouvrir un coffre.': 'Tik op de kaart om te lopen. De vragen komen als je iets doet: een doorgang openen, plukken, een voetafdruk bekijken, een kist openen.'
-});
-function galPieceZ(M) { var R = REGIONS[M.k], l = (R.recoltes || []).slice(); (R.petits || []).forEach(function (id) { var B0 = BETES[id]; if (B0 && B0.loot) l.push(B0.loot[0][0]); }); return l.length ? mel(l)[0] : null; }
-Object.assign(NL, {
-  'Bénédiction : PV et compétences au plein, les environs se dévoilent': 'Zegen: levenspunten en vaardigheden vol, de omgeving wordt zichtbaar', 'L\'eau fraîche te requinque': 'Het frisse water knapt je op',
-  'Piège posé : le grand monstre sera pris au début du combat': 'Val gezet: het grote monster zit vast bij het begin van het gevecht', '« Je l\'ai vu passer par là ! »': '« Ik heb hem daarlangs zien gaan! »', '« Prends ça, pour la route. »': '« Neem dit mee, voor onderweg. »'
-});
-
-/* toucher la carte (ou la minimap) : marcher, ou aller agir sur l'objet le plus proche */
-function tapCarteZ(M, tx, ty) {
-  var ti = Math.floor(tx), tj = Math.floor(ty);
-    if (M.act) annulerAct(M);
-    /* un objet près du doigt, dans une zone déjà vue : on va agir dessus */
-    var best = null, bd = M.tapLarge ? 2.6 : 1.7;
-    M.objs.forEach(function (o) {
-      if (o.ouvert) return; if (o.t === 'obst' ? !(M.zones[o.a].vu || M.zones[o.b].vu) : !M.zones[o.z].vu) return;
-      var d = o.t === 'obst' ? Math.min.apply(null, o.tiles.map(function (t) { return Math.hypot(t[0] + .5 - tx, t[1] + .5 - ty); })) : Math.hypot(o.i - tx, o.j - ty - .3);
-      if (d < bd) { bd = d; best = o; }
-    });
-    M.cible = { x: tx, y: ty, t0: maintenant() };
-    if (best) {
-      if (adjacentA(M, best)) { demarrerAct(M, best); return; }
-      var ch = versObjet(M, best); if (ch) { M.chemin = ch; M.but = best; son('clic'); return; }
-    }
-    var c2 = versCase(M, ti, tj); M.but = null;
-    if (c2 && c2.length) { M.chemin = c2; son('clic'); } else if (!c2) flotte(T('Pas de passage'), tx, ty, 'mal');
-}
-
-/* ── la minimap, en bas de l'écran tant qu'il n'y a rien à répondre ── */
-var MINI_T = 0;
-function dessinerMiniZ(M, now) {
-  if (now - MINI_T < 140) return; MINI_T = now;
-  var cv = $('mh-mcv'), x = cv.getContext('2d'), Z = 6, W = M.W, i, j, P = M.P;
-  x.setTransform(1, 0, 0, 1, 0, 0); x.fillStyle = '#0c0918'; x.fillRect(0, 0, cv.width, cv.height);
-  /* on cadre la minimap sur les zones déjà vues (plus une bordure), pour qu'elle reste lisible */
-  var vues = M.zones.filter(function (z) { return z.vu; }), x0 = Math.min.apply(null, vues.map(function (z) { return z.x0; })), y0 = Math.min.apply(null, vues.map(function (z) { return z.y0; })),
-    x1 = Math.max.apply(null, vues.map(function (z) { return z.x0 + TQ.zw; })), y1 = Math.max.apply(null, vues.map(function (z) { return z.y0 + TQ.zh; }));
-  x0 = Math.max(0, x0 - 4); y0 = Math.max(0, y0 - 4); x1 = Math.min(W, x1 + 4); y1 = Math.min(M.H, y1 + 4);
-  var sc = Math.min(cv.width / ((x1 - x0) * Z), cv.height / ((y1 - y0) * Z)), dx = (cv.width - (x1 - x0) * Z * sc) / 2 - x0 * Z * sc, dy = (cv.height - (y1 - y0) * Z * sc) / 2 - y0 * Z * sc;
-  M.miniT = { s: sc, dx: dx, dy: dy }; x.setTransform(sc, 0, 0, sc, dx, dy);
-  for (j = 0; j < M.H; j++) for (i = 0; i < W; i++) {
-    var z = zoneDe(M, i, j); if (!z || !z.vu) continue;
-    var p = j * W + i, m = M.mur[p];
-    x.fillStyle = m === 4 ? (P.eau === 'lave' ? '#a8322a' : '#3a6f9a') : m ? '#24321f' : P.sol[0]; x.fillRect(i * Z, j * Z, Z, Z);
-  }
-  M.objs.forEach(function (o) {
-    if (o.t === 'obst') { if (o.ouvert || !(M.zones[o.a].vu || M.zones[o.b].vu)) return; x.fillStyle = '#c9a46a'; o.tiles.forEach(function (t) { x.fillRect(t[0] * Z, t[1] * Z, Z, Z); }); return; }
-    if (!M.zones[o.z].vu) return;
-    x.fillStyle = { pt: '#8af59a', trace: '#a8693a', coffre: '#ffd24d', autel: '#7fe0ff', pnj: '#ffffff', fontaine: '#5fa8e0', piege: '#d9a36a' }[o.t] || '#ffffff';
-    x.fillRect(Math.floor(o.i) * Z - 1, Math.floor(o.j) * Z - 1, Z + 2, Z + 2);
-  });
-  M.mobs.forEach(function (b) { var z = zoneDe(M, b.x, b.y); if (!z || !z.vu) return; x.fillStyle = '#e2463a'; x.fillRect(Math.floor(b.x) * Z, Math.floor(b.y) * Z, Z, Z); });
-  var mo = M.monstre; if (mo && !mo.mort) { var zm = zoneDe(M, mo.x, mo.y); if (mo.revele || (zm && zm.vu)) { var cl = Math.floor(now / 300) % 2; x.fillStyle = '#1b1325'; x.fillRect(Math.floor(mo.x) * Z - 4, Math.floor(mo.y) * Z - 4, Z + 8, Z + 8); x.fillStyle = cl ? '#ff3a2a' : '#ffd24d'; x.fillRect(Math.floor(mo.x) * Z - 3, Math.floor(mo.y) * Z - 3, Z + 6, Z + 6); } }
-  var cam = M.cam; if (cam) { x.strokeStyle = 'rgba(255,255,255,.55)'; x.lineWidth = 1; x.strokeRect(cam.x / 8 * Z + .5, cam.y / 8 * Z + .5, $('mh-cv').width / 8 * Z, $('mh-cv').height / 8 * Z); }
-  x.fillStyle = Math.floor(now / 250) % 2 ? '#ffd24d' : '#ffffff'; x.fillRect(Math.floor(M.hx) * Z - 2, Math.floor(M.hy) * Z - 2, Z + 4, Z + 4);
-  $('mh-mtxt').textContent = T('Touche la carte ou la minimap pour te déplacer');
-}
-(function () {
-  $('mh-mcv').addEventListener('pointerdown', function (ev) {
-    var M = EXPE && EXPE.mh; if (!M || !C || C.famille !== 'traque' || M.mode !== 'explore' || M.enRencontre || M.trans || C.fini || !$('voile').classList.contains('cache')) return;
-    var cv = $('mh-mcv'), r = cv.getBoundingClientRect(), mt = M.miniT || { s: 1, dx: 0, dy: 0 }, px = (ev.clientX - r.left) / r.width * cv.width, py = (ev.clientY - r.top) / r.height * cv.height, tx = (px - mt.dx) / mt.s / 6, ty = (py - mt.dy) / mt.s / 6;
-    if (!zoneDe(M, tx, ty)) return;
-    M.tapLarge = true; tapCarteZ(M, tx, ty); M.tapLarge = false;
-  });
-  (function boucleMini() { requestAnimationFrame(boucleMini); try { var M = EXPE && EXPE.mh, v = $('v-combat'); if (M && v.classList.contains('tq-ex') && !v.classList.contains('tq-q')) dessinerMiniZ(M, maintenant()); } catch (err) { console.error(err); } })();
-})();
-Object.assign(NL, { 'Touche la carte ou la minimap pour te déplacer': 'Tik op de kaart of de minikaart om te bewegen', 'Tu ne connais pas encore cet endroit': 'Deze plek ken je nog niet' });
 
 /* ═════════ 03/11 : la refonte visuelle — armures, armes, attaques, arbre de talents ═════════
    1) Chaque armure a sa silhouette : cornes, épaulières, col de fourrure, capuche, écailles, cape longue, robe.
@@ -15444,7 +14613,7 @@ majComp = function () {
 var poserQuestionAvantCU = poserQuestion;
 poserQuestion = function (t, f) { var r = poserQuestionAvantCU(t, f); majComp(); return r; };
 var finExpeditionAvantCU = finExpedition;
-finExpedition = function (a) { $('mh-comp').classList.add('cache'); $('v-combat').classList.remove('tq-ex', 'tq-q'); return finExpeditionAvantCU(a); };
+finExpedition = function (a) { $('mh-comp').classList.add('cache'); return finExpeditionAvantCU(a); };
 /* l'étiquette dit ce que fait le monstre, dans tous les combats */
 var majEtiquetteAvantCU = majEtiquette;
 majEtiquette = function () {
@@ -15469,10 +14638,6 @@ Object.assign(FX_TXT, { mana: '+{0} de vivacité (recharges plus rapides)', mana
 TUTOS.combat = [TR('Le combat', 'Het gevecht'), TR('Chaque bonne réponse frappe. Plus tu réponds vite, plus tu frappes fort.', 'Elk goed antwoord slaat. Hoe sneller je antwoordt, hoe harder je slaat.'),
   TR('Les boutons au-dessus des questions sont tes trois compétences (tu les choisis dans ta fiche, onglet Talents). Chacune se charge toute seule, lentement. Un bouton qui brille est prêt : garde-le pour le bon moment.', 'De knoppen boven de vragen zijn je drie vaardigheden (je kiest ze in je fiche, tabblad Talenten). Elke vaardigheid laadt vanzelf, langzaam op. Een knop die oplicht is klaar: bewaar hem voor het juiste moment.'),
   TR('Une erreur, et le monstre frappe. Quand il prépare une attaque, réponds juste pour l\'esquiver !', 'Een fout, en het monster slaat. Als het een aanval voorbereidt, antwoord juist om te ontwijken!')];
-TUTOS.traque = [TR('La traque', 'De speurtocht'), TR('Touche la carte : ton héros y marche. Chaque zone se dévoile quand tu y entres.', 'Tik op de kaart: je held loopt erheen. Elke zone wordt zichtbaar als je erin komt.'),
-  TR('Touche un obstacle, une plante, une empreinte ou un coffre : réponds juste pour agir. Une erreur fait juste rater l\'action.', 'Tik op een obstakel, een plant, een voetafdruk of een kist: antwoord juist om iets te doen. Een fout laat de actie gewoon mislukken.'),
-  TR('Les monstres rôdent : s\'ils te touchent, c\'est le combat.', 'Monsters sluipen rond: raken ze je, dan begint het gevecht.')];
-TUTOS.traqueChasse = [TR('Trouver le grand monstre', 'Het grote monster vinden'), TR('Examine ses empreintes : avec trois, tu sais où il est.', 'Bekijk zijn voetafdrukken: met drie weet je waar hij is.'), TR('À mi-vie, il entre en rage. Certains se replient une fois dans une zone voisine : suis-les !', 'Halverwege wordt hij razend. Sommige trekken zich één keer terug naar een zone ernaast: volg ze!')];
 Object.assign(NL, {
   'Rapide !': 'Snel!', 'Critique !': 'Kritiek!', 'Purifié !': 'Gezuiverd!', 'Tu tiens bon !': 'Je houdt stand!', 'Empoisonné': 'Vergiftigd', 'Il appelle de l\'aide !': 'Hij roept om hulp!',
   '+{0} de vivacité (recharges plus rapides)': '+{0} vlugheid (sneller opladen)', '+{0} de réserve (recharges plus courtes)': '+{0} reserve (korter opladen)', 'jamais sonné par un rugissement': 'nooit versuft door een brul',
@@ -16751,114 +15916,10 @@ frappeEnnemi = async function (dmg) { await elanAttaque(SC.ennemi); return frapp
 var frapperDeAvantAtt = frapperDe;
 frapperDe = async function (e) { await elanAttaque(e); return frapperDeAvantAtt(e); };
 
-/* ═════════ 05/11 : des zones dessinées à la main ═════════
-   Chaque zone de traque est tirée d'un modèle (15 × 13 cases), retourné au hasard : gué, étang,
-   cercle de pierres, prairie d'herbes hautes, arbre géant, labyrinthe de haies, ravin et son pont,
-   champ d'éboulis, village en ruine, temple, campement de monstres, nid. Les sorties sont creusées
-   ensuite, du bord de la zone jusqu'au premier sol.
-   Légende : # bord · . sol · , herbes hautes · * fleurs · : chemin · v buisson · r rocher · ~ eau ·
-   o pierre de gué · = pont · P colonne · H tente (2×2) · F feu · t tombe · S menhir · A arbre géant (2×2) ·
-   C gouffre · B ossements · N nid · M emplacement d'autel */
-var MODELES = {
-  clairiere: [
-    ['###############', '#..,,...,,....#', '#.,*..S...*.,.#', '#...S.....S...#', '#.*...*.*...*.#', '#..S..*.*..S..#', '#.....*.*.....#', '#..S.......S..#', '#.*..S...S..,.#', '#..,...S...,..#', '#.v..,...,..v.#', '#..v.......v..#', '###############'],
-    ['###############', '#v,,,,,:,,,,,v#', '#,,,*,,:,,,*,,#', '#,v,,,,:,,,,,,#', '#,,,,,,:,,v,,,#', '#,,*,,,:,,,,*,#', '#:::::::::::::#', '#,,,,,,:,,,,,,#', '#,v,,*,:,,*,v,#', '#,,,,,,:,,,,,,#', '#,*,,,,:,,,,*,#', '#v,,,,,:,,,,,v#', '###############'],
-    ['###############', '#..v.......v..#', '#.v..,...,..v.#', '#....*...*....#', '#.,...AA....,.#', '#.....AA......#', '#..*.......*..#', '#.,..v...v..,.#', '#.....,.,.....#', '#.v.*.....*.v.#', '#..v.......v..#', '#.....v.v.....#', '###############']],
-  bosquet: [
-    ['###############', '#.....v.v.....#', '#.vvv.v.v.vvv.#', '#.v.........v.#', '#.v.vvv.vvv.v.#', '#...v.....v...#', '#.....v.v.....#', '#...v.....v...#', '#.v.vvv.vvv.v.#', '#.v.........v.#', '#.vvv.v.v.vvv.#', '#.....v.v.....#', '###############'],
-    ['###############', '#vv...vvv..vvv#', '#v..:::::...v.#', '#..:..v..:....#', '#.:..vvv..:.v.#', '#.:.v,,,v.:...#', '#.:..v*v..::::#', '#.::..v.....v.#', '#..:::...v..v.#', '#.v...:..vv...#', '#vv...:.....vv#', '#vvv..:..v.vvv#', '###############']],
-  mare: [
-    ['###############', '#..,,....~~...#', '#.v,.....~~.r.#', '#..*....~~~...#', '#.......~~....#', '#..r....~~..v.#', '#.......==....#', '#.,.....~~....#', '#..v...~~~..*.#', '#......~~.....#', '#.*...~~...r..#', '#....,~~......#', '###############'],
-    ['###############', '#.v.......,.v.#', '#...~~~~~.....#', '#..~~~~~~~~...#', '#.~~~oo~~~~~..#', '#.~~~..*~~~~.*#', '#.....o..o....#', '#.~~~~*..~~~..#', '#..~~~~oo~~~..#', '#...~~~~~~~...#', '#.*...~~~~..v.#', '#..v.......,..#', '###############']],
-  rochers: [
-    ['###############', '#..r....r..CC.#', '#.....r...CC..#', '#.r......CC.r.#', '#........CC...#', '#..r....CC....#', '#.......==....#', '#......CC...r.#', '#.r...CC......#', '#....CC....r..#', '#...CC........#', '#..CC....r....#', '###############'],
-    ['###############', '#.rr..r....rr.#', '#.r....rr.....#', '#...r.....r.r.#', '#.rr...r......#', '#.....rr..rr..#', '#.r...........#', '#...rr...r..r.#', '#.r....r......#', '#..r.r...rr.r.#', '#.......r.....#', '#.rr..r....r..#', '###############']],
-  ruines: [
-    ['###############', '#.PPP...PPP...#', '#.P.P...P.P.v.#', '#.P.....P.....#', '#.....:.......#', '#.PP.:::.PPP..#', '#....:M:...P..#', '#.PP.:::.P....#', '#.P...:..PPP..#', '#.P.P.......r.#', '#.PPP.r.PP.P..#', '#.......P.....#', '###############'],
-    ['###############', '#..P.P.P.P.P..#', '#.............#', '#.P.........P.#', '#...:::::::...#', '#.P.:.....:.P.#', '#...:..M..:...#', '#.P.:.....:.P.#', '#...:::::::...#', '#.P.........P.#', '#.............#', '#..P.P.P.P.P..#', '###############']],
-  campement: [
-    ['###############', '#.v.....,..v..#', '#..HH..r..HH..#', '#..HH.....HH..#', '#.............#', '#..r..:::..r..#', '#....:.F.:....#', '#..r..:::..r..#', '#.............#', '#..HH.....HH..#', '#..HH..r..HH..#', '#.v.....,..v..#', '###############']],
-  nid: [
-    ['###############', '#..rr.....rr..#', '#.r..,...,..r.#', '#.r.B.....B.r.#', '#....:::::....#', '#.,.:,,,,,:.,.#', '#...:,,N,,:...#', '#.,.:,,,,,:.,.#', '#....:::::....#', '#.r.B.....B.r.#', '#.r..,...,..r.#', '#..rr.....rr..#', '###############']],
-  depart: [
-    ['###############', '#.v..,.....v..#', '#.....HH......#', '#.....HH...,..#', '#..*.......*..#', '#.....:F:.....#', '#.....:::.....#', '#.,...........#', '#..v.......v..#', '#.....,.,.....#', '#.*.........*.#', '#..v...,...v..#', '###############']]
-};
-var MOD_CODE = { '#': 1, 'v': 2, 'r': 3, '~': 4, 'P': 5, 'H': 6, 't': 7, 'F': 8, 'A': 9, 'S': 10, 'C': 11 };
-var MOD_DECO = { ',': 12, '*': 2, ':': 7, '=': 8, 'o': 9, 'B': 10, 'N': 11 };
-/* on pose les modèles, on rend les bords irréguliers, puis on creuse les sorties */
-function poserModeles(M, aretes, res, k) {
-  var W = M.W, i, j;
-  M.zones.forEach(function (z) {
-    var l = MODELES[z.kind] || MODELES.clairiere, m = l[Math.floor(Math.random() * l.length)], fx = Math.random() < .5, fy = Math.random() < .5 && z.kind !== 'depart';
-    for (j = 0; j < TQ.zh; j++) for (i = 0; i < TQ.zw; i++) {
-      var si = fx ? TQ.zw - 1 - i : i, sj = fy ? TQ.zh - 1 - j : j, ch = (m[sj] || '')[si] || '#', p = (z.y0 + j) * W + z.x0 + i;
-      M.mur[p] = MOD_CODE[ch] != null ? MOD_CODE[ch] : 0; M.deco[p] = MOD_DECO[ch] || 0;
-      if (ch === 'F') z.feu = [z.x0 + i, z.y0 + j];
-      if (ch === 'M') z.spot = [z.x0 + i, z.y0 + j];
-      if (ch === 'N') z.nidC = [z.x0 + i, z.y0 + j];
-      if (ch === 'U' || ch === 'Y') (z.objsPl || (z.objsPl = [])).push({ t: ch === 'U' ? 'puits' : 'meule', i: z.x0 + i, j: z.y0 + j });
-    }
-    /* des bords moins droits : quelques buissons ou rochers grignotent la lisière */
-    for (j = z.y0 + 1; j < z.y0 + TQ.zh - 1; j++) for (i = z.x0 + 1; i < z.x0 + TQ.zw - 1; i++) {
-      var bord = j === z.y0 + 1 || j === z.y0 + TQ.zh - 2 || i === z.x0 + 1 || i === z.x0 + TQ.zw - 2, q = j * W + i;
-      if (bord && !M.mur[q] && !M.deco[q] && hcar(i, j, 17 + k) < .3) M.mur[q] = M.P.veg === 'pilier' || M.P.veg === 'tombe' || M.P.veg === 'cristal' ? 3 : 2;
-    }
-  });
-  /* les sorties : du bord commun vers l'intérieur de chaque zone, jusqu'au premier sol ; l'obstacle se pose sur le bord */
-  aretes.forEach(function (a) {
-    var A = M.zones[a[0]], B = M.zones[a[1]], hor = A.cy === B.cy, tiles = [], L, R2, s;
-    if (hor) {
-      L = A.cx < B.cx ? A : B; R2 = L === A ? B : A; var y = L.y0 + 6, fr = R2.x0;
-      for (s = 0; s < 3; s++) { tiles.push([fr - 1, y - 1 + s]); tiles.push([fr, y - 1 + s]); }
-      [[fr - 1, -1], [fr, 1]].forEach(function (d) { for (var x = d[0], n = 0; n < 7; n++, x += d[1]) { var vide = true; for (s = -1; s <= 1; s++) { var q = (y + s) * W + x; if (M.mur[q] || n < 2) { vide = false; } } for (s = -1; s <= 1; s++) { var q2 = (y + s) * W + x; if (M.mur[q2] === 4 || M.mur[q2] === 11) M.deco[q2] = 8; M.mur[q2] = 0; res[q2] = 1; } if (vide && n >= 1) break; } });
-    } else {
-      L = A.cy < B.cy ? A : B; R2 = L === A ? B : A; var x0 = L.x0 + 7, fy = R2.y0;
-      for (s = 0; s < 3; s++) { tiles.push([x0 - 1 + s, fy - 1]); tiles.push([x0 - 1 + s, fy]); }
-      [[fy - 1, -1], [fy, 1]].forEach(function (d) { for (var y2 = d[0], n = 0; n < 7; n++, y2 += d[1]) { var vide = true; for (s = -1; s <= 1; s++) { var q = y2 * W + x0 + s; if (M.mur[q] || n < 2) { vide = false; } } for (s = -1; s <= 1; s++) { var q2 = y2 * W + x0 + s; if (M.mur[q2] === 4 || M.mur[q2] === 11) M.deco[q2] = 8; M.mur[q2] = 0; res[q2] = 1; } if (vide && n >= 1) break; } });
-    }
-    a.tiles = tiles; a.hor = hor;
-  });
-}
-function solCentre(M, z) {
-  if (z.sol) return z.sol;
-  var best = null, bd = 99, cx = z.spot ? z.spot[0] + .5 : z.mx, cy = z.spot ? z.spot[1] + .5 : z.my;
-  for (var j = z.y0 + 1; j < z.y0 + TQ.zh - 1; j++) for (var i = z.x0 + 1; i < z.x0 + TQ.zw - 1; i++) { var p = j * M.W + i; if (M.mur[p] || M.bloque[p]) continue; var d = Math.hypot(i + .5 - cx, j + .5 - cy); if (d < bd) { bd = d; best = [i + .5, j + .5]; } }
-  z.sol = best || [z.mx, z.my]; return z.sol;
-}
-/* les nouvelles cases : arbre géant, menhir, gouffre ; et les nouveaux sols : chemin, pont, gué, ossements, nid */
-function artModele(x, M, i, j, m) {
-  var X = i * 8, Y = j * 8, W = M.W;
-  if (m === 10) { x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X + 1, Y + 6, 7, 2); x.fillStyle = '#5a5868'; x.fillRect(X + 2, Y - 6, 4, 13); x.fillStyle = '#8a8898'; x.fillRect(X + 2, Y - 6, 2, 12); x.fillStyle = '#7fe0ff'; if (hcar(i, j, 3) > .5) x.fillRect(X + 3, Y - 2, 1, 3); return true; }
-  if (m === 11) { x.fillStyle = '#0c0918'; x.fillRect(X, Y, 8, 8); if (!M.mur[(j - 1) * W + i] || M.mur[(j - 1) * W + i] !== 11) { x.fillStyle = '#4a3a2a'; x.fillRect(X, Y, 8, 2); } x.fillStyle = '#1a1428'; x.fillRect(X + 2, Y + 4, 3, 1); return true; }
-  if (m === 9) {
-    if (M.mur[j * W + i - 1] === 9 || M.mur[(j - 1) * W + i] === 9) return true;
-    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X - 6, Y + 13, 28, 4);
-    x.fillStyle = '#4a2e1a'; x.fillRect(X + 2, Y - 2, 12, 18); x.fillStyle = '#6a4226'; x.fillRect(X + 3, Y - 2, 4, 18); x.fillStyle = '#3a2214'; x.fillRect(X + 9, Y + 4, 2, 6);
-    var c = COUL_ART[M.P.mur === 'arbreRose' ? 'arbreRose' : 'arbre'];
-    x.fillStyle = c[0]; x.fillRect(X - 10, Y - 18, 36, 18); x.fillRect(X - 6, Y - 22, 28, 26);
-    x.fillStyle = c[1]; x.fillRect(X - 8, Y - 20, 30, 15); x.fillRect(X - 4, Y - 23, 22, 20);
-    x.fillStyle = c[2]; x.fillRect(X - 4, Y - 21, 10, 5); x.fillRect(X - 7, Y - 17, 4, 3); x.fillRect(X + 10, Y - 19, 5, 3);
-    return true;
-  }
-  return false;
-}
-function decoModele(x, M, i, j, d) {
-  var X = i * 8, Y = j * 8, h = hcar(i, j, 13);
-  if (d === 7) { x.fillStyle = '#9a7a52'; x.fillRect(X, Y + 1, 8, 6); x.fillStyle = '#b8966a'; x.fillRect(X + Math.floor(h * 5), Y + 3, 2, 1); return true; }
-  if (d === 8) { x.fillStyle = '#3d5f58'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#8a6a40'; x.fillRect(X, Y + 1, 8, 6); x.fillStyle = '#6a4a28'; x.fillRect(X + 2, Y + 1, 1, 6); x.fillRect(X + 5, Y + 1, 1, 6); return true; }
-  if (d === 9) { x.fillStyle = '#3a6f9a'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#8a8890'; x.fillRect(X + 1, Y + 2, 6, 4); x.fillStyle = '#aaa8b0'; x.fillRect(X + 2, Y + 2, 3, 1); return true; }
-  if (d === 10) { x.fillStyle = '#e8d8b0'; x.fillRect(X + 1, Y + 3, 6, 1); x.fillRect(X + 2, Y + 1, 1, 5); x.fillRect(X + 5, Y + 1, 1, 5); x.fillStyle = '#b8a07a'; x.fillRect(X + 1, Y + 4, 6, 1); return true; }
-  if (d === 11) { x.fillStyle = '#8a6a3a'; x.fillRect(X - 3, Y + 1, 14, 6); x.fillStyle = '#c9a46a'; x.fillRect(X - 2, Y + 2, 12, 2); x.fillStyle = '#5a3a1a'; x.fillRect(X, Y + 4, 8, 2); x.fillStyle = '#f1e4c2'; x.fillRect(X + 2, Y + 2, 2, 2); x.fillRect(X + 5, Y + 3, 2, 2); return true; }
-  if (d === 12) { x.fillStyle = M.P.herbe; x.fillRect(X + 1, Y + 3, 1, 4); x.fillRect(X + 3, Y + 2, 1, 5); x.fillRect(X + 5, Y + 3, 1, 4); x.fillRect(X + 6, Y + 1, 1, 6); x.fillStyle = 'rgba(0,0,0,.15)'; x.fillRect(X, Y + 7, 8, 1); return true; }
-  return false;
-}
-
 /* ═════════ 05/11 : plus de fuite à répétition, des phases de combat ═════════
    À la moitié de ses PV, un grand monstre passe en phase 2 : il change d'allure (piquants, contour rouge,
-   teinte sombre), frappe 20 % plus fort et charge ses coups 25 % plus vite.
-   Seuls quelques grands monstres rapides ou volants se replient une seule fois dans la zone voisine,
-   puis reviennent en phase 2 quand on les retrouve. Plus de nid ni de sommeil. */
-var FUYARDS = { reine: 1, crocdelune: 1, aigle: 1, 'dame-blanche': 1, 'dragon-lave': 1, 'loup-garou': 1, 'ver-sables': 1 };
+   teinte sombre), frappe 20 % plus fort et charge ses coups 25 % plus vite. Plus de nid ni de sommeil,
+   et plus de repli : le combat va jusqu'au bout. */
 
 /* ── l'allure de la phase 2, fabriquée à partir de chaque image du monstre ── */
 var RAGE_C = new Map();
@@ -16908,16 +15969,7 @@ async function passerPh2(e) {
 }
 fuiteMH = async function (e) {
   var M = EXPE.mh, mo = M.monstre; if (!mo || mo.mort || mo.ph2 || e.pv > e.pvMax * .5) return false;
-  mo.ph2 = true;
-  if (!FUYARDS[mo.id] || mo.fui) { await passerPh2(e); return false; }
-  /* il se replie une seule fois, dans une zone voisine (de préférence par un passage déjà ouvert) */
-  mo.fui = true;
-  var zh = zoneDe(M, M.hx, M.hy), zm = M.zones[mo.z], ouvert = function (a) { return M.objs.some(function (o) { return o.t === 'obst' && o.ouvert && ((o.a === zm.n && o.b === a) || (o.b === zm.n && o.a === a)); }); };
-  var l = zm.adj.filter(function (a) { return !zh || a !== zh.n; }), l2 = l.filter(ouvert), n = (l2.length ? mel(l2) : l.length ? mel(l) : mel(zm.adj))[0], dest = M.zones[n], sd = solCentre(M, dest);
-  mo.z = dest.n; mo.revele = true; mo.alerte = 0; mo.course = { t0: maintenant() + 900, dur: 3200, x0: mo.x, y0: mo.y, x1: sd[0], y1: sd[1] }; mo.bouge = maintenant() + 40000; e.fuite = { t0: maintenant(), dur: 500 };
-  await attendre(450); SC.ennemi = null; M.mode = 'explore'; majComp();
-  await banniere(T('{0} se replie !', T(e.nom)), T('La bête blessée file dans la zone voisine. Elle reviendra en rage.'), 1400);
-  majInfoTraque(); return true;
+  mo.ph2 = true; await passerPh2(e); return false;
 };
 var entrerCombatAvantPh = entrerCombat;
 entrerCombat = async function (id, grand, ref) {
@@ -16926,219 +15978,9 @@ entrerCombat = async function (id, grand, ref) {
   return r;
 };
 Object.assign(NL, {
-  '{0} entre en rage !': '{0} wordt razend!', 'Phase 2 : coups plus forts et plus rapides.': 'Fase 2: hardere en snellere slagen.', '{0} se replie !': '{0} trekt zich terug!',
-  'La bête blessée file dans la zone voisine. Elle reviendra en rage.': 'Het gewonde beest vlucht naar de zone ernaast. Het komt razend terug.', 'Revoilà {0}, en rage !': 'Daar is {0} weer, razend!'
+  '{0} entre en rage !': '{0} wordt razend!', 'Phase 2 : coups plus forts et plus rapides.': 'Fase 2: hardere en snellere slagen.',
+  'Revoilà {0}, en rage !': 'Daar is {0} weer, razend!'
 });
-
-/* ── la minimap : on peut viser une zone pas encore vue si un passage ouvert y mène ── */
-function zoneAccessible(M, z) {
-  if (z.vu) return true;
-  return M.objs.some(function (o) { return o.t === 'obst' && o.ouvert && ((o.a === z.n && M.zones[o.b].vu) || (o.b === z.n && M.zones[o.a].vu)); });
-}
-(function () {
-  var cv = $('mh-mcv');
-  cv.addEventListener('pointerdown', function (ev) {
-    var M = EXPE && EXPE.mh; if (!M || !C || C.famille !== 'traque' || M.mode !== 'explore' || M.enRencontre || M.trans || C.fini || !$('voile').classList.contains('cache')) return;
-    var r = cv.getBoundingClientRect(), mt = M.miniT || { s: 1, dx: 0, dy: 0 }, px = (ev.clientX - r.left) / r.width * cv.width, py = (ev.clientY - r.top) / r.height * cv.height, tx = (px - mt.dx) / mt.s / 6, ty = (py - mt.dy) / mt.s / 6;
-    var z = zoneDe(M, tx, ty); if (!z || z.vu) return;
-    /* zone inconnue : on va jusqu'à son cœur si un passage est ouvert, sinon jusqu'à la porte à débloquer */
-    ev.stopImmediatePropagation(); M.tapLarge = true; tapCarteZ(M, tx, ty); M.tapLarge = false;
-  }, true);
-})();
-var dessinerMiniZAvantAcc = dessinerMiniZ;
-dessinerMiniZ = function (M, now) {
-  /* les zones ouvertes mais pas encore vues entrent dans le cadrage, en silhouette avec un « ? » */
-  var acc = M.zones.filter(function (z) { return !z.vu && zoneAccessible(M, z); });
-  if (!acc.length) return dessinerMiniZAvantAcc(M, now);
-  if (now - MINI_T < 140) return;
-  acc.forEach(function (z) { z.vu = true; z.faux = true; });
-  try { dessinerMiniZAvantAcc(M, now); } finally { acc.forEach(function (z) { z.vu = false; delete z.faux; }); }
-  var x = $('mh-mcv').getContext('2d'), Z = 6;
-  acc.forEach(function (z) {
-    x.fillStyle = 'rgba(12,9,24,.72)'; x.fillRect(z.x0 * Z, z.y0 * Z, TQ.zw * Z, TQ.zh * Z);
-    x.strokeStyle = 'rgba(255,255,255,.35)'; x.lineWidth = 1; x.setLineDash([3, 3]); x.strokeRect(z.x0 * Z + 2, z.y0 * Z + 2, TQ.zw * Z - 4, TQ.zh * Z - 4); x.setLineDash([]);
-    x.fillStyle = '#ffd24d'; x.font = 'bold 30px monospace'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('?', (z.x0 + TQ.zw / 2) * Z, (z.y0 + TQ.zh / 2) * Z);
-  });
-};
-
-/* ═════════ 05/11 : les plaines ═════════
-   Des zones dessinées pour les Collines Rousses : champs de blé et de lavande, ferme abandonnée, vieux moulin,
-   verger et ruches, ruisseau et son pont, tour de guet dans son enceinte. De nouvelles choses à faire :
-   puiser au puits (soigne), fouiller une meule de foin (ressources, parfois une pièce).
-   Légende en plus : f clôture · h botte de foin · W moulin (3×3) · Q pommier · K charrette · R ruche · E épouvantail ·
-   T tour (2×2) · m muret · X ferme (3×2) · w blé · _ sillons · d dalles · c coquelicots · l lavande · U puits · Y meule */
-Object.assign(MODELES, {
-  champ: [
-    ['###############', '#.fffff.fffff.#', '#.fwwwwwwwwwf.#', '#.fwwEwwwwwwf.#', '#.fffffwfffff.#', '#c...........c#', '#.............#', '#..,.......,..#', '#.____...____.#', '#.____.Y.____.#', '#.____...____.#', '#hh.c.....c.hh#', '###############'],
-    ['###############', '#.lllll.lllll.#', '#.............#', '#.lllll.lllll.#', '#.............#', '#c...K....hh.c#', '#.............#', '#...E.....Y...#', '#.____._____..#', '#.............#', '#.____._____..#', '#.c....,....c.#', '###############']],
-  ferme: [
-    ['###############', '#.XXX....fffff#', '#.XXX....f...f#', '#.ddd....f..Rf#', '#.ddd....ff.ff#', '#.............#', '#......U......#', '#.............#', '#.hh.....,..K.#', '#.h...ddd.....#', '#.....ddd..E..#', '#..c.......c..#', '###############']],
-  moulin: [
-    ['###############', '#..,......,...#', '#.WWW..wwwww..#', '#.WWW..wwwww..#', '#.WWW..wwwww..#', '#.dd..........#', '#.............#', '#..hh.....Y...#', '#.wwwww..wwww.#', '#.wwwww..wwww.#', '#.wwwww..wwww.#', '#....K....c...#', '###############']],
-  verger: [
-    ['###############', '#.Q..Q...Q..Q.#', '#.............#', '#...Q..Q..Q...#', '#.c.........c.#', '#...R.....R...#', '#......Y......#', '#...R.....R...#', '#.c.........c.#', '#...Q..Q..Q...#', '#.............#', '#.Q..Q...Q..Q.#', '###############']],
-  tertre: [
-    ['###############', '#..r...,...r..#', '#.r.mmm.mmm.r.#', '#...m.....m...#', '#...m.TT..m...#', '#.....TT......#', '#...m.....m...#', '#...m.,.,.m...#', '#.r.mmm.mmm.r.#', '#.....S.S.....#', '#.,.........,.#', '#..r...c...r..#', '###############']],
-  ruisseau: [
-    ['###############', '#............~#', '#.c.hh......~~#', '#..,.......~~.#', '#.........~~..#', '#.v......~~...#', '#.......~~....#', '#......==.....#', '#..Y..~~....E.#', '#....~~...dd..#', '#.K.~~....dd..#', '#..~~....c....#', '###############']]
-});
-Object.assign(MOD_CODE, { f: 12, h: 13, W: 14, Q: 16, K: 17, R: 18, E: 19, T: 20, m: 21, X: 22 });
-Object.assign(MOD_DECO, { w: 13, _: 14, d: 16, c: 17, l: 18 });
-var SORTES_B = { collines: ['champ', 'ferme', 'moulin', 'verger', 'ruisseau', 'tertre', 'champ', 'clairiere', 'rochers', 'campement'] };
-Object.assign(NOM_ZONE, { champ: TR('Un champ', 'Een akker'), ferme: TR('Une ferme abandonnée', 'Een verlaten boerderij'), moulin: TR('Le vieux moulin', 'De oude molen'),
-  verger: TR('Un verger', 'Een boomgaard'), ruisseau: TR('Un ruisseau', 'Een beek'), tertre: TR('Une tour de guet', 'Een wachttoren') });
-Object.assign(ACT_TXT, { puits: TR('Puiser au puits', 'Water putten'), meule: TR('Fouiller la meule de foin', 'De hooiberg doorzoeken') });
-
-/* ── le dessin des nouvelles cases ── */
-var artModeleAvantPl = artModele;
-artModele = function (x, M, i, j, m) {
-  if (m < 12) return artModeleAvantPl(x, M, i, j, m);
-  var X = i * 8, Y = j * 8, W = M.W, p = j * W + i, L = M.mur[p - 1] === m, R = M.mur[p + 1] === m, U = M.mur[p - W] === m, D = M.mur[p + W] === m, h = hcar(i, j, 31);
-  function ombre(a, b, w) { x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X + a, Y + b, w, 2); }
-  if (m === 12) {   /* clôture */
-    ombre(1, 6, 7); x.fillStyle = '#a8763e';
-    if (L || R || !(U || D)) { var a0 = L ? X : X + 2, a1 = R ? X + 8 : X + 6; x.fillRect(a0, Y + 2, a1 - a0, 1); x.fillRect(a0, Y + 5, a1 - a0, 1); }
-    if (U || D) { var b0 = U ? Y - 1 : Y + 1, b1 = D ? Y + 8 : Y + 6; x.fillRect(X + 4, b0, 1, b1 - b0); }
-    x.fillStyle = '#6a4426'; x.fillRect(X + 3, Y, 2, 7); x.fillStyle = '#8a5a32'; x.fillRect(X + 3, Y, 1, 6); return true;
-  }
-  if (m === 13) { ombre(0, 6, 8); x.fillStyle = '#b8902a'; x.fillRect(X + 1, Y + 1, 6, 6); x.fillRect(X, Y + 2, 8, 4); x.fillStyle = '#e8c050'; x.fillRect(X + 1, Y + 1, 5, 2); x.fillRect(X + 2, Y + 3, 3, 1); x.fillStyle = '#8a6a1a'; x.fillRect(X + 2, Y + 5, 4, 1); x.fillRect(X + 6, Y + 2, 1, 3); return true; }
-  if (m === 14) {   /* moulin, 3 × 3, dessiné depuis sa case en haut à gauche */
-    if (L || U) return true;
-    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X + 1, Y + 22, 24, 3);
-    x.fillStyle = '#a8987a'; x.fillRect(X + 3, Y + 4, 18, 20); x.fillStyle = '#c8b89a'; x.fillRect(X + 3, Y + 4, 12, 20);
-    x.fillStyle = '#8a7a5e'; for (var s = 0; s < 5; s++) x.fillRect(X + 4 + (s % 2) * 6, Y + 7 + s * 4, 4, 1);
-    x.fillStyle = '#4a3020'; x.fillRect(X + 9, Y + 16, 6, 8); x.fillStyle = '#2a2a3a'; x.fillRect(X + 11, Y + 9, 2, 3);
-    for (var k = 0; k < 9; k++) { var w = 6 + k * 2.2; x.fillStyle = k < 3 ? '#a84a3a' : '#8a3a2a'; x.fillRect(Math.round(X + 12 - w / 2), Y - 4 + k, Math.round(w), 1); }
-    var cx = X + 12, cy = Y + 1;
-    [[1, -1], [-1, -1], [1, 1], [-1, 1]].forEach(function (d) {
-      for (var t = 2; t < 15; t++) { x.fillStyle = '#6a4426'; x.fillRect(cx + d[0] * t, cy + d[1] * t, 1, 1); if (t > 4) { x.fillStyle = t % 3 ? '#f1e4c2' : '#c8b896'; x.fillRect(cx + d[0] * t + d[1], cy + d[1] * t - d[0], 1, 1); x.fillRect(cx + d[0] * t + 2 * d[1], cy + d[1] * t - 2 * d[0], 1, 1); } }
-    });
-    x.fillStyle = '#3a2a1a'; x.fillRect(cx - 1, cy - 1, 3, 3); return true;
-  }
-  if (m === 16) {   /* pommier */
-    x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X - 2, Y + 6, 12, 2);
-    x.fillStyle = '#5a3a22'; x.fillRect(X + 3, Y + 1, 2, 7);
-    x.fillStyle = '#2f6a34'; x.fillRect(X - 2, Y - 7, 12, 9); x.fillStyle = '#4a9a4a'; x.fillRect(X - 1, Y - 8, 10, 8); x.fillStyle = '#6ab85a'; x.fillRect(X, Y - 8, 5, 2); x.fillRect(X - 1, Y - 6, 2, 2);
-    x.fillStyle = '#e2463a'; x.fillRect(X + 1, Y - 4, 2, 2); x.fillRect(X + 6, Y - 6, 1, 1); x.fillRect(X + 6, Y - 2, 2, 2); x.fillRect(X + 3, Y - 1, 1, 1); if (h > .5) x.fillRect(X + 4, Y - 7, 1, 1);
-    return true;
-  }
-  if (m === 17) {   /* charrette */
-    ombre(-1, 7, 12); x.fillStyle = '#e8c050'; x.fillRect(X, Y - 1, 7, 3); x.fillStyle = '#8a5a32'; x.fillRect(X - 1, Y + 1, 10, 4); x.fillStyle = '#a8763e'; x.fillRect(X - 1, Y + 1, 10, 1);
-    x.fillStyle = '#6a4426'; x.fillRect(X + 8, Y + 3, 3, 1); x.fillStyle = '#3a2a1a'; x.fillRect(X + 1, Y + 4, 4, 4); x.fillStyle = '#c9a46a'; x.fillRect(X + 2, Y + 5, 2, 2); return true;
-  }
-  if (m === 18) {   /* ruche */
-    ombre(0, 6, 8); x.fillStyle = '#6a4426'; x.fillRect(X + 1, Y + 7, 6, 1); x.fillStyle = '#b8902a'; x.fillRect(X + 1, Y + 1, 6, 6); x.fillRect(X + 2, Y, 4, 1);
-    x.fillStyle = '#e8c050'; x.fillRect(X + 2, Y + 1, 2, 1); x.fillStyle = '#8a6a1a'; x.fillRect(X + 1, Y + 3, 6, 1); x.fillRect(X + 1, Y + 5, 6, 1);
-    x.fillStyle = '#2a1a10'; x.fillRect(X + 3, Y + 5, 2, 2); x.fillStyle = '#1a1a1a'; x.fillRect(X + 7, Y - 2, 1, 1); x.fillRect(X - 1, Y + 1, 1, 1); return true;
-  }
-  if (m === 19) {   /* épouvantail */
-    ombre(1, 7, 7); x.fillStyle = '#6a4426'; x.fillRect(X + 3, Y - 4, 2, 12); x.fillRect(X - 1, Y - 1, 10, 1);
-    x.fillStyle = '#5a7ab8'; x.fillRect(X + 1, Y - 2, 6, 5); x.fillStyle = '#3a5a98'; x.fillRect(X + 1, Y + 2, 6, 1); x.fillStyle = '#e8c050'; x.fillRect(X + 2, Y - 6, 4, 4); x.fillRect(X, Y - 1, 1, 2); x.fillRect(X + 7, Y - 1, 1, 2);
-    x.fillStyle = '#3a2a1a'; x.fillRect(X + 1, Y - 7, 6, 1); x.fillRect(X + 2, Y - 9, 4, 2); x.fillRect(X + 3, Y - 5, 1, 1); x.fillRect(X + 5, Y - 5, 1, 1); return true;
-  }
-  if (m === 20) {   /* tour de guet, 2 × 2 */
-    if (L || U) return true;
-    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X, Y + 14, 18, 3);
-    x.fillStyle = '#7a7268'; x.fillRect(X + 1, Y - 14, 14, 30); x.fillStyle = '#a8a096'; x.fillRect(X + 1, Y - 14, 9, 30);
-    x.fillStyle = '#5a554e'; for (var r2 = 0; r2 < 7; r2++) x.fillRect(X + 2 + (r2 % 2) * 5, Y - 10 + r2 * 4, 4, 1);
-    x.fillStyle = '#7a7268'; for (var c2 = 0; c2 < 4; c2++) x.fillRect(X + c2 * 4, Y - 18, 3, 4); x.fillRect(X, Y - 15, 16, 2);
-    x.fillStyle = '#1a1a24'; x.fillRect(X + 7, Y - 8, 2, 4); x.fillStyle = '#4a3020'; x.fillRect(X + 5, Y + 8, 6, 8);
-    x.fillStyle = '#c84a3a'; x.fillRect(X + 12, Y - 26, 1, 8); x.fillRect(X + 13, Y - 26, 4, 3); return true;
-  }
-  if (m === 21) {   /* muret de pierres sèches */
-    ombre(0, 6, 8); x.fillStyle = '#7a7468'; x.fillRect(X + 1, Y + 1, 6, 6);
-    if (L) x.fillRect(X, Y + 2, 2, 4); if (R) x.fillRect(X + 6, Y + 2, 2, 4); if (U) x.fillRect(X + 2, Y, 4, 2); if (D) x.fillRect(X + 2, Y + 6, 4, 2);
-    x.fillStyle = '#a8a296'; x.fillRect(X + 2, Y + 2, 2, 1); x.fillRect(X + 4, Y + 4, 2, 1); if (h > .5) x.fillRect(X + 1, Y + 5, 2, 1); return true;
-  }
-  if (m === 22) {   /* ferme en ruine, 3 × 2 */
-    if (L || U) return true;
-    x.fillStyle = 'rgba(0,0,0,.3)'; x.fillRect(X, Y + 15, 25, 2);
-    x.fillStyle = '#c8b89a'; x.fillRect(X + 1, Y + 3, 22, 13); x.fillStyle = '#5a3a22'; x.fillRect(X + 1, Y + 3, 22, 1); x.fillRect(X + 1, Y + 9, 22, 1); x.fillRect(X + 8, Y + 3, 1, 13); x.fillRect(X + 16, Y + 3, 1, 13);
-    x.fillStyle = '#8a3a2a'; x.fillRect(X - 1, Y - 2, 26, 6); x.fillRect(X + 2, Y - 6, 20, 4); x.fillStyle = '#a84a3a'; x.fillRect(X + 2, Y - 6, 20, 1); x.fillRect(X - 1, Y - 2, 26, 1);
-    x.fillStyle = '#2a1a14'; x.fillRect(X + 14, Y - 4, 4, 3); x.fillRect(X + 16, Y - 1, 3, 2);
-    x.fillStyle = '#4a3020'; x.fillRect(X + 3, Y + 9, 4, 7); x.fillStyle = '#2a2a3a'; x.fillRect(X + 11, Y + 5, 3, 3); x.fillRect(X + 18, Y + 5, 3, 3); x.fillStyle = '#6a4426'; x.fillRect(X + 18, Y + 6, 3, 1); return true;
-  }
-  return false;
-};
-var decoModeleAvantPl = decoModele;
-decoModele = function (x, M, i, j, d) {
-  if (d < 13) return decoModeleAvantPl(x, M, i, j, d);
-  var X = i * 8, Y = j * 8, h = hcar(i, j, 29), h2 = hcar(i, j, 37);
-  if (d === 13) { x.fillStyle = '#b8962e'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#d8b850'; for (var a = 0; a < 4; a++) x.fillRect(X + 1 + a * 2, Y + 2 + ((a + i) % 2), 1, 6); x.fillStyle = '#f4dc80'; for (var b = 0; b < 4; b++) x.fillRect(X + 1 + b * 2, Y + 1 + ((b + i) % 2), 1, 2); x.fillStyle = '#8a6a1a'; x.fillRect(X, Y + 7, 8, 1); return true; }
-  if (d === 14) { x.fillStyle = '#7a5a3a'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#5a3e26'; x.fillRect(X, Y + 1, 8, 1); x.fillRect(X, Y + 5, 8, 1); if (h > .55) { x.fillStyle = '#7ab85a'; x.fillRect(X + Math.floor(h2 * 6), Y + 3, 1, 1); x.fillRect(X + Math.floor(h * 6), Y + 7, 1, 1); } return true; }
-  if (d === 16) { x.fillStyle = '#9a9488'; x.fillRect(X, Y, 8, 8); x.fillStyle = '#6a665e'; x.fillRect(X, Y + 3, 8, 1); x.fillRect(X + (j % 2 ? 2 : 5), Y, 1, 3); x.fillRect(X + (j % 2 ? 5 : 2), Y + 4, 1, 4); x.fillStyle = '#b4aea2'; x.fillRect(X + 1, Y + 1, 1, 1); return true; }
-  if (d === 17) { x.fillStyle = M.P.herbe; x.fillRect(X + 2, Y + 4, 1, 3); x.fillRect(X + 5, Y + 3, 1, 4); x.fillStyle = '#e2463a'; x.fillRect(X + 1, Y + 2, 3, 2); x.fillRect(X + 4, Y + 1 + Math.floor(h * 2), 3, 2); x.fillStyle = '#1a1a1a'; x.fillRect(X + 2, Y + 3, 1, 1); x.fillRect(X + 5, Y + 2 + Math.floor(h * 2), 1, 1); return true; }
-  if (d === 18) { x.fillStyle = '#6a8a4a'; x.fillRect(X, Y + 5, 8, 3); x.fillStyle = '#9a6ac8'; for (var c = 0; c < 4; c++) x.fillRect(X + c * 2, Y + 1 + (c % 2), 1, 4); x.fillStyle = '#c8a0f0'; x.fillRect(X + 2, Y + 1, 1, 1); x.fillRect(X + 6, Y + 2, 1, 1); return true; }
-  return false;
-};
-
-/* ── le puits et la meule de foin ── */
-var dessinerObjetAvantPl = dessinerObjet;
-dessinerObjet = function (x, M, o, ox, oy, now) {
-  if (o.t !== 'puits' && o.t !== 'meule') return dessinerObjetAvantPl(x, M, o, ox, oy, now);
-  var X = Math.round(o.i * 8 - ox), Y = Math.round(o.j * 8 - oy);
-  x.fillStyle = 'rgba(0,0,0,.28)'; x.fillRect(X - 6, Y + 2, 12, 2);
-  if (o.t === 'puits') {
-    x.fillStyle = '#6a4426'; x.fillRect(X - 5, Y - 11, 1, 9); x.fillRect(X + 4, Y - 11, 1, 9); x.fillStyle = '#8a3a2a'; x.fillRect(X - 6, Y - 13, 12, 2); x.fillStyle = '#a84a3a'; x.fillRect(X - 6, Y - 13, 12, 1);
-    x.fillStyle = '#c9a46a'; x.fillRect(X, Y - 11, 1, 4); x.fillStyle = '#a8763e'; x.fillRect(X - 1, Y - 7, 3, 2);
-    x.fillStyle = '#8a8890'; x.fillRect(X - 5, Y - 4, 10, 6); x.fillStyle = '#aaa8b0'; x.fillRect(X - 5, Y - 4, 10, 1); x.fillRect(X - 3, Y - 1, 2, 1); x.fillRect(X + 2, Y, 2, 1);
-    x.fillStyle = '#3a6f9a'; x.fillRect(X - 3, Y - 3, 6, 1);
-  } else {
-    x.fillStyle = '#b8902a'; x.fillRect(X - 6, Y - 5, 12, 7); x.fillRect(X - 4, Y - 8, 8, 3); x.fillStyle = '#e8c050'; x.fillRect(X - 5, Y - 5, 7, 2); x.fillRect(X - 3, Y - 8, 5, 2); x.fillStyle = '#8a6a1a'; x.fillRect(X - 2, Y - 1, 1, 3); x.fillRect(X + 3, Y - 3, 1, 2);
-    if (Math.floor(now / 380 + o.i) % 5 === 0) { x.fillStyle = '#ffffff'; x.fillRect(X + 2, Y - 7, 1, 1); }
-  }
-};
-var finirActAvantPl = finirAct;
-finirAct = async function (M, a) {
-  if (a.t === 'puits') { a.t = 'fontaine'; return finirActAvantPl(M, a); }
-  if (a.t !== 'meule') return finirActAvantPl(M, a);
-  M.act = null; M.objs.splice(M.objs.indexOf(a), 1); son('or');
-  var k = mel(['herbes', 'cuir', 'bois'])[0], g = gagnerRes(k, .9), l = ['+' + (g || 1) + ' ' + nomRes(k)];
-  if (Math.random() < .45) { var pk = galPieceZ(M); if (pk) { EXPE.butin[pk] = (EXPE.butin[pk] || 0) + 1; l.push('+1 ' + T(PIECES[pk].nom)); } }
-  flotte(T('Dans le foin…') + ' ' + l.join(' · '), a.i, a.j - 1, 'fort', 1800);
-  if (Math.random() < .1) dropObjet('coffre');
-};
-var genZonesAvantPl = genZones;
-genZones = function (k, q) {
-  var M = genZonesAvantPl(k, q);
-  M.zones.forEach(function (z) {
-    (z.objsPl || []).forEach(function (o) {
-      var p = o.j * M.W + o.i; if (M.mur[p] || M.bloque[p]) return;
-      if (M.objs.some(function (x) { return x.t !== 'obst' && Math.floor(x.i) === o.i && Math.floor(x.j) === o.j; })) return;
-      M.objs.push({ t: o.t, need: 2, i: o.i + .5, j: o.j + .5, z: z.n, done: 0 });
-    });
-  });
-  return M;
-};
-genererTraque = genZones;
-
-/* ── toucher une zone inconnue : on marche jusqu'à la porte qui y mène (et on s'y met) ── */
-function porteVers(M, z) {
-  /* de la zone visée vers les zones déjà vues : la première arête qui en sort est la porte à ouvrir */
-  var vu = {}, f = [z.n]; vu[z.n] = 1;
-  for (var h = 0; h < f.length; h++) {
-    var a = M.zones[f[h]];
-    for (var n = 0; n < a.adj.length; n++) {
-      var b = M.zones[a.adj[n]];
-      if (b.vu) return M.objs.filter(function (o) { return o.t === 'obst' && ((o.a === a.n && o.b === b.n) || (o.b === a.n && o.a === b.n)); })[0] || null;
-      if (!vu[b.n]) { vu[b.n] = 1; f.push(b.n); }
-    }
-  }
-  return null;
-}
-var tapCarteZAvantPorte = tapCarteZ;
-tapCarteZ = function (M, tx, ty) {
-  var z = zoneDe(M, tx, ty);
-  if (!z || z.vu) return tapCarteZAvantPorte(M, tx, ty);
-  if (M.act) annulerAct(M);
-  if (zoneAccessible(M, z)) { var s = solCentre(M, z); return tapCarteZAvantPorte(M, s[0], s[1]); }
-  var o = porteVers(M, z); if (!o) return;
-  M.cible = { x: o.i, y: o.j, t0: maintenant() };
-  if (o.ouvert) { var s2 = solCentre(M, M.zones[M.zones[o.a].vu ? o.b : o.a]); return tapCarteZAvantPorte(M, s2[0], s2[1]); }
-  if (adjacentA(M, o)) { demarrerAct(M, o); return; }
-  var ch = versObjet(M, o); if (ch) { M.chemin = ch; M.but = o; son('clic'); }
-};
-Object.assign(NL, { 'Dans le foin…': 'In het hooi…' });
 
 /* ═════════ 04/11 : la galerie, et des géodes qu'on ouvre en trois gestes ═════════
    On répond à la chaîne : chaque bonne réponse est un coup de pioche, la galerie avance dans la roche.
@@ -18278,7 +17120,7 @@ setInterval(function () {
   var M = EXPE && EXPE.mh; if (!M || !C || C.famille !== 'traque') return;
   if (M.q.type === 'recolte' && M.fait >= M.q.n && !M.fini) { quetaMHReussie(); return; }
   if (!C.fini || M.finLance) { M.finT = 0; return; }
-  if (M.act || M.mode !== 'explore' || M.enRencontre || M.trans || !$('voile').classList.contains('cache') || (REVEL && !REVEL.fini)) { M.finT = 0; return; }
+  if (M.occupe || M.mode !== 'explore' || !$('voile').classList.contains('cache') || (REVEL && !REVEL.fini)) { M.finT = 0; return; }
   var now = maintenant(); if (!M.finT) { M.finT = now; return; }
   if (now - M.finT > 1400) { M.finLance = true; cacherQuestions(); apresScene(); }
 }, 500);
@@ -20102,24 +18944,6 @@ dessinerCst = function (centrer) {
   }
   return r;
 };
-/* au départ de la chasse : un coup d'œil aux cases, dès qu'il y a un choix à faire */
-var lancerChasseMHAvantTBS = lancerChasseMH, TBL_OK = 0;
-lancerChasseMH = function (k, q) {
-  var ty = typeArme();
-  if (Date.now() - TBL_OK > 60000 && J() && poolTB(ty).length > COMMUNS_TB.length) { ouvrirLoadout(ty, function () { TBL_OK = Date.now(); lancerChasseMH(k, q); }); return; }
-  return lancerChasseMHAvantTBS(k, q);
-};
-function ouvrirLoadout(ty, ok) {
-  var d = $('tbl-pop'); if (!d) { d = document.createElement('div'); d.id = 'tbl-pop'; $('tel').appendChild(d); }
-  var sel = null;
-  function rendre() {
-    d.innerHTML = '<div class="tbl-boite"><div class="tbl-t"><b>' + T('Tes compétences pour cette chasse') + '</b><button id="tbl-x">✕</button></div>' + htmlLoadout(ty, sel) + '<button class="btn large" id="tbl-go">' + T('Partir') + '</button></div>';
-    lierLoadout(d, ty, function () { return sel; }, function (v) { sel = v; rendre(); });
-    $('tbl-go').onclick = function (ev) { ev.stopPropagation(); son('clic'); d.classList.add('cache'); ok(); };
-    $('tbl-x').onclick = function (ev) { ev.stopPropagation(); son('clic'); d.classList.add('cache'); };
-  }
-  d.classList.remove('cache'); rendre();
-}
 /* ── les actions du tour ── */
 function actionComp(k) {
   var d = SKB[k]; if (!d) return null;
@@ -20339,7 +19163,7 @@ Object.assign(NL, {
   'Toujours là': 'Altijd beschikbaar', 'Tes quatre cases': 'Je vier vakjes', 'Que mettre dans cette case ?': 'Wat zet je in dit vakje?', 'échange': 'wissel',
   'Touche une case pour la changer.': 'Tik op een vakje om het te wijzigen.',
   'Les étoiles « compétence » de la constellation de ton arme débloquent d\'autres compétences pour ces cases.': 'De „vaardigheid”-sterren van het sterrenbeeld van je wapen ontgrendelen andere vaardigheden voor deze vakjes.',
-  'Retirer de mes cases': 'Uit mijn vakjes halen', 'Mettre dans une case': 'In een vakje zetten', 'Cases pleines': 'Vakjes vol', 'Tes compétences pour cette chasse': 'Je vaardigheden voor deze jacht', 'Partir': 'Vertrekken'
+  'Retirer de mes cases': 'Uit mijn vakjes halen', 'Mettre dans une case': 'In een vakje zetten', 'Cases pleines': 'Vakjes vol', 'Partir': 'Vertrekken'
 });
 
 
@@ -20360,7 +19184,7 @@ TUTOS.combatTB = [TR('Le combat au tour par tour', 'Het gevecht in beurten'),
 TUTOS.cases = [TR('Tes compétences', 'Je vaardigheden'),
   TR('Frappe et les deux compétences de ton arme sont toujours là en combat.', 'Slaan en de twee vaardigheden van je wapen zijn altijd beschikbaar in het gevecht.'),
   TR('Tes quatre cases démarrent avec des compétences communes. Les étoiles « compétence » de la constellation de ton arme en débloquent d\'autres, qui peuvent les remplacer.', 'Je vier vakjes beginnen met gewone vaardigheden. De „vaardigheid”-sterren van het sterrenbeeld van je wapen ontgrendelen andere, die ze kunnen vervangen.'),
-  TR('Tu choisis tes cases ici, ou au départ d\'une chasse.', 'Je kiest je vakjes hier, of bij het vertrek van een jacht.')];
+  TR('Quand tu apprends une étoile « compétence », tu choisis la case qu\'elle prend. Tu peux aussi les changer ici.', 'Als je een „vaardigheid”-ster leert, kies je welk vakje ze inneemt. Je kunt ze ook hier wijzigen.')];
 TUTOS.arbres = TUTOS.cases;
 var feuilleCompetencesAvantTuto = feuilleCompetences;
 feuilleCompetences = function () { feuilleCompetencesAvantTuto(); if (typeof tuto === 'function') tuto('cases'); };
@@ -20374,6 +19198,395 @@ Object.assign(NL, {
   'compétences : +{0}0 % de dégâts': 'vaardigheden: +{0}0 % schade',
   'Cœurs ardents : les compétences frappent plus fort': 'Vurige harten: de vaardigheden slaan harder', 'Cœur sauvage : les compétences frappent plus fort': 'Wild hart: de vaardigheden slaan harder'
 });
+/* ═════════ 19/11 (soir) : la piste — une quête se joue comme une récolte ═════════
+   La petite carte à explorer a disparu. En quête, le héros est à gauche et marche ; les rencontres arrivent
+   à droite, l'une après l'autre : des traces à relever, de quoi cueillir, un coffre, une source, un voyageur,
+   un bon coin pour un piège, un autel… et des petits monstres, seuls ou en meute. Chaque rencontre se règle
+   en répondant aux questions ; un combat se joue au tour par tour. Une erreur pendant une rencontre fait
+   rater le geste, et le bruit peut attirer une embuscade.
+   Chasse : assez de traces, et l'on tombe sur le grand monstre, qu'on combat jusqu'au bout.
+   Récolte : on enchaîne jusqu'à avoir tout cueilli. Massacre : jusqu'à avoir abattu le compte.
+   Les compétences ne se choisissent plus au départ : on les place dans une case au moment d'apprendre
+   l'étoile (voir plus bas). */
+
+/* ── les dessins des rencontres ── */
+function fabriquerPiste() {
+  if (SPR['p-empreinte']) return;
+  propR('p-empreinte', 26, 9, function (x) {
+    pxr(x, 3, 3, 20, 5, '#5a4030'); pxr(x, 1, 4, 24, 3, '#5a4030'); pxr(x, 5, 2, 15, 1, '#6e5038'); pxr(x, 4, 8, 18, 1, '#46301f');
+    [[6, 5], [16, 4]].forEach(function (p) {
+      pxr(x, p[0], p[1], 4, 2, '#24160c'); pxr(x, p[0] - 1, p[1] - 1, 1, 1, '#24160c'); pxr(x, p[0] + 1, p[1] - 2, 1, 1, '#24160c');
+      pxr(x, p[0] + 3, p[1] - 2, 1, 1, '#24160c'); pxr(x, p[0] + 4, p[1] - 1, 1, 1, '#24160c');
+    });
+    pxr(x, 11, 6, 2, 1, '#8ab0d0'); pxr(x, 21, 5, 1, 1, '#8ab0d0');
+  });
+  propR('p-poils', 20, 16, function (x) {
+    rond(x, 10, 10, 5, '#2f5a2a'); rond(x, 5, 11, 4, '#3f7a3a'); rond(x, 15, 11, 4, '#3f7a3a'); rond(x, 10, 7, 3, '#4f8a4a');
+    [[3, 8], [7, 5], [14, 6], [17, 10], [9, 13]].forEach(function (p) { pxr(x, p[0], p[1], 1, 1, '#d8c890'); });
+    pxr(x, 9, 3, 5, 2, '#c9955a'); pxr(x, 10, 2, 3, 1, '#e8c08a'); pxr(x, 13, 5, 1, 2, '#a8784a'); pxr(x, 8, 5, 1, 1, '#a8784a');
+  });
+  propR('p-restes', 24, 10, function (x) {
+    pxr(x, 1, 9, 22, 1, '#5a2018');
+    pxr(x, 3, 6, 9, 2, '#e8e4d8'); rond(x, 3, 6, 1, '#e8e4d8'); rond(x, 3, 8, 1, '#e8e4d8'); rond(x, 12, 6, 1, '#e8e4d8'); rond(x, 12, 8, 1, '#e8e4d8');
+    for (var i = 0; i < 4; i++) { pxr(x, 14 + i * 2, 2 + (i % 2), 1, 7 - (i % 2), '#d8d4c8'); }
+    pxr(x, 14, 8, 8, 1, '#c8c4b8'); pxr(x, 6, 4, 3, 2, '#a8303a'); pxr(x, 17, 6, 2, 2, '#a8303a');
+  });
+  propR('p-griffes', 14, 30, function (x) {
+    pxr(x, 3, 0, 8, 28, '#6b4630'); pxr(x, 3, 0, 2, 28, '#8a5a33'); pxr(x, 9, 0, 2, 28, '#4e321f'); pxr(x, 1, 26, 12, 4, '#5a3a26'); pxr(x, 0, 28, 14, 2, '#4e321f');
+    for (var k = 0; k < 3; k++) traitR(x, 4 + k * 2, 7, 6 + k * 2, 17, '#f1d6a8', 1);
+    pxr(x, 2, 0, 10, 2, '#3f7a3a');
+  });
+  propR('p-piege', 22, 12, function (x) {
+    pxr(x, 3, 0, 2, 12, '#8a5a33'); pxr(x, 3, 0, 2, 1, '#c9955a');
+    for (var a = 0; a < 24; a++) { var an = a / 24 * Math.PI * 2; pxr(x, 13 + Math.round(Math.cos(an) * 6), 9 + Math.round(Math.sin(an) * 2), 1, 1, '#d8c08a'); }
+    traitR(x, 5, 2, 8, 8, '#d8c08a', 1); pxr(x, 0, 11, 22, 1, '#3f7a3a'); pxr(x, 16, 10, 3, 1, '#5aa858'); pxr(x, 9, 10, 2, 1, '#5aa858');
+  });
+}
+/* la plante, le minerai ou le nid à cueillir : la pièce posée sur sa touffe ou sur son rocher */
+var IC_ROC = { 'pc-joyau': 1, 'pc-pierre': 1, 'pc-os': 1, 'pc-ecaille': 1, 'pc-griffe': 1, 'pc-croc': 1 };
+function propCueillette(k) {
+  var cle = 'p-cu-' + k; if (SPR[cle]) return cle;
+  var p = PIECES[k], ic = spr(p.ic, { X: p.c, x: melange(p.c, '#000000', .4) }, 'pc-' + k), roc = IC_ROC[p.ic];
+  propR(cle, 22, 18, function (x) {
+    if (roc) { rond(x, 11, 13, 6, '#6d7288'); rond(x, 7, 14, 4, '#8d93a8'); rond(x, 15, 14, 4, '#5a5f74'); pxr(x, 6, 11, 4, 1, '#b9bfd2'); pxr(x, 2, 17, 18, 1, '#3a3d52'); }
+    else { rond(x, 11, 14, 5, '#2f5a2a'); rond(x, 6, 15, 3, '#3f7a3a'); rond(x, 16, 15, 3, '#3f7a3a'); [[4, 12], [8, 10], [14, 10], [18, 12]].forEach(function (q) { pxr(x, q[0], q[1], 1, 3, '#5aa858'); }); pxr(x, 2, 17, 18, 1, '#24401f'); }
+    x.drawImage(ic, Math.round(11 - ic.width / 2), Math.max(0, 9 - ic.height));
+  });
+  return cle;
+}
+
+/* ── les rencontres ── */
+var RENC_P = {
+  trace: { n: 2, rate: TR('La piste se brouille', 'Het spoor vervaagt'), lst: [
+    { cle: 'p-empreinte', titre: TR('Des empreintes fraîches', 'Verse pootafdrukken'), aide: TR('Deux bonnes réponses pour les relever.', 'Twee goede antwoorden om ze te bestuderen.') },
+    { cle: 'p-poils', titre: TR('Des poils accrochés aux ronces', 'Haren aan de braamstruiken'), aide: TR('Deux bonnes réponses pour les examiner.', 'Twee goede antwoorden om ze te bekijken.') },
+    { cle: 'p-restes', titre: TR('Les restes d\'un repas', 'De resten van een maaltijd'), aide: TR('Deux bonnes réponses pour comprendre ce qui s\'est passé.', 'Twee goede antwoorden om te begrijpen wat er gebeurd is.') },
+    { cle: 'p-griffes', titre: TR('Un tronc lacéré de griffes', 'Een stam vol klauwsporen'), aide: TR('Deux bonnes réponses pour lire les marques.', 'Twee goede antwoorden om de sporen te lezen.') }] },
+  cueillette: { n: 2, rate: TR('Ça t\'échappe des mains', 'Het glipt uit je handen'), aide: TR('Deux bonnes réponses pour en récolter.', 'Twee goede antwoorden om ervan te oogsten.') },
+  coffre: { n: 3, cle: 'f-coffre', titre: TR('Un coffre abandonné', 'Een achtergelaten kist'), aide: TR('Trois bonnes réponses pour crocheter la serrure.', 'Drie goede antwoorden om het slot open te peuteren.'), rate: TR('La serrure résiste', 'Het slot houdt stand') },
+  source: { n: 2, cle: 'fontaine', titre: TR('Une source claire', 'Een heldere bron'), aide: TR('Chaque bonne réponse te soigne.', 'Elk goed antwoord geneest je.'), rate: TR('L\'eau se trouble', 'Het water wordt troebel') },
+  voyageur: { n: 2, cle: 'f-voyageur', titre: TR('Un voyageur sur le chemin', 'Een reiziger op het pad'), aide: TR('Deux bonnes réponses pour faire la conversation.', 'Twee goede antwoorden om een praatje te maken.'), rate: TR('Il ne comprend pas', 'Hij begrijpt het niet') },
+  piege: { n: 2, cle: 'p-piege', titre: TR('Un bon coin pour un piège', 'Een goede plek voor een val'), aide: TR('Deux bonnes réponses pour le poser : la bête y sera prise au début du combat.', 'Twee goede antwoorden om hem te zetten: het beest loopt erin aan het begin van het gevecht.'), rate: TR('Le nœud glisse', 'De knoop glipt los') },
+  autel: { n: 3, cle: 'f-autel', titre: TR('Un autel oublié', 'Een vergeten altaar'), aide: TR('Trois bonnes réponses pour rallumer ses runes : il te rend toute ta vie.', 'Drie goede antwoorden om zijn runen weer te laten gloeien: het geeft je al je leven terug.'), rate: TR('Une rune s\'éteint', 'Een rune dooft') }
+};
+function petitsPiste(M) { var R = REGIONS[M.k], l = (R.petits || []).filter(function (id) { return BETES[id]; }); return l.length ? l : ['loup']; }
+function piecePiste(M) {
+  var R = REGIONS[M.k], l = (R.recoltes || []).slice();
+  petitsPiste(M).forEach(function (id) { var B0 = BETES[id]; if (B0 && B0.loot && B0.loot[0]) l.push(B0.loot[0][0]); });
+  l = l.filter(function (k) { return PIECES[k]; }); return l.length ? mel(l)[0] : null;
+}
+function nouvellePiste(k, q) {
+  var M = { k: k, q: q, mode: 'explore', fait: 0, etape: null, nEtapes: 0, depuisTrace: 0, derniere: null, embuscades: 0, piege: false, piegeFait: false, fini: false, off: 0 };
+  if (q.type === 'chasse') {
+    var B0 = BETES[q.cible], mu = regionMult(k), fo = (q.rec && q.rec.fort) || 1, pvM = Math.round(pvChasse(B0, k) * fo);
+    M.monstre = { id: q.cible, pv: pvM, pvMax: pvM, atk: Math.round(B0.atk * mu.atk * fo), revele: false, traces: 0, dort: false, casses: [], mort: false };
+  }
+  return M;
+}
+/* le tirage de la rencontre suivante : jamais deux combats d'affilée, et une trace au moins toutes les trois rencontres */
+function tirerEtape(M) {
+  var q = M.q, mo = M.monstre, pv = H().pv / pvMax(), w = {}, d = M.derniere;
+  if (q.type === 'chasse' && mo && mo.revele && !mo.mort) return 'grand';
+  if (q.type === 'chasse') { w.trace = M.depuisTrace >= 2 ? 99 : 3; w.mob = 1.6; w.meute = .6; w.cueillette = 1; w.coffre = .7; w.voyageur = .45; if (!M.piegeFait) w.piege = .7; w.autel = .2; }
+  else if (q.type === 'recolte') { w.cueillette = 4; w.mob = 1.4; w.meute = .5; w.coffre = .7; w.voyageur = .3; w.autel = .2; }
+  else { w.cible = 4; w.cueillette = .9; w.coffre = .6; w.mob = .4; w.autel = .2; }
+  w.source = pv < .5 ? 2.5 : pv < .8 ? .6 : .15;
+  if (d === 'mob' || d === 'meute' || d === 'cible') { delete w.mob; delete w.meute; delete w.cible; }
+  if (M.nEtapes === 0) { delete w.mob; delete w.meute; }
+  if (d && w[d] && d !== 'trace' && d !== 'cueillette' && d !== 'cible') w[d] *= .25;
+  var t = 0, x; for (x in w) t += w[x];
+  var r = Math.random() * t; for (x in w) { r -= w[x]; if (r < 0) return x; }
+  return q.type === 'massacre' ? 'cible' : 'cueillette';
+}
+function creerEtape(t, M) {
+  var q = M.q, R = REGIONS[M.k], et = { t: t, fait: 0, n: 2 }, pm = petitsPiste(M), i;
+  if (t === 'grand') { et.combat = true; return et; }
+  if (t === 'mob') { et.combat = true; et.ids = [mel(pm)[0]]; return et; }
+  if (t === 'meute') { et.combat = true; et.ids = []; for (i = 0; i < (Math.random() < .3 ? 3 : 2); i++) et.ids.push(mel(pm)[0]); return et; }
+  if (t === 'cible') {
+    et.combat = true; et.ids = [q.cible];
+    if (q.n - M.fait >= 2 && Math.random() < .35) et.ids.push(q.cible);
+    var autres = pm.filter(function (x) { return x !== q.cible; }); if (et.ids.length < 3 && autres.length && Math.random() < .2) et.ids.push(mel(autres)[0]);
+    return et;
+  }
+  var D = RENC_P[t]; et.n = D.n; et.rate = D.rate;
+  if (t === 'trace') { var v = mel(D.lst.filter(function (x) { return x.cle !== M.derniereCle; }))[0]; et.cle = v.cle; et.titre = v.titre; et.aide = v.aide; return et; }
+  if (t === 'cueillette') {
+    var l = (R.recoltes || []).filter(function (k) { return PIECES[k]; }), k = q.type === 'recolte' && PIECES[q.cible] && (Math.random() < .85 || !l.length) ? q.cible : l.length ? mel(l)[0] : null;
+    et.aide = D.aide;
+    if (k) { et.k = k; et.cle = propCueillette(k); et.titre = PIECES[k].nom; }
+    else { et.cle = 'p-poils'; et.titre = TR('Des herbes sauvages', 'Wilde kruiden'); }
+    return et;
+  }
+  et.cle = D.cle; et.titre = D.titre; et.aide = D.aide;
+  return et;
+}
+
+/* ── la marche : le paysage défile, le héros avance ── */
+function offPiste(M, now) { if (!M.defile) return M.off || 0; var p = Math.min(1, (now - M.defile.t0) / M.defile.dur); return M.defile.de + M.defile.px * p; }
+async function marcherPiste(ms) {
+  var M = EXPE.mh;
+  SC.ennemi = null; C.groupe = null; majEtiquette();
+  M.defile = { t0: maintenant(), dur: ms, de: M.off || 0, px: Math.round(ms / 14) };
+  for (var i = 0; i < Math.floor(ms / 190); i++) bip(150, 110, .04, 'triangle', .025, i * .19);
+  await attendre(ms);
+  M.off = M.defile ? M.defile.de + M.defile.px : M.off; M.defile = null; SC.heros.base = 60;
+}
+var decorCourantAvantPiste = decorCourant, PISTE_CV = null;
+decorCourant = function () {
+  var d = decorCourantAvantPiste(), M = EXPE && EXPE.mh;
+  if (!d || !M || !C || C.famille !== 'traque') return d;
+  var now = maintenant(), off = Math.round(offPiste(M, now));
+  if (M.defile) {
+    SC.heros.base = 60 - (Math.floor(now / 110) % 2);
+    if (Math.random() < .35) SC.parts.push({ x: SC.heros.x + 3, y: 60, vx: -.5, vy: -.15, g: 0, vie: 14, c: 'rgba(200,170,130,.7)' });
+  }
+  if (!off) return d;
+  /* le décor, puis son reflet, en boucle : la couture ne se voit pas */
+  if (!PISTE_CV) PISTE_CV = toile(96, 72);
+  var x = PISTE_CV.getContext('2d'), o = ((off % 192) + 192) % 192;
+  x.clearRect(0, 0, 96, 72);
+  for (var b = -1; b < 2; b++) {
+    var X0 = b * 192 - o; x.drawImage(d, X0, 0);
+    x.save(); x.translate(X0 + 192, 0); x.scale(-1, 1); x.drawImage(d, 0, 0); x.restore();
+  }
+  return PISTE_CV;
+};
+
+/* ── l'enchaînement ── */
+function scenePiste() {
+  var M = EXPE.mh, q = M.q; EXPE.qj = { n: 1, fait: 0 };
+  SC.decor = DECOR_REG[REGIONS[M.k].b] || 'plaine'; SC.heros.outil = 'arme'; SC.heros.x = 12; SC.tapQ = null; SC.ennemi = null;
+  M.mode = 'explore'; M.etape = null; M.off = 0; M.defile = null; M.occupe = false;
+  majComp();
+  setTimeout(function () { if (typeof tuto === 'function') tuto('piste'); }, 1500);
+  var sous = q.type === 'chasse' ? T('Relève {0} traces de {1}, puis affronte-le.', besoinTraces(), T(BETES[q.cible].nom)) :
+    q.type === 'recolte' ? T('Récolte {0} × {1}.', q.n, T(PIECES[q.cible].nom)) : T('Abats {0} × {1}.', q.n, T(BETES[q.cible].nom));
+  return [T(q.titre), sous];
+}
+async function etapeSuivante() {
+  var M = EXPE && EXPE.mh, X = EXPE; if (!M || M.occupe || !C) return;
+  M.occupe = true; C.verrou = true; cacherQuestions();
+  try {
+    var et = M.etape, reprise = !!(et && !et.finie && !et.combat);
+    if (!reprise) {
+      et = creerEtape(tirerEtape(M), M);
+      M.nEtapes++; M.derniere = et.t; if (et.cle) M.derniereCle = et.cle;
+      M.depuisTrace = et.t === 'trace' ? 0 : M.depuisTrace + 1;
+      await marcherPiste(M.nEtapes === 1 ? 500 : 750); if (!C || EXPE !== X) return;
+      M.etape = et;
+    }
+    if (et.combat) { et.vue = true; await combatPiste(et); }
+    else await montrerEtape(et, reprise);
+  } catch (err) { console.error(err); }
+  finally { M.occupe = false; }
+  if (!C || EXPE !== X || C.fini || C.vaincu) return;
+  C.verrou = false; prochaine();
+}
+async function montrerEtape(et, reprise) {
+  preparerRecits(); if (!SPR['f-marchand']) fabriquerFortuits(); fabriquerPiste();
+  spr(et.cle);
+  var e = { nom: T(et.titre), spr: et.cle, cle: et.cle, prop: true, noeud: true, pv: Math.max(1, et.n - et.fait), pvMax: et.n, x: 0, base: 61, flash: 0 };
+  placer(e); e.entree = { t0: maintenant(), dur: 380 }; SC.ennemi = e; et.vue = true;
+  majEtiquette(); await attendre(390);
+  await banniere(reprise ? T('Tu reprends : {0}', T(et.titre)) : T(et.titre), reprise ? null : T(et.aide), reprise ? 700 : 950);
+}
+async function combatPiste(et) {
+  var M = EXPE.mh, X = EXPE; C.groupe = null;
+  if (et.t === 'grand') {
+    var mo = M.monstre, piege = M.piege;
+    await banniere(T('{0} est là !', T(BETES[mo.id].nom)), piege ? T('Il fonce droit dans ton piège.') : T('Pas de fuite possible : c\'est jusqu\'au bout.'), 1000);
+    if (!C || EXPE !== X) return;
+    await entrerCombat(mo.id, true);
+    if (piege && SC.ennemi) { M.piege = false; SC.ennemi.etourdi = 1; majTB(); }
+    return;
+  }
+  var B0 = BETES[et.ids[0]];
+  await banniere(et.ids.length > 1 ? T('Une meute te tombe dessus !') : T('{0} te barre la route !', T(B0.nom)), et.ids.length > 1 ? T('{0} bêtes à abattre.', et.ids.length) : null, 800);
+  if (!C || EXPE !== X) return;
+  await combatPetits(et.ids);
+}
+function petitPiste(id, M) {
+  var B0 = BETES[id], mu = regionMult(M.k), pv = pvChasse(B0, M.k);
+  return { id: id, nom: B0.nom, spr: B0.spr, pal: B0.pal || null, cle: B0.spr + (B0.pal ? '-p' + id : ''), pv: pv, pvMax: pv, atk: Math.round(B0.atk * mu.atk), x: 0, base: 60, flash: 0, tour: 0, cdMul: 1, t: 0 };
+}
+/* un ou plusieurs petits monstres ; en meute, chacun est un peu moins solide */
+async function combatPetits(ids) {
+  var M = EXPE.mh, X = EXPE; C.groupe = null;
+  await entrerCombat(ids[0]); if (!C || EXPE !== X || !SC.ennemi) return;
+  if (ids.length < 2) return;
+  var e0 = SC.ennemi, f = ids.length >= 3 ? .6 : .72;
+  C.groupe = [e0];
+  ids.slice(1).forEach(function (id, i) { var e = petitPiste(id, M); placerMembre(e, i + 1); e.entree = { t0: maintenant() + (i + 1) * 140, dur: 380 }; C.groupe.push(e); });
+  C.groupe.forEach(function (e) { e.pv = e.pvMax = Math.max(1, Math.round(e.pvMax * f)); e.atk = Math.max(1, Math.round(e.atk * (f + .1))); e.tb = null; });
+  relayout(); majEtiquette(); majTB();
+}
+/* en meute, tous les membres vivants sont dans le combat (avant, la traque n'en voyait qu'un) */
+var membresAvantPiste = membres;
+membres = function () {
+  if (C && C.famille === 'traque' && C.groupe && EXPE && EXPE.mh && EXPE.mh.mode === 'combat') return C.groupe.filter(function (e) { return !e.mort && e.pv > 0; });
+  return membresAvantPiste();
+};
+/* une réponse pendant une rencontre (hors combat) */
+async function consequencePiste(juste) {
+  var M = EXPE.mh, et = M.etape, X = EXPE, e = SC.ennemi;
+  if (!et || et.finie || et.combat || !et.vue) return;
+  if (!juste) {
+    nombre(T(et.rate || 'Raté…'), 48, 20, 'mal'); bip(220, 140, .12, 'square', .04);
+    if (e && !e.mort) e.recul = { t0: maintenant(), dur: 260, amp: 4 };
+    if (!et.embusque && M.embuscades < 2 && Math.random() < .22) {
+      et.embusque = true; M.embuscades++; et.vue = false;
+      var pm = petitsPiste(M), ids = [mel(pm)[0]]; if (Math.random() < .35) ids.push(mel(pm)[0]);
+      await banniere(T('Embuscade !'), T('Le bruit a attiré des monstres.'), 850); if (!C || EXPE !== X) return 'fin';
+      if (SC.ennemi === e) SC.ennemi = null;
+      await combatPetits(ids);
+      return;
+    }
+    majEtiquette(); return;
+  }
+  et.fait = Math.min(et.n, et.fait + pasReponse());
+  if (e && !e.mort) { e.flash = maintenant() + 120; e.pv = Math.max(0, et.n - et.fait); var s = spr(e.spr, e.pal, e.cle); etincelles(e.x + s.width / 2, 61 - s.height / 2, 10, ['#ffffff', '#ffd24d', '#fff3b0'], .7); }
+  SC.geste = { t0: maintenant(), dur: 420, type: 'recolte' }; bip(500 + et.fait * 120, 500 + et.fait * 120, .08, 'triangle', .04);
+  if (et.t === 'source') soigner(Math.round(pvMax() * .15));
+  majEtiquette();
+  if (et.fait < et.n) return;
+  await attendre(250); if (!C || EXPE !== X) return 'fin';
+  et.finie = true;
+  if (e && SC.ennemi === e) { var b = ennemiBoite(); if (b) particulesDe(b.s, b.x, b.y, .6); SC.ennemi = null; }
+  son('niveau');
+  await gainEtape(et, M); if (!C || EXPE !== X) return 'fin';
+  majEtiquette();
+}
+async function uneTrace(M, msg) {
+  var mo = M.monstre, bt = besoinTraces(); mo.traces++;
+  nombre((msg ? msg + ' ' : '') + T('Traces : {0} / {1}', Math.min(mo.traces, bt), bt), 48, 16, 'fort');
+  if (mo.traces >= bt) { mo.revele = true; await banniere(T('Les traces mènent à {0}', T(BETES[mo.id].nom)), T('Il est tout près…'), 1100); }
+}
+async function gainEtape(et, M) {
+  var q = M.q, R = REGIONS[M.k], mo = M.monstre, g, pk;
+  if (et.t === 'trace') {
+    if (mo && !mo.revele && !mo.mort) await uneTrace(M);
+    else { g = gagnerRes('cuir', .6); nombre('+' + (g || 1) + ' ' + nomRes('cuir'), 48, 16, 'info'); }
+  } else if (et.t === 'cueillette') {
+    if (et.k) {
+      EXPE.butin[et.k] = (EXPE.butin[et.k] || 0) + 1; nombre('+1 ' + T(PIECES[et.k].nom), 48, 16, 'fort');
+      if (q.type === 'recolte' && et.k === q.cible) { M.fait++; if (M.fait >= q.n) await quetaMHReussie(); }
+    } else { g = gagnerRes('herbes', .9); nombre('+' + (g || 1) + ' ' + nomRes('herbes'), 48, 16, 'fort'); }
+  } else if (et.t === 'coffre') {
+    var l = []; g = gagnerRes('or', 1.6); l.push('+' + (g || 1) + ' ' + nomRes('or'));
+    var pm = petitsPiste(M);
+    if (Math.random() < .7) { pk = tirerButin(BETES[mel(pm)[0]].loot); EXPE.butin[pk] = (EXPE.butin[pk] || 0) + 1; l.push('+1 ' + T(PIECES[pk].nom)); }
+    if (R.recoltes && R.recoltes.length && Math.random() < .5) { var rk = mel(R.recoltes)[0]; if (PIECES[rk]) { EXPE.butin[rk] = (EXPE.butin[rk] || 0) + 1; l.push('+1 ' + T(PIECES[rk].nom)); } }
+    await banniere(T('Le coffre s\'ouvre'), l.join(' · '), 1100);
+    if (Math.random() < .25) dropObjet('coffre');
+  } else if (et.t === 'source') {
+    g = gagnerRes('herbes', .6); nombre('+' + (g || 1) + ' ' + nomRes('herbes'), 48, 16, 'info');
+  } else if (et.t === 'voyageur') {
+    if (mo && !mo.revele && !mo.mort) await uneTrace(M, T('« Je l\'ai vu passer par là ! »'));
+    else { g = gagnerRes('or', 1.5); pk = piecePiste(M); if (pk) EXPE.butin[pk] = (EXPE.butin[pk] || 0) + 1; await banniere(T('« Prends ça, pour la route. »'), '+' + (g || 1) + ' ' + nomRes('or') + (pk ? ' · +1 ' + T(PIECES[pk].nom) : ''), 1100); }
+  } else if (et.t === 'piege') {
+    M.piege = true; M.piegeFait = true; await banniere(T('Piège posé'), T('Le grand monstre y sera pris au début du combat.'), 1000);
+  } else if (et.t === 'autel') {
+    soigner(pvMax() * 2); g = gagnerRes('cristal', .8); nombre('+' + (g || 1) + ' ' + nomRes('cristal'), 48, 16, 'info');
+  }
+}
+/* après chaque réponse : si la rencontre est finie (ou pas encore montrée), on repart sur la piste */
+var prochaineAvantPiste = prochaine;
+prochaine = function () {
+  var M = EXPE && EXPE.mh;
+  if (C && C.famille === 'traque' && M && !C.fini && !C.vaincu && M.mode === 'explore' && (!M.etape || M.etape.finie || !M.etape.vue)) {
+    cacherQuestions();
+    if (!M.occupe) etapeSuivante();
+    return;
+  }
+  return prochaineAvantPiste();
+};
+/* ce qu'on voit en haut : la rencontre et ses crans, et l'objectif de la quête */
+function objectifPiste(M) {
+  var q = M.q, mo = M.monstre;
+  if (q.type === 'recolte') return T('{0} : {1} / {2}', T(PIECES[q.cible].nom), Math.min(M.fait, q.n), q.n);
+  if (q.type === 'massacre') return T('{0} : {1} / {2}', T(BETES[q.cible].nom), Math.min(M.fait, q.n), q.n);
+  if (mo && (mo.revele || mo.mort)) return T('{0} est repéré', T(BETES[q.cible].nom));
+  return T('Traces : {0} / {1}', Math.min(mo ? mo.traces : 0, besoinTraces()), besoinTraces());
+}
+function etiquettePiste() {
+  var M = EXPE.mh, et = M.etape, h = '', i;
+  if (et && et.vue && !et.finie && !et.combat) {
+    $('e-nom').textContent = T(et.titre);
+    for (i = 0; i < et.n; i++) h += '<span class="' + (i < et.fait ? 'or' : 'vide') + '"></span>';
+    $('e-barre').innerHTML = '<div class="segs">' + h + '</div><small class="pst-o">' + ech(objectifPiste(M)) + '</small>';
+    return;
+  }
+  $('e-nom').textContent = objectifPiste(M);
+  $('e-barre').innerHTML = '';
+}
+TUTOS.piste = [TR('En quête', 'Op zoektocht'),
+  TR('Ton héros avance tout seul : les rencontres arrivent l\'une après l\'autre. Réponds juste pour relever des traces, cueillir, ouvrir un coffre…', 'Je held loopt vanzelf verder: de ontmoetingen komen een voor een. Antwoord juist om sporen te bekijken, te plukken, een kist te openen…'),
+  TR('Une erreur fait juste rater ton geste… mais le bruit peut attirer des monstres.', 'Een fout laat je actie gewoon mislukken… maar het lawaai kan monsters lokken.'),
+  TR('Pour une chasse : relève assez de traces, et tu tombes sur la bête. On la combat jusqu\'au bout.', 'Bij een jacht: bekijk genoeg sporen en je vindt het beest. Je vecht tot het einde.')];
+(function () {
+  var st = document.createElement('style');
+  st.textContent = '.pst-o{display:block;margin-top:2px;font-family:var(--lex);font-size:10px;line-height:11px;color:#c9c6d6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+    '.tbn-new{box-shadow:0 0 0 2px #000,0 0 0 4px #ffd24d!important}.tbl-boite .tbn-x{margin-top:2px;background:#2b2650;color:#ece8ff}';
+  document.head.appendChild(st);
+})();
+
+/* ── les compétences : on choisit sa case au moment d'apprendre l'étoile ── */
+function choisirCaseTB(ty, k, apres) {
+  var d = $('tbl-pop'); if (!d) { d = document.createElement('div'); d.id = 'tbl-pop'; $('tel').appendChild(d); }
+  var l = slotsTB(ty), A = CST[ty] || CST.poings;
+  function fermer() { d.classList.add('cache'); if (apres) apres(); }
+  d.innerHTML = '<div class="tbl-boite"><div class="tbl-t"><b>' + T('Nouvelle compétence') + '</b></div>' +
+    '<div class="tbl" style="--c:' + A.c + '"><div class="tbl-g"><div class="tb-a comp tbn-new">' + carteTB(k, ty) + '</div></div>' +
+    '<p class="tbl-h">' + T('Elle prend la place de laquelle ?') + '</p><div class="tbl-g">' +
+    l.map(function (x, i) { return '<button data-tbr="' + i + '" class="tb-a' + (COMMUNS_TB.indexOf(x) === -1 ? ' comp' : '') + '">' + carteTB(x, ty) + '</button>'; }).join('') + '</div>' +
+    '<p class="tbl-n">' + T('Frappe et les deux compétences de ton arme sont toujours là. Tu pourras changer d\'avis dans ta fiche, onglet Compétences.') + '</p></div>' +
+    '<button class="btn large tbn-x" id="tbr-non">' + T('Garder mes compétences') + '</button></div>';
+  d.classList.remove('cache');
+  d.querySelectorAll('[data-tbr]').forEach(function (b) {
+    b.onclick = function (ev) {
+      ev.stopPropagation(); son('niveau');
+      var l2 = slotsTB(ty).slice(), i = +b.dataset.tbr, ix = l2.indexOf(k); if (ix !== -1) l2[ix] = l2[i]; l2[i] = k;
+      J().tbSlots[ty] = l2; sauver(); fermer();
+    };
+  });
+  $('tbr-non').onclick = function (ev) { ev.stopPropagation(); son('clic'); fermer(); };
+}
+var dessinerCstAvantChoix = dessinerCst;
+dessinerCst = function (centrer) {
+  var r = dessinerCstAvantChoix(centrer), t = NOEUD_CST[CSTV.sel];
+  if (!t || !t.tb) return r;
+  function redessiner() { if ($('cst-ciel')) dessinerCst(false); }
+  var ap = $('cf-ap');
+  if (ap && ap.onclick) {
+    var vieux = ap.onclick;
+    ap.onclick = function (ev) {
+      var avant = cstJ()[t.id] || 0; vieux.call(this, ev);
+      if (avant || !(cstJ()[t.id] > 0) || slotsTB(t.ty).indexOf(t.tb) !== -1) return;
+      setTimeout(function () { choisirCaseTB(t.ty, t.tb, redessiner); }, 650);
+    };
+  }
+  var eq = $('cf-eq');
+  if (eq) {
+    var dedans = slotsTB(t.ty).indexOf(t.tb) !== -1;
+    eq.disabled = false; eq.textContent = T(dedans ? 'Retirer de mes compétences' : 'Équiper');
+    eq.onclick = function (ev) { ev.stopPropagation(); son('clic'); if (dedans) { placerTB(t.ty, t.tb); redessiner(); } else choisirCaseTB(t.ty, t.tb, redessiner); };
+  }
+  return r;
+};
+
+Object.assign(NL, {
+  'Relève {0} traces de {1}, puis affronte-le.': 'Bekijk {0} sporen van {1} en versla hem dan.', 'Récolte {0} × {1}.': 'Verzamel {0} × {1}.', 'Abats {0} × {1}.': 'Versla {0} × {1}.',
+  'Tu reprends : {0}': 'Je gaat verder: {0}', 'Il fonce droit dans ton piège.': 'Hij loopt recht in je val.', 'Pas de fuite possible : c\'est jusqu\'au bout.': 'Geen ontsnapping: het is tot het einde.',
+  'Une meute te tombe dessus !': 'Een roedel valt je aan!', '{0} te barre la route !': '{0} verspert je de weg!', '{0} bêtes à abattre.': '{0} beesten te verslaan.',
+  'Le bruit a attiré des monstres.': 'Het lawaai heeft monsters gelokt.', 'Raté…': 'Mis…', 'Il est tout près…': 'Hij is vlakbij…', 'Le coffre s\'ouvre': 'De kist gaat open',
+  '« Je l\'ai vu passer par là ! »': '„Ik heb hem daar zien langskomen!”', '« Prends ça, pour la route. »': '„Neem dit mee, voor onderweg.”', 'Piège posé': 'Val gezet',
+  'Le grand monstre y sera pris au début du combat.': 'Het grote monster loopt erin aan het begin van het gevecht.',
+  'Nouvelle compétence': 'Nieuwe vaardigheid', 'Elle prend la place de laquelle ?': 'Welke vervangt ze?',
+  'Frappe et les deux compétences de ton arme sont toujours là. Tu pourras changer d\'avis dans ta fiche, onglet Compétences.': 'Slaan en de twee vaardigheden van je wapen zijn er altijd. Je kunt later nog wisselen in je fiche, tabblad Vaardigheden.',
+  'Garder mes compétences': 'Mijn vaardigheden houden', 'Retirer de mes compétences': 'Uit mijn vaardigheden halen', 'Équiper': 'Uitrusten'
+});
+
 /* ═════════ démarrage ═════════ */
 function voir(n) {
   vueActive = n;
