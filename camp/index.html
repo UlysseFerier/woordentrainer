@@ -20036,6 +20036,69 @@ Object.assign(NL, {
   'La porte s\'ouvre': 'De deur gaat open', 'Belle rencontre !': 'Mooie ontmoeting!', 'Bénédiction : +{0} énergie': 'Zegen: +{0} energie'
 });
 
+/* ═════════ 19/11 : rien ne sort de l'écran ═════════
+   1) Le cadre du jeu (390 × 800) est mis à l'échelle de la partie vraiment visible : encarts du système
+      mesurés à chaque fois, réserve calculée d'après la hauteur de l'écran, et un dernier contrôle qui
+      rétrécit le cadre si son bas dépasse encore (voir ajuster(), dans le démarrage).
+   2) Les panneaux et fenêtres (panneau des contrées, fiche, fenêtres de choix, butin, compétences) se
+      rétrécissent tout seuls s'ils sont plus hauts que l'écran du jeu.
+   3) Options → Écran : une marge du bas réglable à la main, propre à ce téléphone, avec une bande de
+      contrôle qui doit rester entièrement visible. */
+var GARDE_SEL = ['#mo-panneau', '#feuille .f-boite', '#voile .boite', '#pop-butin .pb-boite', '#tbl-pop .tbl-boite'];
+function gardeTel() {
+  var tel = $('tel'); if (!tel) return;
+  var R0 = tel.getBoundingClientRect(), k = R0.width / 390; if (!k) return;
+  GARDE_SEL.forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el) {
+      if (!el.offsetParent && getComputedStyle(el).position !== 'fixed') return;
+      var r = el.getBoundingClientRect(); if (!r.height) return;
+      /* la hauteur « naturelle » (sans réduction) décide seule : pas d'aller-retour d'une mesure à l'autre */
+      var z = el.__z || 1, natu = r.height / k / z, voulu = Math.max(.5, Math.floor(Math.min(1, (800 - 6) / natu) * 50) / 50);
+      if (Math.abs(voulu - z) >= .02) { el.__z = voulu; el.style.zoom = voulu === 1 ? '' : voulu; }
+    });
+  });
+}
+setInterval(gardeTel, 300);
+var observeurTel = new MutationObserver(function () { if (!observeurTel.att) { observeurTel.att = 1; requestAnimationFrame(function () { observeurTel.att = 0; gardeTel(); }); } });
+observeurTel.observe(document.getElementById('tel'), { childList: true, subtree: true });
+
+/* ── la marge du bas, à la main ── */
+function bandeControle() {
+  var b = $('calib'); if (!b) { b = document.createElement('div'); b.id = 'calib'; $('tel').appendChild(b); }
+  b.innerHTML = '<span>' + T('Tu dois voir toute cette bande, jusqu\'à son bord du bas') + '</span>';
+  b.classList.remove('cache'); clearTimeout(bandeControle.t); bandeControle.t = setTimeout(function () { b.classList.add('cache'); }, 5000);
+}
+function reglerMarge(d) {
+  var m = d === 0 ? 0 : Math.max(0, Math.min(160, margeManuelle() + d));
+  try { localStorage.setItem(CLE + '-marge', String(m)); } catch (err) {}
+  AJ.cle = ''; AJ.n = 0; ajuster(); bandeControle();
+}
+var feuilleOptionsAvantEcran = feuilleOptions;
+feuilleOptions = function () {
+  feuilleOptionsAvantEcran();
+  try {
+    var m = margeManuelle(), d = document.createElement('div');
+    d.innerHTML = '<h4 class="f-h">' + T('Écran') + '</h4><p class="f-sous">' + T('Le jeu s\'adapte tout seul à ton écran. Si le bas reste caché par la barre de ton téléphone, ajoute de la marge ici : ce réglage ne vaut que pour ce téléphone.') + '</p>' +
+      '<div class="opt-l"><button id="opt-marge-m">−</button><button class="on" id="opt-marge-v">' + T('Marge du bas : {0}', m) + '</button><button id="opt-marge-p">+</button><button id="opt-marge-0">' + T('Auto') + '</button></div>';
+    var c = $('f-corps'); while (d.firstChild) c.appendChild(d.firstChild);
+    $('opt-marge-m').onclick = function (ev) { ev.stopPropagation(); son('clic'); reglerMarge(-8); feuilleOptions(); };
+    $('opt-marge-p').onclick = function (ev) { ev.stopPropagation(); son('clic'); reglerMarge(8); feuilleOptions(); };
+    $('opt-marge-0').onclick = function (ev) { ev.stopPropagation(); son('clic'); reglerMarge(0); feuilleOptions(); };
+    $('opt-marge-v').onclick = function (ev) { ev.stopPropagation(); bandeControle(); };
+  } catch (err) { console.error(err); }
+};
+(function () {
+  var st = document.createElement('style');
+  st.textContent = '#calib{position:absolute;left:0;right:0;bottom:0;height:34px;z-index:60;pointer-events:none;display:flex;align-items:center;justify-content:center;' +
+    'background:repeating-linear-gradient(135deg,#ffd24d 0 10px,#1a1208 10px 20px);box-shadow:inset 0 -4px 0 #e2463a,inset 0 4px 0 #e2463a}' +
+    '#calib span{background:#0e1128;color:#ffd24d;font-family:var(--lex);font-size:12px;padding:2px 6px}#calib.cache{display:none}';
+  document.head.appendChild(st);
+})();
+Object.assign(NL, {
+  'Écran': 'Scherm', 'Le jeu s\'adapte tout seul à ton écran. Si le bas reste caché par la barre de ton téléphone, ajoute de la marge ici : ce réglage ne vaut que pour ce téléphone.': 'Het spel past zich vanzelf aan je scherm aan. Blijft de onderkant verborgen achter de balk van je telefoon, voeg hier marge toe: deze instelling geldt alleen voor deze telefoon.',
+  'Marge du bas : {0}': 'Marge onderaan: {0}', 'Auto': 'Auto', 'Tu dois voir toute cette bande, jusqu\'à son bord du bas': 'Je moet deze hele strook zien, tot aan de onderrand'
+});
+
 /* ═════════ démarrage ═════════ */
 function voir(n) {
   vueActive = n;
@@ -20066,10 +20129,11 @@ function boucle() {
 }
 var OUTILS = /[?&]outils=1/.test(location.search);
 if (!OUTILS) $('outils').classList.add('cache');
-/* encarts système déclarés par le navigateur (barre d'état, barre de navigation) : mesurés une seule fois */
+/* encarts système déclarés par le navigateur (barre d'état, barre de navigation) : mesurés à chaque fois
+   (19/11 : mesurés une seule fois au lancement, ils valaient souvent 0 parce que le navigateur ne les
+   connaissait pas encore, et cette valeur fausse restait jusqu'à la fermeture de l'app) */
 var ENCARTS = null;
 function encarts() {
-  if (ENCARTS) return ENCARTS;
   var d = document.createElement('div');
   d.style.cssText = 'position:fixed;left:0;top:0;width:0;visibility:hidden;pointer-events:none;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)';
   document.body.appendChild(d);
@@ -20085,23 +20149,43 @@ function ajuster() {
   var vv = window.visualViewport, hv = vv ? vv.height : window.innerHeight;
   var dispo = Math.round(Math.min(window.innerHeight, hv, document.documentElement.clientHeight || window.innerHeight));
   var largeur = Math.round(vv && mobile ? vv.width : window.innerWidth);
-  var cle = [mobile, largeur, dispo, screen.height].join('|'); if (cle === AJ.cle) return; AJ.cle = cle;
+  var e = mobile ? encarts() : { t: 0, b: 0 }, mm = margeManuelle();
+  var cle = [mobile, largeur, dispo, screen.height, e.t, e.b, mm].join('|'); if (cle === AJ.cle) return; AJ.cle = cle;
   document.body.classList.toggle('mobile', mobile);
   var haut0 = 0, bas = 0;
   if (mobile) {
-    var e = encarts(); haut0 = e.t; bas = e.b;
-    /* le bas de l'app passait sous la barre de navigation d'Android (31/10) : quand la page occupe
-       tout l'écran sans déclarer d'encarts, on réserve nous-mêmes la barre d'état et celle du bas */
-    if (screen.height && dispo >= screen.height - 24) { haut0 = Math.max(haut0, 28); bas = Math.max(bas, 52); }
-  }
-  var pt = mobile ? haut0 + 'px' : '', pb = mobile ? bas + 'px' : '';
+    haut0 = e.t; bas = e.b;
+    /* 19/11 : quand le navigateur ne déclare aucun encart, on compare la hauteur visible à celle de l'écran.
+       Une barre d'état et une barre de navigation font ensemble environ 80 px : tout ce que l'écran ne
+       retire pas déjà de la page, on le réserve nous-mêmes (en haut seulement si la barre d'état n'est pas
+       déjà retirée, le reste en bas). Avant, la réserve ne valait que si la page faisait tout l'écran. */
+    if (!e.t && !e.b && screen.height) {
+      var deja = Math.max(0, screen.height - dispo), manque = Math.max(0, 80 - deja);
+      if (manque) { haut0 = deja < 16 ? Math.min(28, manque) : 0; bas = manque - haut0; }
+    }
+    bas += mm;
+  } else bas = mm;
+  var pt = mobile ? haut0 + 'px' : '', pb = mobile || mm ? bas + 'px' : '';
   if (document.body.style.paddingTop !== pt) document.body.style.paddingTop = pt;
   if (document.body.style.paddingBottom !== pb) document.body.style.paddingBottom = pb;
   var marge = mobile ? 0 : 40, large = largeur - marge - (OUTILS && !mobile ? 330 : 0), haut = dispo - marge - haut0 - bas - (mobile ? 4 : 0);
   var s = Math.min(mobile ? 1.4 : 1, large / 390, haut / 800);
-  $('tel').style.transform = 'scale(' + s + ')';
-  $('cadre').style.width = (390 * s) + 'px'; $('cadre').style.height = (800 * s) + 'px';
+  poserEchelle(s);
+  /* dernier garde-fou : si le bas du jeu dépasse quand même la partie visible, on rétrécit d'autant */
+  (function verifier(n) {
+    requestAnimationFrame(function () {
+      var r = $('cadre').getBoundingClientRect(), vis = (vv ? vv.height + vv.offsetTop : window.innerHeight) - (mobile ? bas : 0), haut1 = mobile ? haut0 : 0;
+      var trop = Math.max(r.bottom - vis, haut1 - r.top);
+      /* le cadre est centré : il faut le réduire de deux fois le dépassement pour que son bas remonte d'autant */
+      if (trop > 1 && n < 4) { s = Math.max(.3, s - (2 * trop + 4) / 800); poserEchelle(s); verifier(n + 1); }
+    });
+  })(0);
 }
+function poserEchelle(s) { $('tel').style.transform = 'scale(' + s + ')'; $('cadre').style.width = (390 * s) + 'px'; $('cadre').style.height = (800 * s) + 'px'; }
+function margeManuelle() { try { return Math.max(0, Math.min(160, +(localStorage.getItem(CLE + '-marge') || 0) || 0)); } catch (e) { return 0; } }
+/* 19/11 : un nouveau calcul toutes les deux secondes (il ne fait rien si rien n'a changé), car les barres du
+   système apparaissent parfois après le lancement sans déclencher d'événement */
+setInterval(function () { if (document.visibilityState === 'visible') ajuster(); }, 2000);
 window.addEventListener('resize', ajuster); ajuster();
 /* au lancement de l'app installée, la hauteur visible n'est pas toujours définitive : on recalcule */
 if (window.visualViewport) window.visualViewport.addEventListener('resize', ajuster);
