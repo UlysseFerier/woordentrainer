@@ -1174,7 +1174,7 @@ var ZONES = {
   5: { lieu: 'La tour de l\'horloge', sp: 'rouage', mod: 'Temps compté : +40 % de butin, monstres plus durs', fx: { butin: 40, pvMob: 30 } },
   6: { lieu: 'La route marchande', sp: 'sceau', mod: 'Commerce : +40 % d\'or', fx: { 'or%': 40 } },
   7: { lieu: 'La mine des apprentis', sp: 'encre', mod: 'Discipline : les coups de rappel frappent +50 %', fx: { 'rappel%': 50 } },
-  8: { lieu: 'Le bois des humeurs', sp: 'larme', mod: 'Cœurs ardents : les compétences se chargent plus vite', fx: { combo: 1 } },
+  8: { lieu: 'Le bois des humeurs', sp: 'larme', mod: 'Cœurs ardents : les compétences frappent plus fort', fx: { combo: 1 } },
   9: { lieu: 'Les ateliers teinturiers', sp: 'teinture', mod: 'Mille teintes : +30 % de spéciales', fx: { 'special%': 30 } },
   10: { lieu: 'La forêt sauvage', sp: 'croc', mod: 'Sauvage : monstres coriaces (+25 % PV), +30 % de butin', fx: { pvMob: 25, butin: 30 } }
 };
@@ -3254,7 +3254,7 @@ var APPORTS = [null,
   [['pierre', 'or'], 'Savoir ancien : les cartes frappent +40 %', { 'rappel%': 40 }, 'encre'],
   [['or', 'bois'], 'Trésors enfouis : +40 % d\'or', { 'or%': 40 }, 'ferrure'],
   [['or', 'cristal'], 'Pillards du désert : +30 % de butin', { butin: 30 }, 'ambre'],
-  [['bois', 'herbes'], 'Cœur sauvage : les compétences se chargent plus vite', { combo: 1 }, 'croc'],
+  [['bois', 'herbes'], 'Cœur sauvage : les compétences frappent plus fort', { combo: 1 }, 'croc'],
   [['pierre', 'fer'], 'Roche dure : +2 en attaque', { atk: 2 }, 'teinture'],
   [['herbes', 'cristal'], 'Magie des fées : +30 % de composantes rares', { 'special%': 30 }, 'larme'],
   [['cuir', 'pierre'], 'Vent porteur : 20 % des coups reçus esquivés', { esquive: 20 }, 'plumet'],
@@ -4655,7 +4655,7 @@ function vueDeck(n, apres) {
   var tous = LISTE.filter(function (m) { return !m.v; }).concat(LISTE.filter(function (m) { return m.v; })), pages = Math.max(1, Math.ceil(tous.length / DECK_PAGE));
   $('dk-titre').textContent = T('Tes mots de la liste {0}', n);
   $('dk-nom').textContent = nomListe(l);
-  $('dk-sous').textContent = T('Touche les mots que tu ne connais pas encore. Ce seront ceux de tes expéditions cette semaine.');
+  $('dk-sous').textContent = T('Touche les mots que tu ne connais pas encore. Ce seront ceux de tes expéditions et de ton entraînement.');
   function maj() { $('dk-go').disabled = choisis.length < 4; $('dk-go').textContent = choisis.length < 4 ? T('Choisis au moins 4 mots') : T('Valider mes {0} mots', choisis.length); ZC.deckBrouillon = choisis; }
   function rendre() {
     z.innerHTML = '';
@@ -12245,7 +12245,7 @@ Object.assign(NL, {
   'Vue dégagée : +10 % de coups critiques': 'Vrij zicht: +10 % voltreffers', 'Eau claire : soins +50 %': 'Helder water: genezing +50 %',
   'Galeries étayées : +2 en défense': 'Gestutte gangen: +2 verdediging', 'Savoir ancien : les cartes frappent +40 %': 'Oude kennis: kaarten slaan 40 % harder',
   'Trésors enfouis : +40 % d\'or': 'Begraven schatten: +40 % goud', 'Pillards du désert : +30 % de butin': 'Woestijnrovers: +30 % buit',
-  'Cœur sauvage : les compétences se chargent plus vite': 'Wild hart: de vaardigheden laden sneller', 'Roche dure : +2 en attaque': 'Hard gesteente: +2 aanval',
+  'Cœur sauvage : les compétences frappent plus fort': 'Wild hart: de vaardigheden laden sneller', 'Roche dure : +2 en attaque': 'Hard gesteente: +2 aanval',
   'Magie des fées : +30 % de composantes rares': 'Feeënmagie: +30 % zeldzame onderdelen', 'Vent porteur : 20 % des coups reçus esquivés': 'Meewind: 20 % van de klappen ontweken',
   'Glace pure : +40 % de cristal': 'Zuiver ijs: +40 % kristal', 'Forges des géants : +3 en défense': 'Reuzensmidsen: +3 verdediging',
   'Feu ardent : +3 en attaque': 'Laaiend vuur: +3 aanval', 'Runes de rappel : les cartes frappent +50 %': 'Herinneringsrunen: kaarten slaan 50 % harder',
@@ -13303,7 +13303,7 @@ majMonde = function () {
   REGIONS.forEach(function (R, k) {
     var ouverte = k < ouv, proche = k === ouv;
     if (!ouverte && !proche) return;
-    lab += '<div class="c-lab ' + (ouverte ? 'libre' : 'brume') + (MW.sel === k ? ' sel' : '') + '" style="left:' + R.x * 2 + 'px;top:' + (R.y - 20) * 2 + 'px">' + ech(T(R.nom)) + (proche ? '<small>' + T('avec la prochaine liste') + '</small>' : '') + '</div>';
+    lab += '<div class="c-lab ' + (ouverte ? 'libre' : 'brume') + (MW.sel === k ? ' sel' : '') + '" style="left:' + R.x * 2 + 'px;top:' + (R.y - 20) * 2 + 'px">' + ech(T(R.nom)) + (proche ? '<small>' + T('après la quête urgente') + '</small>' : '') + '</div>';
   });
   $('mo-labels').innerHTML = lab;
   var labs = []; $('mo-labels').querySelectorAll('.c-lab').forEach(function (l) { var w = l.offsetWidth, xx = parseFloat(l.style.left); xx = Math.max(w / 2 + 4, Math.min(386 - w / 2, xx)); l.style.left = xx + 'px'; labs.push({ l: l, x: xx, y: parseFloat(l.style.top), w: w, h: l.offsetHeight }); });
@@ -13344,18 +13344,18 @@ panneauMonde = function () {
   } else {
     var R = REGIONS[sel], ouv = regionOuverte(sel);
     h += '<div class="mo-tete"><div><b>' + ech(T(R.nom)) + '</b><span class="mo-etat ' + (ouv ? 'e-libre' : 'e-brume') + '">' + T(ouv ? 'Terrain de chasse' : 'Pas encore ouverte') + '</span></div></div><p class="mo-desc">' + ech(T(R.desc)) + '</p>';
-    if (!ouv) h += '<p class="mo-desc">' + T('Elle s\'ouvre quand l\'un de vous deux démarre une nouvelle liste de mots.') + '</p>';
+    if (!ouv) h += '<p class="mo-desc">' + texteVerrouRegion(sel) + '</p>';
     else if (!R.quetes) h += '<p class="mo-desc">' + T('Les quêtes de cette contrée arrivent bientôt.') + '</p>';
     else {
       if (MW.qsel == null || !R.quetes.some(function (q) { return q.id === MW.qsel; })) { var dispo = R.quetes.filter(function (q) { return queteOuverteMH(q) && !queteFaiteMH(q); })[0] || R.quetes[0]; MW.qsel = dispo.id; }
       h += '<div class="qb-grille">' + R.quetes.map(function (q) {
         var ok = queteOuverteMH(q), f = queteFaiteMH(q);
-        return '<button class="qb t-' + q.type + (ok ? '' : ' verrou') + (f ? ' fait' : '') + (MW.qsel === q.id ? ' sel' : '') + '" data-q="' + q.id + '"><img class="px" src="' + icoQueteMH(q) + '"><i>' + '★★★'.slice(0, q.et) + '</i>' + (ok ? '' : '<s></s>') + '</button>';
+        return '<button class="qb t-' + q.type + (ok ? '' : ' verrou') + (f ? ' fait' : '') + (MW.qsel === q.id ? ' sel' : '') + (q === urgenteDe(R) ? ' urgent' : '') + '" data-q="' + q.id + '"><img class="px" src="' + icoQueteMH(q) + '"><i>' + '★★★'.slice(0, q.et) + '</i>' + (ok ? '' : '<s></s>') + '</button>';
       }).join('') + '</div>';
       var q = R.quetes.filter(function (x) { return x.id === MW.qsel; })[0], ok = queteOuverteMH(q), nf = queteFaiteMH(q);
       h += '<div class="qb-det"><div class="qb-t"><b>' + ech(T(q.titre)) + '</b><small>' + nomType(q.type) + ' · ' + '★★★'.slice(0, q.et) + (nf ? ' · ' + T('réussie {0} fois', nf) : '') + '</small></div>' +
-        '<p>' + ech(T(q.desc)) + '</p><p class="qb-obj">' + ech(objectifMH(q)) + '</p>' +
-        '<div class="qb-rec"><span class="chip">' + img(icoRes('or'), 14) + Math.round(q.rec.or * (1 + sel * .4)) + '</span>' + butinPossibleMH(q).map(function (k) { return '<span class="chip">' + img(icoRes(k), 14) + '</span>'; }).join('') + '</div>' +
+        '<p>' + ech(T(q.desc)) + '</p><p class="qb-obj">' + ech(objectifMH(q)) + '</p>' + texteUrgente(R, q, sel) +
+        '<div class="qb-rec"><span class="chip">' + img(icoRes('or'), 14) + Math.round(q.rec.or * (1 + sel * .4)) + '</span>' + butinPossibleMH(q).map(function (k) { return '<span class="chip" data-mat="' + k + '">' + img(icoRes(k), 14) + '</span>'; }).join('') + '</div>' +
         (ok ? '<button class="btn large" id="qb-partir">' + T('Partir en quête') + '</button>' : '<p class="qb-req">' + T('Termine d\'abord : {0}', q.req.filter(function (r) { return !queteFaiteMH({ id: r }); }).map(function (r) { return T(R.quetes.filter(function (x) { return x.id === r; })[0].titre); }).join(', ')) + '</p>') + '</div>';
     }
   }
@@ -13533,7 +13533,7 @@ async function bougerMonstre() {
 async function entrerCombat(id, grand) {
   var M = EXPE.mh, B0 = BETES[id], mu = regionMult(M.k), e;
   if (grand) { var mo = M.monstre; e = { id: id, nom: B0.nom, spr: B0.spr, pal: B0.pal || null, cle: B0.spr + (B0.pal ? '-p' + id : ''), pv: mo.pv, pvMax: mo.pvMax, atk: mo.atk, x: 0, base: 62, flash: 0, grand: true, tour: 0, parts: (B0.parts || []).map(function (p) { return { nom: p.nom, piece: p.piece, seuil: p.seuil, casse: mo.casses.indexOf(p.piece) !== -1 }; }) }; }
-  else e = { id: id, nom: B0.nom, spr: B0.spr, pal: B0.pal || null, cle: B0.spr + (B0.pal ? '-p' + id : ''), pv: Math.round(B0.pv * mu.pv), pvMax: Math.round(B0.pv * mu.pv), atk: Math.round(B0.atk * mu.atk), x: 0, base: 60, flash: 0, tour: 0 };
+  else e = { id: id, nom: B0.nom, spr: B0.spr, pal: B0.pal || null, cle: B0.spr + (B0.pal ? '-p' + id : ''), pv: pvChasse(B0, M.k), pvMax: pvChasse(B0, M.k), atk: Math.round(B0.atk * mu.atk), x: 0, base: 60, flash: 0, tour: 0 };
   M.mode = 'combat'; M.intention = null; SC.heros.x = 12;
   await apparition(e); majComp(); majEtiquette();
   setTimeout(function () { if (typeof tuto === 'function') tuto('combat'); }, 600);
@@ -13561,7 +13561,7 @@ async function combattreMH(juste) {
       if (c < coups - 1) await attendre(120);
     }
     if (M.saigne > 0) M.saigne--;
-    if (e.pv > 0 && e.parts) await casserParties(e, sk && sk.brise);
+    if (e.pv > 0 && e.parts) await casserParties(e, (sk && sk.brise) || CB().mkBrise);
     if (e.pv > 0) { var dc = await coupCompagnon(); e.pv = Math.max(0, e.pv - dc); if (mo) mo.pv = e.pv; }
     majEtiquette(); majComp();
     if (e.pv <= 0) { await abattuMH(e); return; }
@@ -13840,7 +13840,7 @@ function genZones(k, q) {
   if (q.type === 'chasse') {
     var B0 = BETES[q.cible], mu = regionMult(k), fo = q.rec.fort || 1, zm = M.zones[Math.min(der - 1, Math.max(1, bout - 3))], nid = M.zones[der];
     var sn = solCentre(M, nid); M.nid = { x: sn[0], y: sn[1], z: nid.n }; var sm = solCentre(M, zm);
-    var pvM = Math.round(B0.pv * 1.1 * mu.pv * fo);
+    var pvM = Math.round(pvChasse(B0, k) * fo);
     M.monstre = { id: q.cible, x: sm[0], y: sm[1], z: zm.n, tx: null, ty: null, prochain: 0, bouge: maintenant() + 18000, pv: pvM, pvMax: pvM, atk: Math.round(B0.atk * mu.atk * fo), revele: false, traces: 0, f1: false, f2: false, dort: false, casses: [] };
     var zt = M.zones.filter(function (z) { return z.n > 0 && z.n !== nid.n; });
     for (var e = 0; e < besoinTraces() + 1; e++) ajout({ t: 'trace', need: 2 }, zt[e % zt.length]);
@@ -14936,7 +14936,7 @@ combattreMH = async function (juste) {
       if (e.prepare) { e.prepare = null; nombre(T('Esquivé !'), SC.heros.x + 10, 26, 'info'); bip(800, 1200, .08, 'triangle', .04); }
       var sk = M.arme;
       if (sk && sk.capture) { M.arme = null; await capturerMH(e); return; }
-      var coups = sk && sk.coups ? sk.coups : 1, mult = sk && sk.mult ? sk.mult : 1;
+      var coups = (sk && sk.coups ? sk.coups : 1) + (CB().mkC || 0), mult = sk && sk.mult ? sk.mult : 1;
       if (sk) { M.arme = null; if (typeof spawnVfx === 'function') spawnVfx(sk.id); await banniere(T(sk.nom), null, 520); if (EXPE !== X) return 'fin'; if (sk.etourdit) { e.etourdi = 2; e.prepare = null; nombre(T('Étourdi !'), 70, 18, 'fort'); } if (sk.saigne) { M.saigne = sk.saigne; saignerMonstre(e, 4); } }
       for (var c = 0; c < coups && e.pv > 0; c++) {
         var dg = degats(cur.mode), bonus = (1 + .3 * v) * st.mult * mult * (M.saigne > 0 ? 1.4 : 1) * (mo && mo.dort ? 2 : 1) * (e.rage ? 1.15 : 1) * (e.fatigue ? 1.1 : 1) * traitMult(e);
@@ -14948,11 +14948,11 @@ combattreMH = async function (juste) {
         if (ty === 'marteau') secouer(2 + (mult >= 2 ? 2 : 0), 220);
         e.pv = Math.max(0, e.pv - dn); if (mo) mo.pv = e.pv;
         if (ty === 'dague' && Math.random() < .35) saignerMonstre(e, 3);
-        if (ty === 'marteau' && e.grand && !e.etourdi) { e.choc = (e.choc || 0) + (mult >= 2 ? 2 : 1); if (e.choc >= 5) { e.choc = 0; e.etourdi = 2; e.prepare = null; if (typeof spawnVfx === 'function') spawnVfx('assomme'); await banniere(T('{0} est assommé !', T(e.nom)), T('Il ne peut plus attaquer pendant deux tours.'), 1000); } }
+        if (ty === 'marteau' && e.grand && !e.etourdi) { e.choc = (e.choc || 0) + (mult >= 2 ? 2 : 1) + (CB().mkChoc || 0); if (e.choc >= 5 + 3 * (e.nbChoc || 0)) { e.choc = 0; e.nbChoc = (e.nbChoc || 0) + 1; e.etourdi = 2; e.prepare = null; if (typeof spawnVfx === 'function') spawnVfx('assomme'); await banniere(T('{0} est assommé !', T(e.nom)), T('Il ne peut plus attaquer pendant deux tours.'), 1000); } }
         if (c < coups - 1) await attendre(120);
       }
       if (M.saigne > 0) M.saigne--;
-      if (e.pv > 0 && e.parts) await casserParties(e, sk && sk.brise);
+      if (e.pv > 0 && e.parts) await casserParties(e, (sk && sk.brise) || CB().mkBrise);
       if (e.pv > 0) { var dc = await coupCompagnon(); e.pv = Math.max(0, e.pv - dc); if (mo) mo.pv = e.pv; }
       majEtiquette(); majComp();
       if (e.pv <= 0) { await abattuMH(e); return; }
@@ -14965,7 +14965,7 @@ combattreMH = async function (juste) {
     e.prepare = null; dmg = traitErreur(e, dmg, att);
     if (M.garde) { M.garde = false; nombre(T('Paré !'), SC.heros.x + 10, 26, 'info'); bip(700, 1000, .08, 'square', .04); if (M.riposte) { M.riposte = false; var dr = Math.round(degats('phrase').n * 1.2); lancerCoupArme(); await frappeHeros(dr, 2, false); e.pv = Math.max(0, e.pv - dr); if (mo) mo.pv = e.pv; if (e.pv <= 0) { await abattuMH(e); return; } } }
     else {
-      if (att && att.type === 'rugissement') { et.etourdi = 1; secouer(4, 400); nombre(T('Sonné ! Ta prochaine bonne réponse te remet debout.'), 48, 18, 'mal'); }
+      if (att && att.type === 'rugissement') { et.etourdi = 1; secouer(4, 400); nombre(T('Sonné : tu perdras tes prochaines actions.'), 48, 18, 'mal'); }
       else if (att && att.type === 'souffle') { et[att.el] = 3; nombre(T(SOUFFLES[att.el][1]), SC.heros.x + 10, 20, 'mal'); }
       else if (att) nombre(T('Coup puissant !'), 70, 18, 'mal');
       await coupEnnemi(dmg);
@@ -15035,7 +15035,7 @@ dessusQuete = function (x, now) {
 Object.assign(NL, {
   'Il saigne !': 'Hij bloedt!', '{0} entre en rage !': '{0} wordt woedend!', 'Il attaque plus souvent et plus fort… mais il est plus fragile.': 'Hij valt vaker en harder aan… maar hij is kwetsbaarder.',
   'Tu reprends tes esprits': 'Je komt weer bij zinnen', '{0} est assommé !': '{0} is verdoofd!', 'Il ne peut plus attaquer pendant deux tours.': 'Hij kan twee beurten niet aanvallen.',
-  'Sonné ! Ta prochaine bonne réponse te remet debout.': 'Versuft! Je volgende goede antwoord zet je weer recht.', '{0} est épuisé !': '{0} is uitgeput!',
+  'Sonné : tu perdras tes prochaines actions.': 'Versuft! Je volgende goede antwoord zet je weer recht.', '{0} est épuisé !': '{0} is uitgeput!',
   'Il bave et frappe mollement : c\'est le moment !': 'Hij kwijlt en slaat slap: dit is het moment!', 'Raté : tu seras sonné.': 'Mis: je raakt versuft.', 'Raté : {0}.': 'Mis: {0}.', 'Raté : coup double.': 'Mis: dubbele slag.',
   'Trop vif pour être capturé': 'Te levendig om te vangen', '{0} est capturé !': '{0} is gevangen!', 'Récompense de capture': 'Vangstbeloning', 'affaibli': 'verzwakt'
 });
@@ -15206,8 +15206,8 @@ DEF['pa-epouv'] = { relief: true, plat: 'y', pal: { h: '#3a2a1a', s: '#d8b850', 
 /* ═════════ 03/11 : les tutoriels — une bulle courte la première fois qu'on découvre quelque chose ═════════
    Chaque bulle ne s'affiche qu'une fois par joueur (Jasmien voit les siennes en néerlandais). */
 var TUTOS = {
-  camp: [TR('Bienvenue au camp !', 'Welkom in het kamp!'), TR('Ici, vous bâtissez votre village à deux : les ressources sont communes.', 'Hier bouwen jullie samen je dorp: de grondstoffen zijn gedeeld.'), TR('La flèche « Expédition » ouvre la carte. Chaque bonne réponse fait avancer tes mots et ton aventure.', 'De pijl « Expeditie » opent de kaart. Elk goed antwoord helpt je woorden én je avontuur vooruit.'), TR('Le bouton « Cadeaux » : qui finit ses mots de la semaine choisit un cadeau parmi les idées de l\'autre.', 'De knop « Cadeaus »: wie zijn woorden van de week af heeft, kiest een cadeau uit de ideeën van de ander.')],
-  carte: [TR('La carte', 'De kaart'), TR('Au centre, le camp : touche-le pour aller récolter du bois, de la pierre, du fer…', 'In het midden het kamp: tik erop om hout, steen, ijzer… te verzamelen.'), TR('Autour, les contrées de chasse. Une nouvelle s\'ouvre à chaque nouvelle liste de mots.', 'Daaromheen de jachtgebieden. Bij elke nieuwe woordenlijst gaat er een nieuw open.')],
+  camp: [TR('Bienvenue au camp !', 'Welkom in het kamp!'), TR('Ici, vous bâtissez votre village à deux : les ressources sont communes.', 'Hier bouwen jullie samen je dorp: de grondstoffen zijn gedeeld.'), TR('La flèche « Expédition » ouvre la carte. Chaque bonne réponse fait avancer tes mots et ton aventure.', 'De pijl « Expeditie » opent de kaart. Elk goed antwoord helpt je woorden én je avontuur vooruit.'), TR('Le bouton « Cadeaux » : qui valide 40 mots d\'une liste choisit un cadeau parmi les idées de l\'autre. « S\'entraîner » : les mots sans le jeu.', 'De knop « Cadeaus »: wie 40 woorden van een lijst valideert, kiest een cadeau uit de ideeën van de ander. « Oefenen »: de woorden zonder het spel.')],
+  carte: [TR('La carte', 'De kaart'), TR('Au centre, le camp : touche-le pour aller récolter du bois, de la pierre, du fer…', 'In het midden het kamp: tik erop om hout, steen, ijzer… te verzamelen.'), TR('Autour, les contrées de chasse. La dernière quête de chaque contrée est sa quête urgente : la réussir fait monter ton rang de chasseur et ouvre la contrée suivante.', 'Daaromheen de jachtgebieden. De laatste opdracht van elk gebied is de dringende opdracht: als je slaagt, stijgt je jagersrang en gaat het volgende gebied open.')],
   contree: [TR('Le tableau des quêtes', 'Het opdrachtenbord'), TR('Chaque case est une quête : récolte (vert), massacre (doré) ou chasse d\'un grand monstre (rouge).', 'Elk vakje is een opdracht: oogst (groen), slachting (goud) of jacht op een groot monster (rood).'), TR('Certaines s\'ouvrent seulement après d\'autres. On peut toutes les refaire pour gagner plus de pièces.', 'Sommige gaan pas open na andere. Je kunt ze allemaal opnieuw doen voor meer onderdelen.')],
   traque: [TR('La traque', 'De speurtocht'), TR('Chaque bonne réponse est une action.', 'Elk goed antwoord is een actie.'), TR('Touche une zone voisine pour y aller. Si tu ne touches rien, tu fouilles la zone où tu es.', 'Tik op een naburige zone om erheen te gaan. Tik je nergens, dan zoek je in de zone waar je bent.'), TR('Une erreur, et l\'action rate.', 'Een fout, en de actie mislukt.')],
   traqueChasse: [TR('Trouver le grand monstre', 'Het grote monster vinden'), TR('Fouille pour relever ses traces. Avec trois traces, tu sais où il est.', 'Zoek om zijn sporen te vinden. Met drie sporen weet je waar hij is.'), TR('Blessé, il s\'enfuit : suis-le !', 'Gewond vlucht hij: volg hem!')],
@@ -15300,7 +15300,7 @@ async function coupDuMonstre(e, att) {
     if (S.riposte) { S.riposte = false; var dr = Math.round(degats('phrase').n * 1.2); lancerCoupArme(); await frappeHeros(dr, 2, false); e.pv = Math.max(0, e.pv - dr); synchroPV(e); }
     return;
   }
-  if (att && att.type === 'rugissement') { if (!stat('tenace')) { et.etourdi = 1; secouer(4, 400); nombre(T('Sonné ! Ta prochaine bonne réponse te remet debout.'), 48, 18, 'mal'); } else nombre(T('Tu tiens bon !'), 48, 18, 'info'); }
+  if (att && att.type === 'rugissement') { if (!stat('tenace')) { et.etourdi = 1; secouer(4, 400); nombre(T('Sonné : tu perdras tes prochaines actions.'), 48, 18, 'mal'); } else nombre(T('Tu tiens bon !'), 48, 18, 'info'); }
   else if (att && att.type === 'souffle') { et[att.el] = 3; nombre(T(SOUFFLES[att.el][1]), SC.heros.x + 10, 20, 'mal'); }
   else if (att) nombre(T('Coup puissant !'), 70, 18, 'mal');
   await coupEnnemi(dmg);
@@ -15324,7 +15324,7 @@ async function combatUnique(juste, info) {
       if (e.prepare) { e.prepare = null; nombre(T('Esquivé !'), SC.heros.x + 10, 26, 'info'); bip(800, 1200, .08, 'triangle', .04); }
       var sk = S.arme;
       if (sk && sk.capture) { S.arme = null; await capturerMH(e); return; }
-      var coups = sk && sk.coups ? sk.coups : 1, mult = sk && sk.mult ? sk.mult : 1;
+      var coups = (sk && sk.coups ? sk.coups : 1) + (CB().mkC || 0), mult = sk && sk.mult ? sk.mult : 1;
       if (sk) {
         S.arme = null; if (typeof spawnVfx === 'function') spawnVfx(sk.id); await banniere(T(sk.nom), null, 520); if (EXPE !== X || !C) return 'fin';
         if (sk.etourdit) { e.etourdi = sk.etourdit; e.prepare = null; nombre(T('Étourdi !'), 70, 18, 'fort'); }
@@ -15333,7 +15333,7 @@ async function combatUnique(juste, info) {
       }
       if (S.critSuiv) { S.critSuiv = false; mult *= 1.8; nombre(T('Critique !'), 70, 12, 'fort'); }
       for (var c = 0; c < coups && e.pv > 0; c++) {
-        var dg = degats(cur.mode), bonus = (1 + .3 * v) * st.mult * mult * (S.saigne > 0 ? 1.4 : 1) * (mo && mo.dort ? 2 : 1) * (e.rage ? 1.15 : 1) * (e.fatigue ? 1.1 : 1) * (traque ? traitMult(e) : 1);
+        var dg = degatsMK(cur.mode), bonus = (1 + .3 * v) * st.mult * mult * (S.saigne > 0 ? 1.4 : 1) * (mo && mo.dort ? 2 : 1) * (e.rage ? 1.15 : 1) * (e.fatigue ? 1.1 : 1) * (traque ? traitMult(e) : 1) * (S.mkM || 1);
         if (mo && mo.dort) { mo.dort = false; nombre(T('Réveil brutal !'), 70, 14, 'fort'); }
         var dn = Math.max(1, Math.round(dg.n * bonus)), ty = typeArme();
         if (!traque) dn = encaisseEnnemi(e, dn, mult >= 2);
@@ -15343,11 +15343,11 @@ async function combatUnique(juste, info) {
         if (ty === 'marteau') secouer(2 + (mult >= 2 ? 2 : 0), 220);
         e.pv = Math.max(0, e.pv - dn); synchroPV(e);
         if (ty === 'dague' && dn > 0 && Math.random() < .35) saignerMonstre(e, 3);
-        if (ty === 'marteau' && gros && !e.etourdi) { e.choc = (e.choc || 0) + (mult >= 2 ? 2 : 1); if (e.choc >= 5) { e.choc = 0; e.etourdi = 2; e.prepare = null; if (typeof spawnVfx === 'function') spawnVfx('assomme'); await banniere(T('{0} est assommé !', T(e.nom)), T('Il ne peut plus attaquer pendant deux tours.'), 1000); } }
+        if (ty === 'marteau' && gros && !e.etourdi) { e.choc = (e.choc || 0) + (mult >= 2 ? 2 : 1) + (CB().mkChoc || 0); if (e.choc >= 5 + 3 * (e.nbChoc || 0)) { e.choc = 0; e.nbChoc = (e.nbChoc || 0) + 1; e.etourdi = 2; e.prepare = null; if (typeof spawnVfx === 'function') spawnVfx('assomme'); await banniere(T('{0} est assommé !', T(e.nom)), T('Il ne peut plus attaquer pendant deux tours.'), 1000); } }
         if (c < coups - 1) await attendre(120);
       }
       if (S.saigne > 0) S.saigne--;
-      if (e.pv > 0 && e.parts) await casserParties(e, sk && sk.brise);
+      if (e.pv > 0 && e.parts) await casserParties(e, (sk && sk.brise) || CB().mkBrise);
       if (e.pv > 0) { var dc = await coupCompagnon(); if (aTraitV(e, 'carapace')) dc = Math.round(dc * .6); e.pv = Math.max(0, e.pv - dc); synchroPV(e); }
       if (!traque && info && info.valide && stat('echo') && e.pv > 0) { await attendre(120); var d2 = 10 + attaque(); await frappeHeros(d2, 2); e.pv = Math.max(0, e.pv - d2); synchroPV(e); }
       majEtiquette(); majComp();
@@ -18060,7 +18060,7 @@ function dessinerCst(centrer) {
   });
   h += '<div class="cst-ciel" id="cst-ciel" style="background-image:url(' + fondCiel(ty) + ')"><div class="cst-monde" id="cst-monde" style="width:' + 100 * E + 'px;height:' + 140 * E + 'px;--c:' + A.c + '"><svg width="' + 100 * E + '" height="' + 140 * E + '">' + lignes + '</svg>' + etoiles + '</div></div>';
   /* la fiche de l'étoile choisie */
-  var r = c[t.id] || 0, ok = cstAccessible(t), max = r >= t.rangs, nomBr = t.br != null ? ' · ' + T('branche {0}', T(A.br[t.br].nomBr)) : '', sorte = t.cap ? T('Étoile maîtresse') : t.actif ? T('Nouvelle compétence') : t.mod ? T('Amélioration de compétence') : T('Bonus permanent');
+  var r = c[t.id] || 0, ok = cstAccessible(t), max = r >= t.rangs, nomBr = t.br != null ? ' · ' + T('branche {0}', T(A.br[t.br].nomBr)) : '', sorte = t.cap ? T('Étoile maîtresse') : t.actif ? T('Nouvelle compétence') : t.mod ? T('Amélioration de compétence') : t.mk ? T('Mécanique de l\'arme') : T('Bonus permanent');
   var eq = equipesJ(), equipe = eq.indexOf(t.id) !== -1;
   h += '<div class="cst-fiche" style="--c:' + A.c + '"><div class="cf-t"><b>' + ech(T(t.nom)) + '</b><small>' + sorte + nomBr + (t.rangs > 1 ? ' · ' + T('rang {0} / {1}', r, t.rangs) : r ? ' · ' + T('apprise') : '') + '</small></div>';
   h += '<p class="cf-e">' + (r ? ech(effetTexte(t, r)) : '') + (r && !max ? '<br>' : '') + (!max ? '<span class="cf-suiv">' + (r ? T('Rang suivant : ') : '') + ech(effetTexte(t, r + 1)) + '</span>' : '') + '</p>';
@@ -18668,6 +18668,1712 @@ Object.assign(NL, { 'Trait blanc : ce que donne {0}': 'Witte streep: wat {0} gee
   'niveau {0} / {1}': 'niveau {0} / {1}', 'Retour au magasin': 'Terug naar de winkel', 'Améliorer': 'Verbeteren', 'Tu en as': 'Je hebt er', 'Le comptoir paie': 'De beurs betaalt', 'Il la revend': 'Hij verkoopt het voor',
   'Au camp': 'In het kamp', 'tu as {0}': 'je hebt {0}' });
 
+/* ═════════ 18/11 : lot A — chacun à son rythme, rang de chasseur, entraînement, rééquilibrage ═════════
+   1. Plus de calendrier. Chacun a sa liste en cours et passe à la suivante quand il veut (Réglages) ;
+      les listes déjà commencées restent révisables.
+   2. Cadeaux : chacun garde trois idées permanentes. 40 mots validés dans une liste = on choisit une idée
+      de l'autre. L'idée choisie disparaît de la liste de son auteur, qui la remplace quand il veut.
+   3. Les contrées de chasse s'ouvrent au rang de chasseur, propre à chacun : la dernière quête d'une
+      contrée est sa quête urgente ; la réussir fait monter le rang et ouvre la contrée suivante.
+   4. Entraînement : l'app d'avant (choix, phrases à trou, cartes), sur la même progression que le camp,
+      donc partagée par Supabase comme le reste. Bouton sur le camp, et ouverture directe possible.
+   5. Combats : l'attaque de l'arme multiplie le coup au lieu de s'y ajouter ; les PV des monstres de
+      chasse sont calés sur un nombre de bonnes réponses ; la rareté pèse beaucoup moins sur l'équipement
+      de combat (objets existants recalculés une fois) ; le marteau assomme de moins en moins souvent. */
+var LA_PRET = false;
+
+/* ── 1. les listes, sans calendrier ── */
+function numCalendrier() { return Math.max(PREMIERE, PREMIERE + Math.floor((aujourdhui() - DEBUT_CAL) / SEMAINE_MS)); }
+function listeMaxCalc(q) {
+  var m = numCalendrier(), j = etat.joueurs[q];
+  LISTES.forEach(function (l) { var z = j && j.zones && j.zones[l.id]; if (z && z.deck && l.n > m) m = l.n; });
+  return m;
+}
+/* la liste la plus avancée de chacun : figée au premier lancement (là où en était le calendrier) */
+function listeMaxDe(q) {
+  var j = etat && etat.joueurs && etat.joueurs[q]; if (!j) return numCalendrier();
+  if (!j.listeMax) { var m = listeMaxCalc(q); if (q !== etat.moi) return m; j.listeMax = m; }
+  return j.listeMax;
+}
+numCourant = function () { return etat && etat.moi && etat.joueurs && etat.joueurs[etat.moi] ? listeMaxDe(etat.moi) : numCalendrier(); };
+finSemaineListe = function () { return Infinity; };
+listeAutorisee = function (n) { return !!listeDeNum(n) && n <= numCourant() && (n >= PREMIERE || !!etat.toutOuvert); };
+listeDe = function (q) {
+  var j = etat.joueurs[q], max = listeMaxDe(q), ch = j && j.liste;
+  if (ch && listeDeNum(ch) && ch <= max) return ch;
+  if (listeDeNum(max)) return max;
+  var l = LISTES.filter(function (x) { return x.n <= max && x.n >= PREMIERE; });
+  return l.length ? l[l.length - 1].n : (LISTES.length ? LISTES[LISTES.length - 1].n : max);
+};
+listeJouable = function () { return etat && etat.moi ? listeDe(etat.moi) : numCalendrier(); };
+async function passerListeSuivante() {
+  var n = numCourant() + 1, l = listeDeNum(n); if (!l) return;
+  var r = await modal(T('Commencer la liste {0} ?', n), [nomListe(l), T('Tu pourras toujours revenir aux listes d\'avant dans les réglages.')], [{ t: T('Commencer') }, { t: T('Pas encore'), sec: true }]);
+  if (r) return;
+  J().listeMax = n; J().liste = n; DEPART.liste = n; sauver(); son('niveau');
+  chargerListesEnLigne(); fermerFeuille();
+  entrerZone(n); ZC.deckBrouillon = (ZC.deck || []).slice();
+  vueDeck(n, function () { campVue(); });
+}
+function ouvrirSurEntr() { try { return localStorage.getItem(CLE + '-entr') === '1'; } catch (e) { return false; } }
+var feuilleOptionsAvantLA = feuilleOptions;
+feuilleOptions = function () {
+  feuilleOptionsAvantLA();
+  try {
+    var b0 = $('f-corps').querySelector('[data-liste-opt]'), z = b0 && b0.parentNode; if (!z) return;
+    var n = listeJouable(), max = numCourant(), l = LISTES.filter(function (x) { return listeAutorisee(x.n); });
+    z.innerHTML = l.map(function (li) { return '<button data-liste-opt="' + li.n + '" class="' + (li.n === n ? 'on' : '') + '">' + ech(nomListe(li)) + (li.n === max ? '<small>' + T('ta liste la plus avancée') + '</small>' : '') + '</button>'; }).join('');
+    z.querySelectorAll('[data-liste-opt]').forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); J().liste = +b.dataset.listeOpt; DEPART.liste = +b.dataset.listeOpt; sauver(); son('clic'); feuilleOptions(); }; });
+    var suiv = listeDeNum(max + 1), d = document.createElement('div');
+    d.innerHTML = suiv ? '<button class="btn petit-b large" id="opt-suivante">' + T('Commencer la liste suivante : {0}', ech(nomListe(suiv))) + '</button>' : '<p class="f-sous">' + T('La liste suivante n\'est pas encore en ligne.') + '</p>';
+    z.parentNode.insertBefore(d, z.nextSibling);
+    if ($('opt-suivante')) $('opt-suivante').onclick = function (ev) { ev.stopPropagation(); son('clic'); passerListeSuivante(); };
+    /* l'entraînement : ouvrir l'app directement dessus, sur ce téléphone */
+    var e = document.createElement('div'), on = ouvrirSurEntr();
+    e.innerHTML = '<h4 class="f-h">' + T('Entraînement') + '</h4><p class="f-sous">' + T('Sur ce téléphone, l\'app peut s\'ouvrir directement sur l\'entraînement, sans passer par le camp.') + '</p>' +
+      '<div class="opt-l"><button id="opt-entr" class="' + (on ? 'on' : '') + '">' + T(on ? 'Ouvrir sur l\'entraînement : oui' : 'Ouvrir sur l\'entraînement : non') + '</button></div>';
+    var son0 = $('opt-son'), avant = son0 && son0.parentNode ? son0.parentNode.previousElementSibling : null;
+    if (avant) while (e.firstChild) avant.parentNode.insertBefore(e.firstChild, avant); else while (e.firstChild) $('f-corps').appendChild(e.firstChild);
+    $('opt-entr').onclick = function (ev) { ev.stopPropagation(); try { localStorage.setItem(CLE + '-entr', on ? '0' : '1'); } catch (err) {} son('clic'); feuilleOptions(); };
+  } catch (err) { console.error(err); }
+};
+
+/* ── 2. les cadeaux : trois idées permanentes, 40 mots validés pour choisir ── */
+function ideesDe(q) {
+  var c = cadeauxDe(q, 'idees');
+  if (!c.init && q === etat.moi) {
+    c.init = 1;
+    /* on reprend les dernières idées données liste par liste */
+    var src = null; LISTES.forEach(function (l) { var x = etat.joueurs[q].cadeaux['L' + l.n]; if (x && x.mes && x.mes.some(function (s) { return s && String(s).trim(); })) src = x; });
+    if (src) c.mes = src.mes.slice(0, 3);
+  }
+  return c;
+}
+/* les idées de q que l'autre a déjà choisies */
+function textesChoisisPar(q) {
+  var j = etat.joueurs[q], l = []; if (!j || !j.cadeaux) return l;
+  for (var k in j.cadeaux) if (/^L\d+$/.test(k) && j.cadeaux[k].choisiTexte) l.push(String(j.cadeaux[k].choisiTexte));
+  return l;
+}
+function ideesActives(q) {
+  var j = etat.joueurs[q]; if (!j) return [];
+  var c = j.cadeaux && j.cadeaux.idees, l;
+  if (q === etat.moi) l = ideesDe(q).mes;
+  else if (c && c.init) l = c.mes;
+  else { l = []; LISTES.forEach(function (li) { var x = j.cadeaux && j.cadeaux['L' + li.n]; if (x && x.mes && x.mes.some(function (s) { return s && String(s).trim(); })) l = x.mes; }); }
+  var deja = textesChoisisPar(q === etat.moi ? autreId() : etat.moi);
+  return (l || []).map(function (s) { return String(s || '').trim(); }).filter(function (s) { return s && deja.indexOf(s) === -1; });
+}
+avanceeDe = function (q, n) {
+  var l = listeDeNum(n), ze = zoneDeJoueur(q, n), deck = ze && ze.deck ? ze.deck : [];
+  var val = deck.filter(function (k) { var p = ze.mots[k]; return p && p.s >= CIBLE; }).length;
+  var seuil = Math.min(SEUIL_CADEAU, l ? l.mots.length : SEUIL_CADEAU);
+  return { deck: deck.length, valides: val, seuil: seuil, fini: val >= seuil && val > 0 };
+};
+cadeauAChoisir = function () {
+  if (!ideesActives(autreId()).length) return null;
+  for (var i = 0; i < LISTES.length; i++) { var n = LISTES[i].n; if (avanceeDe(etat.moi, n).fini && cadeauxDe(etat.moi, 'L' + n).choisi == null) return 'L' + n; }
+  return null;
+};
+cadeauxAFaire = function () {
+  if (cadeauAChoisir()) return true;
+  if (ideesActives(etat.moi).length < 3) return true;
+  return LISTES.some(function (l) { var s = etat.joueurs[autreId()].cadeaux['L' + l.n]; return s && s.choisiTexte && !cadeauxDe(etat.moi, 'L' + l.n).vuChoix; });
+};
+feuilleCadeaux = function () {
+  var A = autre(), Q = autreId(), h = '';
+  /* ce que je dois offrir */
+  var dus = LISTES.filter(function (l) { var c = etat.joueurs[Q].cadeaux['L' + l.n]; return c && c.choisiTexte; });
+  h += '<h4 class="f-h">' + T('À offrir à {0}', A) + '</h4>';
+  if (!dus.length) h += '<p class="f-sous">' + T('{0} n\'a encore choisi aucun cadeau.', A) + '</p>';
+  dus.forEach(function (l) {
+    var cle = 'L' + l.n, sien = etat.joueurs[Q].cadeaux[cle], mien = cadeauxDe(etat.moi, cle);
+    mien.vuChoix = true;
+    h += '<p class="cad-l"><b>« ' + ech(sien.choisiTexte) + ' »</b> <small>(' + ech(nomListe(l)) + ')</small></p>' +
+      (mien.offert ? '<p class="f-sous">' + T('Offert.') + '</p>' : '<button class="btn sec petit-b" data-offert="' + l.n + '">' + T('C\'est offert') + '</button>');
+  });
+  /* mon cadeau */
+  h += '<h4 class="f-h">' + T('Ton cadeau') + '</h4>';
+  var ses = ideesActives(Q), av = avanceeDe(etat.moi, listeJouable());
+  LISTES.forEach(function (l) {
+    var cle = 'L' + l.n, mien = cadeauxDe(etat.moi, cle), sien = etat.joueurs[Q].cadeaux[cle] || {};
+    if (mien.choisi != null) { h += '<p class="cad-l"><b>« ' + ech(mien.choisiTexte) + ' »</b> <small>(' + ech(nomListe(l)) + ')</small></p><p class="f-sous">' + T(sien.offert ? '{0} te l\'a offert.' : '{0} doit te l\'offrir.', A) + '</p>'; return; }
+    var a = avanceeDe(etat.moi, l.n); if (!a.fini) return;
+    h += '<p class="cad-l">' + ech(nomListe(l)) + ' : ' + T('{0} mots validés !', a.valides) + '</p>' +
+      (ses.length ? '<button class="btn petit-b large" data-choisir="' + cle + '">' + T('Ouvrir le coffre et choisir mon cadeau') + '</button>' : '<p class="f-sous">' + T('{0} n\'a pas encore donné d\'idées.', A) + '</p>');
+  });
+  if (!av.fini) h += '<p class="f-sous">' + T('Valide {0} mots d\'une liste pour choisir un des cadeaux de {1}. Liste en cours : {2} mots validés sur {3} dans ton deck.', av.seuil, A, av.valides, av.deck) +
+    (av.deck < av.seuil ? ' ' + T('Ajoute des mots dans Options pour arriver à {0}.', av.seuil) : '') + '</p>';
+  /* les idées de l'autre pour moi */
+  h += '<h4 class="f-h">' + T('Les idées de {0} pour toi', A) + '</h4>' +
+    (ses.length ? '<div class="cad-idees">' + ses.map(function (s) { return '<span>' + ech(s) + '</span>'; }).join('') + '</div>' : '<p class="f-sous">' + T('{0} n\'a pas encore donné d\'idées.', A) + '</p>');
+  /* mes idées pour l'autre, valables d'une liste à l'autre */
+  var mes = ideesDe(etat.moi).mes, pris = textesChoisisPar(Q);
+  h += '<h4 class="f-h">' + T('Tes idées de cadeau pour {0}', A) + '</h4><p class="f-sous">' + T('Elles restent valables d\'une liste à l\'autre. Quand {0} en choisit une, elle disparaît d\'ici : remplace-la quand tu veux.', A) + '</p><div class="formu">' +
+    [0, 1, 2].map(function (i) { var v = mes[i] && pris.indexOf(String(mes[i]).trim()) === -1 ? mes[i] : ''; return '<input data-idee="1" maxlength="60" value="' + ech(v || '') + '" placeholder="' + T(['Ton idée de cadeau pour {0}', 'Une deuxième', 'Une troisième'][i], A) + '">'; }).join('') +
+    '</div><button class="btn sec petit-b large" id="cad-garder">' + T('Enregistrer mes idées') + '</button>';
+  sauver();
+  feuille('Cadeaux', h);
+  majCadeauxUI();
+  lier('[data-offert]', function (d) { cadeauxDe(etat.moi, 'L' + d.offert).offert = true; sauver(); son('niveau'); feuilleCadeaux(); });
+  lier('[data-choisir]', function (d) { son('clic'); fermerFeuille(); ouvrirCoffreVue(d.choisir); });
+  $('cad-garder').onclick = function (ev) {
+    ev.stopPropagation(); var v = [];
+    $('f-corps').querySelectorAll('input[data-idee]').forEach(function (e) { v.push(e.value.trim()); });
+    ideesDe(etat.moi).mes = v; sauver(); son('clic'); celebrer('Enregistré'); majCadeauxUI();
+  };
+};
+afficherCadeaux = function (cleV) {
+  var cle = cleV || COFFRE.cle || cleSemaineCourante(), mien = cadeauxDe(etat.moi, cle), ses = ideesActives(autreId()), z = $('k-cadeaux'); z.innerHTML = '';
+  function retour() { $('k-retour').classList.remove('cache'); $('k-retour').onclick = function () { son('clic'); campVue(); }; }
+  if (mien.choisi != null) { $('k-texte').textContent = T('Ton cadeau : « {0} ». {1} le voit dans ses cadeaux à offrir.', mien.choisiTexte, autre()); retour(); return; }
+  if (!ses.length) { $('k-texte').textContent = T('{0} n\'a pas encore donné d\'idées de cadeau. Reviens au coffre dès que c\'est fait.', autre()); mien.ouvert = false; sauver(); retour(); return; }
+  $('k-texte').textContent = T('Choisis ton cadeau parmi ceux que {0} t\'a proposés.', autre());
+  ses.forEach(function (k, i) {
+    var b = document.createElement('button'); b.className = 'cadeau'; b.textContent = k;
+    b.onclick = async function () {
+      var r = await modal('Choisir ce cadeau ?', [T('« {0} »', k), T('Ce choix est définitif.')], [{ t: 'Je le prends' }, { t: 'Réfléchir encore', sec: true }]);
+      if (r) return;
+      mien.choisi = i; mien.choisiTexte = k; sauver(); son('niveau'); afficherCadeaux(cle);
+    };
+    z.appendChild(b);
+  });
+};
+
+/* ── 3. le rang de chasseur ── */
+function urgenteDe(R) { return R && R.quetes && R.quetes.length ? R.quetes[R.quetes.length - 1] : null; }
+/* ce qui était ouvert avant (une contrée par liste démarrée) : on ne referme rien */
+function rangAncien() {
+  var haut = numCalendrier();
+  LISTES.forEach(function (l) { ['ulysse', 'jasmien'].forEach(function (q) { var j = etat.joueurs[q], z = j && j.zones && j.zones[l.id]; if (z && z.deck && l.n > haut) haut = l.n; }); });
+  var d = (etat.camp.mh && etat.camp.mh.debut) || haut;
+  return Math.max(1, Math.min(REGIONS.length, haut - d + 1));
+}
+function rangDe(q) {
+  var j = etat && etat.joueurs && etat.joueurs[q]; if (!j) return 1;
+  var m = j.mh; if (!m && q === etat.moi) m = j.mh = { faites: {}, tues: {} };
+  if (m && m.rang) return m.rang;
+  var r = rangAncien(), f = (m && m.faites) || {};
+  for (var k = 0; k < REGIONS.length - 1; k++) { var u = urgenteDe(REGIONS[k]); if (!(u && f[u.id])) break; r = Math.max(r, k + 2); }
+  r = Math.min(REGIONS.length, r);
+  if (m && q === etat.moi) m.rang = r;
+  return r;
+}
+regionsOuvertes = function () { return etat && etat.moi ? rangDe(etat.moi) : 1; };
+function texteVerrouRegion(k) {
+  var prev = REGIONS[k - 1], r = rangDe(etat.moi); if (!prev) return '';
+  return (k === r ? T('Réussis la quête urgente de {0} pour l\'ouvrir.', T(prev.nom)) : T('Il faut d\'abord ouvrir {0}.', T(prev.nom))) + ' ' + T('Ton rang de chasseur : {0}.', r);
+}
+function texteUrgente(R, q, k) {
+  if (q !== urgenteDe(R)) return '';
+  var suiv = REGIONS[k + 1];
+  if (!suiv || k + 1 < rangDe(etat.moi)) return '<p class="qb-urg">' + T('Quête urgente') + '</p>';
+  return '<p class="qb-urg">' + T('Quête urgente : la réussir fait passer ton rang de chasseur à {0} et ouvre {1}.', k + 2, ech(T(suiv.nom))) + '</p>';
+}
+var quetaMHReussieAvantLA = quetaMHReussie;
+quetaMHReussie = async function () {
+  var M = EXPE && EXPE.mh, q = M && M.q, dejaFini = M && M.fini;
+  await quetaMHReussieAvantLA();
+  if (!q || dejaFini) return;
+  var R = REGIONS[M.k]; if (q !== urgenteDe(R)) return;
+  var r = rangDe(etat.moi); if (M.k + 1 < r) return;
+  var suiv = REGIONS[M.k + 1];
+  if (!suiv) { await banniere(T('Toutes les contrées sont ouvertes !'), null, 1800); return; }
+  J().mh.rang = M.k + 2; sauver(); son('niveau');
+  await banniere(T('Rang de chasseur {0} !', M.k + 2), T('Nouvelle contrée : {0}', T(suiv.nom)), 2200);
+};
+
+/* ── 4. l'entraînement : l'app d'avant, sur la progression du camp ── */
+var ENT = { q: null, attente: false, minuterie: null, toast: null };
+function vueEntrainement() {
+  if (EXPE || C) return;
+  var n = listeJouable(); entrerZone(n);
+  if (!ZC.deck) { ZC.deckBrouillon = []; vueDeck(n, function () { vueEntrainement(); }); return; }
+  voir('entrainement');
+  session = { derniers: [], depuisRappel: 0 }; recents = [];
+  groupeDe();
+  planifierSync(0);
+  entSuivante();
+}
+function entTirer() {
+  if (ciblesActives()) { var mc = retenir(lePlusAncien(motsCibles())); return { mot: mc, sansPts: true, mode: modeDe(mc) }; }
+  if (groupeFini() && !bilanDu()) groupeDe();
+  if (!groupeCourant().length || (groupeFini() && !bilanDu())) { var l = MOTS.filter(estValide), m = retenir(lePlusAncien(l.length ? l : MOTS)); return { mot: m, sansPts: true, mode: modeDe(m) }; }
+  var t = tirerMot();
+  if (t && t.mode === 'rappel' && session.ecrit) { var pool = MOTS.filter(function (x) { return x !== t.mot; }); if (pool.length) { session.ecrit = false; return { mot: mel(pool)[0], mode: 'qcm', revision: true }; } }
+  session.ecrit = !!(t && t.mode === 'rappel');
+  return t;
+}
+function entLigne(q) {
+  var n = listeDe(q), ze = zoneDeJoueur(q, n), deck = ze && ze.deck ? ze.deck : [], v = 0;
+  var c = deck.map(function (k) { var p = ze.mots[k], s = p ? Math.min(CIBLE, p.s || 0) : 0; if (s >= CIBLE) v++; return '<i' + (s >= CIBLE ? ' class="ok"' : '') + '><b style="height:' + Math.round(s / CIBLE * 100) + '%"></b></i>'; }).join('');
+  return '<div class="en-l' + (q === etat.moi ? ' moi' : '') + '"><span class="en-n">' + nomDe(q) + '</span>' +
+    (deck.length ? '<span class="en-c">' + c + '</span><span class="en-t">' + v + '/' + deck.length + '</span>' : '<span class="en-vide">' + T('pas encore de mots choisis') + '</span>') + '</div>';
+}
+function entMaj() {
+  if (vueActive !== 'entrainement' || !ZC) return;
+  var l = listeDeNum(listeJouable());
+  $('en-liste').textContent = l ? nomListe(l) : '';
+  var s = J().serieEntr || 0, p = s >= 25 ? 6 : s >= 21 ? 5 : s >= 15 ? 4 : s >= 10 ? 3 : s >= 6 ? 2 : s >= 3 ? 1 : 0;
+  $('en-serie').className = 'en-serie p' + p; $('en-serie').innerHTML = s >= 3 ? '<b>' + s + '</b><small>' + T('série') + '</small>' : '';
+  $('v-entrainement').dataset.chaleur = p;
+  var h = entLigne(etat.moi) + entLigne(autreId()); if ($('en-prog').innerHTML !== h) $('en-prog').innerHTML = h;
+  var ph;
+  if (ciblesActives()) ph = T('Mots difficiles');
+  else if (bilanDu()) ph = T('Bilan des mots appris');
+  else if (!groupeCourant().length || groupeFini()) ph = T('Révision');
+  else ph = T('Groupe {0}', ZC.fiche.numGroupe || 1) + ' · ' + T({ qcm: 'Choix', phrase: 'Phrases', rappel: 'Cartes' }[phaseCourante()] || 'Révision');
+  $('en-phase').textContent = ph;
+}
+function entToast(t) {
+  var d = $('en-toast'); d.textContent = t; d.classList.add('on');
+  clearTimeout(ENT.toast); ENT.toast = setTimeout(function () { d.classList.remove('on'); }, 1700);
+}
+function entRepondre(juste) {
+  var q = ENT.q; if (!q || q.fait) return null;
+  q.fait = true; cur = q;
+  var info = q.revision ? { valide: false } : appliquerAlgo(juste, q.mode), j = J();
+  j.serieEntr = juste ? (j.serieEntr || 0) + 1 : 0;
+  if (j.serieEntr > (j.serieEntrMax || 0)) j.serieEntrMax = j.serieEntr;
+  if (info.valide) j.journal.mots++;
+  sauver(); son(juste ? 'or' : 'mal');
+  if (juste && [3, 6, 10, 15, 21, 25].indexOf(j.serieEntr) !== -1) { son('niveau'); var se = $('en-serie'); se.classList.remove('saut'); void se.offsetWidth; se.classList.add('saut'); }
+  if (info.valide) entToast(T('« {0} » appris', q.mot[langueApprise()]));
+  else if (info.bilan === 'ok') entToast(T('Bilan réussi ! Groupe suivant.'));
+  else if (info.bilan === 'rate') entToast(T('Bilan raté : on le recommence.'));
+  else if (info.finPhase) entToast(T({ qcm: 'Nouvelle étape : les choix', phrase: 'Nouvelle étape : les phrases', rappel: 'Nouvelle étape : les cartes' }[info.finPhase]));
+  entMaj();
+  return info;
+}
+function entSuivante() {
+  clearTimeout(ENT.minuterie); ENT.attente = false;
+  if (vueActive !== 'entrainement') return;
+  var t = entTirer();
+  $('en-bas').innerHTML = '';
+  if (!t || !t.mot) { $('en-q').innerHTML = '<p class="en-vide">' + T('Pas de mot à travailler.') + '</p>'; entMaj(); return; }
+  var q = ENT.q = cur = { mot: t.mot, mode: t.mode, bilan: !!t.bilan, rappel: !!t.rappel, sansPts: !!t.sansPts, revision: !!t.revision, sens: Math.random() < .5 ? 'nl-fr' : 'fr-nl', fait: false };
+  q.forme = q.mode === 'rappel' ? 'carte' : q.mode; if (q.forme === 'phrase' && !aPhrases(q.mot)) q.forme = 'qcm';
+  ({ qcm: entQCM, phrase: entPhrase, carte: entCarte })[q.forme](q);
+  entMaj();
+}
+function entQCM(q) {
+  var m = q.mot, nl = q.sens === 'nl-fr', mot = nl ? m.nl : m.fr, r = nl ? m.fr : m.nl;
+  var autres = []; (MOTS.length >= 8 ? MOTS : LISTE).forEach(function (x) { var v = nl ? x.fr : x.nl; if (v !== r && autres.indexOf(v) === -1) autres.push(v); });
+  var vus = DISTRACTEURS[m.nl] || [];
+  var choisis = mel(autres.filter(function (x) { return vus.indexOf(x) === -1; })).concat(mel(autres.filter(function (x) { return vus.indexOf(x) !== -1; }))).slice(0, 3);
+  DISTRACTEURS[m.nl] = choisis;
+  $('en-q').innerHTML = '<div class="en-lang">' + (nl ? 'nederlands' : 'français') + '</div><div class="en-mot">' + ech(mot) + '</div><div class="en-opts">' +
+    mel([r].concat(choisis)).map(function (o) { return '<button class="en-opt">' + ech(o) + '</button>'; }).join('') + '</div>';
+  var bs = $('en-q').querySelectorAll('.en-opt');
+  bs.forEach(function (b) {
+    var o = b.textContent;
+    b.onclick = function () {
+      if (q !== ENT.q) return;
+      if (q.fait) { if (ENT.attente && o === r) { son('clic'); entSuivante(); } return; }
+      var juste = o === r;
+      if (juste) { b.classList.add('juste'); bs.forEach(function (x) { if (x !== b) x.classList.add('pale'); }); entRepondre(true); ENT.minuterie = setTimeout(entSuivante, 650); return; }
+      b.classList.add('faux'); bs.forEach(function (x) { if (x.textContent === r) x.classList.add('attire'); else if (x !== b) x.classList.add('pale'); });
+      entRepondre(false); ENT.attente = true;
+      $('en-bas').innerHTML = '<p class="en-retour">' + T('C\'était « {0} ». Touche la bonne réponse pour continuer.', ech(r)) + '</p>';
+    };
+  });
+}
+function entPhrase(q) {
+  var m = q.mot; q.ph = m.ph[Math.floor(Math.random() * m.ph.length)]; q.rl = langueApprise();
+  var x = morceaux(q.ph[q.rl]), enTete = !x.av.trim(); q.reponse = x.mot;
+  var pool = (MOTS.length >= 8 ? MOTS : LISTE).filter(function (y) { return y !== m; }), vus = DISTRACTEURS['ph:' + m.nl] || [];
+  function frais(t) { return mel(t.filter(function (y) { return vus.indexOf(y.nl) === -1; })).concat(mel(t.filter(function (y) { return vus.indexOf(y.nl) !== -1; }))); }
+  var ordre = frais(pool.filter(function (y) { return !!y.v === !!m.v; })).concat(frais(pool.filter(function (y) { return !!y.v !== !!m.v; })));
+  var choisis = [], sources = [], deja = [q.reponse.toLowerCase()];
+  for (var i = 0; i < ordre.length && choisis.length < 3; i++) {
+    var f = formeLeurre(ordre[i], q.rl, enTete);
+    if (!f || deja.indexOf(f.toLowerCase()) !== -1) continue;
+    deja.push(f.toLowerCase()); choisis.push(f); sources.push(ordre[i].nl);
+  }
+  DISTRACTEURS['ph:' + m.nl] = sources;
+  q.opts = mel([q.reponse].concat(choisis));
+  $('en-q').innerHTML = '<div class="en-consigne">' + T('Complète la phrase') + '</div><div class="en-phrase" id="en-phrase">' + ech(x.av) + '<button class="en-trou" id="en-trou">?</button>' + ech(x.ap) + '</div>' +
+    '<div class="en-trad">' + ech(String(q.ph[q.rl === 'nl' ? 'fr' : 'nl'] || '').replace(/[{}]/g, '')) + '</div><div class="en-menu cache" id="en-menu"></div>';
+  var menu = $('en-menu');
+  menu.innerHTML = q.opts.map(function (o) { return '<button>' + ech(o) + '</button>'; }).join('');
+  $('en-trou').onclick = function (ev) {
+    ev.stopPropagation(); if (q.fait) return;
+    if (!menu.classList.contains('cache')) { menu.classList.add('cache'); return; }
+    son('clic'); menu.classList.remove('cache');
+    var t = $('en-trou'), hote = $('en-q'), w = menu.offsetWidth, g = t.offsetLeft + t.offsetWidth / 2 - w / 2;
+    menu.style.left = Math.max(6, Math.min(g, hote.clientWidth - w - 6)) + 'px';
+    menu.style.top = (t.offsetTop + t.offsetHeight + 6) + 'px';
+  };
+  menu.querySelectorAll('button').forEach(function (b) {
+    b.onclick = function (ev) {
+      ev.stopPropagation(); if (q.fait || q !== ENT.q) return;
+      var choix = b.textContent, juste = choix === q.reponse; menu.classList.add('cache');
+      $('en-phrase').innerHTML = ech(x.av) + (juste ? '' : '<s>' + ech(choix) + '</s> ') + '<b class="cible">' + ech(x.mot) + '</b>' + ech(x.ap);
+      $('en-phrase').classList.toggle('rate', !juste);
+      entRepondre(juste);
+      var s = document.createElement('button'); s.className = 'en-suite'; s.textContent = T('Question suivante');
+      s.onclick = function () { son('clic'); entSuivante(); };
+      $('en-q').insertBefore(s, menu);
+    };
+  });
+}
+function entCarte(q) {
+  var L = langueApprise(), A = L === 'nl' ? 'fr' : 'nl', m = q.mot, ex = '';
+  if (aPhrases(m)) { var ph = m.ph[Math.floor(Math.random() * m.ph.length)]; ex = '<span class="en-ex"><span>' + phraseHTML(ph[L]) + '</span><span>' + phraseHTML(ph[A]) + '</span></span>'; }
+  $('en-q').innerHTML = '<div class="en-consigne">' + T('Retrouve le mot en {0}, de tête', T(nomLangue(L))) + '</div>' +
+    '<button class="en-k" id="en-k"><span class="en-k-r">' + ech(m[A]) + '</span><small>' + T('Touche la carte pour la retourner') + '</small></button>' +
+    '<div class="en-juge cache" id="en-juge"><button class="en-non" id="en-non">' + T('Je savais pas') + '</button><button class="en-oui" id="en-oui">' + T('Je savais') + '</button></div>';
+  var k = $('en-k'), tournee = false;
+  k.onclick = function () {
+    if (tournee || q !== ENT.q) return; tournee = true; son('clic');
+    k.classList.add('tourne');
+    setTimeout(function () { k.innerHTML = '<span class="en-k-r">' + ech(m[L]) + '</span>' + ex; $('en-juge').classList.remove('cache'); }, 120);
+  };
+  function juger(juste) {
+    if (!tournee || q.fait || q !== ENT.q) return;
+    $('en-juge').classList.add('cache'); k.classList.add(juste ? 'oui' : 'non');
+    entRepondre(juste); ENT.minuterie = setTimeout(entSuivante, juste ? 350 : 600);
+  }
+  $('en-oui').onclick = function () { juger(true); };
+  $('en-non').onclick = function () { juger(false); };
+}
+(function () {
+  $('tel').insertAdjacentHTML('beforeend', '<section class="vue" id="v-entrainement">' +
+    '<div class="en-haut"><button id="en-retour">' + '‹ Camp' + '</button><div class="en-titre"><b>' + 'Entraînement' + '</b><small id="en-liste"></small></div><div class="en-serie" id="en-serie"></div></div>' +
+    '<div class="en-prog" id="en-prog"></div><div class="en-phase" id="en-phase"></div><div id="en-q"></div><div id="en-bas"></div><div class="en-toast" id="en-toast"></div></section>');
+  $('en-retour').onclick = function () { son('clic'); clearTimeout(ENT.minuterie); ENT.q = null; cur = null; campVue(); };
+  var st = document.createElement('style');
+  st.textContent =
+    '#v-entrainement{background:#f4f7fd;color:#1b2a4a;font-family:Verdana,Arial,sans-serif;padding:12px 12px 14px;gap:8px}' +
+    '#v-entrainement button{font-family:Verdana,Arial,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}' +
+    '.en-haut{display:flex;align-items:center;gap:10px}' +
+    '#en-retour{background:#fff;border:2px solid #1f3f8f;color:#1f3f8f;border-radius:10px;padding:8px 11px;font-size:14px;font-weight:700}' +
+    '.en-titre{flex:1;display:flex;flex-direction:column;min-width:0}.en-titre b{font-size:18px;color:#1f3f8f}' +
+    '.en-titre small{font-size:12px;color:#5a6a8a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+    '.en-serie{min-width:56px;height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;transition:background .3s}' +
+    '.en-serie.p0{visibility:hidden}.en-serie b{font-size:21px;line-height:21px}.en-serie small{font-size:10px;letter-spacing:.5px}' +
+    '.en-serie.p1{background:#f2b03a}.en-serie.p2{background:#f08a24}.en-serie.p3{background:#e8691c;box-shadow:0 0 10px rgba(232,105,28,.6)}' +
+    '.en-serie.p4{background:#d9481a;box-shadow:0 0 14px rgba(217,72,26,.7)}.en-serie.p5{background:#b8261a;box-shadow:0 0 18px rgba(184,38,26,.8)}' +
+    '.en-serie.p6{background:linear-gradient(#fff6d0,#ffb02e);color:#8a2a00;box-shadow:0 0 22px rgba(255,176,46,.9),0 0 0 2px #3d63c9}' +
+    '.en-serie.p3,.en-serie.p4,.en-serie.p5,.en-serie.p6{animation:enBat 1.1s ease-in-out infinite}' +
+    '.en-serie.saut{animation:enSaut .45s}' +
+    '@keyframes enBat{50%{transform:scale(1.06)}}@keyframes enSaut{0%{transform:scale(1)}35%{transform:scale(1.35) rotate(-6deg)}100%{transform:scale(1)}}' +
+    '.en-prog{display:flex;flex-direction:column;gap:5px;background:#fff;border-radius:12px;padding:8px 10px;box-shadow:0 1px 4px rgba(20,40,90,.14)}' +
+    '.en-l{display:flex;align-items:center;gap:6px;font-size:11px}.en-l:not(.moi){opacity:.8}' +
+    '.en-n{width:54px;font-weight:700;color:#1f3f8f}.en-t{width:46px;text-align:right;font-weight:700}.en-vide{flex:1;color:#7a88a8}' +
+    '.en-c{flex:1;display:flex;gap:1px;height:24px}.en-l:not(.moi) .en-c{height:10px}' +
+    '.en-c i{flex:1;background:#e3e9f6;display:flex;align-items:flex-end;border-radius:2px;overflow:hidden}' +
+    '.en-c i b{display:block;width:100%;background:#3d63c9;transition:height .3s}.en-c i.ok b{background:#3fa34d}' +
+    '.en-phase{text-align:center;font-size:13px;color:#5a6a8a}' +
+    '#en-q{flex:1;position:relative;display:flex;flex-direction:column;justify-content:center;gap:16px;background:#fff;border-radius:16px;padding:18px 14px;box-shadow:0 2px 10px rgba(20,40,90,.12);min-height:0;overflow-y:auto}' +
+    '.en-lang,.en-consigne{text-align:center;font-size:12px;letter-spacing:1px;color:#7a88a8}.en-lang{text-transform:uppercase}' +
+    '.en-mot{text-align:center;font-size:30px;font-weight:700;word-break:break-word}' +
+    '.en-opts{display:flex;flex-direction:column;gap:10px}' +
+    '.en-opt{padding:15px 10px;font-size:17px;background:#f4f7fd;color:#1b2a4a;border:2px solid #c9d4ec;border-radius:12px;transition:transform .08s,opacity .2s}' +
+    '.en-opt:active{transform:scale(.97)}.en-opt.pale{opacity:.4}' +
+    '.en-opt.juste{background:#3fa34d;border-color:#2f8a3c;color:#fff;animation:enPunch .3s}' +
+    '.en-opt.faux{background:#e2463a;border-color:#b8302a;color:#fff;animation:enSec .3s}' +
+    '.en-opt.attire{border-color:#3fa34d;box-shadow:0 0 0 3px rgba(63,163,77,.4);opacity:1}' +
+    '#v-entrainement[data-chaleur="2"] .en-opt.juste,#v-entrainement[data-chaleur="3"] .en-opt.juste{box-shadow:0 0 14px rgba(240,138,36,.8)}' +
+    '#v-entrainement[data-chaleur="4"] .en-opt.juste,#v-entrainement[data-chaleur="5"] .en-opt.juste,#v-entrainement[data-chaleur="6"] .en-opt.juste{background:linear-gradient(#ffb02e,#e8691c);border-color:#b8261a;box-shadow:0 0 20px rgba(232,105,28,.9)}' +
+    '@keyframes enPunch{40%{transform:scale(1.06)}}@keyframes enSec{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}' +
+    '.en-phrase{font-size:21px;line-height:1.7;text-align:center}.en-phrase b.cible{color:#2f8a3c}.en-phrase s{color:#e2463a}' +
+    '.en-trou{display:inline-block;min-width:74px;padding:2px 10px;margin:0 4px;font-size:18px;font-weight:700;background:#e8eefc;border:2px dashed #3d63c9;color:#3d63c9;border-radius:8px}' +
+    '.en-trad{text-align:center;font-size:14px;color:#5a6a8a;font-style:italic}' +
+    '.en-menu{position:absolute;z-index:3;display:flex;flex-direction:column;gap:4px;background:#fff;border:2px solid #1f3f8f;border-radius:10px;padding:6px;box-shadow:0 6px 18px rgba(20,40,90,.25);min-width:160px}' +
+    '.en-menu button{padding:11px 12px;font-size:16px;background:#f4f7fd;border:0;border-radius:8px;text-align:left;color:#1b2a4a}' +
+    '.en-suite{align-self:center;padding:12px 24px;font-size:15px;font-weight:700;background:#1f3f8f;color:#fff;border:0;border-radius:12px}' +
+    '.en-k{align-self:stretch;min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(#fff,#eef3fd);border:2px solid #c9d4ec;border-radius:16px;color:#1b2a4a;padding:14px}' +
+    '.en-k.tourne{animation:enFlip .25s}.en-k.oui{border-color:#3fa34d}.en-k.non{border-color:#e2463a}@keyframes enFlip{50%{transform:scaleX(.05)}}' +
+    '.en-k-r{font-size:28px;font-weight:700}.en-k small{font-size:12px;color:#7a88a8}' +
+    '.en-ex{display:flex;flex-direction:column;gap:5px;font-size:13px;color:#5a6a8a;text-align:center}.en-ex b{color:#1f3f8f}' +
+    '.en-juge{display:flex;gap:10px}.en-juge button{flex:1;padding:15px;font-size:15px;font-weight:700;border:0;border-radius:12px;color:#fff}.en-oui{background:#3fa34d}.en-non{background:#e2463a}' +
+    '#en-bas{min-height:36px;text-align:center}.en-retour{font-size:13px;color:#b8302a;margin:4px 0}.en-vide{text-align:center;color:#7a88a8}' +
+    '.en-toast{position:absolute;left:50%;top:150px;transform:translateX(-50%);background:#1f3f8f;color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none;z-index:5;white-space:nowrap}' +
+    '.en-toast.on{opacity:1}' +
+    '.camp-entr{position:absolute;right:6px;bottom:60px;z-index:4;padding:8px 14px;font-family:var(--px);font-size:15px;background:#ffd24d;color:#1a1208;border:0;box-shadow:0 0 0 2px #000,inset 0 -3px 0 #b8862a}' +
+    '.camp-entr:active{transform:translateY(1px)}' +
+    '.qb.urgent{box-shadow:0 0 0 2px #000,inset 0 0 0 3px #e2463a;animation:qbUrg 1.2s steps(2) infinite}@keyframes qbUrg{50%{background:#4a2230}}' +
+    '.qb-urg{color:#ff9a8a;font-size:12px;margin:4px 0}';
+  document.head.appendChild(st);
+})();
+/* le bouton du camp, juste au-dessus des barres de progression */
+var majCadeauxUIAvantLA = majCadeauxUI;
+majCadeauxUI = function () {
+  majCadeauxUIAvantLA();
+  try {
+    var z = $('camp-prog'); if (!z || !etat || !etat.moi) return;
+    var b = $('camp-entr');
+    if (!b) { z.insertAdjacentHTML('beforebegin', '<button class="camp-entr" id="camp-entr"></button>'); b = $('camp-entr'); b.onclick = function (ev) { ev.stopPropagation(); son('clic'); vueEntrainement(); }; }
+    var t = T('S\'entraîner'); if (b.textContent !== t) b.textContent = t;
+    var bas = z.offsetHeight + 10 + 'px'; if (b.style.bottom !== bas) b.style.bottom = bas;
+  } catch (e) {}
+};
+setInterval(function () { if (typeof vueActive !== 'undefined' && vueActive === 'entrainement') entMaj(); }, 3000);
+route = function () {
+  traduireDOM();
+  if (!etat.moi) vueQui();
+  else if (ouvrirSurEntr()) { campVue(); vueEntrainement(); }
+  else campVue();
+};
+/* les textes fixes de la vue (traduits par T au moment de l'affichage) */
+var voirAvantLA = voir;
+voir = function (n) { voirAvantLA(n); if (n === 'entrainement') { $('en-retour').textContent = T('‹ Camp'); $('v-entrainement').querySelector('.en-titre b').textContent = T('Entraînement'); } };
+
+/* ── 5. les combats ── */
+degats = function (mode) {
+  var b = BASE[mode] * (1 + attaque() / 20) * (1 + decroit(stat('dmg') + stat(mode + '%'), 60) / 100);
+  var crit = Math.random() * 100 < stat('crit');
+  if (mode === 'rappel') b *= 1.6;
+  return { n: Math.max(1, Math.round(b * (0.9 + Math.random() * 0.2) * (crit ? 2 : 1))), crit: crit };
+};
+/* la référence : le coup moyen avec l'arme de la contrée d'avant (contrée k : arme de la contrée k - 1) */
+function atkRef(k) { return k <= 0 ? 3 : 5 + 2.4 * (k - 1); }
+function dmgRef(k) { return 23 * (1 + atkRef(k) / 20); }
+/* un grand monstre tombe en 22 bonnes réponses avec cette arme (le second de la contrée en 25), un petit en 5 */
+function pvChasse(B0, k) {
+  var R = REGIONS[k] || REGIONS[0];
+  if (B0.grand) { var gi = R.grands ? Math.max(0, R.grands.indexOf(B0.id)) : 0; return Math.round(22 * dmgRef(k) * (gi ? 1.15 : 1)); }
+  return Math.round(5 * dmgRef(k) * Math.max(.75, Math.min(1.3, (B0.pv || 85) / 85)));
+}
+/* la rareté de l'équipement de combat : de ×1 à ×1,25 (au lieu de ×1 à ×2,5), avec un jet resserré */
+var MULT_C = [1, 1.06, 1.12, 1.18, 1.25], TYPES_COMBAT = { arme: 1, armure: 1, relique: 1 };
+var tirerFxAvantLA = tirerFx;
+tirerFx = function (base, r) {
+  if (!base || !TYPES_COMBAT[base.type]) return tirerFxAvantLA(base, r);
+  var f = {};
+  for (var k in base.fx) { var v = base.fx[k]; if (FIXES.indexOf(k) !== -1) { f[k] = v; continue; } f[k] = Math.max(1, Math.round(v * MULT_C[r] * (.95 + Math.random() * .1))); }
+  return f;
+};
+/* les objets déjà fabriqués : recalculés une fois, en gardant leur jet */
+function reequilibrerObjet(rec) {
+  if (!rec || rec.rq || !OBJ[rec.id] || !TYPES_COMBAT[OBJ[rec.id].type]) return false;
+  var r = Math.max(0, Math.min(4, rec.r || 0)), f = MULT_C[r] / MULT_R[r];
+  for (var k in rec.fx) { if (FIXES.indexOf(k) !== -1 || typeof rec.fx[k] !== 'number') continue; rec.fx[k] = Math.max(1, Math.round(rec.fx[k] * f)); }
+  rec.rq = 1; return true;
+}
+var enregistrerPieceAvantLA = enregistrerPiece;
+enregistrerPiece = function (rec) { if (LA_PRET && rec && !rec.rq) rec.rq = 1; return enregistrerPieceAvantLA(rec); };
+var reenregistrerAvantLA = reenregistrer;
+reenregistrer = function (qui) {
+  var j = etat.joueurs[qui];
+  if (!LA_PRET && qui === etat.moi && j && j.heros && j.heros.objets) { var ch = false; for (var u in j.heros.objets) if (reequilibrerObjet(j.heros.objets[u])) ch = true; if (ch) sauver(); }
+  return reenregistrerAvantLA(qui);
+};
+
+Object.assign(NL, {
+  'Commencer la liste {0} ?': 'Lijst {0} beginnen?', 'Tu pourras toujours revenir aux listes d\'avant dans les réglages.': 'Je kunt altijd terug naar de vorige lijsten in de instellingen.',
+  'Commencer': 'Beginnen', 'Pas encore': 'Nog niet', 'ta liste la plus avancée': 'je verste lijst', 'Commencer la liste suivante : {0}': 'Volgende lijst beginnen: {0}',
+  'La liste suivante n\'est pas encore en ligne.': 'De volgende lijst staat nog niet online.', 'Entraînement': 'Oefenen',
+  'Sur ce téléphone, l\'app peut s\'ouvrir directement sur l\'entraînement, sans passer par le camp.': 'Op deze telefoon kan de app meteen op oefenen openen, zonder langs het kamp te gaan.',
+  'Ouvrir sur l\'entraînement : oui': 'Openen op oefenen: ja', 'Ouvrir sur l\'entraînement : non': 'Openen op oefenen: nee', 'S\'entraîner': 'Oefenen',
+  '{0} mots validés !': '{0} woorden gevalideerd!', 'Ce choix est définitif.': 'Deze keuze is definitief.',
+  'Valide {0} mots d\'une liste pour choisir un des cadeaux de {1}. Liste en cours : {2} mots validés sur {3} dans ton deck.': 'Valideer {0} woorden van een lijst om een van de cadeaus van {1} te kiezen. Huidige lijst: {2} van de {3} woorden in je stapel gevalideerd.',
+  'Elles restent valables d\'une liste à l\'autre. Quand {0} en choisit une, elle disparaît d\'ici : remplace-la quand tu veux.': 'Ze blijven geldig van lijst tot lijst. Als {0} er een kiest, verdwijnt ze hier: vervang ze wanneer je wilt.',
+  '{0} n\'a pas encore donné d\'idées de cadeau. Reviens au coffre dès que c\'est fait.': '{0} heeft nog geen cadeau-ideeën gegeven. Kom terug naar de kist zodra dat gebeurd is.',
+  'Rang de chasseur {0} !': 'Jagersrang {0}!', 'Nouvelle contrée : {0}': 'Nieuw gebied: {0}', 'Toutes les contrées sont ouvertes !': 'Alle gebieden zijn open!',
+  'Quête urgente': 'Dringende opdracht', 'Quête urgente : la réussir fait passer ton rang de chasseur à {0} et ouvre {1}.': 'Dringende opdracht: als je slaagt, stijgt je jagersrang naar {0} en gaat {1} open.',
+  'Réussis la quête urgente de {0} pour l\'ouvrir.': 'Slaag voor de dringende opdracht van {0} om het te openen.', 'Il faut d\'abord ouvrir {0}.': 'Eerst moet {0} open zijn.',
+  'Ton rang de chasseur : {0}.': 'Jouw jagersrang: {0}.',
+  'série': 'reeks', 'Bilan des mots appris': 'Toets van de geleerde woorden', 'Révision': 'Herhaling', 'Groupe {0}': 'Groep {0}', 'Phrases': 'Zinnen', 'Cartes': 'Kaarten',
+  'Bilan réussi ! Groupe suivant.': 'Toets geslaagd! Volgende groep.', 'Bilan raté : on le recommence.': 'Toets mislukt: we doen hem opnieuw.',
+  'Nouvelle étape : les choix': 'Nieuwe stap: de keuzevragen', 'Nouvelle étape : les phrases': 'Nieuwe stap: de zinnen',
+  'Pas de mot à travailler.': 'Geen woord om te oefenen.', 'Complète la phrase': 'Vul de zin aan', 'Touche la carte pour la retourner': 'Tik op de kaart om ze om te draaien',
+  'Touche les mots que tu ne connais pas encore. Ce seront ceux de tes expéditions et de ton entraînement.': 'Tik op de woorden die je nog niet kent. Die oefen je op je tochten en bij het oefenen.'
+});
+
+
+/* ═════════ 18/11 : lot B — viser un équipement, façon Monster Hunter ═════════
+   1. L'équipement de combat fabriqué n'a plus de rareté tirée au sort : il sort au niveau I, puis s'améliore
+      en II (×1,12) et III (×1,25, un emplacement d'enchantement de plus) avec les pièces du monstre ;
+      le niveau III demande son joyau rare. Une arme III peut évoluer vers l'arme suivante de sa lignée
+      (même type), pour moins cher qu'une fabrication, en gardant ses enchantements.
+      Le hasard reste sur les objets trouvés (donjon, expéditions, hôtel des ventes), les outils et les enchantements.
+   2. Toucher un matériau (dans un coût, une récompense) ouvre sa fiche : quels monstres le donnent, quelle
+      partie casser, avec quelle chance, dans quelle contrée ; à quoi il sert ; ce qu'en demandent tes souhaits.
+   3. Liste de souhaits (3 objets) : étoile sur les quêtes utiles, ligne dans le détail de la quête, notes dans
+      le butin, et une annonce au camp dès qu'un souhait est fabricable.
+   4. Éléments : chaque grand monstre a une faiblesse (×1,3) et résiste à sa propre nature (×0,75) ; une arme
+      faite d'un monstre porte sa nature. La faiblesse se révèle après l'avoir abattu une fois. */
+var ROMAIN = ['', 'I', 'II', 'III'], MULT_LV = [1, 1, 1.12, 1.25];
+var ELEMS = {
+  feu: { n: TR('feu', 'vuur'), c: '#ff8a4a' }, glace: { n: TR('glace', 'ijs'), c: '#7fd0ff' }, foudre: { n: TR('foudre', 'bliksem'), c: '#ffd24d' },
+  poison: { n: TR('poison', 'gif'), c: '#8af59a' }, sacre: { n: TR('sacré', 'heilig'), c: '#f4ecff' }
+};
+var NATURE_B = { crocdelune: 'glace', kaijo: 'feu', reine: 'foudre', vase: 'poison', vipere: 'poison', ancien: 'sacre', 'scorpion-roi': 'poison', 'grand-corbeau': 'foudre',
+  'reine-champi': 'poison', 'licorne-noire': 'foudre', 'ver-sables': 'feu', pharaon: 'poison', yeti: 'glace', 'spectre-lac': 'glace', aigle: 'foudre', 'dragon-lave': 'feu',
+  'sala-geante': 'feu', epouvantail: 'poison', 'dame-blanche': 'glace', 'roi-liche': 'glace', 'dragon-noir': 'feu' };
+var FAIBLE_B = { brisefut: 'glace', crocdelune: 'feu', kaijo: 'glace', reine: 'glace', vase: 'foudre', vipere: 'feu', 'roi-ours': 'feu', ancien: 'feu', 'scorpion-roi': 'glace',
+  'grand-corbeau': 'poison', 'reine-champi': 'feu', 'licorne-noire': 'sacre', 'golem-fer': 'foudre', 'ver-roc': 'glace', 'ver-sables': 'glace', pharaon: 'sacre', yeti: 'feu',
+  'spectre-lac': 'sacre', aigle: 'poison', belier: 'foudre', 'dragon-lave': 'glace', 'sala-geante': 'foudre', 'loup-garou': 'sacre', epouvantail: 'feu', 'dame-blanche': 'sacre',
+  'seigneur-os': 'feu', 'roi-liche': 'sacre', 'dragon-noir': 'foudre' };
+function nomEl(el) { return T(ELEMS[el].n); }
+
+/* ── d'où vient chaque pièce d'équipement de monstre : le grand monstre dont elle prend les parties ou le joyau ── */
+function joyauDe(id) { var l = (BETES[id] && BETES[id].loot) || []; for (var i = 0; i < l.length; i++) if (l[i][1] < 1) return l[i][0]; return null; }
+var SOURCE = {};
+OBJETS.forEach(function (o) {
+  if (!o.chasse || !o.cout) return;
+  var best = null, bn = 0;
+  for (var id in BETES) {
+    var b = BETES[id]; if (!b.grand) continue;
+    var ps = (b.parts || []).map(function (p) { return p.piece; }), j = joyauDe(id); if (j) ps.push(j);
+    var n = ps.filter(function (p) { return o.cout[p]; }).length; if (n > bn) { bn = n; best = id; }
+  }
+  if (best) SOURCE[o.id] = best;
+});
+function elemDeBase(id) { var o = OBJ[id], s = SOURCE[id]; return o && o.type === 'arme' && s ? NATURE_B[s] || null : null; }
+function elemArme() { var a = H().arme && OBJ[H().arme]; return a ? elemDeBase(a.base || a.id) : null; }
+
+/* ── 1. fabrication fixe, niveaux, évolutions ── */
+var rareteFabAvantLB = rareteFab;
+rareteFab = function (o, nivBat) { return TYPES_COMBAT[o.type] ? 0 : rareteFabAvantLB(o, nivBat); };
+var chancesHTMLAvantLB = chancesHTML;
+chancesHTML = function (o, nivBat) { return TYPES_COMBAT[o.type] ? '' : chancesHTMLAvantLB(o, nivBat); };
+var tirerFxAvantLB = tirerFx;
+tirerFx = function (base, r) {
+  if (!base || !TYPES_COMBAT[base.type]) return tirerFxAvantLB(base, r);
+  var f = {}; for (var k in base.fx) { var v = base.fx[k]; f[k] = FIXES.indexOf(k) !== -1 ? v : Math.max(1, Math.round(v * MULT_C[r])); }
+  return f;
+};
+slotsEnch = function (o) { var lv = (o.rec && o.rec.lv) || 1; return 1 + Math.floor(Math.max(o.r || 0, lv >= 3 ? 2 : 0) / 2); };
+var nomRareAvantLB = nomRare;
+nomRare = function (o) { var lv = o && o.inst && o.rec && o.rec.lv, s = nomRareAvantLB(o); return lv > 1 ? s.replace(T(o.nom), T(o.nom) + ' ' + ROMAIN[lv]) : s; };
+function piecesDe(o) { var l = []; for (var k in o.cout) if (PIECES[k]) l.push(k); return l; }
+/* le coût pour passer au niveau lv (2 ou 3) : les pièces de la recette, doublées pour le III, plus le joyau */
+function coutNiveau(o, lv) {
+  var c = {};
+  piecesDe(o).forEach(function (k) { c[k] = Math.max(1, Math.round(o.cout[k] * (lv === 3 ? 2 : 1))); });
+  if (o.cout.fer) c.fer = Math.round(o.cout.fer * (lv === 3 ? .6 : .4));
+  if (lv === 3) { var j = SOURCE[o.id] && joyauDe(SOURCE[o.id]); if (j) c[j] = (c[j] || 0) + 1; }
+  c.or = (lv === 3 ? 80 : 40) + 10 * o.niv;
+  return c;
+}
+function appliquerNiveau(rec) {
+  var b = OBJ[rec.id], lv = rec.lv || 1, m = Math.max(MULT_LV[lv], MULT_C[Math.max(0, Math.min(4, rec.r || 0))]), f = {};
+  for (var k in b.fx) { var v = b.fx[k]; f[k] = FIXES.indexOf(k) !== -1 ? v : Math.max(rec.fx[k] || 0, Math.round(v * m)); }
+  rec.fx = f; return enregistrerPiece(rec);
+}
+function ligneArme(o) {
+  if (!o || o.type !== 'arme' || !o.chasse) return null;
+  var ty = TYPES_ARME[o.ic] || 'epee';
+  return OBJETS.filter(function (x) { return x.chasse && x.type === 'arme' && (TYPES_ARME[x.ic] || 'epee') === ty; })
+    .sort(function (a, b) { return regionDeObjet(a) - regionDeObjet(b) || a.niv - b.niv || OBJETS.indexOf(a) - OBJETS.indexOf(b); });
+}
+/* la contrée d'une pièce : celle de son grand monstre, sinon celle de ses autres pièces */
+var REG_OBJ = {};
+function regionDeObjet(o) {
+  if (REG_OBJ[o.id] != null) return REG_OBJ[o.id];
+  var s = SOURCE[o.id], r = 99, i;
+  for (i = 0; i < REGIONS.length && r === 99; i++) if (s && (REGIONS[i].grands || []).indexOf(s) !== -1) r = i;
+  for (i = 0; i < REGIONS.length && r === 99; i++) {
+    var R = REGIONS[i], ids = (R.grands || []).concat(R.petits || []);
+    if (ids.some(function (id) { return (BETES[id].loot || []).some(function (x) { return o.cout[x[0]]; }); }) || (R.recoltes || []).some(function (k) { return o.cout[k]; })) r = i;
+  }
+  return (REG_OBJ[o.id] = r);
+}
+function suivantDe(o) { var l = ligneArme(o); if (!l) return null; var i = l.indexOf(o); return i >= 0 && i < l.length - 1 ? l[i + 1] : null; }
+function precedentDe(o) { var l = ligneArme(o); if (!l) return null; var i = l.indexOf(o); return i > 0 ? l[i - 1] : null; }
+function coutEvolution(cible) { var c = {}; for (var k in cible.cout) if (k !== 'fer') c[k] = cible.cout[k]; if (cible.cout.fer) c.fer = Math.round(cible.cout.fer * .3); return c; }
+function meilleureInstance(o) {
+  var l = mesObjets(function (x) { return x.base === o.id; }); if (!l.length) return null;
+  l.sort(function (a, b) { return (estPorte(b) ? 1 : 0) - (estPorte(a) ? 1 : 0) || ((b.rec.lv || 1) - (a.rec.lv || 1)); });
+  return l[0];
+}
+function vitUpHTML(o, niv) {
+  if (!TYPES_COMBAT[o.type]) return '';
+  var el = elemDeBase(o.id), sh = souhaitsJ().indexOf(o.id) !== -1, h = '<div class="vit-up">';
+  h += '<div class="vu-l">' + (o.type === 'arme' ? '<span class="vu-el" style="--c:' + (el ? ELEMS[el].c : '#a9aec2') + '">' + (el ? T('Élément : {0}', nomEl(el)) : T('Sans élément')) + '</span>' : '') +
+    '<button class="vu-sh' + (sh ? ' on' : '') + '" data-souhait="' + o.id + '">' + (sh ? '★ ' + T('Souhaité') : '☆ ' + T('Ajouter aux souhaits')) + '</button></div>';
+  if (o.chasse) {
+    var x = meilleureInstance(o);
+    if (x) {
+      var lv = x.rec.lv || 1;
+      if (lv < 3) {
+        var c = coutNiveau(o, lv + 1);
+        h += '<p class="vu-r">' + T('Ton exemplaire : niveau {0}. Le niveau {1} multiplie ses valeurs par {2}.', ROMAIN[lv], ROMAIN[lv + 1], lv + 1 === 2 ? '1,12' : '1,25') + (lv + 1 === 3 ? ' ' + T('Il gagne aussi un emplacement d\'enchantement.') : '') + '</p>' +
+          '<div class="vit-pied"><span class="couts">' + coutHTML(c) + '</span><button class="vit-bs" data-up="' + x.id + '"' + (peutPayer(c) && o.niv <= niv ? '' : ' disabled') + '>' + T('Améliorer en {0}', ROMAIN[lv + 1]) + '</button></div>';
+      } else {
+        var s = suivantDe(o);
+        h += '<p class="vu-r">' + T('Ton exemplaire est au niveau III.') + (s ? ' ' + T('Il peut évoluer en {0} : il garde ses enchantements.', ech(T(s.nom))) : '') + '</p>';
+        if (s) { var ce = coutEvolution(s); h += '<div class="vit-pied"><span class="couts">' + coutHTML(ce) + '</span><button class="vit-bs" data-evo="' + x.id + '"' + (peutPayer(ce) && s.niv <= niveauBat(s.bat) ? '' : ' disabled') + '>' + T('Évoluer') + '</button></div>'; }
+      }
+    } else h += '<p class="vu-r">' + T('Fabriqué au niveau I. Les niveaux II et III se font ensuite avec les pièces du monstre.') + '</p>';
+    var p = precedentDe(o), s2 = suivantDe(o);
+    if (p || s2) h += '<div class="vu-lig">' + [p, o, s2].filter(Boolean).map(function (y) { return '<span class="' + (y === o ? 'on' : possede(y.id) ? 'a' : '') + '">' + ech(T(y.nom)) + '</span>'; }).join('<i>›</i>') + '</div>';
+  }
+  return h + '</div>';
+}
+var vitrineHTMLAvantLB = vitrineHTML;
+vitrineHTML = function (o, e, niv) {
+  var h = vitrineHTMLAvantLB(o, e, niv); if (!TYPES_COMBAT[o.type]) return h;
+  h = h.replace(T('Valeurs en commun ; la rareté tirée les multiplie (jusqu\'à ×2,5).'), T('Valeurs au niveau I.'));
+  var i = h.lastIndexOf('</div>'); return h.slice(0, i) + vitUpHTML(o, niv) + h.slice(i);
+};
+var lierAtelierAvantLB = lierAtelier;
+lierAtelier = function (bat, refaire) {
+  lierAtelierAvantLB(bat, refaire);
+  lier('[data-souhait]', function (d) { basculerSouhait(d.souhait); son('clic'); refaire(); });
+  lier('[data-up]', function (d) {
+    var x = OBJ[d.up]; if (!x || !x.rec) return;
+    var o = OBJ[x.base], lv = x.rec.lv || 1, c = coutNiveau(o, lv + 1); if (lv >= 3 || !peutPayer(c)) return;
+    payer(c); x.rec.lv = lv + 1; appliquerNiveau(x.rec); sauver(); hudCamp(); celebrer(T('{0} passe au niveau {1} !', T(o.nom), ROMAIN[lv + 1])); refaire();
+  });
+  lier('[data-evo]', function (d) {
+    var x = OBJ[d.evo]; if (!x || !x.rec) return;
+    var o = OBJ[x.base], s = suivantDe(o), c = s && coutEvolution(s); if (!s || (x.rec.lv || 1) < 3 || !peutPayer(c)) return;
+    payer(c);
+    var y = creerObjet(s.id, 0), en = (x.rec.ench || []).filter(Boolean).slice(0, slotsEnch(y)); y.rec.ench = en; y = enregistrerPiece(y.rec);
+    var h = H(), porte = h.arme === x.id; delete h.objets[x.rec.u]; delete OBJ[x.id]; if (porte) h.arme = y.id;
+    SEL[s.bat] = s.id; sauver(); hudCamp(); celebrer(T('{0} devient {1} !', T(o.nom), T(s.nom))); refaire();
+  });
+};
+
+/* ── 3. la liste de souhaits ── */
+function souhaitsJ() { var j = J(); return j.souhaits || (j.souhaits = []); }
+function basculerSouhait(id) { var l = souhaitsJ(), i = l.indexOf(id); if (i !== -1) l.splice(i, 1); else { l.push(id); if (l.length > 3) l.shift(); } sauver(); }
+function manquesDe(o) { var m = {}; for (var k in o.cout) { var d = o.cout[k] - stock(k); if (d > 0) m[k] = d; } return m; }
+function besoinsSouhaits() { var b = {}; souhaitsJ().forEach(function (id) { var o = OBJ[id]; if (!o) return; var m = manquesDe(o); for (var k in m) if (PIECES[k]) b[k] = (b[k] || 0) + m[k]; }); return b; }
+function texteManques(m) { return Object.keys(m).map(function (k) { return m[k] + ' × ' + nomRes(k); }).join(', '); }
+function notesSouhaits() {
+  return souhaitsJ().filter(function (id) { return OBJ[id]; }).map(function (id) {
+    var o = OBJ[id], m = manquesDe(o);
+    return Object.keys(m).length ? T('Souhait {0} : il manque {1}.', T(o.nom), texteManques(m)) : T('Souhait {0} : tu peux le fabriquer !', T(o.nom));
+  });
+}
+var popupButinAvantLB = popupButin;
+popupButin = function (titre, lignes, notes, apres) { var n = (notes || []).slice(); try { n = n.concat(notesSouhaits()); } catch (e) {} return popupButinAvantLB(titre, lignes, n, apres); };
+var hudCampAvantLB = hudCamp;
+hudCamp = function () {
+  hudCampAvantLB();
+  try {
+    var j = J(), vus = j.souhaitsPrets || (j.souhaitsPrets = {});
+    souhaitsJ().forEach(function (id) { var o = OBJ[id]; if (!o) return; var ok = peutPayer(o.cout); if (ok && !vus[id]) { vus[id] = 1; celebrer(T('Souhait prêt : {0} !', T(o.nom))); } else if (!ok && vus[id]) delete vus[id]; });
+  } catch (e) {}
+};
+function faiblesseHTML(id) {
+  if (!BETES[id] || !BETES[id].grand) return '';
+  var m = J().mh || {}, connu = (m.tues && m.tues[id]) || (m.elemVu && m.elemVu[id]), el = elemArme();
+  if (!connu) return '<p class="qb-el">' + T('Faiblesse inconnue : abats-le une fois pour la connaître.') + '</p>';
+  var f = FAIBLE_B[id], n = NATURE_B[id];
+  return '<p class="qb-el">' + T('Faible : {0}', nomEl(f)) + (n ? ' · ' + T('résiste : {0}', nomEl(n)) : '') +
+    (el === f ? ' · <b class="ok">' + T('ton arme est efficace') + '</b>' : el && el === n ? ' · <b class="ko">' + T('ton arme est peu efficace') + '</b>' : '') + '</p>';
+}
+var panneauMondeAvantLB = panneauMonde;
+panneauMonde = function () {
+  var r = panneauMondeAvantLB.apply(this, arguments);
+  try {
+    var sel = MW.sel, R = sel != null && sel !== 'camp' ? REGIONS[sel] : null; if (!R || !R.quetes) return r;
+    var P = $('mo-panneau'), b = besoinsSouhaits();
+    P.querySelectorAll('[data-q]').forEach(function (bt) { var q = R.quetes.filter(function (x) { return x.id === bt.dataset.q; })[0]; if (q && butinPossibleMH(q).some(function (k) { return b[k]; })) bt.classList.add('souhait'); });
+    var q = R.quetes.filter(function (x) { return x.id === MW.qsel; })[0], det = P.querySelector('.qb-det .qb-obj');
+    if (q && det) {
+      var add = q.type === 'chasse' ? faiblesseHTML(q.cible) : '';
+      var u = souhaitsJ().filter(function (id) { var o = OBJ[id]; if (!o) return false; var m = manquesDe(o); return butinPossibleMH(q).some(function (k) { return m[k]; }); }).map(function (id) { return T(OBJ[id].nom); });
+      if (u.length) add += '<p class="qb-sh">★ ' + T('Utile pour ton souhait : {0}', ech(u.join(', '))) + '</p>';
+      if (add) det.insertAdjacentHTML('afterend', add);
+    }
+  } catch (e) { console.error(e); }
+  return r;
+};
+
+/* ── 4. les éléments en combat ── */
+function multElem(e) {
+  if (!e || !e.grand || !BETES[e.id]) return 1;
+  var el = elemArme(); if (!el) return 1;
+  if (FAIBLE_B[e.id] === el) {
+    if (!e.vuF) { e.vuF = 1; var m = J().mh; if (m) { m.elemVu = m.elemVu || {}; m.elemVu[e.id] = 1; } nombre(T('Point faible : {0} !', nomEl(el)), 58, 30, 'fort'); }
+    return 1.3;
+  }
+  if (NATURE_B[e.id] === el) { if (!e.vuR) { e.vuR = 1; nombre(T('Il résiste : {0}', nomEl(el)), 58, 30, 'mal'); } return .75; }
+  return 1;
+}
+var traitMultAvantLB = traitMult;
+traitMult = function (e) { return traitMultAvantLB(e) * multElem(e); };
+
+/* ── 2. la fiche d'un matériau ── */
+chip = function (k, n, manque) { return '<span class="chip' + (manque ? ' manque' : '') + '" data-mat="' + k + '">' + img(icoRes(k)) + n + '</span>'; };
+function pctTxt(p) { var q = p * 100; return q < 10 ? q.toFixed(1).replace('.', ',') : String(Math.round(q)); }
+function sourcesMat(k) {
+  var l = [];
+  REGIONS.forEach(function (R, ri) {
+    (R.grands || []).concat(R.petits || []).forEach(function (id) {
+      var b = BETES[id]; if (!b || !b.loot) return;
+      var t = 0, w = 0; b.loot.forEach(function (x) { t += x[1]; if (x[0] === k) w += x[1]; }); if (!w) return;
+      l.push({ ri: ri, b: b, p: w / t, part: (b.parts || []).filter(function (p) { return p.piece === k; })[0] });
+    });
+    if ((R.recoltes || []).indexOf(k) !== -1) l.push({ ri: ri, recolte: true });
+  });
+  return l;
+}
+function ficheMateriau(k) {
+  var rg = rangDe(etat.moi), lignes = [], src = PIECES[k] ? sourcesMat(k) : [];
+  src.forEach(function (s) {
+    var R = REGIONS[s.ri], lieu = T(R.nom) + (s.ri < rg ? '' : ' (' + T('pas encore ouverte') + ')');
+    if (s.recolte) lignes.push(T('À récolter dans {0} : quêtes de récolte et plantes repérées pendant les traques.', lieu));
+    else if (s.b.grand) lignes.push(T('{0}, {1} : {2} % à chaque pièce dépecée', T(s.b.nom), lieu, pctTxt(s.p)) + (s.part ? ' ; ' + T('casse-lui : {0}', T(s.part.nom)) : '') + '.');
+    else lignes.push(T('{0}, {1} : {2} % à chaque monstre abattu.', T(s.b.nom), lieu, pctTxt(s.p * .75)));
+  });
+  if (!src.length && RES_INFO[k]) {
+    var lieux = ['foret', 'mine', 'chasse', 'grotte', 'potager', 'donjon'].filter(function (x) { return ((RES_LIEU[x] || []).concat(RECOLTE_LIEU[x] || [])).indexOf(k) !== -1; }).map(function (x) { return T(DEST_NOM[x]); });
+    lignes.push(T('Ressource de base : expéditions autour du camp') + (lieux.length ? ' (' + lieux.join(', ') + ')' : '') + '.');
+  }
+  if (!lignes.length) lignes.push(T('Pas de source connue dans les contrées de chasse.'));
+  var us = OBJETS.filter(function (o) { return o.cout && o.cout[k] && TYPES_COMBAT[o.type]; }).map(function (o) { return T(o.nom); });
+  if (us.length) lignes.push(T('Sert à : {0}', us.slice(0, 5).join(', ') + (us.length > 5 ? '…' : '')) + '.');
+  souhaitsJ().forEach(function (id) { var o = OBJ[id]; if (o && o.cout[k]) lignes.push('★ ' + T('Ton souhait {0} en demande {1}.', T(o.nom), o.cout[k])); });
+  $('v-corps').innerHTML = '<div class="mat-t"><img class="px" src="' + icoRes(k) + '"><h2>' + ech(nomRes(k)) + '</h2></div><p class="mat-n">' + T('Tu en as {0}.', stock(k)) + '</p>' +
+    lignes.map(function (t) { return '<p class="mat-l">' + ech(t) + '</p>'; }).join('');
+  var z = $('v-btns'); z.innerHTML = '';
+  var e = document.createElement('button'); e.className = 'btn'; e.textContent = T('Fermer');
+  e.onclick = function (ev) { ev.stopPropagation(); son('clic'); $('voile').classList.add('cache'); };
+  z.appendChild(e); $('voile').classList.remove('cache');
+}
+document.addEventListener('click', function (ev) {
+  var c = ev.target && ev.target.closest ? ev.target.closest('[data-mat]') : null; if (!c) return;
+  ev.stopPropagation(); ev.preventDefault(); son('clic'); ficheMateriau(c.dataset.mat);
+}, true);
+
+(function () {
+  var st = document.createElement('style');
+  st.textContent =
+    '.vit-up{margin-top:9px;padding-top:8px;border-top:1px dashed #4a5290}.vu-l{display:flex;align-items:center;gap:6px}' +
+    '.vu-el{font-size:12px;padding:3px 8px;background:#0d1024;box-shadow:0 0 0 1px var(--c);color:var(--c)}' +
+    '.vu-sh{margin-left:auto;border:0;background:none;font-family:var(--px);font-size:13px;color:var(--doux);padding:4px 7px;box-shadow:inset 0 0 0 1px #3a4277}.vu-sh.on{color:var(--or);box-shadow:inset 0 0 0 1px var(--or)}' +
+    '.vu-r{font-size:12px;color:var(--doux);margin:7px 0 0;line-height:1.35}.vit-up .vit-pied{margin-top:6px}' +
+    '.vu-lig{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:7px;font-size:11px;color:var(--doux)}.vu-lig span.on{color:var(--or)}.vu-lig span.a{color:#8af59a}.vu-lig i{font-style:normal;opacity:.6}' +
+    '.qb.souhait::before{content:"★";position:absolute;right:2px;top:0;font-size:12px;color:var(--or);text-shadow:1px 1px 0 #000;z-index:2}' +
+    '.qb-sh{color:var(--or);font-size:12px;margin:4px 0}.qb-el{font-size:12px;margin:4px 0;color:#bfe8ff}.qb-el b.ok{color:#8af59a}.qb-el b.ko{color:#ff9a8a}' +
+    '.chip[data-mat]{cursor:pointer}.mat-t{display:flex;align-items:center;justify-content:center;gap:10px}.mat-t img{height:38px;image-rendering:pixelated}.mat-t h2{margin:0}' +
+    '.mat-n{opacity:.8;font-size:13px}.mat-l{font-size:13px;line-height:1.4;text-align:left;margin:6px 0}';
+  document.head.appendChild(st);
+})();
+Object.assign(NL, {
+  'Valeurs au niveau I.': 'Waarden op niveau I.', 'Élément : {0}': 'Element: {0}', 'Sans élément': 'Zonder element', 'Souhaité': 'Gewenst', 'Ajouter aux souhaits': 'Op mijn wensenlijst',
+  'Ton exemplaire : niveau {0}. Le niveau {1} multiplie ses valeurs par {2}.': 'Jouw exemplaar: niveau {0}. Niveau {1} vermenigvuldigt de waarden met {2}.',
+  'Il gagne aussi un emplacement d\'enchantement.': 'Het krijgt ook een extra betoveringsplaats.', 'Améliorer en {0}': 'Verbeteren naar {0}',
+  'Ton exemplaire est au niveau III.': 'Jouw exemplaar is op niveau III.', 'Il peut évoluer en {0} : il garde ses enchantements.': 'Het kan evolueren naar {0}: het houdt zijn betoveringen.',
+  'Évoluer': 'Evolueren', 'Fabriqué au niveau I. Les niveaux II et III se font ensuite avec les pièces du monstre.': 'Gemaakt op niveau I. Niveau II en III maak je daarna met de onderdelen van het monster.',
+  '{0} passe au niveau {1} !': '{0} gaat naar niveau {1}!', '{0} devient {1} !': '{0} wordt {1}!',
+  'Souhait {0} : il manque {1}.': 'Wens {0}: er ontbreekt nog {1}.', 'Souhait {0} : tu peux le fabriquer !': 'Wens {0}: je kunt het maken!', 'Souhait prêt : {0} !': 'Wens klaar: {0}!',
+  'Faiblesse inconnue : abats-le une fois pour la connaître.': 'Zwakte onbekend: versla hem één keer om ze te kennen.', 'Faible : {0}': 'Zwak tegen: {0}', 'résiste : {0}': 'bestand tegen: {0}',
+  'ton arme est efficace': 'je wapen is doeltreffend', 'ton arme est peu efficace': 'je wapen is weinig doeltreffend', 'Utile pour ton souhait : {0}': 'Nuttig voor je wens: {0}',
+  'Point faible : {0} !': 'Zwakke plek: {0}!', 'Il résiste : {0}': 'Hij is bestand: {0}', 'pas encore ouverte': 'nog niet open',
+  'À récolter dans {0} : quêtes de récolte et plantes repérées pendant les traques.': 'Te verzamelen in {0}: verzamelopdrachten en planten die je tijdens speurtochten vindt.',
+  '{0}, {1} : {2} % à chaque pièce dépecée': '{0}, {1}: {2} % per gevild onderdeel', 'casse-lui : {0}': 'breek: {0}',
+  '{0}, {1} : {2} % à chaque monstre abattu.': '{0}, {1}: {2} % per verslagen monster.', 'Ressource de base : expéditions autour du camp': 'Basisgrondstof: tochten rond het kamp',
+  'Pas de source connue dans les contrées de chasse.': 'Geen bekende bron in de jachtgebieden.', 'Sert à : {0}': 'Nodig voor: {0}', 'Ton souhait {0} en demande {1}.': 'Je wens {0} vraagt er {1}.',
+  'Tu en as {0}.': 'Je hebt er {0}.', 'Fermer': 'Sluiten', 'après la quête urgente': 'na de dringende opdracht'
+});
+
+
+/* ═════════ 18/11 : lot C — chaque arme a sa mécanique, qui se déclenche toute seule ═════════
+   Rien à toucher : tout dépend de la façon dont on répond.
+   Épée : quand la bête annonce une attaque, la bonne réponse l'esquive et riposte d'un coup gratuit.
+   Marteau : chaque bonne réponse d'affilée monte la charge ; pleine (3 crans), le coup part en écrasement
+     (×2,5, compte double pour assommer). Une erreur fait perdre un cran.
+   Dague : après 5 bonnes réponses d'affilée, chaque bonne réponse frappe deux fois, jusqu'à l'erreur.
+   Lance : chaque coup ouvre une brèche dans la garde de la bête (+6 % par cran, 8 crans), qui reste ouverte.
+   Arc : les bonnes réponses d'affilée resserrent la visée (3 niveaux) ; au maximum, critique assuré et
+     parties cassées plus vite ; une erreur fait redescendre d'un niveau.
+   Les constellations : les étoiles à bonus plats (attaque, PV, critique…) deviennent des étoiles qui
+   modifient la mécanique de leur arme. Les compétences à bouton et leurs améliorations ne changent pas. */
+var MK_TXT = {
+  rip: 'riposte : +{0} % de dégâts', ripRech: 'riposte : compétences rechargées de {0} %', ripSoin: 'riposte : rend {0} PV', ripSaigne: 'la riposte fait saigner la bête',
+  ripCrit: 'riposte : {0} % de chances de critique', ripBrise: 'la riposte casse les parties plus vite', ripCoups: 'riposte : +{0} coup', ripSerie: 'chaque {0}e bonne réponse d\'affilée est aussi une riposte',
+  chMult: 'écrasement : ×{0} au lieu de ×2,5', chChoc: 'écrasement : +{0} pour assommer', chBrise: 'l\'écrasement casse les parties plus vite', chSoin: 'écrasement : rend {0} PV',
+  chGarde: 'sur une erreur, {0} % de chances de garder la charge', chCarte: 'une carte réussie charge de deux crans', chSeuil: 'l\'écrasement part dès {0} crans',
+  chPhrase: 'une phrase réussie charge de {0} cran(s) de plus',
+  frMult: 'frénésie : +{0} % de dégâts', frSaigne: 'frénésie : chaque réponse fait saigner', frRech: 'frénésie : compétences rechargées de {0} % par réponse', frEsq: 'frénésie : +{0} % d\'esquive',
+  frGarde: 'frénésie : {0} erreur(s) pardonnée(s) par combat', frCrit: 'frénésie : +{0} % de critiques', frCoups: 'frénésie : +{0} coup par réponse', frSeuil: 'la frénésie démarre après {0} bonnes réponses',
+  frSoin: 'frénésie : rend {0} PV par réponse',
+  brPas: 'brèche : +{0} % de plus par cran', brMax: 'brèche : +{0} cran(s) au maximum', brDef: 'brèche : +{0} défense par cran', brDepart: 'chaque combat démarre avec {0} cran(s) de brèche',
+  brPhrase: 'phrases et cartes ouvrent deux crans', brCrit: 'brèche : +{0} % de critiques par cran', brBrise: 'dès 4 crans, les parties cassent plus vite', brGrand: 'brèche doublée contre les grands monstres',
+  brSoin: 'brèche au maximum : rend {0} PV par coup', brRech: 'brèche : compétences rechargées de {0} % par coup',
+  viCrit: 'visée maximale : critiques ×{0} au lieu de ×2', viMi: 'visée 2 ou plus : +{0} % de dégâts', viGarde: 'visée : {0} erreur(s) pardonnée(s) par combat',
+  viRech: 'visée maximale : compétences rechargées de {0} % par tir', viDepart: 'chaque combat démarre à la visée {0}', viEsq: 'visée maximale : +{0} % d\'esquive',
+  viSaigne: 'visée maximale : chaque tir fait saigner', viSeuil: 'la visée maximale s\'atteint en {0} niveaux', viBas: 'visée 1 ou plus : +{0} % de dégâts', viSoin: 'visée maximale : rend {0} PV par tir'
+};
+/* les étoiles réécrites : [nom, nom néerlandais, effet par rang] ; les rangs ne changent pas */
+var MK_ETOILES = {
+  ep0: ['Contre-temps', 'Tegentijd', { rip: 20 }], ep1: ['Lame vive', 'Vlugge kling', { ripRech: 15 }], ep4: ['Mur d\'acier', 'Stalen muur', { ripSoin: 10 }],
+  ep8: ['Lame rouge', 'Rode kling', { ripSaigne: 1 }], ep9: ['Œil du duelliste', 'Oog van de duellist', { ripCrit: 15 }], ep10: ['Point faible', 'Zwakke plek', { ripBrise: 1 }],
+  ep12: ['Double riposte', 'Dubbele riposte', { ripCoups: 1 }], ep13: ['Lame légendaire', 'Legendarische kling', { ripSerie: 4 }], ep14: ['Pas du bretteur', 'Schermerspas', { ripSoin: 5 }],
+  ep15: ['Volonté', 'Wilskracht', { ripRech: 10 }],
+  ma0: ['Poids du fer', 'Gewicht van ijzer', { chMult: .2 }], ma1: ['Bras de forge', 'Smidsarmen', { chChoc: 1 }], ma4: ['Fracasseur', 'Verbrijzelaar', { chBrise: 1 }],
+  ma9: ['Carrure', 'Postuur', { chSoin: 5 }], ma10: ['Prise ferme', 'Vaste greep', { chGarde: 50 }], ma12: ['Roc', 'Rots', { chCarte: 1 }], ma13: ['Titan', 'Titaan', { chSeuil: 1 }],
+  ma14: ['Élan lourd', 'Zware zwaai', { chPhrase: 1 }], ma15: ['Rage', 'Woede', { chMult: .15 }],
+  dg0: ['Maniement de la dague', 'Dolkvaardigheid', { frMult: 8 }], dg3: ['Toxines', 'Gifstoffen', { frSaigne: 1 }], dg5: ['Mains agiles', 'Vlugge handen', { frRech: 10 }],
+  dg8: ['Insaisissable', 'Ongrijpbaar', { frEsq: 20 }], dg9: ['Pas feutrés', 'Zachte stappen', { frGarde: 1 }], dg12: ['Lame dans le dos', 'Mes in de rug', { frCrit: 15 }],
+  dg13: ['Maître des ombres', 'Meester der schaduwen', { frCoups: 1 }], dg14: ['Doigts fins', 'Fijne vingers', { frSeuil: 1 }], dg15: ['Souffle court', 'Korte adem', { frSoin: 3 }],
+  la0: ['Maniement de la lance', 'Speervaardigheid', { brPas: 1 }], la1: ['Pied ferme', 'Vaste voet', { brMax: 1 }], la4: ['Inébranlable', 'Onwrikbaar', { brDef: 1 }],
+  la5: ['Allonge', 'Reikwijdte', { brDepart: 1 }], la8: ['Premier contact', 'Eerste contact', { brPhrase: 1 }], la9: ['Viser les jointures', 'Op de gewrichten mikken', { brCrit: 1 }],
+  la12: ['Brise-écailles', 'Schubbenbreker', { brBrise: 1 }], la13: ['Légion', 'Legioen', { brGrand: 1 }], la14: ['Garde basse', 'Lage wering', { brSoin: 2 }], la15: ['Élan', 'Vaart', { brRech: 5 }],
+  ar0: ['Tir', 'Schieten', { viCrit: .2 }], ar1: ['Œil de faucon', 'Valkenoog', { viMi: 10 }], ar4: ['Tête chercheuse', 'Zoekende punt', { viGarde: 1 }],
+  ar5: ['Carquois rapide', 'Snelle pijlkoker', { viRech: 10 }], ar8: ['Archer né', 'Geboren boogschutter', { viDepart: 1 }], ar9: ['Pas léger', 'Lichte tred', { viEsq: 10 }],
+  ar12: ['Traqueur', 'Spoorzoeker', { viSaigne: 1 }], ar13: ['Œil du ciel', 'Oog van de hemel', { viSeuil: 1 }], ar14: ['Main sûre', 'Vaste hand', { viBas: 5 }], ar15: ['Vent arrière', 'Rugwind', { viSoin: 3 }]
+};
+Object.keys(MK_ETOILES).forEach(function (id) { var n = NOEUD_CST[id], d = MK_ETOILES[id]; if (!n) return; n.nom = TR(d[0], d[1]); n.mk = d[2]; n.fx = null; });
+var effetTexteAvantMK = effetTexte;
+function texteMK(k, v) {
+  var val = k === 'chSeuil' ? Math.max(2, 3 - v) : k === 'frSeuil' ? Math.max(3, 5 - v) : k === 'viSeuil' ? Math.max(2, 3 - v) : k === 'chMult' ? 2.5 + v : k === 'viCrit' ? 2 + v : v;
+  return T(MK_TXT[k] || k, String(Math.round(val * 100) / 100).replace('.', ','));
+}
+effetTexte = function (t, r) { if (!t.mk) return effetTexteAvantMK(t, r); return Object.keys(t.mk).map(function (k) { return texteMK(k, t.mk[k] * r); }).join(' · '); };
+
+/* ── la somme des étoiles apprises de l'arme en main, pour une clé ── */
+function mk(k) {
+  var A = CST[typeArme()], c = cstJ(), t = 0; if (!A) return 0;
+  A.l.forEach(function (n) { var r = Math.min(c[n.id] || 0, n.rangs); if (r && n.mk && n.mk[k]) t += n.mk[k] * r; });
+  return t;
+}
+function mkEtat() { if (!EXPE) return { charge: 0, serie: 0, visee: 0 }; return EXPE.mk || (EXPE.mk = { charge: 0, serie: 0, visee: 0 }); }
+function seuilCharge() { return Math.max(2, 3 - mk('chSeuil')); }
+function seuilFrenesie() { return Math.max(3, 5 - mk('frSeuil')); }
+function maxVisee() { return Math.max(2, 3 - mk('viSeuil')); }
+function maxBreche() { return 8 + mk('brMax'); }
+function rechargerComp(p) { if (!p) return; var c = CB().rech; listeComp().forEach(function (s) { var r = rechDe(s); c[s.id] = Math.min(r, chargeDe(s) + r * p / 100); }); majComp(); }
+function degatsMK(mode) {
+  var d = degats(mode), S = CB();
+  if (S.mkCrit && !d.crit) { d.n *= 2; d.crit = true; }
+  if (d.crit && S.mkCritX) d.n = Math.round(d.n * (1 + S.mkCritX / 2));
+  return d;
+}
+/* ce que la réponse déclenche, avant que le tour de combat ne frappe */
+function preparerMK(juste, e, S) {
+  var ty = typeArme(), m = mkEtat(), mode = cur && cur.mode;
+  if (ty === 'epee') {
+    if (!juste) { m.serie = 0; return; }
+    m.serie = (m.serie || 0) + 1;
+    var rs = mk('ripSerie');
+    if (e.prepare || (rs && m.serie % rs === 0)) {
+      S.mkC += 1 + mk('ripCoups'); S.mkM *= 1 + mk('rip') / 100;
+      if (Math.random() * 100 < mk('ripCrit')) S.mkCrit = 1;
+      if (mk('ripBrise')) S.mkBrise = 1;
+      if (mk('ripSaigne')) saignerMonstre(e, 3);
+      if (mk('ripSoin')) soigner(mk('ripSoin'));
+      rechargerComp(mk('ripRech'));
+      nombre(T('Riposte !'), SC.heros.x + 8, 16, 'fort');
+    }
+  } else if (ty === 'marteau') {
+    if (!juste) { if (Math.random() * 100 >= mk('chGarde')) m.charge = Math.max(0, (m.charge || 0) - 1); return; }
+    m.charge = (m.charge || 0) + 1 + (mode === 'phrase' ? mk('chPhrase') : 0) + (mode === 'rappel' && mk('chCarte') ? 1 : 0);
+    if (m.charge >= seuilCharge()) {
+      S.mkM *= 2.5 + mk('chMult'); S.mkChoc = 1 + mk('chChoc');
+      if (mk('chBrise')) S.mkBrise = 1;
+      if (mk('chSoin')) soigner(mk('chSoin'));
+      m.charge = 0; nombre(T('Écrasement !'), 58, 16, 'fort'); secouer(5, 300);
+    }
+  } else if (ty === 'dague') {
+    var s0 = seuilFrenesie();
+    if (!juste) {
+      if (m.serie >= s0 && (S.frPardon || 0) < mk('frGarde')) { S.frPardon = (S.frPardon || 0) + 1; nombre(T('Frénésie gardée'), 58, 16, 'info'); }
+      else { if (m.serie >= s0) nombre(T('Frénésie finie'), 58, 16, 'mal'); m.serie = 0; }
+      return;
+    }
+    m.serie = (m.serie || 0) + 1;
+    if (m.serie >= s0) {
+      if (m.serie === s0) nombre(T('Frénésie !'), 58, 16, 'fort');
+      S.mkC += 1 + mk('frCoups'); S.mkM *= 1 + mk('frMult') / 100;
+      if (mk('frSaigne')) saignerMonstre(e, 2);
+      if (mk('frSoin')) soigner(mk('frSoin'));
+      rechargerComp(mk('frRech'));
+    }
+  } else if (ty === 'lance') {
+    if (!juste) return;
+    var cap = maxBreche();
+    e.mkBr = Math.min(cap, (e.mkBr || 0) + 1 + ((mode === 'phrase' || mode === 'rappel') && mk('brPhrase') ? 1 : 0));
+    S.mkM *= 1 + (6 + mk('brPas')) * (e.grand && mk('brGrand') ? 2 : 1) * e.mkBr / 100;
+    if (e.mkBr >= 4 && mk('brBrise')) S.mkBrise = 1;
+    if (e.mkBr >= cap && mk('brSoin')) soigner(mk('brSoin'));
+    rechargerComp(mk('brRech'));
+  } else if (ty === 'arc') {
+    var mx = maxVisee();
+    if (!juste) { if ((S.viPardon || 0) < mk('viGarde')) S.viPardon = (S.viPardon || 0) + 1; else m.visee = Math.max(0, (m.visee || 0) - 1); return; }
+    m.visee = Math.min(mx, (m.visee || 0) + 1);
+    if (m.visee >= 1 && mk('viBas')) S.mkM *= 1 + mk('viBas') / 100;
+    if (m.visee >= 2 && mk('viMi')) S.mkM *= 1 + mk('viMi') / 100;
+    if (m.visee >= mx) {
+      S.mkCrit = 1; S.mkCritX = mk('viCrit'); S.mkBrise = 1;
+      if (mk('viSaigne')) saignerMonstre(e, 2);
+      if (mk('viSoin')) soigner(mk('viSoin'));
+      rechargerComp(mk('viRech'));
+    }
+  }
+}
+function razMK(S) { S.mkM = 1; S.mkC = 0; S.mkCrit = 0; S.mkCritX = 0; S.mkBrise = 0; S.mkChoc = 0; }
+var combatUniqueAvantMK = combatUnique;
+combatUnique = async function (juste, info) {
+  var S = CB(), e = SC.ennemi; razMK(S);
+  try { if (e && C && EXPE && !(S.etats && S.etats.etourdi && juste)) preparerMK(juste, e, S); } catch (err) { console.error(err); }
+  var r;
+  try { r = await combatUniqueAvantMK(juste, info); } finally { razMK(S); majIndMK(); }
+  return r;
+};
+/* la frénésie, la visée et la brèche se voient aussi dans les stats du moment */
+var sourcesAvantMK = sources;
+sources = function () {
+  var l = sourcesAvantMK();
+  try {
+    if (!EXPE || !C || !EXPE.mk || !J()) return l;
+    var ty = typeArme(), m = EXPE.mk, e = SC.ennemi;
+    if (ty === 'dague' && m.serie >= seuilFrenesie()) l.push({ esquive: mk('frEsq'), crit: mk('frCrit') });
+    else if (ty === 'arc' && m.visee >= maxVisee()) l.push({ esquive: mk('viEsq') });
+    else if (ty === 'lance' && e && e.mkBr) l.push({ def: mk('brDef') * e.mkBr, crit: mk('brCrit') * e.mkBr });
+  } catch (err) {}
+  return l;
+};
+/* au début de chaque combat : les pardons repartent, la lance et l'arc prennent leur avance */
+function departMK() {
+  var S = CB(); S.frPardon = 0; S.viPardon = 0;
+  try {
+    var e = SC.ennemi, ty = typeArme(), m = mkEtat();
+    if (e && ty === 'lance' && mk('brDepart') && !e.mkBr) e.mkBr = Math.min(maxBreche(), mk('brDepart'));
+    if (ty === 'arc' && mk('viDepart')) m.visee = Math.max(m.visee || 0, Math.min(maxVisee(), mk('viDepart')));
+  } catch (err) {}
+  majIndMK();
+}
+var entrerCombatAvantMK = entrerCombat;
+entrerCombat = async function (id, grand, ref) { var r = await entrerCombatAvantMK(id, grand, ref); departMK(); return r; };
+var sceneAvantMK = scene;
+scene = function (f, opts) { var r = sceneAvantMK(f, opts); setTimeout(departMK, 60); return r; };
+
+/* ── l'indicateur, au bas de la scène ── */
+function cransMK(n, s) { var r = ''; for (var i = 0; i < s; i++) r += '<i class="' + (i < n ? 'on' : '') + '"></i>'; return r; }
+function majIndMK() {
+  var d = $('mk-ind'); if (!d) return;
+  var ok = false; try { ok = !!(EXPE && C && SC.ennemi && enCombatU()); } catch (err) {}
+  if (!ok) { if (!d.classList.contains('cache')) d.className = 'mk-ind cache'; return; }
+  var ty = typeArme(), m = mkEtat(), e = SC.ennemi, h = '';
+  if (ty === 'marteau') h = '<span>' + T('Charge') + '</span>' + cransMK(m.charge || 0, seuilCharge());
+  else if (ty === 'dague') { var f = seuilFrenesie(); h = m.serie >= f ? '<b>' + T('Frénésie') + '</b>' : '<span>' + T('Frénésie') + '</span>' + cransMK(m.serie || 0, f); }
+  else if (ty === 'lance') h = '<span>' + T('Brèche') + '</span><b>+' + Math.round((6 + mk('brPas')) * (e.grand && mk('brGrand') ? 2 : 1) * (e.mkBr || 0)) + ' %</b>';
+  else if (ty === 'arc') { var mx = maxVisee(); h = (m.visee >= mx ? '<b>' + T('Visée') + '</b>' : '<span>' + T('Visée') + '</span>') + cransMK(m.visee || 0, mx); }
+  else if (ty === 'epee') h = mkEtat().ripPret ? '<b>' + T('Riposte prête') + '</b>' : '<span>' + T('Riposte') + '</span>';
+  var cl = 'mk-ind t-' + ty + (h ? '' : ' cache');
+  if (d.className !== cl) d.className = cl;
+  if (d.innerHTML !== h) d.innerHTML = h;
+  if (h && typeof tuto === 'function' && TUTOS['mk-' + ty]) tuto('mk-' + ty);
+}
+setInterval(function () { if (typeof vueActive !== 'undefined' && vueActive === 'combat') majIndMK(); }, 300);
+Object.assign(TUTOS, {
+  'mk-epee': [TR('L\'épée : la riposte', 'Het zwaard: de riposte'), TR('Quand la bête annonce une attaque, ta bonne réponse l\'esquive et contre-attaque d\'un coup gratuit. Rien à toucher : ça se fait tout seul.', 'Als het beest een aanval aankondigt, ontwijk je die met een goed antwoord en sla je gratis terug. Niets aan te raken: het gebeurt vanzelf.')],
+  'mk-marteau': [TR('Le marteau : la charge', 'De hamer: de lading'), TR('Chaque bonne réponse d\'affilée monte la charge. Pleine, ton coup part tout seul en écrasement. Une erreur fait perdre un cran.', 'Elk goed antwoord op rij laadt de hamer op. Vol, en je slag wordt vanzelf een verplettering. Een fout kost één streepje.')],
+  'mk-dague': [TR('La dague : la frénésie', 'De dolk: de razernij'), TR('Après cinq bonnes réponses d\'affilée, chaque bonne réponse frappe deux fois, jusqu\'à ta première erreur.', 'Na vijf goede antwoorden op rij slaat elk goed antwoord twee keer, tot je eerste fout.')],
+  'mk-lance': [TR('La lance : la brèche', 'De speer: de bres'), TR('Chaque coup ouvre un peu plus la garde de la bête : +6 % de dégâts par cran. La brèche reste ouverte jusqu\'à la fin du combat, même après une erreur.', 'Elke slag opent de verdediging van het beest wat verder: +6 % schade per streepje. De bres blijft open tot het einde van het gevecht, ook na een fout.')],
+  'mk-arc': [TR('L\'arc : la visée', 'De boog: het richten'), TR('Les bonnes réponses d\'affilée resserrent la visée. Au maximum, chaque flèche touche un point faible : critique assuré. Une erreur fait redescendre d\'un niveau.', 'Goede antwoorden op rij verscherpen je vizier. Op het maximum raakt elke pijl een zwakke plek: altijd kritiek. Een fout zet je één niveau terug.')]
+});
+(function () {
+  var sc = $('scene-combat'); if (sc) sc.insertAdjacentHTML('beforeend', '<div class="mk-ind cache" id="mk-ind"></div>');
+  var st = document.createElement('style');
+  st.textContent = '.mk-ind{position:absolute;left:6px;bottom:6px;z-index:4;display:flex;align-items:center;gap:4px;padding:3px 8px;background:rgba(14,17,40,.88);box-shadow:0 0 0 2px #000;font-family:var(--px);font-size:13px;color:var(--texte);pointer-events:none;--k:#ffd24d}' +
+    '.mk-ind span{margin-right:2px}.mk-ind b{color:var(--k);font-weight:400}.mk-ind i{display:block;width:9px;height:9px;background:#2a2f5a;box-shadow:0 0 0 1px #000}.mk-ind i.on{background:var(--k)}' +
+    '.mk-ind.t-marteau{--k:#ff7a4a}.mk-ind.t-dague{--k:#8af59a}.mk-ind.t-lance{--k:#ffd24d}.mk-ind.t-arc{--k:#c08af2}.mk-ind.t-epee{--k:#7fd0ff}' +
+    '.mk-ind.t-dague b,.mk-ind.t-arc b,.mk-ind.t-epee b{animation:mkPulse .6s steps(2) infinite}@keyframes mkPulse{50%{opacity:.55}}';
+  document.head.appendChild(st);
+})();
+Object.assign(NL, {
+  'riposte : +{0} % de dégâts': 'riposte: +{0} % schade', 'riposte : compétences rechargées de {0} %': 'riposte: vaardigheden {0} % opgeladen', 'riposte : rend {0} PV': 'riposte: geeft {0} LP terug',
+  'la riposte fait saigner la bête': 'de riposte laat het beest bloeden', 'riposte : {0} % de chances de critique': 'riposte: {0} % kans op kritiek', 'la riposte casse les parties plus vite': 'de riposte breekt lichaamsdelen sneller',
+  'riposte : +{0} coup': 'riposte: +{0} slag', 'chaque {0}e bonne réponse d\'affilée est aussi une riposte': 'elk {0}e goede antwoord op rij is ook een riposte',
+  'écrasement : ×{0} au lieu de ×2,5': 'verplettering: ×{0} in plaats van ×2,5', 'écrasement : +{0} pour assommer': 'verplettering: +{0} om te verdoven', 'l\'écrasement casse les parties plus vite': 'de verplettering breekt lichaamsdelen sneller',
+  'écrasement : rend {0} PV': 'verplettering: geeft {0} LP terug', 'sur une erreur, {0} % de chances de garder la charge': 'bij een fout {0} % kans om de lading te houden', 'une carte réussie charge de deux crans': 'een goede kaart laadt twee streepjes',
+  'l\'écrasement part dès {0} crans': 'de verplettering komt al na {0} streepjes', 'une phrase réussie charge de {0} cran(s) de plus': 'een goede zin laadt {0} streepje(s) extra',
+  'frénésie : +{0} % de dégâts': 'razernij: +{0} % schade', 'frénésie : chaque réponse fait saigner': 'razernij: elk antwoord laat bloeden', 'frénésie : compétences rechargées de {0} % par réponse': 'razernij: vaardigheden {0} % opgeladen per antwoord',
+  'frénésie : +{0} % d\'esquive': 'razernij: +{0} % ontwijken', 'frénésie : {0} erreur(s) pardonnée(s) par combat': 'razernij: {0} fout(en) vergeven per gevecht', 'frénésie : +{0} % de critiques': 'razernij: +{0} % kritieke slagen',
+  'frénésie : +{0} coup par réponse': 'razernij: +{0} slag per antwoord', 'la frénésie démarre après {0} bonnes réponses': 'de razernij begint na {0} goede antwoorden', 'frénésie : rend {0} PV par réponse': 'razernij: geeft {0} LP terug per antwoord',
+  'brèche : +{0} % de plus par cran': 'bres: +{0} % extra per streepje', 'brèche : +{0} cran(s) au maximum': 'bres: +{0} streepje(s) maximum', 'brèche : +{0} défense par cran': 'bres: +{0} verdediging per streepje',
+  'chaque combat démarre avec {0} cran(s) de brèche': 'elk gevecht begint met {0} streepje(s) bres', 'phrases et cartes ouvrent deux crans': 'zinnen en kaarten openen twee streepjes',
+  'brèche : +{0} % de critiques par cran': 'bres: +{0} % kritieke slagen per streepje', 'dès 4 crans, les parties cassent plus vite': 'vanaf 4 streepjes breken lichaamsdelen sneller',
+  'brèche doublée contre les grands monstres': 'dubbele bres tegen grote monsters', 'brèche au maximum : rend {0} PV par coup': 'bres op maximum: geeft {0} LP terug per slag', 'brèche : compétences rechargées de {0} % par coup': 'bres: vaardigheden {0} % opgeladen per slag',
+  'visée maximale : critiques ×{0} au lieu de ×2': 'maximaal vizier: kritiek ×{0} in plaats van ×2', 'visée 2 ou plus : +{0} % de dégâts': 'vizier 2 of meer: +{0} % schade', 'visée : {0} erreur(s) pardonnée(s) par combat': 'vizier: {0} fout(en) vergeven per gevecht',
+  'visée maximale : compétences rechargées de {0} % par tir': 'maximaal vizier: vaardigheden {0} % opgeladen per schot', 'chaque combat démarre à la visée {0}': 'elk gevecht begint op vizier {0}',
+  'visée maximale : +{0} % d\'esquive': 'maximaal vizier: +{0} % ontwijken', 'visée maximale : chaque tir fait saigner': 'maximaal vizier: elk schot laat bloeden', 'la visée maximale s\'atteint en {0} niveaux': 'het maximale vizier bereik je in {0} niveaus',
+  'visée 1 ou plus : +{0} % de dégâts': 'vizier 1 of meer: +{0} % schade', 'visée maximale : rend {0} PV par tir': 'maximaal vizier: geeft {0} LP terug per schot',
+  'Riposte !': 'Riposte!', 'Écrasement !': 'Verplettering!', 'Frénésie !': 'Razernij!', 'Frénésie gardée': 'Razernij behouden', 'Frénésie finie': 'Razernij voorbij',
+  'Charge': 'Lading', 'Frénésie': 'Razernij', 'Brèche': 'Bres', 'Visée': 'Vizier', 'Riposte prête': 'Riposte klaar', 'Riposte': 'Riposte', 'Mécanique de l\'arme': 'Wapenmechaniek'
+});
+
+
+/* ═════════ 19/11 : le combat au tour par tour ═════════
+   Un tour : chaque bête affiche ce qu'elle va faire (nom et chiffre, sans conseil). Tu réponds à 3 questions
+   sans chrono : un choix réussi donne 1 énergie, une phrase ou une carte réussie 2, et 3 bonnes réponses
+   sur 3 donnent 1 de plus ; 1 énergie est offerte à chaque tour, et l'énergie non dépensée se garde (2 au
+   maximum). Puis tu dépenses ton énergie : frappe, les deux compétences de ton arme, tes quatre cases,
+   une potion si tu en as. Ensuite, chaque bête agit.
+   Les coups gardent leurs animations (élan de l'arme, impact, parties cassées, assommé) ; la vitesse de
+   réponse ne compte plus ; les jauges en temps réel sont arrêtées ; le grand monstre ne fuit plus. */
+var TB_Q = 3;
+function tbActif() { try { return !!(C && EXPE && !C.fini && !C.vaincu && enCombatU() && SC.ennemi && SC.ennemi.pv > 0 && !SC.ennemi.mort); } catch (e) { return false; } }
+function tbEtat() {
+  var S = CB();
+  if (!S.tb) S.tb = { n: 0, gain: 0, justes: 0, pa: 0, reserve: 0, garde: 0, esquive: 0, esquiveFort: 0, contre: 0, capRes: capReserve(), bonusSuiv: 0, ouverture: 0, concentre: 0, soigne: 0, phase: 'q' };
+  return S.tb;
+}
+/* ── les intentions des bêtes ── */
+function dmgEstime(e, att) {
+  var base = e.atk * (e.rage ? 1.25 : 1) * (e.fatigue ? .6 : 1) * (aTraitV(e, 'enrage') && e.pv < e.pvMax * .5 ? 1.5 : 1);
+  return Math.max(1, Math.round(base * (att ? (att.type === 'charge' ? 2 : att.type === 'coup' ? 1.7 : 1.3) : 1) - defense()));
+}
+function majuscule(s) { s = String(s || ''); return s.charAt(0).toUpperCase() + s.slice(1); }
+function choisirIntention(e) {
+  var x, r = Math.random(), atk = attaquesGen(e) || [];
+  if (e.tbSuite) { x = e.tbSuite; e.tbSuite = null; }
+  else if (!estGros(e)) x = r < .7 ? { t: 'coup' } : r < .85 ? { t: 'lourd', att: atk[0] || { type: 'coup' } } : { t: 'garde' };
+  else {
+    if (r < .4) x = { t: 'coup' }; else if (r < .65) x = { t: 'special', att: mel(atk)[0] }; else if (r < .85) x = { t: 'prep' }; else x = { t: 'garde' };
+    if (e.rage && x.t === 'coup' && Math.random() < .5) x = { t: 'special', att: mel(atk)[0] };
+    if (x.t === 'prep') e.tbSuite = { t: 'lourd', att: atk.filter(function (a) { return a.type === 'charge'; })[0] || { type: 'charge', nom: TR('charge', 'charge') } };
+  }
+  if (x.t === 'special' && !x.att) x = { t: 'coup' };
+  var ty = x.att && x.att.type;
+  var n = x.t === 'coup' ? T('Attaque') : x.t === 'garde' ? T('Se protège') : x.t === 'prep' ? T('Se prépare') :
+    ty === 'rugissement' ? T('Rugissement') : ty === 'charge' ? T('Ruée') : ty === 'souffle' && x.att.el && SOUFFLES[x.att.el] ? majuscule(T(SOUFFLES[x.att.el][0])) : T('Coup puissant');
+  x.nom = n;
+  x.val = x.t === 'coup' ? dmgEstime(e, null) : (x.t === 'lourd' || x.t === 'special') ? dmgEstime(e, x.att) : null;
+  return x;
+}
+function nouvellesIntentions() {
+  membres().forEach(function (e) { e.tb = choisirIntention(e); e.tbGarde = e.tb.t === 'garde' ? 1 : 0; e.prepare = (e.tb.t === 'lourd' || e.tb.t === 'special') ? e.tb.att : null; });
+}
+/* ── l'affichage : l'intention de la cible, l'énergie, la question du tour ── */
+function majTB() {
+  var v = $('v-combat'); if (!v) return;
+  var on = tbActif(); v.classList.toggle('tb', on);
+  var b = $('tb-int'); if (!b) return;
+  if (!on || !SC.ennemi) { b.className = 'tb-int cache'; return; }
+  var e = SC.ennemi; if (!e.tb) { e.tb = choisirIntention(e); e.tbGarde = e.tb.t === 'garde' ? 1 : 0; }
+  var it = e.tb, cl = it.t === 'garde' || it.t === 'rien' ? 'g' : it.t === 'prep' ? 'p' : it.t === 'coup' ? 'c' : 'l', S = tbEtat(), autres = membres().length - 1;
+  var h = '<span class="tb-n">' + ech(it.nom) + '</span>' + (it.val != null ? '<b>' + it.val + '</b>' : '') + (e.etourdi ? '<em>' + T('étourdi') + '</em>' : '') + (autres > 0 ? '<i>+' + autres + '</i>' : '');
+  var cl2 = 'tb-int ' + cl;
+  if (b.className !== cl2) b.className = cl2; if (b.innerHTML !== h) b.innerHTML = h;
+  var q = $('tb-q'); if (!q) return; var hq = S.phase === 'q' ? T('Préparation {0} / {1}', Math.min(S.n + 1, TB_Q), TB_Q) + ' · ' + T('énergie {0}', S.gain + 1 + S.reserve) : T('À toi');
+  if (q.textContent !== hq) q.textContent = hq;
+}
+/* ── l'énergie des réponses ; la mécanique de l'arme (lot C) se construit aux réponses ── */
+var consequenceAvantTB = consequence;
+consequence = async function (juste, info, opts) {
+  if (!tbActif() || (C && C.sonne)) return consequenceAvantTB(juste, info, opts);
+  var S = tbEtat(), X = EXPE, e = SC.ennemi;
+  var g = juste ? (cur && (cur.mode === 'phrase' || cur.mode === 'rappel') ? 2 : 1) : 0;
+  S.n++; S.gain += g; if (juste) S.justes++;
+  if (juste) nombre('+' + g + ' ' + T('énergie'), SC.heros.x + 6, 14, 'soin');
+  try { mkReponseTB(juste, e); } catch (err) { console.error(err); }
+  majIndMK(); majTB();
+  if (S.n < TB_Q) return finTour(info);
+  var r = await phaseTB(juste);
+  if (!C || EXPE !== X) return 'fin';
+  if (r === 'fin') return 'fin';
+  return finTour(info);
+};
+/* chaque réponse nourrit la mécanique : riposte prête, crans de charge, série de la dague, brèche, visée */
+function mkReponseTB(juste, e) {
+  var ty = typeArme(), m = mkEtat(), mode = cur && cur.mode, S = CB(); if (!e) return;
+  if (ty === 'epee') {
+    if (!juste) { m.serie = 0; return; }
+    m.serie = (m.serie || 0) + 1; var rs = mk('ripSerie');
+    if (!m.ripPret && (e.prepare || (rs && m.serie % rs === 0))) { m.ripPret = 1; nombre(T('Riposte prête'), SC.heros.x + 8, 22, 'info'); }
+  } else if (ty === 'marteau') {
+    if (!juste) { if (Math.random() * 100 >= mk('chGarde')) m.charge = Math.max(0, (m.charge || 0) - 1); return; }
+    m.charge = Math.min(seuilCharge(), (m.charge || 0) + 1 + (mode === 'phrase' ? mk('chPhrase') : 0) + (mode === 'rappel' && mk('chCarte') ? 1 : 0));
+  } else if (ty === 'dague') {
+    var s0 = seuilFrenesie();
+    if (!juste) {
+      if (m.serie >= s0 && (S.frPardon || 0) < mk('frGarde')) { S.frPardon = (S.frPardon || 0) + 1; nombre(T('Frénésie gardée'), 58, 16, 'info'); }
+      else { if (m.serie >= s0) nombre(T('Frénésie finie'), 58, 16, 'mal'); m.serie = 0; }
+      return;
+    }
+    m.serie = (m.serie || 0) + 1; if (m.serie === s0) nombre(T('Frénésie !'), 58, 16, 'fort');
+  } else if (ty === 'lance') {
+    if (!juste) return;
+    e.mkBr = Math.min(maxBreche(), (e.mkBr || 0) + 1 + ((mode === 'phrase' || mode === 'rappel') && mk('brPhrase') ? 1 : 0));
+  } else if (ty === 'arc') {
+    var mx = maxVisee();
+    if (!juste) { if ((S.viPardon || 0) < mk('viGarde')) S.viPardon = (S.viPardon || 0) + 1; else m.visee = Math.max(0, (m.visee || 0) - 1); return; }
+    m.visee = Math.min(mx, (m.visee || 0) + 1);
+  }
+}
+/* et chaque coup en récolte l'effet */
+function mkFrappeTB(e, S, o) {
+  var ty = typeArme(), m = mkEtat();
+  if (ty === 'epee') {
+    if (m.ripPret || o.rip) {
+      m.ripPret = 0; S.mkC += 1 + mk('ripCoups'); S.mkM *= 1 + mk('rip') / 100;
+      if (Math.random() * 100 < mk('ripCrit')) S.mkCrit = 1; if (mk('ripBrise')) S.mkBrise = 1;
+      if (mk('ripSaigne')) saignerMonstre(e, 3); if (mk('ripSoin')) soigner(mk('ripSoin'));
+      nombre(T('Riposte !'), SC.heros.x + 8, 16, 'fort');
+    }
+  } else if (ty === 'marteau') {
+    if ((m.charge || 0) >= seuilCharge()) {
+      S.mkM *= 2.5 + mk('chMult'); S.mkChoc = 1 + mk('chChoc'); if (mk('chBrise')) S.mkBrise = 1; if (mk('chSoin')) soigner(mk('chSoin'));
+      m.charge = 0; nombre(T('Écrasement !'), 58, 16, 'fort'); secouer(5, 300);
+    }
+  } else if (ty === 'dague') {
+    if ((m.serie || 0) >= seuilFrenesie()) { S.mkC += 1 + mk('frCoups'); S.mkM *= 1 + mk('frMult') / 100; if (mk('frSaigne')) saignerMonstre(e, 2); if (mk('frSoin')) soigner(mk('frSoin')); }
+  } else if (ty === 'lance') {
+    var br = e.mkBr || 0; if (br) S.mkM *= 1 + (6 + mk('brPas')) * (e.grand && mk('brGrand') ? 2 : 1) * br / 100;
+    if (br >= 4 && mk('brBrise')) S.mkBrise = 1; if (br >= maxBreche() && mk('brSoin')) soigner(mk('brSoin'));
+  } else if (ty === 'arc') {
+    var mx = maxVisee(), v = m.visee || 0;
+    if (v >= 1 && mk('viBas')) S.mkM *= 1 + mk('viBas') / 100; if (v >= 2 && mk('viMi')) S.mkM *= 1 + mk('viMi') / 100;
+    if (v >= mx) { S.mkCrit = 1; S.mkCritX = mk('viCrit'); S.mkBrise = 1; if (mk('viSaigne')) saignerMonstre(e, 2); if (mk('viSoin')) soigner(mk('viSoin')); }
+  }
+}
+function finManche(S) { S.n = 0; S.gain = 0; S.justes = 0; S.garde = 0; S.esquive = 0; S.esquiveFort = 0; S.contre = 0; S.capRes = capReserve(); S.concentre = 0; S.soigne = 0; S.phase = 'q'; }
+async function phaseTB(juste) {
+  var S = tbEtat(), X = EXPE, parfait = S.justes >= TB_Q;
+  var et = CB().etats || {}, dep = S.tours ? 0 : energieDepart();
+  S.pa = 1 + S.gain + (parfait ? 1 : 0) + S.reserve + (S.bonusSuiv || 0) + dep; S.reserve = 0; S.bonusSuiv = 0; S.phase = 'a'; S.tours = (S.tours || 0) + 1;
+  if (et.gel > 0) S.pa = Math.max(1, S.pa - 1);
+  if (!juste) await attendre(1100);
+  if (!C || EXPE !== X) return 'fin';
+  if (parfait) nombre(T('Tour parfait : +1 énergie'), 40, 12, 'fort');
+  if (dep) nombre(T('Vivacité : +{0} énergie', dep), 40, 22, 'fort');
+  if (et.gel > 0) nombre(T('Gelé : −1 énergie'), 40, 30, 'mal');
+  cacherQuestions(); C.verrou = false; majTB();
+  if (et.etourdi) { et.etourdi = 0; nombre(T('Sonné : tu perds tes actions'), 40, 20, 'mal'); await attendre(900); }
+  else await new Promise(function (res) { S.finir = function () { S.finir = null; res(); }; panneauTB(); });
+  $('tb-panel').classList.add('cache');
+  if (!C || EXPE !== X) return 'fin';
+  C.verrou = true; S.ouverture = 0;
+  if (!tbActif()) { finManche(S); return 'suite'; }
+  S.reserve = Math.min(S.capRes || capReserve(), S.pa); S.pa = 0;
+  /* le compagnon frappe une fois par tour */
+  var e = SC.ennemi;
+  if (e && e.pv > 0) { var dc = await coupCompagnon(); if (dc) { if (aTraitV(e, 'carapace')) dc = Math.round(dc * .6); e.pv = Math.max(0, e.pv - dc); synchroPV(e); majEtiquette(); if (e.pv <= 0) { await tuerU(e); if (!C || EXPE !== X) return 'fin'; } } }
+  if (tbActif()) { var r = await tourBetes(); if (r === 'fin' || !C || EXPE !== X) return 'fin'; }
+  finManche(S);
+  if (tbActif()) nouvellesIntentions();
+  majTB(); majIndMK();
+  return 'suite';
+}
+/* ── un coup du héros, avec les animations des combats d'avant ── */
+var RECH_MK = { epee: 'ripRech', dague: 'frRech', lance: 'brRech', arc: 'viRech' };
+async function frapperTB(o) {
+  o = o || {};
+  var e = SC.ennemi, S = CB(), X = EXPE; if (!e || e.mort || e.pv <= 0) return;
+  var traque = C.famille === 'traque', M = EXPE.mh, mo = traque && e.grand && M ? M.monstre : null, gros = estGros(e);
+  if (traque && await traitAvantCoup(e)) { majEtiquette(); return; }
+  razMK(S); try { mkFrappeTB(e, S, o); } catch (err) { console.error(err); }
+  var st = STYLE_ARME[typeArme()] || STYLE_ARME.epee, coups = (o.coups || 1) + (S.mkC || 0), mult = o.mult || 1, brise = o.brise || S.mkBrise, garde = e.tbGarde && !o.perce ? .5 : 1;
+  if (o.comp && RECH_MK[typeArme()]) mult *= 1 + mk(RECH_MK[typeArme()]) / 100;
+  if (o.comp || o.sk) mult *= 1 + stat('combo') * .1;
+  if (S.critSuiv) { S.critSuiv = false; mult *= 1.8; nombre(T('Critique !'), 70, 12, 'fort'); }
+  for (var c = 0; c < coups && e.pv > 0; c++) {
+    var dg = degatsMK(o.mode || 'qcm'), bonus = st.mult * mult * (S.saigne > 0 ? 1.4 : 1) * (mo && mo.dort ? 2 : 1) * (e.rage ? 1.15 : 1) * (e.fatigue ? 1.1 : 1) * (traque ? traitMult(e) : 1) * (S.mkM || 1) * garde;
+    if (mo && mo.dort) { mo.dort = false; nombre(T('Réveil brutal !'), 70, 14, 'fort'); }
+    var dn = Math.max(1, Math.round(dg.n * bonus)), ty = typeArme();
+    if (!traque) dn = encaisseEnnemi(e, dn, mult >= 2);
+    lancerCoupArme();
+    await frappeHeros(dn, mult >= 2 ? 3 : o.force || 1, dg.crit && dn > 0, dn === 0);
+    if (EXPE !== X || !C) return 'fin';
+    if (ty === 'marteau') secouer(2 + (mult >= 2 ? 2 : 0), 220);
+    e.pv = Math.max(0, e.pv - dn); synchroPV(e);
+    if (ty === 'dague' && dn > 0 && Math.random() < .35) saignerMonstre(e, 3);
+    if (ty === 'marteau' && gros && !e.etourdi) {
+      e.choc = (e.choc || 0) + (mult >= 2 ? 2 : 1) + (S.mkChoc || 0) + (c === 0 ? o.choc || 0 : 0);
+      if (e.choc >= 5 + 3 * (e.nbChoc || 0)) { e.choc = 0; e.nbChoc = (e.nbChoc || 0) + 1; e.etourdi = 1; if (typeof spawnVfx === 'function') spawnVfx('assomme'); await banniere(T('{0} est assommé !', T(e.nom)), null, 900); if (EXPE !== X || !C) return 'fin'; }
+    }
+    if (c < coups - 1) await attendre(120);
+  }
+  if (S.saigne > 0) S.saigne--;
+  if (e.pv > 0 && e.parts) await casserParties(e, brise);
+  razMK(S); majEtiquette(); majIndMK();
+  if (e.pv <= 0) await tuerU(e);
+}
+/* un coup sur chaque bête du groupe ; la cible du moment est rendue à la fin */
+async function frapperTous(o) {
+  var X = EXPE, cible = SC.ennemi, l = membres().slice();
+  for (var i = 0; i < l.length; i++) {
+    var m = l[i]; if (!C || EXPE !== X || C.fini || C.vaincu) return;
+    if (m.mort || m.pv <= 0 || membres().indexOf(m) === -1) continue;
+    SC.ennemi = m; await frapperTB(Object.assign({}, o));
+    if (!C || EXPE !== X) return;
+    if (o.etourdirPetits && !estGros(m) && m.pv > 0) etourdirTB(m);
+  }
+  if (C && cible && !cible.mort && cible.pv > 0 && membres().indexOf(cible) !== -1) SC.ennemi = cible;
+}
+async function voleeTB(n, mult) {
+  var X = EXPE, cible = SC.ennemi;
+  for (var k = 0; k < n; k++) {
+    var l = membres(); if (!l.length || !C || EXPE !== X || C.fini || C.vaincu) break;
+    SC.ennemi = l[k % l.length]; await frapperTB({ mult: mult, comp: 1 });
+    if (!C || EXPE !== X) return;
+  }
+  if (C && cible && !cible.mort && cible.pv > 0 && membres().indexOf(cible) !== -1) SC.ennemi = cible;
+}
+function peutEtourdir(e) { return !!(e && !e.etourdi && !(e.tbImmun > 0)); }
+function etourdirTB(e) { if (!peutEtourdir(e)) { nombre(T('Il résiste'), 70, 18, 'info'); return false; } e.etourdi = 1; e.prepare = null; nombre(T('Étourdi !'), 70, 18, 'fort'); majTB(); return true; }
+function potionsDispo() { var h = H(); return ['p-petite', 'p-moy', 'p-grande'].reduce(function (t, id) { return t + ((h.conso && h.conso[id]) || 0); }, 0); }
+function fmtN(x) { return String(Math.round(x * 100) / 100).replace('.', ','); }
+
+/* ═════════ 19/11 : les compétences au tour par tour ═════════
+   Toujours là : Frappe, Potion (si tu en as), Capturer (grand monstre affaibli).
+   Deux compétences propres à l'arme, fixes. Quatre cases, qui démarrent avec quatre compétences communes
+   (Coup puissant, Défense, Concentration, Premiers soins) ; les étoiles « compétence » de la constellation
+   de l'arme débloquent quatre compétences qui peuvent prendre ces cases, et les étoiles « amélioration »
+   les renforcent. Les cases se choisissent dans la fiche ou au départ de la chasse. */
+function tbCible() { return SC.ennemi; }
+function intentionDe(e) { return e && e.tb ? e.tb.t : null; }
+function hitTB(o) { return frapperTB(Object.assign({ mode: 'qcm', comp: 1 }, o)); }
+var SKB = {
+  /* les communes */
+  'c-puissant': { nom: TR('Coup puissant', 'Krachtige slag'), cout: 2, att: 1, t: function () { return T('Un coup ×2,3 qui casse mieux les parties.'); }, f: function () { return frapperTB({ mode: 'qcm', mult: 2.3, brise: 1, force: 3, sk: 1 }); } },
+  'c-defense': { nom: TR('Défense', 'Verdediging'), cout: 1, def: 1, off: function () { return tbEtat().garde >= .7; }, t: function () { return T('Les coups reçus ce tour : −35 % (−70 % au maximum).'); },
+    f: function () { var S = tbEtat(); S.garde = Math.min(.7, S.garde + .35); nombre(T('Défense'), SC.heros.x + 8, 24, 'info'); } },
+  'c-concentration': { nom: TR('Concentration', 'Concentratie'), cout: 1, off: function () { return tbEtat().concentre; }, t: function () { return T('+2 énergie au prochain tour. Une fois par tour.'); },
+    f: function () { var S = tbEtat(); S.concentre = 1; S.bonusSuiv = (S.bonusSuiv || 0) + 2; nombre(T('Concentré'), SC.heros.x + 8, 24, 'info'); } },
+  'c-soins': { nom: TR('Premiers soins', 'Eerste hulp'), cout: 2, off: function () { return tbEtat().soigne || H().pv >= pvMax(); }, t: function () { return T('Rend 20 % de tes PV. Une fois par tour.'); },
+    f: function () { tbEtat().soigne = 1; soigner(Math.round(pvMax() * .2)); hud('hud-combat'); } },
+  /* épée */
+  'ep-parade': { nom: TR('Parade', 'Parade'), cout: 2, def: 1, off: function () { return CB().garde; }, t: function () { return T('Pare la prochaine attaque, quelle qu\'elle soit, et riposte.'); },
+    f: function () { CB().garde = true; CB().riposte = true; nombre(T('Parade'), SC.heros.x + 8, 24, 'info'); } },
+  'ep-contre': { nom: TR('Contre-attaque', 'Tegenaanval'), cout: 1, att: 1, off: function () { return !tbEtat().ouverture; }, t: function (md) { return T('Après une parade réussie : un coup ×{0}, qui compte comme une riposte.', fmtN(2.5 + (md.mult || 0))); },
+    f: function (md) { tbEtat().ouverture = 0; return hitTB({ mult: 2.5 + (md.mult || 0), rip: 1, force: 3 }); } },
+  'ep-gardeh': { nom: TR('Garde haute', 'Hoge wering'), cout: 1, def: 1, off: function () { return tbEtat().garde >= .7; }, t: function () { return T('Les coups reçus ce tour : −50 % (−70 % au maximum).'); },
+    f: function () { var S = tbEtat(); S.garde = Math.min(.7, S.garde + .5); nombre(T('Garde haute'), SC.heros.x + 8, 24, 'info'); } },
+  'ep-taille': { nom: TR('Taille croisée', 'Kruishouw'), cout: 2, att: 1, t: function (md) { return T('{0} coups.', 2 + (md.coups || 0)); }, f: function (md) { return hitTB({ coups: 2 + (md.coups || 0) }); } },
+  'ep-tourb': { nom: TR('Lame tournoyante', 'Wervelende kling'), cout: 3, att: 1, t: function () { return T('Un coup ×1,2 sur chaque bête.'); }, f: function () { return frapperTous({ mode: 'qcm', comp: 1, mult: 1.2 }); } },
+  'ep-precis': { nom: TR('Coup précis', 'Precieze slag'), cout: 2, att: 1, t: function (md) { return T('Un coup ×{0}, critique si la bête a annoncé une attaque.', fmtN(1.6 + (md.mult || 0))); },
+    f: function (md) { var t = intentionDe(tbCible()); if (t === 'coup' || t === 'lourd' || t === 'special') CB().critSuiv = true; return hitTB({ mult: 1.6 + (md.mult || 0) }); } },
+  /* marteau */
+  'ma-charger': { nom: TR('Charger', 'Opladen'), cout: 1, off: function () { return (mkEtat().charge || 0) >= seuilCharge(); }, t: function () { return T('Un cran de charge en plus. Charge pleine : ton prochain coup est un écrasement.'); },
+    f: function () { var m = mkEtat(); m.charge = Math.min(seuilCharge(), (m.charge || 0) + 1); nombre(T('Charge {0}', m.charge), SC.heros.x + 8, 24, 'fort'); majIndMK(); } },
+  'ma-ecrase': { nom: TR('Écrasement', 'Verpletteren'), cout: 2, att: 1, off: function () { return !(mkEtat().charge > 0); }, t: function (md) { return T('Vide la charge : ×1,3, plus ×{0} par cran.', fmtN(.6 + (md.cran || 0))); },
+    f: function (md) { var m = mkEtat(), n = m.charge || 0; m.charge = 0; majIndMK(); return hitTB({ mult: 1.3 + (.6 + (md.cran || 0)) * n, choc: n, force: 3 }); } },
+  'ma-assomme': { nom: TR('Assommer', 'Verdoven'), cout: 2, att: 1, t: function (md) { return T('Un coup ×1,2 et {0} de choc. Une petite bête est étourdie.', 3 + (md.choc || 0)); },
+    f: async function (md) { var e = tbCible(); await hitTB({ mult: 1.2, choc: 3 + (md.choc || 0) }); if (e && !estGros(e) && e.pv > 0 && !e.mort) etourdirTB(e); } },
+  'ma-seisme': { nom: TR('Séisme', 'Aardbeving'), cout: 3, att: 1, t: function () { return T('Un coup ×1,3 sur chaque bête ; les petites sont étourdies.'); }, f: function () { return frapperTous({ mode: 'qcm', comp: 1, mult: 1.3, etourdirPetits: 1, force: 3 }); } },
+  'ma-briseos': { nom: TR('Brise-os', 'Bottenbreker'), cout: 2, att: 1, t: function (md) { return T('Un coup ×{0} qui casse une partie à coup sûr.', fmtN(1.5 + (md.mult || 0))); }, f: function (md) { return hitTB({ mult: 1.5 + (md.mult || 0), brise: 1, force: 3 }); } },
+  'ma-briseg': { nom: TR('Brise-garde', 'Wering breken'), cout: 1, off: function () { var e = tbCible(); return !(e && e.tbGarde); }, t: function () { return T('Annule la protection de la bête pour ce tour.'); },
+    f: function () { var e = tbCible(); e.tbGarde = 0; nombre(T('Protection brisée'), 70, 18, 'fort'); secouer(3, 200); } },
+  /* dague */
+  'dg-saignee': { nom: TR('Saignée', 'Aderlating'), cout: 1, t: function (md) { return T('La bête saigne {0} tours de plus.', 2 + (md.saigne || 0)); },
+    f: function (md) { var e = tbCible(); e.saigne = Math.min(12, (e.saigne || 0) + 2 + (md.saigne || 0)); nombre(T('Il saigne !'), 70, 16, 'fort'); majEtiquette(); } },
+  'dg-veines': { nom: TR('Ouvrir les veines', 'Aders openen'), cout: 2, att: 1, off: function () { var e = tbCible(); return !(e && e.saigne > 0); }, t: function (md) { return T('Vide les saignements : ×{0} par tour de saignement.', fmtN(.8 + (md.veines || 0))); },
+    f: function (md) { var e = tbCible(), n = e.saigne || 0; e.saigne = 0; return hitTB({ mult: (.8 + (md.veines || 0)) * n, force: 3 }); } },
+  'dg-poison': { nom: TR('Lame empoisonnée', 'Vergiftigde kling'), cout: 2, att: 1, t: function () { return T('Un coup, et la bête saigne 3 tours de plus.'); },
+    f: function () { var e = tbCible(); e.saigne = Math.min(12, (e.saigne || 0) + 3); return hitTB({}); } },
+  'dg-rafale': { nom: TR('Rafale', 'Vlaag'), cout: 3, att: 1, t: function (md) { return T('{0} coups ×0,6.', 4 + (md.coups || 0)); }, f: function (md) { return hitTB({ coups: 4 + (md.coups || 0), mult: .6 }); } },
+  'dg-pas': { nom: TR('Pas de côté', 'Zijstap'), cout: 1, def: 1, off: function () { return tbEtat().esquiveFort; }, t: function () { return T('Évite la prochaine attaque, même puissante.'); },
+    f: function () { tbEtat().esquiveFort = 1; nombre(T('Prêt à esquiver'), SC.heros.x + 8, 24, 'info'); } },
+  'dg-grace': { nom: TR('Coup de grâce', 'Genadeslag'), cout: 3, att: 1, t: function () { return T('Un coup ×2, ×4 si la bête a moins de 30 % de ses PV.'); },
+    f: function () { var e = tbCible(); return hitTB({ mult: e.pv < e.pvMax * .3 ? 4 : 2, force: 3 }); } },
+  /* lance */
+  'la-bloquer': { nom: TR('Bloquer', 'Blokkeren'), cout: 1, def: 1, off: function () { return tbEtat().contre; }, t: function () { return T('La prochaine attaque te fait moitié moins mal, et tu ripostes.'); },
+    f: function () { tbEtat().contre = 1; nombre(T('En garde'), SC.heros.x + 8, 24, 'info'); } },
+  'la-transpercer': { nom: TR('Transpercer', 'Doorboren'), cout: 2, att: 1, t: function (md) { return T('Un coup ×{0} qui passe la protection de la bête et ouvre deux crans de brèche.', fmtN(1.4 + (md.mult || 0))); },
+    f: function (md) { var e = tbCible(); e.mkBr = Math.min(maxBreche(), (e.mkBr || 0) + 2); majIndMK(); return hitTB({ mult: 1.4 + (md.mult || 0), perce: 1 }); } },
+  'la-balayage': { nom: TR('Balayage', 'Veegslag'), cout: 2, att: 1, t: function () { return T('Un coup ×0,9 sur chaque bête.'); }, f: function () { return frapperTous({ mode: 'qcm', comp: 1, mult: .9 }); } },
+  'la-arret': { nom: TR('Arrêt de charge', 'Stormstop'), cout: 2, att: 1, t: function () { return T('Un coup. Si la bête a annoncé un coup puissant ou une attaque spéciale, elle est interrompue et le coup fait ×2.'); },
+    f: function () { var e = tbCible(), t = intentionDe(e), fort = t === 'lourd' || t === 'special'; if (fort) { e.tb = { t: 'rien', nom: T('Interrompu'), val: null }; e.prepare = null; nombre(T('Interrompu !'), 70, 18, 'fort'); majTB(); } return hitTB({ mult: fort ? 2 : 1, force: fort ? 3 : 1 }); } },
+  'la-charge': { nom: TR('Charge', 'Stormloop'), cout: 3, att: 1, t: function (md) { return T('Un coup ×{0}, doublé si la bête se prépare.', fmtN(2.5 + (md.mult || 0))); },
+    f: function (md) { return hitTB({ mult: (2.5 + (md.mult || 0)) * (intentionDe(tbCible()) === 'prep' ? 2 : 1), force: 3 }); } },
+  'la-clou': { nom: TR('Clouer au sol', 'Aan de grond nagelen'), cout: 3, att: 1, off: function () { return !peutEtourdir(tbCible()); }, t: function () { return T('Un coup ×1,2 ; la bête perd sa prochaine action.'); },
+    f: async function () { var e = tbCible(); await hitTB({ mult: 1.2 }); if (e && e.pv > 0 && !e.mort) etourdirTB(e); } },
+  /* arc */
+  'ar-viser': { nom: TR('Viser', 'Mikken'), cout: 1, off: function () { return (mkEtat().visee || 0) >= maxVisee(); }, t: function () { return T('Un cran de visée en plus. Visée maximale : tes tirs sont critiques.'); },
+    f: function () { var m = mkEtat(); m.visee = Math.min(maxVisee(), (m.visee || 0) + 1); nombre(T('Visée {0}', m.visee), SC.heros.x + 8, 24, 'info'); majIndMK(); } },
+  'ar-charge': { nom: TR('Tir chargé', 'Geladen schot'), cout: 2, att: 1, off: function () { return !(mkEtat().visee > 0); }, t: function () { return T('Vide la visée : ×1,3, plus ×0,6 par cran.'); },
+    f: function () { var m = mkEtat(), n = m.visee || 0; m.visee = 0; majIndMK(); return hitTB({ mult: 1.3 + .6 * n, force: 3 }); } },
+  'ar-percante': { nom: TR('Flèche perçante', 'Doorborende pijl'), cout: 2, att: 1, t: function (md) { return T('Un tir ×{0} qui passe la protection de la bête.', fmtN(1.8 + (md.mult || 0))); }, f: function (md) { return hitTB({ mult: 1.8 + (md.mult || 0), perce: 1 }); } },
+  'ar-volee': { nom: TR('Volée', 'Salvo'), cout: 3, att: 1, t: function (md) { return T('{0} flèches ×0,6, réparties sur les bêtes.', 5 + (md.coups || 0)); }, f: function (md) { return voleeTB(5 + (md.coups || 0), .6); } },
+  'ar-repli': { nom: TR('Repli', 'Terugtrekken'), cout: 1, def: 1, off: function () { return tbEtat().esquive; }, t: function () { return T('Évite la prochaine attaque simple, et tu gardes une énergie de plus pour le tour suivant.'); },
+    f: function () { var S = tbEtat(); S.esquive = 1; S.capRes = capReserve() + 1; nombre(T('Prêt à esquiver'), SC.heros.x + 8, 24, 'info'); } },
+  'ar-piege': { nom: TR('Piège', 'Val'), cout: 3, off: function () { return !peutEtourdir(tbCible()); }, t: function () { return T('La bête perd sa prochaine action.'); }, f: function () { etourdirTB(tbCible()); } },
+  /* poings */
+  'po-poing': { nom: TR('Gros coup de poing', 'Harde vuistslag'), cout: 2, att: 1, t: function (md) { return T('Un coup ×{0}.', fmtN(2 + (md.mult || 0))); }, f: function (md) { return hitTB({ mult: 2 + (md.mult || 0), force: 3 }); } },
+  'po-enchaine': { nom: TR('Enchaînement', 'Combinatie'), cout: 1, att: 1, t: function (md) { return T('{0} coups ×0,6.', 2 + (md.coups || 0)); }, f: function (md) { return hitTB({ coups: 2 + (md.coups || 0), mult: .6 }); } },
+  'po-medit': { nom: TR('Méditation', 'Meditatie'), cout: 2, off: function () { return tbEtat().soigne; }, t: function () { return T('Rend 15 % de tes PV et efface tes états.'); },
+    f: function () { tbEtat().soigne = 1; CB().etats = {}; soigner(Math.round(pvMax() * .15)); hud('hud-combat'); } },
+  'po-cent': { nom: TR('Cent poings', 'Honderd vuisten'), cout: 3, att: 1, t: function () { return T('{0} coups ×0,6.', 6); }, f: function () { return hitTB({ coups: 6, mult: .5 }); } },
+  'po-esq': { nom: TR('Esquive', 'Ontwijking'), cout: 1, def: 1, off: function () { return tbEtat().esquive; }, t: function () { return T('Évite la prochaine attaque simple ; ton prochain coup est critique.'); },
+    f: function () { tbEtat().esquive = 1; CB().critSuiv = true; nombre(T('Prêt à esquiver'), SC.heros.x + 8, 24, 'info'); } },
+  'po-paume': { nom: TR('Paume sonnante', 'Verdovende palm'), cout: 3, att: 1, off: function () { return !peutEtourdir(tbCible()); }, t: function () { return T('Un coup ×1,5 ; la bête perd sa prochaine action.'); },
+    f: async function () { var e = tbCible(); await hitTB({ mult: 1.5, force: 3 }); if (e && e.pv > 0 && !e.mort) etourdirTB(e); } }
+};
+SKB['po-cent'].t = function () { return T('{0} coups ×0,5.', 6); };
+var SIG_TB = { epee: ['ep-parade', 'ep-contre'], marteau: ['ma-charger', 'ma-ecrase'], dague: ['dg-saignee', 'dg-veines'], lance: ['la-bloquer', 'la-transpercer'], arc: ['ar-viser', 'ar-charge'], poings: ['po-poing', 'po-enchaine'] };
+var COMMUNS_TB = ['c-puissant', 'c-defense', 'c-concentration', 'c-soins'];
+/* les étoiles des constellations : celles qui donnaient une compétence à bouton ou amélioraient une ancienne
+   compétence débloquent ou renforcent maintenant les nouvelles ; les rangs déjà appris sont gardés */
+var TB_NOEUDS = {
+  ep2: { tb: 'ep-gardeh' }, ep3: { tb: 'ep-taille' }, ep7: { tb: 'ep-tourb' }, ep11: { tb: 'ep-precis' },
+  ep5: { nom: TR('Contre-attaque appuyée', 'Krachtige tegenaanval'), mod: { 'ep-contre': { mult: .4 } } }, ep6: { nom: TR('Parade vive', 'Snelle parade'), mod: { 'ep-parade': { cout: 1 } } },
+  dg2: { tb: 'dg-poison' }, dg7: { tb: 'dg-rafale' }, dg10: { tb: 'dg-pas' }, dg11: { tb: 'dg-grace' },
+  dg1: { nom: TR('Lame enduite', 'Ingesmeerde kling'), mod: { 'dg-saignee': { saigne: 1 } } }, dg4: { nom: TR('Mort lente', 'Trage dood'), mod: { 'dg-veines': { veines: .3 } } }, dg6: { nom: TR('Rafale nourrie', 'Volle vlaag'), mod: { 'dg-rafale': { coups: 1 } } },
+  la2: { tb: 'la-balayage' }, la3: { tb: 'la-arret' }, la7: { tb: 'la-charge' }, la11: { tb: 'la-clou' },
+  la6: { nom: TR('Transpercer net', 'Zuiver doorboren'), mod: { 'la-transpercer': { mult: .4 } } }, la10: { nom: TR('Charge furieuse', 'Woeste stormloop'), mod: { 'la-charge': { mult: .5 } } },
+  ma3: { tb: 'ma-seisme' }, ma6: { tb: 'ma-assomme' }, ma7: { tb: 'ma-briseos' }, ma11: { tb: 'ma-briseg' },
+  ma2: { nom: TR('Écrasement total', 'Totale verplettering'), mod: { 'ma-ecrase': { cran: .3 } } }, ma5: { nom: TR('Sonner', 'Verdoven'), mod: { 'ma-assomme': { choc: 1 } } }, ma8: { nom: TR('Brise-os lourd', 'Zware bottenbreker'), mod: { 'ma-briseos': { mult: .5 } } },
+  ar2: { tb: 'ar-percante' }, ar6: { tb: 'ar-volee' }, ar10: { tb: 'ar-repli' }, ar11: { tb: 'ar-piege' },
+  ar3: { nom: TR('Pointe d\'acier', 'Stalen punt'), mod: { 'ar-percante': { mult: .6 } } }, ar7: { nom: TR('Volée nourrie', 'Volle salvo'), mod: { 'ar-volee': { coups: 1 } } },
+  po3: { tb: 'po-medit' }, po7: { tb: 'po-cent' }, po10: { tb: 'po-esq' }, po12: { tb: 'po-paume' },
+  po2: { nom: TR('Souffle long', 'Lange adem'), mod: { 'po-enchaine': { coups: 1 } } }, po6: { nom: TR('Gros coup lourd', 'Zware vuistslag'), mod: { 'po-poing': { mult: .4 } } }
+};
+Object.keys(TB_NOEUDS).forEach(function (id) {
+  var n = NOEUD_CST[id], d = TB_NOEUDS[id]; if (!n) return;
+  n.fx = null; n.mk = null;
+  if (d.tb) { n.tb = d.tb; n.nom = SKB[d.tb].nom; n.actif = { id: d.tb, nom: n.nom, tb: 1 }; n.mod = null; n.rangs = 1; }
+  else { n.nom = d.nom; n.actif = null; n.tbMod = d.mod; n.mod = d.mod; }
+});
+/* les étoiles de recharge du lot C n'ont plus d'objet : elles renforcent les compétences d'arme */
+MK_TXT.ripRech = MK_TXT.frRech = MK_TXT.brRech = MK_TXT.viRech = 'compétences d\'arme : +{0} % de dégâts';
+function modTB(k, ty) {
+  var A = CST[ty || typeArme()], c = cstJ(), o = {}; if (!A) return o;
+  A.l.forEach(function (n) { var r = Math.min(c[n.id] || 0, n.rangs || 1), m = r && n.tbMod && n.tbMod[k]; if (!m) return; for (var x in m) o[x] = (o[x] || 0) + m[x] * r; });
+  return o;
+}
+function modTexte(m, r) {
+  var p = [];
+  if (m.mult) p.push(T('×{0} de plus', fmtN(m.mult * r))); if (m.coups) p.push(T('+{0} coup(s)', m.coups * r)); if (m.cout) p.push(T('coûte {0} énergie de moins', m.cout * r));
+  if (m.saigne) p.push(T('+{0} tour(s) de saignement', m.saigne * r)); if (m.veines) p.push(T('+{0} par tour de saignement', fmtN(m.veines * r))); if (m.choc) p.push(T('+{0} de choc', m.choc * r)); if (m.cran) p.push(T('+{0} par cran', fmtN(m.cran * r)));
+  return p.join(', ');
+}
+var effetTexteAvantTBS = effetTexte;
+effetTexte = function (t, r) {
+  if (t.tb) { var d = SKB[t.tb]; return T('Compétence ({0} énergie) : {1}', d.cout, d.t(modTB(t.tb, t.ty))) + ' ' + T('Elle peut prendre une de tes quatre cases.'); }
+  if (t.tbMod) return Object.keys(t.tbMod).map(function (k) { return T(SKB[k].nom) + ' : ' + modTexte(t.tbMod[k], r); }).join(' · ');
+  return effetTexteAvantTBS(t, r);
+};
+/* ── les cases ── */
+function poolTB(ty) { var c = cstJ(), A = CST[ty] || CST.poings; return COMMUNS_TB.concat(A.l.filter(function (n) { return n.tb && c[n.id] > 0; }).map(function (n) { return n.tb; })); }
+function slotsTB(ty) {
+  ty = ty || typeArme(); var j = J(); if (!j) return COMMUNS_TB.slice();
+  j.tbSlots = j.tbSlots || {};
+  var pool = poolTB(ty), l = (j.tbSlots[ty] || []).filter(function (k, i, a) { return pool.indexOf(k) !== -1 && a.indexOf(k) === i; }).slice(0, 4);
+  COMMUNS_TB.forEach(function (k) { if (l.length < 4 && l.indexOf(k) === -1) l.push(k); });
+  j.tbSlots[ty] = l; return l;
+}
+function carteTB(k, ty) { var d = SKB[k], md = modTB(k, ty); return '<span class="tb-c">' + Math.max(1, d.cout - (md.cout || 0)) + '</span><b>' + ech(T(d.nom)) + '</b><small>' + ech(d.t(md)) + '</small>'; }
+function htmlLoadout(ty, sel) {
+  var l = slotsTB(ty), pool = poolTB(ty), A = CST[ty] || CST.poings;
+  var h = '<div class="tbl" style="--c:' + A.c + '"><p class="tbl-h">' + T('Toujours là') + '</p><div class="tbl-g">' +
+    '<div class="tb-a">' + '<span class="tb-c">1</span><b>' + T('Frappe') + '</b><small>' + T('Un coup.') + '</small></div>' +
+    (SIG_TB[ty] || SIG_TB.poings).map(function (k) { return '<div class="tb-a sig">' + carteTB(k, ty) + '</div>'; }).join('') + '</div>';
+  h += '<p class="tbl-h">' + T('Tes quatre cases') + '</p><div class="tbl-g">' + l.map(function (k, i) {
+    return '<button data-tbs="' + i + '" class="tb-a' + (COMMUNS_TB.indexOf(k) === -1 ? ' comp' : '') + (sel === i ? ' sel' : '') + '">' + carteTB(k, ty) + '</button>';
+  }).join('') + '</div>';
+  if (sel != null) {
+    h += '<p class="tbl-h">' + T('Que mettre dans cette case ?') + '</p><div class="tbl-g">' + pool.map(function (k) {
+      var ix = l.indexOf(k);
+      return '<button data-tbp="' + k + '" class="tb-a' + (COMMUNS_TB.indexOf(k) === -1 ? ' comp' : '') + (ix === sel ? ' on' : '') + '">' + carteTB(k, ty) + (ix !== -1 && ix !== sel ? '<em>' + T('échange') + '</em>' : '') + '</button>';
+    }).join('') + '</div>';
+  } else h += '<p class="tbl-n">' + (pool.length > COMMUNS_TB.length ? T('Touche une case pour la changer.') : T('Les étoiles « compétence » de la constellation de ton arme débloquent d\'autres compétences pour ces cases.')) + '</p>';
+  return h + '</div>';
+}
+function lierLoadout(root, ty, getSel, setSel) {
+  root.querySelectorAll('[data-tbs]').forEach(function (b) { b.onclick = function (ev) { ev.stopPropagation(); son('clic'); var i = +b.dataset.tbs; setSel(getSel() === i ? null : i); }; });
+  root.querySelectorAll('[data-tbp]').forEach(function (b) {
+    b.onclick = function (ev) {
+      ev.stopPropagation(); var i = getSel(); if (i == null) return; son('clic');
+      var l = slotsTB(ty).slice(), k = b.dataset.tbp, ix = l.indexOf(k); if (ix !== -1) l[ix] = l[i]; l[i] = k;
+      J().tbSlots[ty] = l; sauver(); setSel(null);
+    };
+  });
+}
+/* dans la fiche : les cases remplacent les trois anciennes */
+var COMPV_TB = { sel: null };
+var feuilleCompetencesAvantTBS = feuilleCompetences;
+feuilleCompetences = function () {
+  COMPV.slot = null; feuilleCompetencesAvantTBS();
+  var s = document.querySelector('#f-corps .cp-slots'); if (!s) return;
+  var nx = s.nextElementSibling; if (nx && nx.classList.contains('f-sous')) nx.parentNode.removeChild(nx);
+  var ty = typeArme(), d = document.createElement('div'); d.id = 'tbl-fiche'; d.innerHTML = htmlLoadout(ty, COMPV_TB.sel); s.parentNode.replaceChild(d, s);
+  lierLoadout(d, ty, function () { return COMPV_TB.sel; }, function (v) { COMPV_TB.sel = v; feuilleCompetences(); });
+};
+feuilleArbres = feuilleCompetences;
+/* dans la constellation : le bouton de l'étoile range la compétence dans une case */
+function placerTB(ty, k) {
+  var l = slotsTB(ty).slice(), ix = l.indexOf(k);
+  if (ix !== -1) { l[ix] = COMMUNS_TB.filter(function (c) { return l.indexOf(c) === -1; })[0]; }
+  else { var j = -1; l.forEach(function (x, i) { if (COMMUNS_TB.indexOf(x) !== -1) j = i; }); if (j === -1) return false; l[j] = k; }
+  J().tbSlots[ty] = l; sauver(); return true;
+}
+var dessinerCstAvantTBS = dessinerCst;
+dessinerCst = function (centrer) {
+  var r = dessinerCstAvantTBS(centrer), t = NOEUD_CST[CSTV.sel], b = $('cf-eq');
+  if (b && t && t.tb) {
+    var l = slotsTB(t.ty), dedans = l.indexOf(t.tb) !== -1, libre = l.some(function (x) { return COMMUNS_TB.indexOf(x) !== -1; });
+    var nb = document.createElement('button'); nb.id = 'cf-eq'; nb.className = 'mini ' + (dedans ? 'porte equipe' : 'equipe'); nb.disabled = !dedans && !libre;
+    nb.textContent = T(dedans ? 'Retirer de mes cases' : libre ? 'Mettre dans une case' : 'Cases pleines');
+    nb.onclick = function (ev) { ev.stopPropagation(); son('clic'); placerTB(t.ty, t.tb); dessinerCst(false); };
+    b.parentNode.replaceChild(nb, b);
+  }
+  return r;
+};
+/* au départ de la chasse : un coup d'œil aux cases, dès qu'il y a un choix à faire */
+var lancerChasseMHAvantTBS = lancerChasseMH, TBL_OK = 0;
+lancerChasseMH = function (k, q) {
+  var ty = typeArme();
+  if (Date.now() - TBL_OK > 60000 && J() && poolTB(ty).length > COMMUNS_TB.length) { ouvrirLoadout(ty, function () { TBL_OK = Date.now(); lancerChasseMH(k, q); }); return; }
+  return lancerChasseMHAvantTBS(k, q);
+};
+function ouvrirLoadout(ty, ok) {
+  var d = $('tbl-pop'); if (!d) { d = document.createElement('div'); d.id = 'tbl-pop'; $('tel').appendChild(d); }
+  var sel = null;
+  function rendre() {
+    d.innerHTML = '<div class="tbl-boite"><div class="tbl-t"><b>' + T('Tes compétences pour cette chasse') + '</b><button id="tbl-x">✕</button></div>' + htmlLoadout(ty, sel) + '<button class="btn large" id="tbl-go">' + T('Partir') + '</button></div>';
+    lierLoadout(d, ty, function () { return sel; }, function (v) { sel = v; rendre(); });
+    $('tbl-go').onclick = function (ev) { ev.stopPropagation(); son('clic'); d.classList.add('cache'); ok(); };
+    $('tbl-x').onclick = function (ev) { ev.stopPropagation(); son('clic'); d.classList.add('cache'); };
+  }
+  d.classList.remove('cache'); rendre();
+}
+/* ── les actions du tour ── */
+function actionComp(k) {
+  var d = SKB[k]; if (!d) return null;
+  var md = modTB(k), a = { id: k, nom: T(d.nom), cout: Math.max(1, d.cout - (md.cout || 0)), txt: d.t(md), att: d.att, def: d.def, comp: COMMUNS_TB.indexOf(k) === -1 };
+  a.sig = (SIG_TB[typeArme()] || []).indexOf(k) !== -1;
+  try { a.off = d.off ? !!d.off(md) : false; } catch (err) { a.off = true; }
+  a.f = function () { return d.f(md); };
+  return a;
+}
+function actionsTB() {
+  var S = tbEtat(), e = SC.ennemi, ty = typeArme(), l = [];
+  l.push({ id: 'frappe', nom: T('Frappe'), cout: 1, txt: T('Un coup.'), att: 1, f: function () { return frapperTB({ mode: 'qcm' }); } });
+  (SIG_TB[ty] || SIG_TB.poings).concat(slotsTB(ty)).forEach(function (k) { var a = actionComp(k); if (a) l.push(a); });
+  if (potionsDispo()) l.push({ id: 'potion', nom: T('Potion'), cout: 1, txt: T('Tu en as {0}.', potionsDispo()), obj: 1, off: H().pv >= pvMax(), f: function () { return boirePotion(); } });
+  if (C.famille === 'traque' && e && e.grand && e.pv <= e.pvMax * .25 && !e.mort) l.push({ id: 'capture', nom: T(CAPTURE.nom), cout: 1, txt: T('La bête est affaiblie.'), f: function () { return capturerMH(SC.ennemi); } });
+  l.forEach(function (a) { a.dispo = S.pa >= a.cout && !a.off; });
+  return l;
+}
+async function executerTB(a) {
+  var S = tbEtat(), X = EXPE; if (S.busy || !a || !a.dispo || S.pa < a.cout) return false;
+  S.busy = true; S.pa -= a.cout; panneauTB();
+  try { await a.f(); } catch (err) { console.error(err); }
+  S.busy = false;
+  if (!C || EXPE !== X) { if (S.finir) S.finir(); return true; }
+  hud('hud-combat');
+  if (!tbActif() || !SC.ennemi) { if (S.finir) S.finir(); return true; }
+  panneauTB(); majTB();
+  return true;
+}
+function panneauTB() {
+  var p = $('tb-panel'), S = tbEtat(); if (!p) return;
+  var l = actionsTB(), pips = '', A = CST[typeArme()] || CST.poings;
+  for (var i = 0; i < Math.max(S.pa, 1); i++) pips += '<i class="' + (i < S.pa ? 'on' : '') + '"></i>';
+  var etat = [];
+  if (S.garde) etat.push(T('Défense −{0} %', Math.round(S.garde * 100))); if (S.esquive || S.esquiveFort) etat.push(T('Esquive prête')); if (S.contre) etat.push(T('Blocage prêt'));
+  if (CB().garde) etat.push(T('Parade prête')); if (CB().critSuiv) etat.push(T('Critique prêt')); if (S.ouverture) etat.push(T('Ouverture')); if (S.bonusSuiv) etat.push(T('+{0} au prochain tour', S.bonusSuiv));
+  p.style.setProperty('--c', A.c);
+  p.innerHTML = '<div class="tb-h"><span>' + T('Énergie') + '</span><span class="tb-pa">' + pips + '</span><span class="tb-et">' + ech(etat.join(' · ')) + '</span></div>' +
+    '<div class="tb-acts">' + l.map(function (a, i) {
+      return '<button data-i="' + i + '" class="tb-a' + (a.sig ? ' sig' : a.comp ? ' comp' : '') + (a.obj ? ' obj' : '') + '"' + (a.dispo && !S.busy ? '' : ' disabled') + '><span class="tb-c">' + a.cout + '</span><b>' + ech(a.nom) + '</b><small>' + ech(a.txt) + '</small></button>';
+    }).join('') + '</div>' +
+    '<div class="tb-fin"><button id="tb-auto"' + (S.busy ? ' disabled' : '') + '>' + T('Auto') + '</button><button id="tb-ok"' + (S.busy ? ' disabled' : '') + '>' + (S.pa ? T('Fin du tour (+{0} au suivant)', Math.min(S.capRes || capReserve(), S.pa)) : T('Fin du tour')) + '</button></div>';
+  p.classList.remove('cache');
+  p.querySelectorAll('[data-i]').forEach(function (b) { b.onclick = function () { son('clic'); executerTB(l[+b.dataset.i]); }; });
+  $('tb-ok').onclick = function () { if (S.busy) return; son('clic'); if (S.finir) S.finir(); };
+  $('tb-auto').onclick = function () { if (S.busy) return; son('clic'); autoTB(); };
+}
+/* le combat auto : se protège des grosses attaques annoncées, puis tape le plus fort possible */
+async function autoTB() {
+  var S = tbEtat(), X = EXPE;
+  function suite() { return C && EXPE === X && tbActif() && SC.ennemi && S.finir; }
+  async function jouer(id) { if (!suite()) return false; var a = actionsTB().filter(function (x) { return x.id === id && x.dispo; })[0]; return a ? executerTB(a) : false; }
+  async function premier(ids) { for (var i = 0; i < ids.length; i++) if (await jouer(ids[i])) return true; return false; }
+  var e = SC.ennemi, t = intentionDe(e), fort = t === 'lourd' || t === 'special';
+  if (H().pv < pvMax() * .35) await premier(['potion', 'c-soins', 'po-medit']);
+  if (fort) await premier(['la-arret', 'ep-parade', 'dg-pas', 'la-bloquer', 'ep-gardeh', 'c-defense']);
+  else if (t === 'coup') await premier(['dg-pas', 'ar-repli', 'po-esq']);
+  await jouer('capture'); await jouer('ep-contre');
+  if (S.pa >= 3) await premier(['ar-viser', 'ma-charger']);
+  var garde = 0;
+  while (suite() && S.pa > 0 && garde++ < 20) {
+    var l = actionsTB().filter(function (a) { return a.dispo && a.att && a.id !== 'frappe' && !(a.id === 'ma-ecrase' && (mkEtat().charge || 0) < 2) && !(a.id === 'dg-veines' && (SC.ennemi.saigne || 0) < 3); });
+    l.sort(function (a, b) { return b.cout - a.cout; });
+    var a = l[0] || actionsTB().filter(function (x) { return x.id === 'frappe' && x.dispo; })[0];
+    if (!a || !(await executerTB(a))) break;
+  }
+  if (S.finir && C && EXPE === X) S.finir();
+}
+/* ── le tour des bêtes ── */
+var coupEnnemiAvantTB = coupEnnemi;
+coupEnnemi = async function (subi) {
+  var S = CB().tb;
+  if (tbActif() && S) {
+    var red = Math.min(.85, (S.garde || 0) + (S.contreActif ? .5 : 0));
+    if (red && subi) { var r = Math.round(subi * (1 - red)); if (r < subi) nombre(T('Défense : −{0}', subi - r), SC.heros.x + 10, 34, 'info'); subi = r; }
+  }
+  return coupEnnemiAvantTB(subi);
+};
+async function tourBetes() {
+  var S = tbEtat(), X = EXPE, l = membres().slice();
+  for (var i = 0; i < l.length; i++) {
+    var e = l[i]; if (!e || e.mort || e.pv <= 0) continue;
+    var it = e.tb || { t: 'coup' };
+    if (e.etourdi > 0) { e.etourdi--; e.tbImmun = 3; nombre(T('{0} est étourdi', T(e.nom)), 70, 18, 'info'); await attendre(450); continue; }
+    if (it.t === 'garde' || it.t === 'prep' || it.t === 'rien') { nombre(T(it.nom), 70, 18, 'info'); await attendre(350); continue; }
+    if (S.esquive && it.t === 'coup') { S.esquive = 0; nombre(T('Esquivé !'), SC.heros.x + 10, 26, 'info'); bip(800, 1200, .08, 'triangle', .04); await attendre(350); continue; }
+    if (S.esquiveFort) { S.esquiveFort = 0; nombre(T('Esquivé !'), SC.heros.x + 10, 26, 'info'); bip(800, 1200, .08, 'triangle', .04); await attendre(350); continue; }
+    var parAvant = CB().garde;
+    if (S.contre) S.contreActif = 1;
+    await coupDuMonstre(e, it.t === 'coup' ? null : it.att);
+    S.contreActif = 0;
+    if (!C || EXPE !== X || C.vaincu) return 'fin';
+    if (parAvant && !CB().garde) S.ouverture = 1;
+    if (C.sonne || !tbActif()) return 'suite';
+    if (S.contre && SC.ennemi && !SC.ennemi.mort) { S.contre = 0; await frapperTB({ mode: 'qcm' }); if (!C || EXPE !== X) return 'fin'; if (!tbActif()) return 'suite'; }
+    await attendre(250);
+  }
+  /* la fin du tour : saignement de la bête, tes états, traits des grands monstres */
+  var e2 = SC.ennemi; if (!e2 || !tbActif()) return 'suite';
+  e2.tour = (e2.tour || 0) + 1;
+  if (e2.saigne > 0 && e2.pv > 0) { var ds = Math.max(3, Math.round(e2.pvMax * .03)); e2.saigne--; e2.pv = Math.max(0, e2.pv - ds); synchroPV(e2); nombre('-' + ds, 70, 26, 'mal'); if (e2.pv <= 0) { majEtiquette(); await tuerU(e2); return 'suite'; } }
+  var et = CB().etats || {};
+  ['poison', 'brulure', 'saigne'].forEach(function (k) { if (et[k] > 0) { var dd = Math.max(2, Math.round(pvMax() * .05)); et[k]--; H().pv = Math.max(1, H().pv - dd); nombre('-' + dd + ' ' + T(NOMS_ETAT[k]), SC.heros.x + 10, 34, 'mal'); } });
+  if (et.gel > 0) et.gel--;
+  membres().forEach(function (m) { if (m.tbImmun > 0) m.tbImmun--; m.prepare = null; });
+  hud('hud-combat');
+  if (C.famille === 'traque') { await traitTour(e2); if (!C || EXPE !== X) return 'fin'; }
+  majEtiquette();
+  return 'suite';
+}
+
+/* ── ce qui ne vaut plus au tour par tour ── */
+var majAttaquesAvantTB = majAttaques;
+majAttaques = function (now) { majAttaquesAvantTB(now); if (tbActif()) membres().forEach(function (e) { e.t = 0; }); };
+var vitesseMHAvantTB = vitesseMH;
+vitesseMH = function () { return tbActif() ? 0 : vitesseMHAvantTB(); };
+fuiteMH = async function () { return false; };
+var poserQuestionAvantTB = poserQuestion;
+poserQuestion = function (t, f) {
+  var r = poserQuestionAvantTB(t, f);
+  if (tbActif()) { var S = tbEtat(); if (!S.init) { S.init = 1; nouvellesIntentions(); } $('tb-panel').classList.add('cache'); majTB(); }
+  else majTB();
+  return r;
+};
+var entrerCombatAvantTB = entrerCombat;
+entrerCombat = async function (id, grand, ref) { CB().tb = null; var r = await entrerCombatAvantTB(id, grand, ref); majTB(); return r; };
+var sceneAvantTB = scene;
+scene = function (f, opts) { if (EXPE) CB().tb = null; var r = sceneAvantTB(f, opts); setTimeout(majTB, 80); return r; };
+var majEtiquetteAvantTB = majEtiquette;
+majEtiquette = function () { var r = majEtiquetteAvantTB.apply(this, arguments); try { majTB(); } catch (e) {} return r; };
+(function () {
+  var sc = $('scene-combat'); if (sc) sc.insertAdjacentHTML('beforeend', '<div class="tb-int cache" id="tb-int"></div><div class="tb-q" id="tb-q"></div>');
+  var bo = $('boite'); if (bo) bo.insertAdjacentHTML('beforeend', '<div class="tb-panel cache" id="tb-panel"></div>');
+  var st = document.createElement('style');
+  st.textContent =
+    '#v-combat.tb #mh-comp{display:none!important}' +
+    '.tb-int{position:absolute;left:6px;top:6px;z-index:4;display:flex;align-items:center;gap:6px;max-width:58%;padding:4px 8px;background:rgba(40,14,22,.92);box-shadow:0 0 0 2px #000,inset 0 0 0 2px #ff5a4f;font-family:var(--px);font-size:13px;color:#ffd9d4;pointer-events:none}' +
+    '.tb-int .tb-n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tb-int b{font-family:var(--num);font-size:15px;color:#ff8a7a;font-weight:400}.tb-int em{font-style:normal;color:#ffd24d}.tb-int i{font-style:normal;color:#c9c6d6;font-size:11px}' +
+    '.tb-int.l{background:rgba(70,10,18,.95);box-shadow:0 0 0 2px #000,inset 0 0 0 3px #ff3b3b;animation:tbL 1s steps(2) infinite}@keyframes tbL{50%{box-shadow:0 0 0 2px #000,inset 0 0 0 3px #ffb0a0}}' +
+    '.tb-int.g{background:rgba(14,30,50,.92);box-shadow:0 0 0 2px #000,inset 0 0 0 2px #6fb8ff;color:#d4e8ff}.tb-int.p{background:rgba(36,18,56,.92);box-shadow:0 0 0 2px #000,inset 0 0 0 2px #c08af2;color:#ead8ff}' +
+    '.tb-q{position:absolute;right:6px;bottom:6px;z-index:4;padding:3px 8px;background:rgba(14,17,40,.88);box-shadow:0 0 0 2px #000;font-family:var(--px);font-size:12px;color:#ffd24d;pointer-events:none}#v-combat:not(.tb) .tb-q{display:none}' +
+    '.tb-panel{display:flex;flex-direction:column;gap:6px;padding:2px 0}' +
+    '.tb-h{display:flex;align-items:center;gap:8px;font-family:var(--px);font-size:13px}.tb-pa{display:flex;gap:4px}.tb-pa i{width:12px;height:12px;background:#14122b;box-shadow:0 0 0 2px #000;transform:rotate(45deg)}.tb-pa i.on{background:#ffd24d}' +
+    '.tb-et{margin-left:auto;font-size:11px;color:#9ec0ff;text-align:right}' +
+    '.tb-acts{display:grid;grid-template-columns:1fr 1fr;gap:5px}' +
+    '.tb-a{position:relative;text-align:left;padding:5px 26px 5px 7px;min-height:46px;background:#2a2652;color:#ece8ff;border:0;box-shadow:0 0 0 2px #000,inset 0 -3px 0 rgba(0,0,0,.35);font-family:var(--px)}' +
+    '.tb-a b{display:block;font-size:13px;font-weight:400}.tb-a small{display:block;font-family:var(--lex);font-size:10px;line-height:11px;color:#b9b3dc;margin-top:2px}' +
+    '.tb-a .tb-c{position:absolute;right:6px;top:4px;font-family:var(--num);font-size:13px;color:#ffd24d}.tb-a.comp{background:#3b2a5c}.tb-a.obj{background:#1f3a35}' +
+    '.tb-a:disabled{opacity:.35}.tb-a:not(:disabled):active{transform:translateY(1px)}' +
+    '.tb-fin{display:flex;gap:6px}.tb-fin button{padding:9px;font-family:var(--px);font-size:14px;border:0;box-shadow:0 0 0 2px #000}#tb-ok{flex:1;background:#ffd24d;color:#1a1208}#tb-auto{flex:0 0 76px;background:#2b2650;color:#ece8ff}';
+  document.head.appendChild(st);
+})();
+Object.assign(NL, {
+  'Attaque': 'Aanval', 'Se protège': 'Beschermt zich', 'Se prépare': 'Maakt zich klaar', 'Rugissement': 'Gebrul', 'Coup puissant': 'Krachtige slag', 'étourdi': 'verdoofd',
+  'Préparation {0} / {1}': 'Voorbereiding {0} / {1}', 'énergie {0}': 'energie {0}', 'À toi': 'Jouw beurt', 'énergie': 'energie', 'Énergie': 'Energie',
+  'Tour parfait : +1 énergie': 'Perfecte beurt: +1 energie', 'Sonné : tu perds tes actions': 'Versuft: je verliest je acties', 'Coup chargé !': 'Opgeladen slag!',
+  'Frappe': 'Slag', 'Un coup.': 'Eén slag.', 'Un coup ×2,3 qui casse mieux les parties.': 'Een slag ×2,3 die lichaamsdelen beter breekt.', 'Garde': 'Wering',
+  'Les coups reçus ce tour : −35 % (−70 % au maximum).': 'Slagen die je deze beurt krijgt: −35 % (maximaal −70 %).', 'Charge {0}': 'Lading {0}', 'Prêt à esquiver': 'Klaar om te ontwijken',
+  'En joue': 'Gericht', 'En garde': 'In de aanslag', 'Parade': 'Parade', 'Potion': 'Drankje', 'Tu en as {0}.': 'Je hebt er {0}.', 'La bête est affaiblie.': 'Het beest is verzwakt.',
+  'Garde −{0} %': 'Wering −{0} %', 'Esquive prête': 'Ontwijken klaar', 'Contre prêt': 'Tegenstoot klaar', 'Parade prête': 'Parade klaar', 'Auto': 'Auto',
+  'Fin du tour (+{0} au suivant)': 'Einde beurt (+{0} volgende)', 'Défense': 'Verdediging', 'Défense −{0} %': 'Verdediging −{0} %', 'Blocage prêt': 'Blokkeren klaar', 'Défense : −{0}': 'Verdediging: −{0}', 'Fin du tour': 'Einde beurt', 'Garde : −{0}': 'Wering: −{0}', '{0} est étourdi': '{0} is verdoofd', 'Esquivé !': 'Ontweken!', 'Ruée': 'Stormloop', 'Sonné : tu perdras tes prochaines actions.': 'Versuft: je verliest je volgende acties.'
+});
+(function () {
+  var st = document.createElement('style');
+  st.textContent =
+    '.tb-a.sig{background:#3a2a22;box-shadow:0 0 0 2px #000,inset 3px 0 0 var(--c,#ffd24d),inset 0 -3px 0 rgba(0,0,0,.35)}' +
+    '.tbl{display:flex;flex-direction:column;gap:5px;margin:4px 0}.tbl-h{margin:4px 0 0;font-family:var(--px);font-size:13px;color:var(--c,#ffd24d)}.tbl-n{margin:2px 0;font-size:11px;color:var(--doux,#b9b3dc)}' +
+    '.tbl-g{display:grid;grid-template-columns:1fr 1fr;gap:5px}.tbl-g .tb-a{width:100%}.tbl-g button.tb-a.sel{box-shadow:0 0 0 2px #fff,inset 0 0 0 2px #ffd24d}.tbl-g button.tb-a.on{box-shadow:0 0 0 2px #000,inset 0 0 0 2px #8af59a}' +
+    '.tbl-g .tb-a em{position:absolute;right:6px;bottom:3px;font-style:normal;font-size:10px;color:#ffd24d}' +
+    '#tbl-pop{position:absolute;inset:0;z-index:19;background:rgba(5,6,16,.9);display:flex;align-items:center;justify-content:center;padding:10px}#tbl-pop.cache{display:none}' +
+    '.tbl-boite{width:100%;max-height:100%;overflow:auto;background:#14122b;padding:10px;box-shadow:0 0 0 2px #000,inset 0 0 0 2px #3a3456;display:flex;flex-direction:column;gap:6px}' +
+    '.tbl-t{display:flex;justify-content:space-between;align-items:center;font-family:var(--px);font-size:16px;color:#ffd24d}.tbl-t button{border:0;background:#2b2650;color:#ece8ff;padding:4px 9px;box-shadow:0 0 0 2px #000}';
+  document.head.appendChild(st);
+})();
+Object.assign(NL, {
+  'Visée {0}': 'Vizier {0}', 'Vide la visée : ×1,3, plus ×0,6 par cran.': 'Leegt het vizier: ×1,3, plus ×0,6 per stap.', 'Marque !': 'Markering!', 'Marquée': 'Gemarkeerd', 'Il résiste': 'Het houdt stand', 'Concentré': 'Geconcentreerd', 'Protection brisée': 'Bescherming gebroken',
+  'Interrompu': 'Onderbroken', 'Interrompu !': 'Onderbroken!', 'Critique prêt': 'Kritiek klaar', 'Ouverture': 'Opening', '+{0} au prochain tour': '+{0} volgende beurt',
+  'Un coup ×2,3 qui casse mieux les parties.': 'Een slag ×2,3 die lichaamsdelen beter breekt.',
+  '+2 énergie au prochain tour. Une fois par tour.': '+2 energie in de volgende beurt. Eén keer per beurt.',
+  'Rend 20 % de tes PV. Une fois par tour.': 'Geeft 20 % van je HP terug. Eén keer per beurt.',
+  'Pare la prochaine attaque, quelle qu\'elle soit, et riposte.': 'Pareert de volgende aanval, welke ook, en slaat terug.',
+  'Après une parade réussie : un coup ×{0}, qui compte comme une riposte.': 'Na een geslaagde parade: een slag ×{0}, die telt als riposte.',
+  'Les coups reçus ce tour : −50 % (−70 % au maximum).': 'Slagen die je deze beurt krijgt: −50 % (maximaal −70 %).',
+  '{0} coups.': '{0} slagen.', 'Un coup ×1,2 sur chaque bête.': 'Een slag ×1,2 op elk beest.',
+  'Un coup ×{0}, critique si la bête a annoncé une attaque.': 'Een slag ×{0}, kritiek als het beest een aanval heeft aangekondigd.',
+  'Un cran de charge en plus. Charge pleine : ton prochain coup est un écrasement.': 'Een lading extra. Volle lading: je volgende slag is een verplettering.',
+  'Vide la charge : ×1,3, plus ×{0} par cran.': 'Leegt de lading: ×1,3, plus ×{0} per lading.',
+  'Un coup ×1,2 et {0} de choc. Une petite bête est étourdie.': 'Een slag ×1,2 en {0} schok. Een klein beest raakt verdoofd.',
+  'Un coup ×1,3 sur chaque bête ; les petites sont étourdies.': 'Een slag ×1,3 op elk beest; de kleine raken verdoofd.',
+  'Un coup ×{0} qui casse une partie à coup sûr.': 'Een slag ×{0} die zeker een lichaamsdeel breekt.',
+  'Annule la protection de la bête pour ce tour.': 'Heft de bescherming van het beest op voor deze beurt.',
+  'La bête saigne {0} tours de plus.': 'Het beest bloedt {0} beurten langer.',
+  'Vide les saignements : ×{0} par tour de saignement.': 'Leegt de bloedingen: ×{0} per beurt bloeding.',
+  'Un coup, et la bête saigne 3 tours de plus.': 'Een slag, en het beest bloedt 3 beurten langer.',
+  '{0} coups ×0,6.': '{0} slagen ×0,6.', '{0} coups ×0,5.': '{0} slagen ×0,5.',
+  'Évite la prochaine attaque, même puissante.': 'Ontwijkt de volgende aanval, zelfs een krachtige.',
+  'Un coup ×2, ×4 si la bête a moins de 30 % de ses PV.': 'Een slag ×2, ×4 als het beest minder dan 30 % HP heeft.',
+  'La prochaine attaque te fait moitié moins mal, et tu ripostes.': 'De volgende aanval doet half zo veel pijn, en je slaat terug.',
+  'Un coup ×{0} qui passe la protection de la bête et ouvre deux crans de brèche.': 'Een slag ×{0} die door de bescherming van het beest gaat en twee bressen opent.',
+  'Un coup ×0,9 sur chaque bête.': 'Een slag ×0,9 op elk beest.',
+  'Un coup. Si la bête a annoncé un coup puissant ou une attaque spéciale, elle est interrompue et le coup fait ×2.': 'Een slag. Als het beest een krachtige slag of speciale aanval heeft aangekondigd, wordt het onderbroken en doet de slag ×2.',
+  'Un coup ×{0}, doublé si la bête se prépare.': 'Een slag ×{0}, verdubbeld als het beest zich klaarmaakt.',
+  'Un coup ×1,2 ; la bête perd sa prochaine action.': 'Een slag ×1,2; het beest verliest zijn volgende actie.',
+  'Un cran de visée en plus. Visée maximale : tes tirs sont critiques.': 'Een stap vizier extra. Maximaal vizier: je schoten zijn kritiek.',
+  'Ton prochain coup sur cette bête : ×1,3 et casse une partie.': 'Je volgende slag op dit beest: ×1,3 en breekt een lichaamsdeel.',
+  'Un tir ×{0} qui passe la protection de la bête.': 'Een schot ×{0} dat door de bescherming van het beest gaat.',
+  '{0} flèches ×0,6, réparties sur les bêtes.': '{0} pijlen ×0,6, verdeeld over de beesten.',
+  'Évite la prochaine attaque simple, et tu gardes une énergie de plus pour le tour suivant.': 'Ontwijkt de volgende gewone aanval, en je houdt een energie extra voor de volgende beurt.',
+  'La bête perd sa prochaine action.': 'Het beest verliest zijn volgende actie.', 'Un coup ×{0}.': 'Een slag ×{0}.',
+  'Rend 15 % de tes PV et efface tes états.': 'Geeft 15 % van je HP terug en wist je toestanden.',
+  'Évite la prochaine attaque simple ; ton prochain coup est critique.': 'Ontwijkt de volgende gewone aanval; je volgende slag is kritiek.',
+  'Un coup ×1,5 ; la bête perd sa prochaine action.': 'Een slag ×1,5; het beest verliest zijn volgende actie.',
+  '×{0} de plus': '×{0} extra', '+{0} coup(s)': '+{0} slag(en)', 'coûte {0} énergie de moins': 'kost {0} energie minder', '+{0} tour(s) de saignement': '+{0} beurt(en) bloeding',
+  '+{0} par tour de saignement': '+{0} per beurt bloeding', '+{0} de choc': '+{0} schok', '+{0} par cran': '+{0} per lading',
+  'Compétence ({0} énergie) : {1}': 'Vaardigheid ({0} energie): {1}', 'Elle peut prendre une de tes quatre cases.': 'Ze kan een van je vier vakjes innemen.',
+  'compétences d\'arme : +{0} % de dégâts': 'wapenvaardigheden: +{0} % schade',
+  'Toujours là': 'Altijd beschikbaar', 'Tes quatre cases': 'Je vier vakjes', 'Que mettre dans cette case ?': 'Wat zet je in dit vakje?', 'échange': 'wissel',
+  'Touche une case pour la changer.': 'Tik op een vakje om het te wijzigen.',
+  'Les étoiles « compétence » de la constellation de ton arme débloquent d\'autres compétences pour ces cases.': 'De „vaardigheid”-sterren van het sterrenbeeld van je wapen ontgrendelen andere vaardigheden voor deze vakjes.',
+  'Retirer de mes cases': 'Uit mijn vakjes halen', 'Mettre dans une case': 'In een vakje zetten', 'Cases pleines': 'Vakjes vol', 'Tes compétences pour cette chasse': 'Je vaardigheden voor deze jacht', 'Partir': 'Vertrekken'
+});
+
+
+/* ── les stats de l'ancien système retrouvent un sens ──
+   vivacité (mana) : +1 énergie au premier tour de chaque combat par tranche de 6, 2 au plus ;
+   réserve (mana max) : dès 15, tu gardes 3 énergies d'un tour à l'autre au lieu de 2 ;
+   combo : +10 % de dégâts des compétences par point ; gel : 1 énergie de moins par tour. */
+function energieDepart() { return Math.min(2, Math.floor(stat('mana') / 6)); }
+function capReserve() { return 2 + (stat('manaMax') >= 15 ? 1 : 0); }
+Object.assign(FX_TXT, { mana: '+{0} de vivacité (+1 énergie au premier tour par 6)', manaMax: '+{0} de réserve (dès 15 : 3 énergies gardées au lieu de 2)', combo: 'compétences : +{0}0 % de dégâts' });
+SOUFFLES.gel[1] = TR('Gelé : 1 énergie de moins par tour', 'Bevroren: 1 energie minder per beurt');
+/* ── les tutoriels du nouveau combat (nouvelles clés : ils s'affichent une fois, même pour qui a vu les anciens) ── */
+TUTOS.combatTB = [TR('Le combat au tour par tour', 'Het gevecht in beurten'),
+  TR('En haut à gauche, tu vois ce que le monstre va faire à la fin du tour, et combien ça fait mal.', 'Linksboven zie je wat het monster aan het einde van de beurt gaat doen, en hoeveel pijn dat doet.'),
+  TR('Tu réponds d\'abord à 3 questions, sans chrono. Un choix réussi donne 1 énergie, une phrase ou une carte réussie 2, et 3 sur 3 donnent 1 de plus. Chaque tour donne aussi 1 énergie.', 'Eerst beantwoord je 3 vragen, zonder tijdslimiet. Een goede keuze geeft 1 energie, een goede zin of kaart 2, en 3 op 3 geeft 1 extra. Elke beurt geeft ook 1 energie.'),
+  TR('Ensuite tu dépenses ton énergie : frapper, les deux compétences de ton arme, tes quatre cases, une potion. L\'énergie qui reste se garde pour le tour suivant (2 au maximum).', 'Daarna geef je je energie uit: slaan, de twee vaardigheden van je wapen, je vier vakjes, een drankje. Wat overblijft, hou je voor de volgende beurt (maximaal 2).'),
+  TR('« Fin du tour » : le monstre fait ce qu\'il avait annoncé. « Auto » choisit tes actions à ta place.', '„Einde beurt”: het monster doet wat het had aangekondigd. „Auto” kiest je acties voor jou.')];
+TUTOS.cases = [TR('Tes compétences', 'Je vaardigheden'),
+  TR('Frappe et les deux compétences de ton arme sont toujours là en combat.', 'Slaan en de twee vaardigheden van je wapen zijn altijd beschikbaar in het gevecht.'),
+  TR('Tes quatre cases démarrent avec des compétences communes. Les étoiles « compétence » de la constellation de ton arme en débloquent d\'autres, qui peuvent les remplacer.', 'Je vier vakjes beginnen met gewone vaardigheden. De „vaardigheid”-sterren van het sterrenbeeld van je wapen ontgrendelen andere, die ze kunnen vervangen.'),
+  TR('Tu choisis tes cases ici, ou au départ d\'une chasse.', 'Je kiest je vakjes hier, of bij het vertrek van een jacht.')];
+TUTOS.arbres = TUTOS.cases;
+var feuilleCompetencesAvantTuto = feuilleCompetences;
+feuilleCompetences = function () { feuilleCompetencesAvantTuto(); if (typeof tuto === 'function') tuto('cases'); };
+feuilleArbres = feuilleCompetences;
+var poserQuestionAvantTutoTB = poserQuestion;
+poserQuestion = function (t, f) { var r = poserQuestionAvantTutoTB(t, f); if (tbActif() && typeof tuto === 'function') tuto('combatTB'); return r; };
+Object.assign(NL, {
+  'Vivacité : +{0} énergie': 'Levendigheid: +{0} energie', 'Gelé : −1 énergie': 'Bevroren: −1 energie',
+  '+{0} de vivacité (+1 énergie au premier tour par 6)': '+{0} levendigheid (+1 energie in de eerste beurt per 6)',
+  '+{0} de réserve (dès 15 : 3 énergies gardées au lieu de 2)': '+{0} reserve (vanaf 15: 3 energie bewaard in plaats van 2)',
+  'compétences : +{0}0 % de dégâts': 'vaardigheden: +{0}0 % schade',
+  'Cœurs ardents : les compétences frappent plus fort': 'Vurige harten: de vaardigheden slaan harder', 'Cœur sauvage : les compétences frappent plus fort': 'Wild hart: de vaardigheden slaan harder'
+});
 /* ═════════ démarrage ═════════ */
 function voir(n) {
   vueActive = n;
@@ -18841,7 +20547,7 @@ LISTES = LISTES_BRUTES.map(function (l) { return { id: l.id, n: parseInt(l.id.sl
 listesEnCache();
 etat = charger() || neuf();
 if (!etat.joueurs || !etat.camp) etat = neuf();
-['ulysse', 'jasmien'].forEach(reenregistrer);
+['ulysse', 'jasmien'].forEach(reenregistrer); LA_PRET = true;
 configSync();
 (function () { var q = /[?&]moi=(ulysse|jasmien)/.exec(location.search); if (q && !etat.moi) { etat.moi = q[1]; sauver(); } })();
 fabriquerNoeuds(); fabriquerAdversaires(); fabriquerBetes();
