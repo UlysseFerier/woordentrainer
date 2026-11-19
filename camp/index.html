@@ -19587,6 +19587,455 @@ Object.assign(NL, {
   'Garder mes compétences': 'Mijn vaardigheden houden', 'Retirer de mes compétences': 'Uit mijn vaardigheden halen', 'Équiper': 'Uitrusten'
 });
 
+/* ═════════ 19/11 (nuit) : des quêtes qui ne se ressemblent pas, et des mini-jeux ═════════
+   Sur la piste, en plus des rencontres de base :
+   - des traces propres au pays (plume en altitude, bave dans les marais, arbre renversé en forêt…) ;
+   - les rencontres fortuites des expéditions (marchand, fées, ruche, puits, statue, esprit, nid de pie,
+     charrette), avec leur rareté (rare, épique, légendaire) ;
+   - de nouvelles rencontres : campement abandonné, restes d'un aventurier, gibier, champignon géant ;
+   - des choix sans question : carrefour (il oriente les rencontres suivantes), nid d'œufs, champignon
+     étrange, autel de sang (énergie au prochain combat), marchand de potions ;
+   - quatre mini-jeux, deux au plus par quête, sans limite de temps : les gobelets du gobelin, la piste
+     à refaire (mémoire), le gué (choisir la pierre solide) et la porte runique (aligner les runes).
+     Les questions les préparent : une erreur rend le jeu un peu plus dur, une bonne réponse le fait avancer. */
+
+/* ── les dessins ── */
+function fabriquerVariete() {
+  if (SPR['p-plume']) return;
+  propR('p-plume', 16, 9, function (x) {
+    traitR(x, 1, 7, 14, 1, '#6a5a4a', 1);
+    for (var i = 2; i < 14; i++) { var h = Math.round(3 * Math.sin((i - 1) / 13 * Math.PI)); pxr(x, i, 7 - Math.round((i - 1) * 6 / 13) - h, 1, h, i % 3 ? '#e8e0d0' : '#c8b8a0'); pxr(x, i, 8 - Math.round((i - 1) * 6 / 13), 1, h, '#a8988a'); }
+    pxr(x, 0, 8, 16, 1, '#4a6a3a');
+  });
+  propR('p-bave', 26, 6, function (x) {
+    pxr(x, 1, 3, 24, 2, '#6a9a5a'); pxr(x, 3, 2, 18, 1, '#8ac878'); pxr(x, 0, 4, 26, 1, '#4a7a3a');
+    [[5, 2], [12, 3], [19, 2]].forEach(function (p) { pxr(x, p[0], p[1], 2, 1, '#e0ffd0'); }); pxr(x, 9, 5, 1, 1, '#8ac878'); pxr(x, 16, 5, 1, 1, '#8ac878');
+  });
+  propR('p-arbre-casse', 28, 22, function (x) {
+    pxr(x, 2, 8, 7, 14, '#6b4630'); pxr(x, 2, 8, 2, 14, '#8a5a33'); [[2, 7], [4, 6], [6, 7], [8, 5]].forEach(function (p) { pxr(x, p[0], p[1], 1, 2, '#c9955a'); });
+    traitR(x, 9, 19, 27, 13, '#6b4630', 4); traitR(x, 9, 18, 27, 12, '#8a5a33', 1); rond(x, 25, 10, 3, '#3f7a3a'); rond(x, 21, 11, 2, '#4f8a4a'); pxr(x, 0, 21, 28, 1, '#4e321f');
+  });
+  propR('p-camp', 26, 14, function (x) {
+    [[3, 11], [6, 9], [10, 9], [13, 11], [8, 12]].forEach(function (p) { rond(x, p[0], p[1], 1, '#8d93a8'); });
+    traitR(x, 4, 10, 12, 8, '#3a2a1a', 2); traitR(x, 5, 8, 12, 11, '#2a1a10', 2); pxr(x, 7, 6, 2, 1, '#9a9a9a'); pxr(x, 8, 4, 1, 1, '#c8c8c8');
+    pxr(x, 15, 10, 10, 3, '#5a6a8a'); pxr(x, 15, 9, 3, 2, '#c9a46a'); pxr(x, 20, 6, 5, 5, '#8a5a33'); pxr(x, 21, 5, 3, 1, '#a8784a'); pxr(x, 22, 7, 1, 2, '#c9955a');
+  });
+  propR('p-aventurier', 26, 12, function (x) {
+    rond(x, 4, 8, 2, '#e8e4d8'); pxr(x, 3, 8, 1, 1, '#24160c'); pxr(x, 6, 8, 9, 1, '#d8d4c8');
+    for (var i = 0; i < 4; i++) pxr(x, 8 + i * 2, 6, 1, 4, '#d8d4c8');
+    traitR(x, 15, 9, 20, 11, '#d8d4c8', 1); traitR(x, 15, 8, 21, 7, '#d8d4c8', 1);
+    traitR(x, 2, 3, 14, 1, '#c8ccd8', 1); pxr(x, 3, 2, 1, 3, '#8a6a40'); rond(x, 22, 6, 3, '#7a4a2a'); rond(x, 22, 6, 1, '#c9a46a'); pxr(x, 0, 11, 26, 1, '#3f5a2a');
+  });
+  propR('p-champi-g', 18, 22, function (x) {
+    pxr(x, 7, 10, 5, 12, '#f1e4c2'); pxr(x, 7, 10, 1, 12, '#c9b896');
+    rond(x, 9, 8, 7, '#c8323a'); pxr(x, 1, 8, 17, 3, '#c8323a'); pxr(x, 2, 11, 15, 1, '#8a1a24');
+    [[5, 4], [11, 3], [14, 7], [7, 8], [3, 8]].forEach(function (p) { rond(x, p[0], p[1], 1, '#ffffff'); });
+  });
+  propR('p-champi-v', 14, 16, function (x) {
+    pxr(x, 6, 8, 3, 8, '#e0d8f0'); rond(x, 7, 6, 5, '#7a3ab8'); pxr(x, 1, 6, 13, 2, '#7a3ab8'); pxr(x, 2, 8, 11, 1, '#4a1a7a');
+    [[4, 3], [9, 4], [6, 6]].forEach(function (p) { pxr(x, p[0], p[1], 1, 1, '#c8ff70'); });
+  });
+  propR('p-panneau', 18, 22, function (x) {
+    pxr(x, 8, 4, 2, 18, '#6b4630'); pxr(x, 2, 4, 12, 4, '#a8784a'); pxr(x, 0, 5, 2, 2, '#a8784a'); pxr(x, 4, 10, 12, 4, '#a8784a'); pxr(x, 16, 11, 2, 2, '#a8784a');
+    pxr(x, 4, 6, 7, 1, '#5a3a22'); pxr(x, 6, 12, 7, 1, '#5a3a22'); pxr(x, 0, 21, 18, 1, '#3f5a2a');
+  });
+  propR('p-oeufs', 22, 11, function (x) {
+    pxr(x, 1, 7, 20, 4, '#8a6a40'); traitR(x, 0, 7, 21, 9, '#a8844a', 1); traitR(x, 0, 10, 21, 7, '#6b4630', 1);
+    [[6, 4], [11, 3], [16, 4]].forEach(function (p, k) { rond(x, p[0], p[1] + 1, 3, k === 1 ? '#e8d8b0' : '#d8e0e8'); pxr(x, p[0] - 1, p[1] - 1, 1, 1, '#ffffff'); pxr(x, p[0] + 1, p[1] + 2, 1, 1, '#8a8a7a'); });
+  });
+  propR('p-autel-sang', 18, 15, function (x) {
+    pxr(x, 2, 6, 14, 9, '#3a3446'); pxr(x, 0, 4, 18, 3, '#4e4860'); pxr(x, 0, 4, 18, 1, '#6a6480');
+    pxr(x, 6, 2, 6, 2, '#8a1a24'); pxr(x, 8, 0, 2, 2, '#c8323a'); pxr(x, 7, 7, 1, 7, '#8a1a24'); pxr(x, 11, 8, 1, 5, '#8a1a24'); pxr(x, 4, 9, 2, 2, '#c8323a');
+  });
+  propR('p-porte', 30, 34, function (x) {
+    pxr(x, 0, 6, 6, 28, '#6d7288'); pxr(x, 24, 6, 6, 28, '#6d7288'); pxr(x, 0, 0, 30, 8, '#8d93a8'); pxr(x, 0, 0, 30, 1, '#b9bfd2');
+    pxr(x, 6, 8, 18, 26, '#3a3d52'); for (var j = 10; j < 34; j += 5) pxr(x, 6, j, 18, 1, '#2a2d40'); pxr(x, 14, 8, 2, 26, '#2a2d40');
+    pxr(x, 1, 12, 4, 1, '#5a5f74'); pxr(x, 25, 18, 4, 1, '#5a5f74'); pxr(x, 2, 26, 3, 3, '#3f7a3a'); pxr(x, 25, 29, 4, 2, '#3f7a3a');
+  });
+}
+
+/* ── des traces propres au pays ── */
+RENC_P.trace.lst.forEach(function (v) { v.b = v.cle === 'p-griffes' ? 'bois foret fees maudit marais col' : v.cle === 'p-poils' ? 'bois foret fees maudit collines col lac' : 'tous'; });
+RENC_P.trace.lst.push(
+  { cle: 'p-plume', b: 'collines col canyon desert lac', titre: TR('Une plume immense', 'Een reusachtige veer'), aide: TR('Deux bonnes réponses pour deviner d\'où elle vient.', 'Twee goede antwoorden om te raden waar ze vandaan komt.') },
+  { cle: 'p-bave', b: 'marais lac necro maudit mines volcan', titre: TR('Une traînée de bave', 'Een slijmspoor'), aide: TR('Deux bonnes réponses pour la suivre sans glisser.', 'Twee goede antwoorden om het te volgen zonder uit te glijden.') },
+  { cle: 'p-arbre-casse', b: 'bois foret fees maudit marais', titre: TR('Un arbre renversé', 'Een omgevallen boom'), aide: TR('Deux bonnes réponses pour voir ce qui l\'a abattu.', 'Twee goede antwoorden om te zien wat hem heeft geveld.') });
+function biomePiste(M) { return (REGIONS[M.k] || {}).b || 'bois'; }
+function dessousPiste(M) { return ['mines', 'volcan', 'necro', 'citadelle'].indexOf(biomePiste(M)) !== -1; }
+
+/* ── les nouvelles rencontres à questions ── */
+var NOUV_P = {
+  campement: { n: 2, cle: 'p-camp', titre: TR('Un campement abandonné', 'Een verlaten kampplaats'), aide: TR('Deux bonnes réponses pour le fouiller.', 'Twee goede antwoorden om het te doorzoeken.'), rate: TR('Rien dans ce sac-là', 'Niets in die zak'),
+    gain: async function (M) { var l = []; l.push('+' + (gagnerRes('bois', .8) || 1) + ' ' + nomRes('bois')); l.push('+' + (gagnerRes('cuir', .6) || 1) + ' ' + nomRes('cuir'));
+      if (Math.random() < .4) { var pk = piecePiste(M); if (pk) { EXPE.butin[pk] = (EXPE.butin[pk] || 0) + 1; l.push('+1 ' + T(PIECES[pk].nom)); } }
+      if (Math.random() < .25) { H().conso['p-petite'] = (H().conso['p-petite'] || 0) + 1; l.push('+1 ' + T('potion')); }
+      await banniere(T('Fouille terminée'), l.join(' · '), 1000); } },
+  aventurier: { n: 3, cle: 'p-aventurier', titre: TR('Les restes d\'un aventurier', 'De resten van een avonturier'), aide: TR('Trois bonnes réponses pour fouiller son paquetage.', 'Drie goede antwoorden om zijn bepakking te doorzoeken.'), rate: TR('Les os s\'éparpillent', 'De botten vallen uiteen'),
+    gain: async function (M) { var l = ['+' + (gagnerRes('or', 2) || 1) + ' ' + nomRes('or')], pk = piecePiste(M); if (pk && Math.random() < .5) { EXPE.butin[pk] = (EXPE.butin[pk] || 0) + 1; l.push('+1 ' + T(PIECES[pk].nom)); }
+      await banniere(T('Il n\'en aura plus besoin'), l.join(' · '), 1000); if (Math.random() < .35) dropObjet('coffre'); } },
+  gibier: { n: 2, titre: TR('Du gibier au bord du sentier', 'Wild langs het pad'), aide: TR('Deux bonnes réponses pour l\'approcher sans bruit.', 'Twee goede antwoorden om het stil te benaderen.'), rate: TR('Il dresse l\'oreille', 'Het spitst de oren'),
+    gain: async function (M, et) { var g = gagnerRes('cuir', et.cle === 'cerf' ? 1.6 : .9); nombre('+' + (g || 1) + ' ' + nomRes('cuir'), 48, 16, 'fort'); } },
+  champignon: { n: 2, cle: 'p-champi-g', titre: TR('Un champignon géant', 'Een reuzenpaddenstoel'), aide: TR('Deux bonnes réponses pour en détacher un morceau.', 'Twee goede antwoorden om er een stuk af te halen.'), rate: TR('Il crache un nuage de spores', 'Hij spuwt een sporenwolk'),
+    gain: async function (M) { var g = gagnerRes('herbes', 1.5), c = gagnerRes('cristal', .4); nombre('+' + (g || 1) + ' ' + nomRes('herbes') + (c ? ' · +' + c + ' ' + nomRes('cristal') : ''), 48, 16, 'fort'); } }
+};
+
+/* ── les choix, sans question ── */
+var CHOIX_P = {
+  carrefour: { cle: 'p-panneau', titre: TR('Un carrefour', 'Een kruispunt'),
+    jouer: async function (M) {
+      var q = M.q, chasse = q.type === 'chasse' && M.monstre && !M.monstre.revele, mas = q.type === 'massacre';
+      var txt = chasse ? TR('À gauche, des ronces et des traces fraîches : plus court, mais quelque chose y rôde. À droite, un sentier qui longe un ruisseau.', 'Links doornstruiken en verse sporen: korter, maar er sluipt iets rond. Rechts een pad langs een beek.') :
+        mas ? TR('À gauche, des hurlements. À droite, un détour tranquille le long de l\'eau.', 'Links gehuil. Rechts een rustige omweg langs het water.') :
+        TR('À gauche, un sous-bois touffu où tout pousse. À droite, une vieille route où traîne parfois un coffre oublié.', 'Links een dicht kreupelhout waar alles groeit. Rechts een oude weg waar soms een vergeten kist ligt.');
+      var a = chasse ? TR('Les ronces', 'De doornstruiken') : mas ? TR('Vers les hurlements', 'Naar het gehuil') : TR('Le sous-bois', 'Het kreupelhout');
+      var b = chasse || mas ? TR('Le ruisseau', 'De beek') : TR('La vieille route', 'De oude weg');
+      var i = await modal(T('Un carrefour'), [txt], [{ t: a }, { t: b }]);
+      if (chasse) { if (i === 0) { await uneTrace(M, T('Raccourci !')); M.forces = ['meute']; } else M.forces = ['source']; }
+      else if (mas) M.forces = i === 0 ? ['cible'] : ['source'];
+      else M.forces = i === 0 ? ['cueillette', 'cueillette'] : ['coffre'];
+    } },
+  nid: { cle: 'p-oeufs', titre: TR('Un nid d\'œufs énormes', 'Een nest met reuzeneieren'), dehors: 1,
+    jouer: async function (M) {
+      var i = await modal(T('Un nid d\'œufs énormes'), [TR('Ils valent sûrement quelque chose… mais la mère ne doit pas être loin.', 'Ze zijn vast iets waard… maar de moeder is vast niet ver.')], [{ t: TR('Prendre un œuf', 'Een ei pakken') }, { t: TR('Le laisser', 'Het laten liggen'), sec: 1 }]);
+      if (i !== 0) return;
+      if (Math.random() < .55) { var l = [], k; for (var n = 0; n < 2; n++) { k = piecePiste(M); if (k) { EXPE.butin[k] = (EXPE.butin[k] || 0) + 1; l.push(T(PIECES[k].nom)); } } var g = gagnerRes('or', 2); l.push('+' + (g || 1) + ' ' + nomRes('or')); await banniere(T('Personne ne t\'a vu'), l.join(' · '), 1100); }
+      else { await banniere(T('La mère revient !'), T('Elle n\'a pas l\'air contente.'), 900); M.forces = ['mob']; }
+    } },
+  champi: { cle: 'p-champi-v', titre: TR('Un champignon étrange', 'Een vreemde paddenstoel'),
+    jouer: async function (M) {
+      var i = await modal(T('Un champignon étrange'), [TR('Il sent bon et brille un peu. Le goûter ?', 'Hij ruikt lekker en glimt een beetje. Proeven?')], [{ t: TR('Le goûter', 'Proeven') }, { t: TR('Passer son chemin', 'Doorlopen'), sec: 1 }]);
+      if (i !== 0) return;
+      if (Math.random() < .5) { soigner(Math.round(pvMax() * .35)); M.benediction = (M.benediction || 0) + 1; await banniere(T('Délicieux !'), T('+1 énergie au premier tour du prochain combat.'), 1100); }
+      else { var d = Math.round(pvMax() * .15); H().pv = Math.max(1, H().pv - d); hud('hud-combat'); son('mal'); secouer(3, 300); await banniere(T('Beurk…'), T('Tu perds {0} PV.', d), 1000); }
+    } },
+  autel: { cle: 'p-autel-sang', titre: TR('Un autel de sang', 'Een bloedaltaar'),
+    jouer: async function (M) {
+      var i = await modal(T('Un autel de sang'), [TR('Une voix murmure : « Un peu de ta vie, et ta prochaine bataille commencera en force. »', 'Een stem fluistert: „Een beetje van je leven, en je volgende gevecht begint sterk.”')], [{ t: TR('Offrir 20 % de ta vie', '20 % van je leven geven') }, { t: TR('S\'éloigner', 'Weggaan'), sec: 1 }]);
+      if (i !== 0) return;
+      H().pv = Math.max(1, H().pv - Math.round(pvMax() * .2)); hud('hud-combat'); M.benediction = (M.benediction || 0) + 2; son('niveau'); SC.eclair = maintenant() + 120;
+      await banniere(T('Le pacte est scellé'), T('+2 énergie au premier tour du prochain combat.'), 1100);
+    } },
+  potions: { cle: 'f-marchand', titre: TR('Un marchand de potions', 'Een drankjesverkoper'),
+    jouer: async function (M) {
+      var prix = 10 + 5 * M.k, a = stock('or') >= prix;
+      var i = await modal(T('Un marchand de potions'), [T('« Une petite potion pour la route ? {0} or, c\'est donné ! »', prix), T('Tu as {0} or.', stock('or'))], a ? [{ t: T('Acheter ({0} or)', prix) }, { t: TR('Non merci', 'Nee, dank je'), sec: 1 }] : [{ t: TR('Pas assez d\'or', 'Niet genoeg goud'), sec: 1 }]);
+      if (!a || i !== 0) return;
+      etat.camp.res.or -= prix; H().conso['p-petite'] = (H().conso['p-petite'] || 0) + 1; son('or'); sauver(); nombre('+1 ' + T('potion'), 48, 16, 'soin');
+    } }
+};
+
+/* ── les mini-jeux ── */
+var GLYPH_P = [['..#..', '.#.#.', '#...#', '.#.#.', '..#..'], ['#...#', '.#.#.', '..#..', '.#.#.', '#...#'], ['#####', '..#..', '..#..', '..#..', '#####'], ['#.#.#', '#.#.#', '#####', '..#..', '..#..']];
+function glyphe(x, g, X, Y, c) { GLYPH_P[g].forEach(function (r, j) { for (var i = 0; i < 5; i++) if (r[i] === '#') { x.fillStyle = c; x.fillRect(X + i, Y + j, 1, 1); } }); }
+function tapAttendu(test) { return new Promise(function (res) { SC.tapQ = function (p) { var r = test(p); if (r != null) { SC.tapQ = null; res(r); } }; }); }
+function progP(a, now) { return Math.max(0, Math.min(1, (now - a.t0) / a.dur)); }
+var JEUX_P = {
+  /* les gobelets : une bourse sous l'un des trois, il mélange, on montre du doigt */
+  gobelets: { n: 2, cle: 'gobelin', titre: TR('Un gobelin joueur', 'Een gokkende goblin'), aide: TR('Il te défie aux gobelets. Deux bonnes réponses pour qu\'il accepte ; chaque erreur lui fait mélanger davantage.', 'Hij daagt je uit voor het bekertjesspel. Twee goede antwoorden en hij doet mee; elke fout laat hem meer schudden.'),
+    consigne: TR('Touche le gobelet qui cache la bourse', 'Tik op het bekertje met het buideltje'), rate: TR('Il ricane', 'Hij grinnikt'),
+    init: function (et) { et.g = { pos: [0, 1, 2], bille: Math.floor(Math.random() * 3), swaps: 4 }; },
+    erreur: function (et) { et.g.swaps = Math.min(10, et.g.swaps + 2); },
+    montre: function () { var e = SC.ennemi; if (e) { e.x = 80 - Math.round(spr(e.spr, e.pal, e.cle).width / 2); } },
+    X: [38, 52, 66],
+    cupX: function (et, c, now) {
+      var G = et.g, J = JEUX_P.gobelets, a = G.anim, x = J.X[G.pos[c]], y = 0;
+      if (a && (a.c1 === c || a.c2 === c)) { var p = progP(a, now), de = J.X[c === a.c1 ? a.s1 : a.s2], ve = J.X[c === a.c1 ? a.s2 : a.s1]; x = de + (ve - de) * p; y = Math.round(Math.sin(p * Math.PI) * (c === a.c1 ? -4 : 2)); }
+      if (G.leve && G.leve.c === c) { var pl = progP(G.leve, now); y -= Math.round(8 * Math.sin(Math.min(1, pl) * Math.PI)); }
+      return [Math.round(x), y];
+    },
+    fond: function (x, now, et) {
+      var G = et.g; if (!G) return;
+      for (var c = 0; c < 3; c++) {
+        var p = this.cupX(et, c, now), X = p[0], Y = 61 + p[1];
+        if (c === G.bille && G.leve && G.leve.c === c) { x.fillStyle = '#ffd24d'; x.fillRect(X - 2, 59, 4, 2); x.fillStyle = '#fff3b0'; x.fillRect(X - 1, 59, 1, 1); }
+        x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(X - 4, 61, 9, 1);
+        x.fillStyle = '#8a5a33'; x.fillRect(X - 4, Y - 7, 9, 7); x.fillRect(X - 3, Y - 9, 7, 2);
+        x.fillStyle = '#c9955a'; x.fillRect(X - 3, Y - 7, 2, 6); x.fillStyle = '#5a3a22'; x.fillRect(X - 4, Y - 1, 9, 1);
+        if (G.choix && Math.floor(now / 300) % 2) { x.fillStyle = '#ffd24d'; x.fillRect(X, Y - 13, 1, 2); }
+      }
+    },
+    jouer: async function (et) {
+      var G = et.g, X = EXPE;
+      G.leve = { c: G.bille, t0: maintenant(), dur: 900 }; await attendre(1000); G.leve = null; if (EXPE !== X) return false;
+      for (var s = 0; s < G.swaps; s++) {
+        var c1 = Math.floor(Math.random() * 3), c2 = (c1 + 1 + Math.floor(Math.random() * 2)) % 3, dur = 430 - s * 10;
+        G.anim = { c1: c1, c2: c2, s1: G.pos[c1], s2: G.pos[c2], t0: maintenant(), dur: dur }; bip(300, 260, .05, 'triangle', .03);
+        await attendre(dur + 40); var t = G.pos[c1]; G.pos[c1] = G.pos[c2]; G.pos[c2] = t; G.anim = null; if (EXPE !== X) return false;
+      }
+      G.choix = true; majEtiquette();
+      var J = this, c = await tapAttendu(function (p) { if (p.y < 44) return null; var best = null, bd = 8; for (var k = 0; k < 3; k++) { var d = Math.abs(J.X[G.pos[k]] - p.x); if (d < bd) { bd = d; best = k; } } return best; });
+      G.choix = false; G.leve = { c: c, t0: maintenant(), dur: 1400 }; if (c !== G.bille) setTimeout(function () { if (G.leve && G.leve.c === c) G.leve = { c: G.bille, t0: maintenant(), dur: 1200 }; }, 700);
+      await attendre(800); return c === G.bille;
+    },
+    gain: async function (M, ok) {
+      if (!ok) { await banniere(T('Raté !'), T('Le gobelin ricane et file avec sa bourse.'), 1000); return; }
+      var l = ['+' + (gagnerRes('or', 3) || 1) + ' ' + nomRes('or')], pk = piecePiste(M); if (pk) { EXPE.butin[pk] = (EXPE.butin[pk] || 0) + 1; l.push('+1 ' + T(PIECES[pk].nom)); }
+      await banniere(T('Gagné !'), l.join(' · '), 1100);
+    } },
+  /* la piste à refaire : des empreintes s'allument dans un ordre, on le refait */
+  simon: { n: 2, sansProp: 1, titre: TR('La piste se brouille', 'Het spoor raakt verward'), aide: TR('Deux bonnes réponses pour observer les empreintes, puis refais leur ordre. Chaque erreur en ajoute une.', 'Twee goede antwoorden om de afdrukken te bekijken, doe daarna hun volgorde na. Elke fout voegt er een toe.'),
+    consigne: TR('Refais l\'ordre des empreintes', 'Doe de volgorde van de afdrukken na'), rate: TR('Tu regardes ailleurs', 'Je kijkt de andere kant op'),
+    X: [32, 46, 60, 74],
+    init: function (et) { et.g = { len: 3, hl: -1, ok: -1, ko: -1 }; },
+    erreur: function (et) { et.g.len = Math.min(6, et.g.len + 1); },
+    fond: function (x, now, et) {
+      var G = et.g; if (!G) return;
+      this.X.forEach(function (X, i) {
+        var on = G.hl === i, ok = G.ok === i, ko = G.ko === i, Y = 64 + (i % 2) * 2;
+        if (on || ok || ko) { x.fillStyle = on ? 'rgba(255,210,77,.55)' : ok ? 'rgba(140,240,150,.55)' : 'rgba(255,90,74,.6)'; x.fillRect(X - 5, Y - 4, 11, 7); }
+        x.fillStyle = on ? '#ffd24d' : '#2a1a10'; x.fillRect(X - 2, Y - 1, 5, 3); x.fillRect(X - 3, Y - 3, 1, 1); x.fillRect(X - 1, Y - 4, 1, 1); x.fillRect(X + 1, Y - 4, 1, 1); x.fillRect(X + 3, Y - 3, 1, 1);
+        if (G.choix && Math.floor(now / 400 + i) % 4 === 0) { x.fillStyle = 'rgba(255,255,255,.5)'; x.fillRect(X, Y - 6, 1, 1); }
+      });
+    },
+    jouer: async function (et) {
+      var G = et.g, X = EXPE, seq = [], i; for (i = 0; i < G.len; i++) seq.push(Math.floor(Math.random() * 4));
+      await attendre(400);
+      for (i = 0; i < seq.length; i++) { G.hl = seq[i]; bip(330 + seq[i] * 110, 330 + seq[i] * 110, .16, 'triangle', .04); await attendre(560); G.hl = -1; await attendre(180); if (EXPE !== X) return false; }
+      G.choix = true; majEtiquette(); var J = this;
+      for (i = 0; i < seq.length; i++) {
+        var t = await tapAttendu(function (p) { if (p.y < 52) return null; for (var k = 0; k < 4; k++) if (Math.abs(J.X[k] - p.x) < 7) return k; return null; });
+        if (EXPE !== X) return false;
+        if (t !== seq[i]) { G.ko = t; G.choix = false; son('mal'); await attendre(600); G.ko = -1; return false; }
+        G.ok = t; bip(330 + t * 110, 330 + t * 110, .12, 'triangle', .04); await attendre(220); G.ok = -1;
+      }
+      G.choix = false; return true;
+    },
+    gain: async function (M, ok) {
+      if (!ok) { await banniere(T('Tu perds la piste…'), T('Tant pis, on avance.'), 900); return; }
+      if (M.monstre && !M.monstre.revele && !M.monstre.mort) await uneTrace(M, T('Bien lu !'));
+      else { var pk = piecePiste(M); if (pk) EXPE.butin[pk] = (EXPE.butin[pk] || 0) + 1; await banniere(T('Bien lu !'), pk ? '+1 ' + T(PIECES[pk].nom) : null, 900); }
+      gagnerRes('cuir', .5);
+    } },
+  /* le gué : chaque bonne réponse, un saut ; on choisit la pierre solide, pas la fendue */
+  gue: { n: 3, sansProp: 1, dehors: 1, titre: TR('Une rivière à traverser', 'Een rivier om over te steken'), aide: TR('Chaque bonne réponse te fait sauter. Choisis la pierre solide, pas celle qui est fendue.', 'Elk goed antwoord laat je springen. Kies de stevige steen, niet de gebarsten.'),
+    consigne: TR('Touche la pierre solide', 'Tik op de stevige steen'), rate: TR('Tu hésites sur la rive', 'Je aarzelt op de oever'),
+    X: [34, 52, 70],
+    init: function (et) { et.g = { pierres: this.X.map(function () { return Math.random() < .5 ? 0 : 1; }), faites: [], tombe: null }; },
+    yP: function (r) { return r === 0 ? 58 : 66; },
+    fond: function (x, now, et) {
+      var G = et.g, J = this; if (!G) return;
+      x.fillStyle = '#2f6a9a'; x.fillRect(20, 56, 76, 16); x.fillStyle = '#3f86bf'; x.fillRect(20, 56, 76, 2);
+      for (var k = 0; k < 9; k++) { var wx = 22 + ((k * 13 + Math.floor(now / 90)) % 72); x.fillStyle = '#9fd0f0'; x.fillRect(wx, 59 + (k % 4) * 3, 3, 1); }
+      x.fillStyle = '#6b8a4a'; x.fillRect(16, 55, 5, 17);
+      J.X.forEach(function (X, s) {
+        var vue = s < et.fait || (G.choix === s); if (!vue) return;
+        [0, 1].forEach(function (r) {
+          var Y = J.yP(r), w = r === 0 ? 7 : 9, fendue = G.pierres[s] !== r, coulee = G.tombe && G.tombe.s === s && G.tombe.r === r;
+          if (coulee && now - G.tombe.t0 > 300) return;
+          var dy = fendue && G.choix === s ? Math.round(Math.sin(now / 120)) : 0;
+          x.fillStyle = fendue ? '#5a5f74' : '#8d93a8'; x.fillRect(X - (w >> 1), Y - 3 + dy, w, 3); x.fillStyle = fendue ? '#6d7288' : '#b9bfd2'; x.fillRect(X - (w >> 1) + 1, Y - 3 + dy, w - 2, 1);
+          if (fendue) { x.fillStyle = '#24283a'; x.fillRect(X - 1, Y - 3 + dy, 1, 2); x.fillRect(X, Y - 2 + dy, 1, 2); }
+          if (G.choix === s && Math.floor(now / 350) % 2) { x.fillStyle = '#ffd24d'; x.fillRect(X, Y - 6, 1, 2); }
+        });
+      });
+      x.fillStyle = '#6b8a4a'; x.fillRect(90, 55, 6, 17);
+    },
+    bonne: async function (et, M) {
+      var G = et.g, s = et.fait - 1, J = this, X = EXPE;
+      cacherQuestions(); G.choix = s; majEtiquette();
+      var r = await tapAttendu(function (p) { if (Math.abs(p.x - J.X[s]) > 9 || p.y < 50) return null; return p.y < 62 ? 0 : 1; });
+      G.choix = null; if (EXPE !== X) return;
+      await sautHeros(J.X[s] - 6, J.yP(r) + 2);
+      if (G.pierres[s] !== r) {
+        G.tombe = { s: s, r: r, t0: maintenant() }; son('mal'); secouer(2, 250);
+        for (var k = 0; k < 14; k++) SC.parts.push({ x: J.X[s] + (Math.random() - .5) * 8, y: J.yP(r) - 2, vx: (Math.random() - .5) * 1.2, vy: -.6 - Math.random(), g: .08, vie: 26, c: Math.random() < .5 ? '#9fd0f0' : '#ffffff' });
+        var d = Math.round(pvMax() * .08); H().pv = Math.max(1, H().pv - d); hud('hud-combat'); nombre(T('Plouf ! −{0}', d), J.X[s] - 10, 40, 'mal');
+        G.pierres[s] = r;
+      } else bip(500, 700, .06, 'triangle', .04);
+      G.faites.push(s); majEtiquette();
+    },
+    jouer: async function () { await sautHeros(84, 60); return true; },
+    gain: async function (M) {
+      var l = ['+' + (gagnerRes('herbes', 1) || 1) + ' ' + nomRes('herbes')], pk = piecePiste(M);
+      if (pk && Math.random() < .6) { EXPE.butin[pk] = (EXPE.butin[pk] || 0) + 1; l.push('+1 ' + T(PIECES[pk].nom)); }
+      if (Math.random() < .3) { var c = gagnerRes('cristal', 1); l.push('+' + (c || 1) + ' ' + nomRes('cristal')); }
+      await banniere(T('Sur l\'autre rive !'), l.join(' · '), 1000);
+    } },
+  /* la porte runique : chaque bonne réponse allume une rune ; on les aligne, chacune entraîne sa voisine */
+  runes: { n: 3, cle: 'p-porte', titre: TR('Une porte runique', 'Een runendeur'), aide: TR('Chaque bonne réponse allume une rune. Ensuite, fais correspondre les runes aux signes gravés : chaque rune entraîne sa voisine.', 'Elk goed antwoord laat een rune oplichten. Zet daarna de runen gelijk met de gegraveerde tekens: elke rune neemt haar buur mee.'),
+    consigne: TR('Aligne les runes sur les signes gravés', 'Zet de runen gelijk met de gegraveerde tekens'), rate: TR('Une rune vacille', 'Een rune flakkert'),
+    X: [60, 70, 80],
+    init: function (et) {
+      var b = [Math.floor(Math.random() * 4), Math.floor(Math.random() * 4), Math.floor(Math.random() * 4)], d;
+      do { d = b.map(function () { return Math.floor(Math.random() * 4); }); } while (d[0] === b[0] && d[1] === b[1] && d[2] === b[2]);
+      et.g = { but: b, cad: d, flash: [0, 0, 0] };
+    },
+    dessus: function (x, now, et) {
+      var G = et.g, J = this; if (!G) return;
+      J.X.forEach(function (X, i) {
+        var on = i < et.fait, bon = G.cad[i] === G.but[i];
+        x.fillStyle = '#14122b'; x.fillRect(X - 5, 13, 11, 11); x.fillStyle = on ? (bon && G.choix ? '#5a4a14' : '#1e3a5a') : '#2a2840'; x.fillRect(X - 4, 14, 9, 9);
+        if (now < G.flash[i]) { x.fillStyle = 'rgba(255,255,255,.4)'; x.fillRect(X - 4, 14, 9, 9); }
+        glyphe(x, G.cad[i], X - 2, 16, on ? (bon && G.choix ? '#ffd24d' : '#7fe0ff') : '#55526e');
+        glyphe(x, G.but[i], X - 2, 31, '#c8ccd8');
+      });
+    },
+    jouer: async function (et) {
+      var G = et.g, J = this, X = EXPE; G.choix = true; majEtiquette();
+      while (!(G.cad[0] === G.but[0] && G.cad[1] === G.but[1] && G.cad[2] === G.but[2])) {
+        var i = await tapAttendu(function (p) { if (p.y < 10 || p.y > 27) return null; for (var k = 0; k < 3; k++) if (Math.abs(J.X[k] - p.x) < 6) return k; return null; });
+        if (EXPE !== X) return false;
+        G.cad[i] = (G.cad[i] + 1) % 4; G.flash[i] = maintenant() + 120; if (i < 2) { G.cad[i + 1] = (G.cad[i + 1] + 1) % 4; G.flash[i + 1] = maintenant() + 120; }
+        bip(420 + i * 90, 520 + i * 90, .06, 'square', .03);
+      }
+      G.choix = false; son('niveau'); var e = SC.ennemi; if (e) e.flash = maintenant() + 300;
+      etincelles(70, 40, 24, ['#7fe0ff', '#ffffff', '#ffd24d'], 1); secouer(2, 300); await attendre(500);
+      return true;
+    },
+    gain: async function (M) {
+      var l = ['+' + (gagnerRes('or', 3) || 1) + ' ' + nomRes('or')], pk = piecePiste(M); if (pk) { EXPE.butin[pk] = (EXPE.butin[pk] || 0) + 1; l.push('+1 ' + T(PIECES[pk].nom)); }
+      await banniere(T('La porte s\'ouvre'), l.join(' · '), 1100); if (Math.random() < .6) dropObjet('coffre');
+    } }
+};
+
+/* ── le saut du héros, image par image ── */
+function sautHeros(x1, b1) {
+  var M = EXPE.mh; M.saut = { x0: SC.heros.x, b0: SC.heros.base, x1: x1, b1: b1, t0: maintenant(), dur: 420 }; bip(260, 520, .08, 'triangle', .04);
+  return attendre(440).then(function () { if (M.saut) { SC.heros.x = x1; SC.heros.base = b1; M.saut = null; } });
+}
+function tickPiste(M, now) {
+  if (M.saut) { var p = progP(M.saut, now), a = M.saut; SC.heros.x = Math.round(a.x0 + (a.x1 - a.x0) * p); SC.heros.base = Math.round(a.b0 + (a.b1 - a.b0) * p - Math.sin(p * Math.PI) * 7); if (p >= 1) { SC.heros.x = a.x1; SC.heros.base = a.b1; M.saut = null; } }
+  if (M.defile && SC.heros.x !== 12) { if (M.retour == null) M.retour = SC.heros.x; SC.heros.x = Math.round(M.retour + (12 - M.retour) * progP(M.defile, now)); }
+  if (!M.defile) M.retour = null;
+}
+var decorCourantAvantVar = decorCourant;
+decorCourant = function () { var M = EXPE && EXPE.mh; if (M && C && C.famille === 'traque') tickPiste(M, maintenant()); return decorCourantAvantVar(); };
+function jeuEnCours() { var M = EXPE && EXPE.mh, et = M && M.etape; return C && C.famille === 'traque' && M && et && et.t === 'mj' && et.vue && !et.finie ? et : null; }
+var dessinerFondAvantVar = dessinerFond;
+dessinerFond = function (x, now) { dessinerFondAvantVar(x, now); var et = jeuEnCours(); if (et && JEUX_P[et.jeu].fond) JEUX_P[et.jeu].fond(x, now, et); };
+var dessusQueteAvantVar = dessusQuete;
+dessusQuete = function (x, now) { dessusQueteAvantVar(x, now); var et = jeuEnCours(); if (et && JEUX_P[et.jeu].dessus) JEUX_P[et.jeu].dessus(x, now, et); };
+
+/* ── le tirage : la rencontre de base, ou parfois une autre ── */
+var tirerEtapeAvantVar = tirerEtape;
+tirerEtape = function (M) {
+  var q = M.q, mo = M.monstre;
+  if (q.type === 'chasse' && mo && mo.revele && !mo.mort) return 'grand';
+  if (M.forces && M.forces.length) return M.forces.shift();
+  var t = tirerEtapeAvantVar(M), r = Math.random(), mj = M.nEtapes >= 1 && (M.mjFaits || 0) < 2;
+  if (t === 'mob' || t === 'meute' || t === 'cible' || t === 'grand') return t;
+  if (t === 'trace' && M.depuisTrace >= 2) return mj && r < .3 ? 'mj' : 'trace';
+  var p = t === 'cueillette' && q.type === 'recolte' ? .3 : t === 'trace' ? .4 : .65;
+  if (r >= p) return t;
+  r = Math.random();
+  if (mj && r < .3) return 'mj';
+  if (M.nEtapes >= 2 && (M.choixFaits || 0) < 2 && r < .45) return 'choix';
+  return r < .75 ? 'fortuit' : 'nouv';
+};
+var creerEtapeAvantVar = creerEtape;
+creerEtape = function (t, M) {
+  var et, l, x, b = biomePiste(M), dessous = dessousPiste(M);
+  fabriquerVariete(); preparerRecits(); if (!SPR['f-marchand']) fabriquerFortuits();
+  if (t === 'trace') {
+    et = creerEtapeAvantVar(t, M);
+    l = RENC_P.trace.lst.filter(function (v) { return (v.b === 'tous' || v.b.split(' ').indexOf(b) !== -1) && v.cle !== M.derniereCle; });
+    if (l.length) { x = mel(l)[0]; et.cle = x.cle; et.titre = x.titre; et.aide = x.aide; }
+    return et;
+  }
+  if (t === 'fortuit') {
+    l = FORTUITS.filter(function (F) { return ['coffre', 'source', 'autel', 'voyageur'].indexOf(F.id) === -1 && (F.ou === 'tous' || (F.ou === 'dehors' && !dessous)) && F.id !== M.dernierFortuit; });
+    var F = mel(l)[0], tr = typeof tirerRenc === 'function' ? tirerRenc(POIDS_RENC.arbre) : 0; M.dernierFortuit = F.id;
+    var cle = F.cle; spr(cle); if (tr) cle = sprTier(cle, tr);
+    return { t: 'fortuit', F: F, rar: tr, n: F.n, fait: 0, cle: cle, titre: F.titre, aide: F.aide, rate: F.rate };
+  }
+  if (t === 'nouv') {
+    l = Object.keys(NOUV_P).filter(function (k) { return k !== M.dernierNouv && !(dessous && k === 'gibier'); }); x = mel(l)[0]; M.dernierNouv = x;
+    var D = NOUV_P[x]; et = { t: 'nouv', k2: x, n: D.n, fait: 0, cle: D.cle, titre: D.titre, aide: D.aide, rate: D.rate };
+    if (x === 'gibier') { et.cle = Math.random() < .5 ? 'cerf' : 'lapin'; et.titre = et.cle === 'cerf' ? TR('Un cerf au bord du sentier', 'Een hert langs het pad') : TR('Un lièvre dans les fougères', 'Een haas in de varens'); }
+    return et;
+  }
+  if (t === 'choix') {
+    l = Object.keys(CHOIX_P).filter(function (k) { return k !== M.dernierChoix && !(dessous && CHOIX_P[k].dehors) && !(k === 'carrefour' && M.q.type === 'chasse' && M.monstre && M.monstre.revele); }); x = mel(l)[0]; M.dernierChoix = x; M.choixFaits = (M.choixFaits || 0) + 1;
+    return { t: 'choix', k2: x, n: 0, fait: 0, cle: CHOIX_P[x].cle, titre: CHOIX_P[x].titre, aide: null };
+  }
+  if (t === 'mj') {
+    M.mjVus = M.mjVus || [];
+    l = Object.keys(JEUX_P).filter(function (k) { return M.mjVus.indexOf(k) === -1 && !(dessous && JEUX_P[k].dehors); });
+    if (!l.length) return creerEtapeAvantVar('cueillette', M);
+    x = mel(l)[0]; M.mjVus.push(x); M.mjFaits = (M.mjFaits || 0) + 1;
+    var Jx = JEUX_P[x]; et = { t: 'mj', jeu: x, n: Jx.n, fait: 0, cle: Jx.cle || null, sansProp: !!Jx.sansProp, titre: Jx.titre, aide: Jx.aide, rate: Jx.rate, consigne: Jx.consigne };
+    Jx.init(et); return et;
+  }
+  return creerEtapeAvantVar(t, M);
+};
+
+/* ── l'apparition : sans dessin pour le gué et la piste ; le choix se règle tout de suite ── */
+var montrerEtapeAvantVar = montrerEtape;
+montrerEtape = async function (et, reprise) {
+  var X = EXPE;
+  if (et.sansProp) { SC.ennemi = null; et.vue = true; majEtiquette(); await banniere(reprise ? T('Tu reprends : {0}', T(et.titre)) : T(et.titre), reprise ? null : T(et.aide), reprise ? 700 : 1300); }
+  else if (et.t === 'choix') {
+    spr(et.cle); var e0 = { nom: T(et.titre), spr: et.cle, cle: et.cle, prop: true, noeud: true, pv: 1, pvMax: 1, x: 0, base: 61, flash: 0 };
+    placer(e0); e0.entree = { t0: maintenant(), dur: 380 }; SC.ennemi = e0; et.vue = true; majEtiquette(); await attendre(450);
+  } else {
+    await montrerEtapeAvantVar(et, reprise);
+    if (et.t === 'fortuit' && et.rar && !reprise) annonceRarete(et.rar, 66, 12);
+    if (et.t === 'mj' && JEUX_P[et.jeu].montre) JEUX_P[et.jeu].montre(et);
+  }
+  if (et.t === 'choix' && C && EXPE === X) {
+    var M = EXPE.mh; await CHOIX_P[et.k2].jouer(M); if (!C || EXPE !== X) return;
+    et.finie = true; var e = SC.ennemi; if (e) { var b = ennemiBoite(); if (b) particulesDe(b.s, b.x, b.y, .4); SC.ennemi = null; }
+    majEtiquette();
+  }
+};
+/* une trace relevée, d'où qu'elle vienne, remet à zéro le compteur qui force la prochaine trace */
+var uneTraceAvantVar = uneTrace;
+uneTrace = function (M, msg) { M.depuisTrace = 0; return uneTraceAvantVar(M, msg); };
+
+/* ── les réponses pendant un mini-jeu, une rencontre fortuite ou nouvelle ── */
+var consequencePisteAvantVar = consequencePiste;
+consequencePiste = async function (juste) {
+  var M = EXPE.mh, et = M.etape, X = EXPE;
+  if (!et || et.finie || et.combat || !et.vue) return;
+  if (et.t === 'fortuit' && !juste && et.F.pique) { var d = absorber(Math.round(et.F.pique * (1 + M.k * .5))); if (d) { nombre('-' + d, SC.heros.x + 8, 30, 'mal'); H().pv = Math.max(1, H().pv - d); hud('hud-combat'); } }
+  if (et.t !== 'mj') return consequencePisteAvantVar(juste);
+  var Jx = JEUX_P[et.jeu];
+  if (!juste) { nombre(T(et.rate), 48, 20, 'mal'); bip(220, 140, .12, 'square', .04); if (Jx.erreur) Jx.erreur(et); majEtiquette(); return; }
+  et.fait = Math.min(et.n, et.fait + 1); bip(500 + et.fait * 120, 500 + et.fait * 120, .08, 'triangle', .04);
+  var e = SC.ennemi; if (e && !e.mort) e.flash = maintenant() + 120;
+  majEtiquette();
+  if (Jx.bonne) { await Jx.bonne(et, M); if (!C || EXPE !== X) return 'fin'; }
+  if (et.fait < et.n) return;
+  cacherQuestions(); et.phase = 'jeu'; majEtiquette();
+  var ok = await Jx.jouer(et, M); if (!C || EXPE !== X) return 'fin';
+  SC.tapQ = null; et.finie = true;
+  await Jx.gain(M, ok); if (!C || EXPE !== X) return 'fin';
+  e = SC.ennemi; if (e && !e.mort) { var b = ennemiBoite(); if (b) particulesDe(b.s, b.x, b.y, .5); SC.ennemi = null; }
+  majEtiquette();
+};
+var gainEtapeAvantVar = gainEtape;
+gainEtape = async function (et, M) {
+  if (et.t === 'fortuit') { et.F.gain(typeof multRenc === 'function' ? multRenc(et.rar) : 1); if (et.rar && typeof bonusRarete === 'function') bonusRarete(et.rar); await banniere(T('Belle rencontre !'), null, 800); return; }
+  if (et.t === 'nouv') return NOUV_P[et.k2].gain(M, et);
+  return gainEtapeAvantVar(et, M);
+};
+/* la consigne du mini-jeu remplace le titre quand c'est à toi de jouer */
+var etiquettePisteAvantVar = etiquettePiste;
+etiquettePiste = function () {
+  etiquettePisteAvantVar();
+  var M = EXPE.mh, et = M.etape;
+  if (et && et.t === 'mj' && et.vue && !et.finie && (et.phase === 'jeu' || (et.g && et.g.choix != null && et.g.choix !== false))) $('e-nom').textContent = T(et.consigne);
+  if (et && et.t === 'fortuit' && et.vue && !et.finie && et.rar) $('e-nom').textContent = T(et.titre) + etoiles(et.rar);
+};
+/* la bénédiction : de l'énergie au premier tour du combat suivant */
+var combatPisteAvantVar = combatPiste;
+combatPiste = async function (et) {
+  await combatPisteAvantVar(et);
+  var M = EXPE && EXPE.mh; if (!M || !C || !M.benediction || M.mode !== 'combat') return;
+  var S = tbEtat(); S.bonusSuiv = (S.bonusSuiv || 0) + M.benediction; nombre(T('Bénédiction : +{0} énergie', M.benediction), 40, 22, 'fort'); M.benediction = 0;
+};
+
+Object.assign(NL, {
+  'potion': 'drankje', 'Fouille terminée': 'Doorzoeken klaar', 'Il n\'en aura plus besoin': 'Hij heeft het niet meer nodig', 'Raccourci !': 'Kortere weg!',
+  'Personne ne t\'a vu': 'Niemand heeft je gezien', 'La mère revient !': 'De moeder komt terug!', 'Elle n\'a pas l\'air contente.': 'Ze ziet er niet blij uit.',
+  'Délicieux !': 'Heerlijk!', '+1 énergie au premier tour du prochain combat.': '+1 energie in de eerste beurt van het volgende gevecht.', 'Beurk…': 'Bah…', 'Tu perds {0} PV.': 'Je verliest {0} LP.',
+  'Le pacte est scellé': 'Het pact is gesloten', '+2 énergie au premier tour du prochain combat.': '+2 energie in de eerste beurt van het volgende gevecht.',
+  '« Une petite potion pour la route ? {0} or, c\'est donné ! »': '„Een drankje voor onderweg? {0} goud, spotgoedkoop!”', 'Tu as {0} or.': 'Je hebt {0} goud.', 'Acheter ({0} or)': 'Kopen ({0} goud)',
+  'Raté !': 'Mis!', 'Le gobelin ricane et file avec sa bourse.': 'De goblin grinnikt en gaat er met zijn buidel vandoor.', 'Gagné !': 'Gewonnen!',
+  'Tu perds la piste…': 'Je raakt het spoor kwijt…', 'Tant pis, on avance.': 'Jammer, we gaan verder.', 'Bien lu !': 'Goed gelezen!', 'Plouf ! −{0}': 'Plons! −{0}', 'Sur l\'autre rive !': 'Aan de overkant!',
+  'La porte s\'ouvre': 'De deur gaat open', 'Belle rencontre !': 'Mooie ontmoeting!', 'Bénédiction : +{0} énergie': 'Zegen: +{0} energie'
+});
+
 /* ═════════ démarrage ═════════ */
 function voir(n) {
   vueActive = n;
